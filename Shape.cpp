@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "Shape.h"
 
-Ellipse::Ellipse(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size)
 {
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
-	this->typeOfShape = typeOfShape;
+	//this->typeOfShape = typeOfShape;
 }
 
+IShape::~IShape()
+{
+
+}

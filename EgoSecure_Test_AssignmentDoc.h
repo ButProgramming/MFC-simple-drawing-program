@@ -4,7 +4,7 @@
 
 
 #pragma once
-
+#include "Shape.h"
 
 class CEgoSecureTestAssignmentDoc : public CDocument
 {
@@ -14,7 +14,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	vector<IShape*> shapes;
 // Operations
 public:
 

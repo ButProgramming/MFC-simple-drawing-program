@@ -16,7 +16,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+#include "Shape.h"
 
 // CEgoSecureTestAssignmentView
 
@@ -25,6 +25,7 @@ IMPLEMENT_DYNCREATE(CEgoSecureTestAssignmentView, CView)
 BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -95,3 +96,18 @@ CEgoSecureTestAssignmentDoc* CEgoSecureTestAssignmentView::GetDocument() const /
 
 
 // CEgoSecureTestAssignmentView message handlers
+
+
+void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	//Shape* s = new Shape;
+	auto pDoc = GetDocument();
+	IShape* shape = new EllipseShape(point, true, 0);
+	pDoc->shapes.push_back(shape);
+	//AfxMessageBox(_T("123"));
+	
+	
+	delete shape;
+	CView::OnLButtonDown(nFlags, point);
+}

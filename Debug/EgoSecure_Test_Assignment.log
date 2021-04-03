@@ -1,7 +1,6 @@
-﻿  pch.cpp
-  EgoSecure_Test_Assignment.cpp
+﻿  EgoSecure_Test_Assignment.cpp
   EgoSecure_Test_AssignmentDoc.cpp
   EgoSecure_Test_AssignmentView.cpp
-  MainFrm.cpp
+  Shape.cpp
   Generating Code...
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\Debug\EgoSecure_Test_Assignment.exe
