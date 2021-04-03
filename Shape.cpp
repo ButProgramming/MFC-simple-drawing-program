@@ -40,6 +40,8 @@ void RectangleShape::draw(CDC* dc)
 
 void TriangleShape::draw(CDC* dc)
 {
+	CBrush* brush = new CBrush;
+	brush->CreateSolidBrush(RGB(0, 255, 0));
 	int radius = size; // for convinient
 
 	int h = 3 * size;
@@ -50,12 +52,14 @@ void TriangleShape::draw(CDC* dc)
 	triangle[1] = CPoint(centerOfShape.x - side / 2, centerOfShape.y + radius); //left
 	triangle[2] = CPoint(centerOfShape.x + side / 2, centerOfShape.y + radius); //right
 
-	CRgn triangleReg;
-	triangleReg.CreatePolygonRgn(triangle, 3, ALTERNATE);
+	CRgn* triangleReg = new CRgn;
+	triangleReg->CreatePolygonRgn(triangle, 3, ALTERNATE);
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(triangle, 3);
-	//dc->FillRgn(triangleReg, triangleBrush);
+	dc->FillRgn(triangleReg, brush);
+	delete brush;
+	delete triangleReg;
 }
 
 IShape::~IShape()
