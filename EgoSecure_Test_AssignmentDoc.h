@@ -15,6 +15,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	vector<IShape*> shapes;
+	ShapeType typeOfShape;
 // Operations
 public:
 

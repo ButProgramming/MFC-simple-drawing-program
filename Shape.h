@@ -1,18 +1,24 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
+
+enum ShapeType { ellipse, rectangle, triangle };
 
 class IShape
 {
 protected:
-	int size;
-	CPoint centerOfShape;
-	bool isNormalized;
+	
+	
+	
 	//ShapeType typeOfShape;
 public:
+	int size;
+	bool isNormalized;
+	CPoint centerOfShape;
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
-	virtual void draw() = 0;
+	virtual void draw(CDC *dc) = 0;
 	virtual ~IShape();
 };
 
@@ -22,10 +28,7 @@ private:
 
 public:
 	EllipseShape(CPoint, bool, int);
-	void draw()
-	{
-
-	}
+	void draw(CDC* dc);
 };
 
 class RectangleShape :public IShape
@@ -33,7 +36,8 @@ class RectangleShape :public IShape
 private:
 
 public:
-	
+	RectangleShape(CPoint, bool, int);
+	void draw(CDC* dc);
 
 };
 
@@ -42,9 +46,10 @@ class TriangleShape : public IShape
 private:
 
 public:
-
+	TriangleShape(CPoint, bool, int);
+	void draw(CDC* dc);
 };
 
 //My own global attributes
-enum ShapeType { ellipse, rectangle, triangle };
+
 

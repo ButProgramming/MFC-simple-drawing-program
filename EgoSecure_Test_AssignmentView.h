@@ -14,6 +14,8 @@ protected: // create from serialization only
 // Attributes
 public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
+	CDC m_dc;
+	CBitmap m_bmt;
 
 // Operations
 public:
@@ -42,6 +44,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnButtonEllipse();
+	afx_msg void OnButtonRectangle();
+	afx_msg void OnButtonTriangle();
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp

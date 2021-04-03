@@ -9,6 +9,40 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size)
 	//this->typeOfShape = typeOfShape;
 }
 
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size)
+{
+	this->size = size;
+	this->centerOfShape = centerOfShape;
+	this->isNormalized = isNormalized;
+	//this->typeOfShape = typeOfShape;
+}
+
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size)
+{
+	this->size = size;
+	this->centerOfShape = centerOfShape;
+	this->isNormalized = isNormalized;
+	//this->typeOfShape = typeOfShape;
+}
+
+void EllipseShape::draw(CDC* dc)
+{
+	//size = 100;
+	dc->Ellipse(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
+}
+
+
+void RectangleShape::draw(CDC* dc)
+{
+	//dc->Rectangle(0, 0, 200, 200);
+}
+
+
+void TriangleShape::draw(CDC* dc)
+{
+
+}
+
 IShape::~IShape()
 {
 
