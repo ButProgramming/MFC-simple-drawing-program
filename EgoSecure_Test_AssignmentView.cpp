@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_ERASEBKGND()
 	ON_WM_CREATE()
+	ON_COMMAND(ID_BUTTON_SELECT_TOOL, &CEgoSecureTestAssignmentView::OnButtonSelectTool)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -152,7 +153,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	/*CString str;
 	str.Format(_T("%d"), pDoc->typeOfShape);
 	AfxMessageBox(str);*/
-	switch (pDoc->typeOfShape)
+	switch (pDoc->toolIsUsed)
 	{
 		case ellipse:
 		{
@@ -193,7 +194,7 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
-	pDoc->typeOfShape = ellipse;
+	pDoc->toolIsUsed = ellipse;
 
 }
 
@@ -202,7 +203,7 @@ void CEgoSecureTestAssignmentView::OnButtonRectangle()
 {
 	// TODO: Add your command handler code here}
 	auto pDoc = GetDocument();
-	pDoc->typeOfShape = rectangle;
+	pDoc->toolIsUsed = rectangle;
 }
 
 
@@ -210,7 +211,7 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
-	pDoc->typeOfShape = triangle;
+	pDoc->toolIsUsed = triangle;
 }
 
 
@@ -258,4 +259,12 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  Add your specialized creation code here
 
 	return 0;
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonSelectTool()
+{
+	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = select_tool;
+	// TODO: Add your command handler code here
 }

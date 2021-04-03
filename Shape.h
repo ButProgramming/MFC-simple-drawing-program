@@ -4,7 +4,7 @@
 #include <cmath>
 using namespace std;
 
-enum ShapeType { ellipse, rectangle, triangle };
+enum Tools { select_tool, ellipse, rectangle, triangle };
 
 class IShape
 {
