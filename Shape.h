@@ -14,6 +14,8 @@ protected:
 	
 	//ShapeType typeOfShape;
 public:
+	enum ShapeType {ellipse, rectangle, triangle};
+	ShapeType type;
 	int size; // length of inscribed circle in shape
 	bool isNormalized;
 	CPoint centerOfShape;
@@ -25,7 +27,7 @@ public:
 class EllipseShape :public IShape
 {
 private:
-
+	
 public:
 	EllipseShape(CPoint, bool, int);
 	void draw(CDC* dc);

@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_ERASEBKGND()
 	ON_WM_CREATE()
 	ON_COMMAND(ID_BUTTON_SELECT_TOOL, &CEgoSecureTestAssignmentView::OnButtonSelectTool)
+	ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -267,4 +268,21 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = select_tool;
 	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	auto pDoc = GetDocument();
+	AfxMessageBox(_T("123"));
+	int sizeOfShapesVector = pDoc->shapes.size();
+	for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+	{
+		if (pDoc->shapes[i]->type==2)
+		{
+			AfxMessageBox(_T("123"));
+		}
+	}
+
+	CView::OnLButtonDblClk(nFlags, point);
 }
