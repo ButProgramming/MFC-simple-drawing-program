@@ -14,7 +14,7 @@ protected:
 	
 	//ShapeType typeOfShape;
 public:
-	int size;
+	int size; // length of inscribed circle in shape
 	bool isNormalized;
 	CPoint centerOfShape;
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);

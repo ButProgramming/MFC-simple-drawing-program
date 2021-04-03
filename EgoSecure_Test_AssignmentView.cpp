@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_TRIANGLE, &CEgoSecureTestAssignmentView::OnButtonTriangle)
 	ON_WM_MOUSEMOVE()
 	ON_WM_ERASEBKGND()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -61,22 +62,20 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+	
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
 	GetClientRect(&rect);
 	point.x -= rect.left;
 	point.y -= rect.top;
+	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
+	
 
 	
-	CClientDC dc(this);
-	int x = ::GetSystemMetrics(SM_CXSCREEN);
-	int y = ::GetSystemMetrics(SM_CXSCREEN);
-	m_dc.CreateCompatibleDC(&dc);
-	m_bmt.CreateCompatibleBitmap(&dc, x, y);
-	m_dc.SelectObject(&m_bmt);
-	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-
+	/*CRect rect;
+	GetClientRect(&rect);
+	m_dc.FillSolidRect(rect, RGB(255, 255, 255));*/
 	CPen* pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	m_dc.SelectObject(pen);
 	pDC->SelectObject(pen);
@@ -87,7 +86,22 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	}
 	pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
-	
+	/*CClientDC dc(this);
+	int x = ::GetSystemMetrics(SM_CXSCREEN);
+	int y = ::GetSystemMetrics(SM_CXSCREEN);
+	m_dc.CreateCompatibleDC(&dc);
+	m_bmt.CreateCompatibleBitmap(&dc, x, y);
+	m_dc.SelectObject(&m_bmt);
+	CRect rect;
+	GetClientRect(&rect);
+	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
+
+	for (IShape* s : pDoc->shapes)
+	{
+		s->draw(&m_dc);
+	}
+
+	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);*/
 
 	// TODO: add draw code for native data here
 }
@@ -135,34 +149,37 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 	//Shape* s = new Shape;
 	auto pDoc = GetDocument();
-
+	/*CString str;
+	str.Format(_T("%d"), pDoc->typeOfShape);
+	AfxMessageBox(str);*/
 	switch (pDoc->typeOfShape)
 	{
 		case ellipse:
 		{
 			IShape* shape = new EllipseShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
+			/*CString str;
+			str.Format(_T("%d"), pDoc->shapes.size());
+			AfxMessageBox(str);*/
 			//delete shape;
 			break;
 		}
 		case rectangle:
 		{
-			IShape* shape = new EllipseShape(point, true, 0);
+			IShape* shape = new RectangleShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
 			//delete shape;
 			break;
 		}
 		case triangle:
 		{
-			IShape* shape = new EllipseShape(point, true, 0);
+			IShape* shape = new TriangleShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
 			//delete shape;
 			break;
 		}
 	}
-	/*CString str;
-	str.Format(_T("%d"), pDoc->shapes.size());
-	AfxMessageBox(str);*/
+	
 	
 	//AfxMessageBox(_T("123"));
 	
@@ -200,9 +217,10 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	
-	auto pDoc = GetDocument();
+	
 	if (nFlags == MK_LBUTTON)
 	{
+		auto pDoc = GetDocument();
 		//pDoc->shapes.at(pDoc->shapes.size() - 1)->size; //sqrt(pow((pDoc->shapes.at(v.size() - 1).c_shapeCenter.x - point.x), 2) + pow((v.at(v.size() - 1).c_shapeCenter.y - point.y), 2));
 		//if (pDoc->shapes.size() > 0)
 		pDoc->shapes[pDoc->shapes.size()-1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
@@ -217,4 +235,27 @@ BOOL CEgoSecureTestAssignmentView::OnEraseBkgnd(CDC* pDC)
 	// TODO: Add your message handler code here and/or call default
 
 	return true;
+}
+
+
+int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	CPoint point;
+	CRect rect;
+	GetCursorPos(&point);
+	GetClientRect(&rect);
+	point.x -= rect.left;
+	point.y -= rect.top;
+	CClientDC dc(this);
+	int x = ::GetSystemMetrics(SM_CXSCREEN);
+	int y = ::GetSystemMetrics(SM_CXSCREEN);
+	m_dc.CreateCompatibleDC(&dc);
+	m_bmt.CreateCompatibleBitmap(&dc, x, y);
+	m_dc.SelectObject(&m_bmt);
+	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
+	// TODO:  Add your specialized creation code here
+
+	return 0;
 }

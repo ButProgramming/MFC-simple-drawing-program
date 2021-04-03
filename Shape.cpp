@@ -34,13 +34,13 @@ void EllipseShape::draw(CDC* dc)
 
 void RectangleShape::draw(CDC* dc)
 {
-	//dc->Rectangle(0, 0, 200, 200);
+	dc->Rectangle(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
 }
 
 
 void TriangleShape::draw(CDC* dc)
 {
-
+	//dc->Rectangle(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
 }
 
 IShape::~IShape()
