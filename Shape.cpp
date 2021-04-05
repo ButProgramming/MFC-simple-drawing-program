@@ -76,26 +76,29 @@ void TriangleShape::draw(CDC* dc)
 	int h = 3 * size;
 	int side =  2 * h / sqrt(3);
 	// synchronized moving
-	CPoint triangle[3];
-	triangle[0] = CPoint(centerOfShape.x + dx, centerOfShape.y + dy - 2*radius); //top
-	triangle[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
-	triangle[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
 	
+	points[0] = CPoint(centerOfShape.x + dx, centerOfShape.y + dy - 2*radius); //top
+	points[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
+	points[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
+	//triangleArr[3] = triangle[3];
+
 	CRgn* triangleReg = new CRgn;
-	triangleReg->CreatePolygonRgn(triangle, 3, ALTERNATE);
+	triangleReg->CreatePolygonRgn(points, 3, ALTERNATE);
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
-	dc->Polygon(triangle, 3);
+	dc->Polygon(points, 3);
 	dc->FillRgn(triangleReg, brush);
 	if (isSelected)
 	{
 		for(int i=0; i<3; i++)
-			dc->Ellipse(triangle[i].x - 3, triangle[i].y - 3, triangle[i].x + 3, triangle[i].y + 3);
+			dc->Ellipse(points[i].x - 3, points[i].y - 3, points[i].x + 3, points[i].y + 3);
 	}
+	//delete points;
 	delete pen;
 	delete brush;
 	delete triangleReg;
 }
+
 
 IShape::~IShape()
 {

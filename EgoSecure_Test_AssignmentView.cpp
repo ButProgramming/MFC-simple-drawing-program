@@ -169,14 +169,46 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			//delete shape;
 			break;
 		}
+		case Tools::move:
+			pDoc->first.x = point.x;
+			pDoc->first.y = point.y;
+			break;
+		case Tools::change:
+			bool selected = false; // control of the next loop
+			for (auto s:pDoc->shapes)
+			{
+				//
+				if (s->isSelected)
+				{
+					selected = true;
+					for (int i = 0; i < 3; i++)
+					{
+						HRGN angle = CreateEllipticRgn(s->points[i].x - 10, s->points[i].y - 10, s->points[i].x + 10, s->points[i].y + 10);
+						if (PtInRegion(angle, point.x, point.y))
+						{
+							AfxMessageBox(_T("In region"));
+						}
+					}
+				}
+				if (selected)
+					break;
+			}
+			/*for (int i = 0; i < 3; i++)
+			{
+				HRGN pointOfAngle = CreateEllipticRgn(angles[i].x - 10, angles[i].y - 10, angles[i].x -+ 3, angles[i].y + 10);
+				if (PtInRegion(pointOfAngle, point.x, point.y))
+				{
+					AfxMessageBox(_T("123"));
+				};
+			}*/
+			break;
 	}
-	if (pDoc->toolIsUsed == Tools::move)
+	/*if (pDoc->toolIsUsed == Tools::move)
 	{
-		pDoc->first.x = point.x;
-		pDoc->first.y = point.y;
+		
 		
 	}
-	
+	*/
 	
 	//AfxMessageBox(_T("123"));
 	
@@ -302,9 +334,9 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			cp = rect.BottomRight();
 			CString str;
 			str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
-			AfxMessageBox(str);
+			//AfxMessageBox(str);
 			str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
-			AfxMessageBox(str);
+			//AfxMessageBox(str);
 			//
 			if (PtInRegion(ellipseRgn, point.x, point.y))
 			{
@@ -445,5 +477,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 void CEgoSecureTestAssignmentView::OnButtonChange()
 {
 	//AfxMessageBox(_T("Change"));
+	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = Tools::change;
 	// TODO: Add your command handler code here
 }

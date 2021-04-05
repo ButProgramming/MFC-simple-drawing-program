@@ -8,17 +8,18 @@ using namespace std;
 //int move_dy=0;
 //int globalInt;
 
-enum class Tools { select_tool, ellipse, rectangle, triangle, move };
+enum class Tools { select_tool, ellipse, rectangle, triangle, move, change };
 enum class ShapeType { ellipse, rectangle, triangle };
 
 class IShape
 {
 protected:
-	
-	
-	
+
+
+
 	//ShapeType typeOfShape;
 public:
+	CPoint points[4];
 	static int dx;
 	static int dy;
 	bool isSelected = false;
@@ -28,7 +29,8 @@ public:
 	bool isNormalized;
 	CPoint centerOfShape;
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
-	virtual void draw(CDC *dc) = 0;
+	virtual void draw(CDC* dc) = 0;
+	
 	virtual ~IShape();
 };
 
@@ -39,25 +41,30 @@ private:
 public:
 	EllipseShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
+	
 };
 
 class RectangleShape :public IShape
 {
 private:
-
+	
 public:
 	RectangleShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
+	
 
 };
 
 class TriangleShape : public IShape
 {
 private:
-
+	
 public:
+	CPoint triangle[3];
+	int test;
 	TriangleShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
+	
 };
 
 //My own global attributes
