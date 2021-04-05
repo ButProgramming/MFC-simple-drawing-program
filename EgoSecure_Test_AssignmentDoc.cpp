@@ -135,6 +135,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes.emplace_back(shape);
 			
 		}
+		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here
 	}
 }
