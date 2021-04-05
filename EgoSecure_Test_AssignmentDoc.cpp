@@ -64,12 +64,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		int ST;
-		int size = shapes.size();
-		ar << size;
+		int vectorSize = shapes.size();
+		ar << vectorSize;
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
-			ar << s->size;
 			ar << s->isSelected;
 			if (s->type == ShapeType::ellipse)
 			{
@@ -87,18 +86,24 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				ST = 2;
 				ar << ST;
 			}
-			
-
 		}
 		// TODO: add storing code here
 	}
 	else
 	{
-		int size;
-		ar >> size;
+		int ST;
+		CPoint centerOfShape;
+		bool isSelected;
+		int vectorSize;
+		ar >> vectorSize;
 		CString str;
-		str.Format(_T("Size: %d"), size);
+		str.Format(_T("Size: %d"), vectorSize);
 		AfxMessageBox(str);
+		for (int i = 0; i < vectorSize; i++)
+		{
+			ar << centerOfShape.x << centerOfShape.y;
+			//size
+		}
 		// TODO: add loading code here
 	}
 }
