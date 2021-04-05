@@ -75,15 +75,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	
-
-	
-	/*CRect rect;
-	GetClientRect(&rect);
-	m_dc.FillSolidRect(rect, RGB(255, 255, 255));*/
-	/*CPen* pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
-	m_dc.SelectObject(pen);*/
-	//pDC->SelectObject(pen);
+		
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
@@ -335,7 +327,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 			case ShapeType::ellipse:
 			{
-
 				CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
 				int ellipseSize = pDoc->shapes[i]->size; //convinient
 				HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
@@ -366,7 +357,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 							break;
 						};
 					}
+					//swap
 					pDoc->shapes[i]->isSelected = true;
+					auto s1 = pDoc->shapes[i];
+					auto s2 = pDoc->shapes[pDoc->shapes.size()-1];
+					pDoc->shapes[i] = s2;
+					pDoc->shapes[pDoc->shapes.size() - 1] = s1;
+					
+					//iter_swap(pDoc->shapes.begin()+i-1, pDoc->shapes.begin());
 					Invalidate();
 				}
 				//pDoc->shapes[i]->centerOfShape
