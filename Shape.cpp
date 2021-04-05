@@ -1,6 +1,10 @@
 ﻿#include "pch.h"
 #include "Shape.h"
 
+int IShape::dx = 0;
+int IShape::dy = 0;
+
+
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
 	//type = ShapeType::ellipse;
@@ -38,7 +42,8 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
-	dc->Ellipse(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
+	
+	dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	delete pen;
 }
 

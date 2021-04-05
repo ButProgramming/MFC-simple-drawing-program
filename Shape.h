@@ -19,6 +19,8 @@ protected:
 	
 	//ShapeType typeOfShape;
 public:
+	static int dx;
+	static int dy;
 	bool isSelected = false;
 	CPen* pen;
 	ShapeType type;

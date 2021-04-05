@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_SELECT_TOOL, &CEgoSecureTestAssignmentView::OnButtonSelectTool)
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_BUTTON_MOVE, &CEgoSecureTestAssignmentView::OnButtonMove)
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -89,22 +90,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	}
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
-	/*CClientDC dc(this);
-	int x = ::GetSystemMetrics(SM_CXSCREEN);
-	int y = ::GetSystemMetrics(SM_CXSCREEN);
-	m_dc.CreateCompatibleDC(&dc);
-	m_bmt.CreateCompatibleBitmap(&dc, x, y);
-	m_dc.SelectObject(&m_bmt);
-	CRect rect;
-	GetClientRect(&rect);
-	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-
-	for (IShape* s : pDoc->shapes)
-	{
-		s->draw(&m_dc);
-	}
-
-	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);*/
+	
 
 	// TODO: add draw code for native data here
 }
@@ -235,14 +221,15 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		//pDoc->shapes.at(pDoc->shapes.size() - 1)->size; //sqrt(pow((pDoc->shapes.at(v.size() - 1).c_shapeCenter.x - point.x), 2) + pow((v.at(v.size() - 1).c_shapeCenter.y - point.y), 2));
 		//if (pDoc->shapes.size() > 0)
 		pDoc->shapes[pDoc->shapes.size()-1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
-		Invalidate();
+		//Invalidate();
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
-		pDoc->dx = pDoc->second.x - pDoc->first.x;
-		pDoc->dy = pDoc->second.y - pDoc->first.y;
+		IShape::dx = pDoc->second.x - pDoc->first.x;
+		IShape::dy = pDoc->second.y - pDoc->first.y;
+
 		
 		//int d = sqrt(pow(dx, 2) + pow(dx, 2));
 
@@ -260,8 +247,14 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}*/
 		//pDoc->dx += sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - p;
 	}
+	/*if (nFlags != MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
+	{
+	
+	}*/
+	
 	//pDoc->dx_global += dx;
 	//pDoc->dy_global += dy;
+	Invalidate();
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -424,7 +417,58 @@ void CEgoSecureTestAssignmentView::OnButtonMove()
 	CString str;
 	str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
 	//if(pDoc->dx_global>0)
-	AfxMessageBox(str);
+	//AfxMessageBox(str);
 	//AfxMessageBox(_T("Move"));
 	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	auto pDoc = GetDocument();
+	if (pDoc->toolIsUsed == Tools::move)
+	{
+		
+		for (int i = 0; i<pDoc->shapes.size(); i++)
+		{
+			CString str;
+			int size = pDoc->shapes.size();
+			str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+			//AfxMessageBox(str);
+			str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
+			//AfxMessageBox(str);
+			Invalidate();
+			pDoc->shapes[i]->centerOfShape.x += IShape::dx;
+			pDoc->shapes[i]->centerOfShape.y += IShape::dy;
+			str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+			//AfxMessageBox(str);
+		}
+		IShape::dx = 0;
+		IShape::dy = 0;
+
+		
+	}
+	//AfxMessageBox(_T("123"));
+	//auto pDoc = GetDocument();
+	//if (pDoc->toolIsUsed == Tools::move)
+	//{
+	//	IShape::dx = 0;
+	//	IShape::dy = 0;
+	//	IShape::dx = pDoc->second.x - pDoc->first.x;
+	//	IShape::dy = pDoc->second.y - pDoc->first.y;
+
+	//	if (pDoc->toolIsUsed == Tools::move)
+	//	{
+	//		for (auto s : pDoc->shapes)
+	//		{
+	//			CString str;
+	//			str.Format(_T("%d, %d"), s->centerOfShape.x, s->centerOfShape.y);
+	//			//AfxMessageBox(str);
+	//			s->centerOfShape.x = s->centerOfShape.x;
+	//			s->centerOfShape.y = s->centerOfShape.y;
+	//		}
+	//	}
+	//}
+	CView::OnLButtonUp(nFlags, point);
 }
