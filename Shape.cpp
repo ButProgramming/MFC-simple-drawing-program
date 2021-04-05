@@ -80,13 +80,18 @@ void TriangleShape::draw(CDC* dc)
 	triangle[0] = CPoint(centerOfShape.x + dx, centerOfShape.y + dy - 2*radius); //top
 	triangle[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
 	triangle[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
-
+	
 	CRgn* triangleReg = new CRgn;
 	triangleReg->CreatePolygonRgn(triangle, 3, ALTERNATE);
-	/*CBrush* triangleBrush = new CBrus h;
+	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(triangle, 3);
 	dc->FillRgn(triangleReg, brush);
+	if (isSelected)
+	{
+		for(int i=0; i<3; i++)
+			dc->Ellipse(triangle[i].x - 3, triangle[i].y - 3, triangle[i].x + 3, triangle[i].y + 3);
+	}
 	delete pen;
 	delete brush;
 	delete triangleReg;
