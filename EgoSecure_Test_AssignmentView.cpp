@@ -176,7 +176,30 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		case Tools::change:
 			pDoc->first.x = point.x;
 			pDoc->first.y = point.y;
-			break;
+			bool selected = false; // control of the next loop
+			for (int s = 0; s < pDoc->shapes.size(); s++)
+			{
+				//
+				if (pDoc->shapes[s]->isSelected)
+				{
+					selected = true;
+					for (int a = 0; a < 3; a++)
+					{
+						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - 10, pDoc->shapes[s]->points[a].y - 10, pDoc->shapes[s]->points[a].x + 10, pDoc->shapes[s]->points[a].y + 10);
+						if (PtInRegion(angle, point.x, point.y))
+						{
+
+							pDoc->shapes[s]->numberOfAngle = a;
+							Invalidate();
+							CString str;
+							str.Format(_T("%d"), a);
+							//AfxMessageBox(str);
+						}
+					}
+				}
+				if (selected)
+					break;
+			}
 			break;
 	}
 	CView::OnLButtonDown(nFlags, point);
@@ -235,21 +258,14 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			if (pDoc->shapes[s]->isSelected)
 			{
 				selected = true;
-				for (int a = 0; a < 3; a++)
-				{
-					HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - 10, pDoc->shapes[s]->points[a].y - 10, pDoc->shapes[s]->points[a].x + 10, pDoc->shapes[s]->points[a].y + 10);
-					if (PtInRegion(angle, point.x, point.y))
-					{
-						
-						pDoc->shapes[s]->rectangle_dx_dy_temp[a].x = point.x - pDoc->first.x;
-						pDoc->shapes[s]->rectangle_dx_dy_temp[a].y = point.y - pDoc->first.y;
+				
+						pDoc->shapes[s]->rectangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
+						pDoc->shapes[s]->rectangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
 					
 						Invalidate();
 						CString str;
-						str.Format(_T("%d"), a);
-						//AfxMessageBox(str);
-					}
-				}
+						str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);
+			
 			}
 			if (selected)
 				break;
@@ -310,7 +326,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	//AfxMessageBox(_T("123"));
 	auto pDoc = GetDocument();
 	int sizeOfShapesVector = pDoc->shapes.size();
-	bool shapeIsFound =false; //exit from for loop if = true
+	bool shapeIsFound = false; //exit from for loop if = true
 	if (pDoc->toolIsUsed == Tools::select_tool)
 	{
 		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
