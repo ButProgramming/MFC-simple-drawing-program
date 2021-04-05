@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_BUTTON_MOVE, &CEgoSecureTestAssignmentView::OnButtonMove)
 	ON_WM_LBUTTONUP()
+	ON_COMMAND(ID_BUTTON_CHANGE, &CEgoSecureTestAssignmentView::OnButtonChange)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -438,4 +439,11 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	
 	CView::OnLButtonUp(nFlags, point);
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonChange()
+{
+	//AfxMessageBox(_T("Change"));
+	// TODO: Add your command handler code here
 }
