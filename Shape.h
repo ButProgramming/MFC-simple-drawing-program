@@ -31,7 +31,7 @@ class EllipseShape :public IShape
 private:
 	
 public:
-	EllipseShape(CPoint, bool, int);
+	EllipseShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
 };
 
@@ -40,7 +40,7 @@ class RectangleShape :public IShape
 private:
 
 public:
-	RectangleShape(CPoint, bool, int);
+	RectangleShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
 
 };
@@ -50,7 +50,7 @@ class TriangleShape : public IShape
 private:
 
 public:
-	TriangleShape(CPoint, bool, int);
+	TriangleShape(CPoint, bool, int, ShapeType);
 	void draw(CDC* dc);
 };
 

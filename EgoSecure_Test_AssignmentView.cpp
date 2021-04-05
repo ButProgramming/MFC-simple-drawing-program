@@ -159,7 +159,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		case Tools::ellipse:
 		{
-			IShape* shape = new EllipseShape(point, true, 0);
+			IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse);
 			pDoc->shapes.push_back(shape);
 			/*CString str;
 			str.Format(_T("%d"), pDoc->shapes.size());
@@ -169,14 +169,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 		case Tools::rectangle:
 		{
-			IShape* shape = new RectangleShape(point, true, 0);
+			IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle);
 			pDoc->shapes.push_back(shape);
 			//delete shape;
 			break;
 		}
 		case Tools::triangle:
 		{
-			IShape* shape = new TriangleShape(point, true, 0);
+			IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle);
 			pDoc->shapes.push_back(shape);
 			//delete shape;
 			break;
@@ -274,6 +274,7 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 
 void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
+	//AfxMessageBox(_T("123"));
 	auto pDoc = GetDocument();
 	int sizeOfShapesVector = pDoc->shapes.size();
 	bool shapeIsFound =false; //exit from for loop if = true

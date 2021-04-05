@@ -64,12 +64,14 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		int ST;
+		int size;
 		int vectorSize = shapes.size();
 		ar << vectorSize;
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->isSelected;
+			ar << s->size;
 			if (s->type == ShapeType::ellipse)
 			{
 				//ST = static_cast<ShapeType::ellipse>();
@@ -86,12 +88,16 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				ST = 2;
 				ar << ST;
 			}
+			
 		}
 		// TODO: add storing code here
 	}
 	else
 	{
+		IShape* shape;
+		ShapeType type;
 		int ST;
+		int size;
 		CPoint centerOfShape;
 		bool isSelected;
 		int vectorSize;
@@ -101,8 +107,33 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		AfxMessageBox(str);
 		for (int i = 0; i < vectorSize; i++)
 		{
-			ar << centerOfShape.x << centerOfShape.y;
-			//size
+			ar >> centerOfShape.x >> centerOfShape.y;
+			ar >> isSelected;
+			ar >> size;
+			ar >> ST;
+			
+			if (ST == 0)
+			{
+				type = ShapeType::ellipse;
+				shape = new EllipseShape(centerOfShape, true, size, type);
+				shape->isSelected = isSelected;
+			}
+			else if (ST == 1)
+			{
+				type = ShapeType::rectangle;
+				shape = new RectangleShape(centerOfShape, true, size, type);
+				shape->isSelected = isSelected;
+			}
+			else
+			{
+				type = ShapeType::triangle;
+				shape = new TriangleShape(centerOfShape, true, size, type);
+				shape->isSelected = isSelected;
+			}
+			
+			
+			shapes.emplace_back(shape);
+			
 		}
 		// TODO: add loading code here
 	}

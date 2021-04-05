@@ -1,27 +1,29 @@
 ﻿#include "pch.h"
 #include "Shape.h"
 
-EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	type = ShapeType::ellipse;
+	//type = ShapeType::ellipse;
+	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
 	//this->typeOfShape = typeOfShape;
 }
 
-RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size)
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	type = ShapeType::rectangle;
+	//type = ShapeType::rectangle;
+	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
 	//this->typeOfShape = typeOfShape;
 }
 
-TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size)
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	type = ShapeType::triangle;
+	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
