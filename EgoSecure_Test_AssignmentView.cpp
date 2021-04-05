@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_BUTTON_SELECT_TOOL, &CEgoSecureTestAssignmentView::OnButtonSelectTool)
 	ON_WM_LBUTTONDBLCLK()
+	ON_COMMAND(ID_BUTTON_MOVE, &CEgoSecureTestAssignmentView::OnButtonMove)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -289,7 +290,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 				
 				
-				AfxMessageBox(_T("Ellipse"));
+				//AfxMessageBox(_T("Ellipse"));
 				//pDoc->shapes[i]->pen=newPen;
 				shapeIsFound = true;
 				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
@@ -316,7 +317,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			HRGN rectangleRgn = CreateRectRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
 			if (PtInRegion(rectangleRgn, point.x, point.y))
 			{
-				AfxMessageBox(_T("Rectangle"));
+				//AfxMessageBox(_T("Rectangle"));
 				shapeIsFound = true;
 				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 				{
@@ -350,7 +351,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
 			if (PtInRegion(rectangleRgn, point.x, point.y))
 			{
-				AfxMessageBox(_T("Triangle"));
+				//AfxMessageBox(_T("Triangle"));
 				shapeIsFound = true;
 				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 				{
@@ -379,4 +380,13 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 
 	CView::OnLButtonDblClk(nFlags, point);
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonMove()
+{
+	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = Tools::move;
+	AfxMessageBox(_T("Move"));
+	// TODO: Add your command handler code here
 }

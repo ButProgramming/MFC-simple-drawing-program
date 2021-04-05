@@ -42,7 +42,12 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-
+	//shapes.clear();
+	for (auto s : shapes)
+	{
+		delete s;
+	}
+	shapes.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
@@ -58,10 +63,42 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
+		int ST;
+		int size = shapes.size();
+		ar << size;
+		for (auto s : shapes)
+		{
+			ar << s->centerOfShape.x << s->centerOfShape.y;
+			ar << s->size;
+			ar << s->isSelected;
+			if (s->type == ShapeType::ellipse)
+			{
+				//ST = static_cast<ShapeType::ellipse>();
+				ST = 0;
+				ar << ST;
+			}
+			else if(s->type == ShapeType::rectangle)
+			{
+				ST = 1;
+				ar << ST;
+			}
+			else //if(s->type == ShapeType::triangle)
+			{
+				ST = 2;
+				ar << ST;
+			}
+			
+
+		}
 		// TODO: add storing code here
 	}
 	else
 	{
+		int size;
+		ar >> size;
+		CString str;
+		str.Format(_T("Size: %d"), size);
+		AfxMessageBox(str);
 		// TODO: add loading code here
 	}
 }
