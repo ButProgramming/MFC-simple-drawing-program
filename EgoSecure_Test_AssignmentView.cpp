@@ -281,17 +281,47 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		{
 		case ShapeType::ellipse:
 		{
-			AfxMessageBox(_T("ellipse"));
+			CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
+			int ellipseSize = pDoc->shapes[i]->size; //convinient
+			HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
+			if (PtInRegion(ellipseRgn, point.x, point.y))
+			{
+				AfxMessageBox(_T("Ellipse"));
+			}
+			//pDoc->shapes[i]->centerOfShape
+			//AfxMessageBox(_T("ellipse"));
 			break;
 		}
 		case ShapeType::rectangle:
-		{
-			AfxMessageBox(_T("rectangle"));
+		{	
+			CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
+			int rectangleSize = pDoc->shapes[i]->size; //convinient
+			HRGN rectangleRgn = CreateRectRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+			if (PtInRegion(rectangleRgn, point.x, point.y))
+			{
+				AfxMessageBox(_T("Rectangle"));
+			}
+			
 			break;
 		}
 		case ShapeType::triangle:
 		{
-			AfxMessageBox(_T("triangle"));
+			CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
+			int rectangleSize = pDoc->shapes[i]->size; //convinient
+			int h = 3 * rectangleSize;
+			int side = 2 * h / sqrt(3);
+
+			CPoint triangle[3];
+			triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
+			triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
+			triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
+
+			HRGN rectangleRgn = CreatePolygonRgn(triangle, 3, ALTERNATE);
+			//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+			if (PtInRegion(rectangleRgn, point.x, point.y))
+			{
+				AfxMessageBox(_T("Rectangle"));
+			}
 			break;
 		}
 		}

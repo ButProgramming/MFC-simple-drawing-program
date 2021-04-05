@@ -1,6 +1,4 @@
 ﻿  EgoSecure_Test_AssignmentView.cpp
 C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(228,51): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  Shape.cpp
-C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(51,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  Generating Code...
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(312,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\Debug\EgoSecure_Test_Assignment.exe
