@@ -429,7 +429,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	auto pDoc = GetDocument();
 	if (pDoc->toolIsUsed == Tools::move)
 	{
-		
+		// move all shapes
 		for (int i = 0; i<pDoc->shapes.size(); i++)
 		{
 			CString str;

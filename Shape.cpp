@@ -42,7 +42,7 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
-	
+	// synchronized moving
 	dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	delete pen;
 }
@@ -55,7 +55,8 @@ void RectangleShape::draw(CDC* dc)
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
-	dc->Rectangle(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
+	// synchronized moving
+	dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	delete pen;
 }
 
@@ -74,11 +75,11 @@ void TriangleShape::draw(CDC* dc)
 
 	int h = 3 * size;
 	int side =  2 * h / sqrt(3);
-	
+	// synchronized moving
 	CPoint triangle[3];
-	triangle[0] = CPoint(centerOfShape.x, centerOfShape.y - 2*radius); //top
-	triangle[1] = CPoint(centerOfShape.x - side / 2, centerOfShape.y + radius); //left
-	triangle[2] = CPoint(centerOfShape.x + side / 2, centerOfShape.y + radius); //right
+	triangle[0] = CPoint(centerOfShape.x + dx, centerOfShape.y + dy - 2*radius); //top
+	triangle[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
+	triangle[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
 
 	CRgn* triangleReg = new CRgn;
 	triangleReg->CreatePolygonRgn(triangle, 3, ALTERNATE);
