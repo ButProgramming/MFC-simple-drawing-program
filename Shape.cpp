@@ -78,8 +78,8 @@ void TriangleShape::draw(CDC* dc)
 	
 
 	points[0] = CPoint(centerOfShape.x + dx + rectangle_dx_dy[0].x + rectangle_dx_dy_temp[0].x, centerOfShape.y + dy - 2 * radius + rectangle_dx_dy[0].y + rectangle_dx_dy_temp[0].y); //top
-	points[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
-	points[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
+	points[1] = CPoint(centerOfShape.x + dx + rectangle_dx_dy[1].x + rectangle_dx_dy_temp[1].x - side / 2, centerOfShape.y + dy + radius + rectangle_dx_dy[1].y + rectangle_dx_dy_temp[1].y); //left
+	points[2] = CPoint(centerOfShape.x + dx + rectangle_dx_dy[2].x + rectangle_dx_dy_temp[2].x + side / 2, centerOfShape.y + dy + radius + rectangle_dx_dy[2].y + rectangle_dx_dy_temp[2].y); //right
 
 	/*rectangle_dx_dy[0].x = points[0].x;
 	rectangle_dx_dy[0].y = points[0].y;
@@ -100,6 +100,7 @@ void TriangleShape::draw(CDC* dc)
 		for(int i=0; i<3; i++)
 			dc->Ellipse(points[i].x - 3, points[i].y - 3, points[i].x + 3, points[i].y + 3);
 	}
+	
 	//delete points;
 	delete pen;
 	delete brush;

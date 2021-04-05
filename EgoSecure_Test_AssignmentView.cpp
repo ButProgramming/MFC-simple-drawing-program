@@ -212,7 +212,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	int dx = 0;
 	int dy = 0;
-	auto pDoc = GetDocument();
+	CEgoSecureTestAssignmentDoc *pDoc = GetDocument();
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed==Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
 	
@@ -240,11 +240,10 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 					HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - 10, pDoc->shapes[s]->points[a].y - 10, pDoc->shapes[s]->points[a].x + 10, pDoc->shapes[s]->points[a].y + 10);
 					if (PtInRegion(angle, point.x, point.y))
 					{
+						
 						pDoc->shapes[s]->rectangle_dx_dy_temp[a].x = point.x - pDoc->first.x;
 						pDoc->shapes[s]->rectangle_dx_dy_temp[a].y = point.y - pDoc->first.y;
-						
-						//pDoc->shapes[s]->points[a].x += 1000;
-						//pDoc->shapes[s]->points[a].y += 1000;
+					
 						Invalidate();
 						CString str;
 						str.Format(_T("%d"), a);
@@ -255,12 +254,13 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			if (selected)
 				break;
 		}
+		
 	}
 	
 
 	
 
-
+	
 	Invalidate();
 	CView::OnMouseMove(nFlags, point);
 }
