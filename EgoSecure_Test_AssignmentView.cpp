@@ -193,27 +193,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				if (selected)
 					break;
 			}
-			/*for (int i = 0; i < 3; i++)
-			{
-				HRGN pointOfAngle = CreateEllipticRgn(angles[i].x - 10, angles[i].y - 10, angles[i].x -+ 3, angles[i].y + 10);
-				if (PtInRegion(pointOfAngle, point.x, point.y))
-				{
-					AfxMessageBox(_T("123"));
-				};
-			}*/
 			break;
 	}
-	/*if (pDoc->toolIsUsed == Tools::move)
-	{
-		
-		
-	}
-	*/
-	
-	//AfxMessageBox(_T("123"));
-	
-	
-	//Invalidate();
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -260,6 +241,10 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		IShape::dx = pDoc->second.x - pDoc->first.x;
 		IShape::dy = pDoc->second.y - pDoc->first.y;
 		
+	}
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
+	{
+
 	}
 	
 
@@ -316,116 +301,119 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	auto pDoc = GetDocument();
 	int sizeOfShapesVector = pDoc->shapes.size();
 	bool shapeIsFound =false; //exit from for loop if = true
-	for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+	if (pDoc->toolIsUsed == Tools::select_tool)
 	{
-		switch (pDoc->shapes[i]->type)
+		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 		{
-		case ShapeType::ellipse:
-		{
-		
-			CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
-			int ellipseSize = pDoc->shapes[i]->size; //convinient
-			HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
-			//
-			CRect rect;
-			//GetClientRect(&rect);
-			GetRgnBox(ellipseRgn, &rect);
-			CPoint cp;
-			cp = rect.BottomRight();
-			CString str;
-			str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
-			//AfxMessageBox(str);
-			str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
-			//AfxMessageBox(str);
-			//
-			if (PtInRegion(ellipseRgn, point.x, point.y))
+			switch (pDoc->shapes[i]->type)
 			{
-				//AfxMessageBox(_T("Ellipse"));
-				//pDoc->shapes[i]->pen=newPen;
-				shapeIsFound = true;
-				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-				{
-					//unselecting others shapes
-					if (pDoc->shapes[i]->isSelected == true)
-					{
-						pDoc->shapes[i]->pen->DeleteObject();
-						pDoc->shapes[i]->isSelected = false;
-						break;
-					};
-				}
-				pDoc->shapes[i]->isSelected = true;
-				Invalidate();
-			}
-			//pDoc->shapes[i]->centerOfShape
-			//AfxMessageBox(_T("ellipse"));
-			break;
-		}
-		case ShapeType::rectangle:
-		{	
-			CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
-			int rectangleSize = pDoc->shapes[i]->size; //convinient
-			HRGN rectangleRgn = CreateRectRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
-			if (PtInRegion(rectangleRgn, point.x, point.y))
+			case ShapeType::ellipse:
 			{
-				//AfxMessageBox(_T("Rectangle"));
-				shapeIsFound = true;
-				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+
+				CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
+				int ellipseSize = pDoc->shapes[i]->size; //convinient
+				HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
+				//
+				CRect rect;
+				//GetClientRect(&rect);
+				GetRgnBox(ellipseRgn, &rect);
+				CPoint cp;
+				cp = rect.BottomRight();
+				CString str;
+				str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
+				//AfxMessageBox(str);
+				str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
+				//AfxMessageBox(str);
+				//
+				if (PtInRegion(ellipseRgn, point.x, point.y))
 				{
-					//unselecting others shapes
-					if (pDoc->shapes[i]->isSelected == true)
+					//AfxMessageBox(_T("Ellipse"));
+					//pDoc->shapes[i]->pen=newPen;
+					shapeIsFound = true;
+					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 					{
-						pDoc->shapes[i]->pen->DeleteObject();
-						pDoc->shapes[i]->isSelected = false;
-						break;
-					};
+						//unselecting others shapes
+						if (pDoc->shapes[i]->isSelected == true)
+						{
+							pDoc->shapes[i]->pen->DeleteObject();
+							pDoc->shapes[i]->isSelected = false;
+							break;
+						};
+					}
+					pDoc->shapes[i]->isSelected = true;
+					Invalidate();
 				}
-				pDoc->shapes[i]->isSelected = true;
-				Invalidate();
+				//pDoc->shapes[i]->centerOfShape
+				//AfxMessageBox(_T("ellipse"));
+				break;
 			}
-			
-			break;
-		}
-		case ShapeType::triangle:
-		{
-			CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
-			int rectangleSize = pDoc->shapes[i]->size; //convinient
-			int h = 3 * rectangleSize;
-			int side = 2 * h / sqrt(3);
-
-			CPoint triangle[3];
-			triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
-			triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
-			triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
-
-			HRGN rectangleRgn = CreatePolygonRgn(triangle, 3, ALTERNATE);
-			//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
-			if (PtInRegion(rectangleRgn, point.x, point.y))
+			case ShapeType::rectangle:
 			{
-				//AfxMessageBox(_T("Triangle"));
-				shapeIsFound = true;
-				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+				CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
+				int rectangleSize = pDoc->shapes[i]->size; //convinient
+				HRGN rectangleRgn = CreateRectRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+				if (PtInRegion(rectangleRgn, point.x, point.y))
 				{
-					//unselecting others shapes
-					if (pDoc->shapes[i]->isSelected == true)
+					//AfxMessageBox(_T("Rectangle"));
+					shapeIsFound = true;
+					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 					{
-						pDoc->shapes[i]->pen->DeleteObject();
-						pDoc->shapes[i]->isSelected = false;
-						break;
-					};
+						//unselecting others shapes
+						if (pDoc->shapes[i]->isSelected == true)
+						{
+							pDoc->shapes[i]->pen->DeleteObject();
+							pDoc->shapes[i]->isSelected = false;
+							break;
+						};
+					}
+					pDoc->shapes[i]->isSelected = true;
+					Invalidate();
 				}
-				pDoc->shapes[i]->isSelected = true;
-				Invalidate();
 
+				break;
 			}
-			break;
-		}
-		}
-	
-		//AfxMessageBox(_T("Goto"));
-		//break;
-		if (shapeIsFound)
-		{
-			break;
+			case ShapeType::triangle:
+			{
+				CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
+				int rectangleSize = pDoc->shapes[i]->size; //convinient
+				int h = 3 * rectangleSize;
+				int side = 2 * h / sqrt(3);
+
+				CPoint triangle[3];
+				triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
+				triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
+				triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
+
+				HRGN rectangleRgn = CreatePolygonRgn(triangle, 3, ALTERNATE);
+				//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+				if (PtInRegion(rectangleRgn, point.x, point.y))
+				{
+					//AfxMessageBox(_T("Triangle"));
+					shapeIsFound = true;
+					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+					{
+						//unselecting others shapes
+						if (pDoc->shapes[i]->isSelected == true)
+						{
+							pDoc->shapes[i]->pen->DeleteObject();
+							pDoc->shapes[i]->isSelected = false;
+							break;
+						};
+					}
+					pDoc->shapes[i]->isSelected = true;
+					Invalidate();
+
+				}
+				break;
+			}
+			}
+
+			//AfxMessageBox(_T("Goto"));
+			//break;
+			if (shapeIsFound)
+			{
+				break;
+			}
 		}
 	}
 
