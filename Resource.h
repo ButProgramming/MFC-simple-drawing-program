@@ -32,15 +32,15 @@
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
 #define ID_BUTTON_SELECT_TOOL           32777
-#define ID_BUTTON32782                  32782
-#define ID_BUTTON_MOVE                  32783
+#define ID_BUTTON32780                  32780
+#define ID_BUTTON_MOVE                  32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32784
+#define _APS_NEXT_COMMAND_VALUE         32781
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

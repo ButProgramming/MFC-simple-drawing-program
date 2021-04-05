@@ -131,7 +131,6 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				shape->isSelected = isSelected;
 			}
 			
-			
 			shapes.emplace_back(shape);
 			
 		}
