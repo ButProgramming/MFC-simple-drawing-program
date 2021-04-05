@@ -4,7 +4,6 @@
 int IShape::dx = 0;
 int IShape::dy = 0;
 
-
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
 	//type = ShapeType::ellipse;
@@ -77,9 +76,17 @@ void TriangleShape::draw(CDC* dc)
 	int side =  2 * h / sqrt(3);
 	// synchronized moving
 	
-	points[0] = CPoint(centerOfShape.x + dx, centerOfShape.y + dy - 2*radius); //top
+
+	points[0] = CPoint(centerOfShape.x + dx + rectangle_dx_dy[0].x + rectangle_dx_dy_temp[0].x, centerOfShape.y + dy - 2 * radius + rectangle_dx_dy[0].y + rectangle_dx_dy_temp[0].y); //top
 	points[1] = CPoint(centerOfShape.x + dx - side / 2, centerOfShape.y + dy + radius); //left
 	points[2] = CPoint(centerOfShape.x + dx + side / 2, centerOfShape.y + dy + radius); //right
+
+	/*rectangle_dx_dy[0].x = points[0].x;
+	rectangle_dx_dy[0].y = points[0].y;
+	rectangle_dx_dy[1].x = points[1].x;
+	rectangle_dx_dy[1].y = points[1].y;
+	rectangle_dx_dy[2].x = points[2].x;
+	rectangle_dx_dy[2].y = points[2].y;*/
 	//triangleArr[3] = triangle[3];
 
 	CRgn* triangleReg = new CRgn;

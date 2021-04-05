@@ -19,9 +19,12 @@ protected:
 
 	//ShapeType typeOfShape;
 public:
+	CPoint rectangle_dx_dy_temp[3];
+	CPoint rectangle_dx_dy[3];
 	CPoint points[4];
 	static int dx;
 	static int dy;
+	static CPoint pointsOfTriangle[3];
 	bool isSelected = false;
 	CPen* pen;
 	ShapeType type;

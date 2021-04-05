@@ -174,25 +174,9 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->first.y = point.y;
 			break;
 		case Tools::change:
-			bool selected = false; // control of the next loop
-			for (auto s:pDoc->shapes)
-			{
-				//
-				if (s->isSelected)
-				{
-					selected = true;
-					for (int i = 0; i < 3; i++)
-					{
-						HRGN angle = CreateEllipticRgn(s->points[i].x - 10, s->points[i].y - 10, s->points[i].x + 10, s->points[i].y + 10);
-						if (PtInRegion(angle, point.x, point.y))
-						{
-							AfxMessageBox(_T("In region"));
-						}
-					}
-				}
-				if (selected)
-					break;
-			}
+			pDoc->first.x = point.x;
+			pDoc->first.y = point.y;
+			break;
 			break;
 	}
 	CView::OnLButtonDown(nFlags, point);
@@ -242,9 +226,35 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		IShape::dy = pDoc->second.y - pDoc->first.y;
 		
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
 	{
-
+		bool selected = false; // control of the next loop
+		for (int s=0; s<pDoc->shapes.size(); s++)
+		{
+			//
+			if (pDoc->shapes[s]->isSelected)
+			{
+				selected = true;
+				for (int a = 0; a < 3; a++)
+				{
+					HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - 10, pDoc->shapes[s]->points[a].y - 10, pDoc->shapes[s]->points[a].x + 10, pDoc->shapes[s]->points[a].y + 10);
+					if (PtInRegion(angle, point.x, point.y))
+					{
+						pDoc->shapes[s]->rectangle_dx_dy_temp[a].x = point.x - pDoc->first.x;
+						pDoc->shapes[s]->rectangle_dx_dy_temp[a].y = point.y - pDoc->first.y;
+						
+						//pDoc->shapes[s]->points[a].x += 1000;
+						//pDoc->shapes[s]->points[a].y += 1000;
+						Invalidate();
+						CString str;
+						str.Format(_T("%d"), a);
+						//AfxMessageBox(str);
+					}
+				}
+			}
+			if (selected)
+				break;
+		}
 	}
 	
 
@@ -379,12 +389,12 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				int h = 3 * rectangleSize;
 				int side = 2 * h / sqrt(3);
 
-				CPoint triangle[3];
-				triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
-				triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
-				triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
+				//CPoint triangle[3];
+				//triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
+				//triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
+				//triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
 
-				HRGN rectangleRgn = CreatePolygonRgn(triangle, 3, ALTERNATE);
+				HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 3, ALTERNATE);
 				//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
 				if (PtInRegion(rectangleRgn, point.x, point.y))
 				{
@@ -454,9 +464,35 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 		IShape::dx = 0;
 		IShape::dy = 0;
+		
 
 		
 	}
+	else if (pDoc->toolIsUsed == Tools::change)
+	{
+		bool selected = false; // control of the next loop
+		for (int s = 0; s < pDoc->shapes.size(); s++)
+		{
+			//
+			if (pDoc->shapes[s]->isSelected)
+			{
+				selected = true;
+				for (int a = 0; a < 3; a++)
+				{
+					pDoc->shapes[s]->rectangle_dx_dy[a].x += pDoc->shapes[s]->rectangle_dx_dy_temp[a].x;
+					pDoc->shapes[s]->rectangle_dx_dy[a].y += pDoc->shapes[s]->rectangle_dx_dy_temp[a].y;
+					pDoc->shapes[s]->rectangle_dx_dy_temp[a].x = 0;
+					pDoc->shapes[s]->rectangle_dx_dy_temp[a].y = 0;
+					//AfxMessageBox(_T("1"));
+
+				}
+			}
+		}
+	}
+	CString str;
+
+	str.Format(_T("x: %d, y: %d"), pDoc->shapes[0]->points[0].x);
+	//AfxMessageBox(str);
 	
 	CView::OnLButtonUp(nFlags, point);
 }
