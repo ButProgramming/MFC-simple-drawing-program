@@ -287,13 +287,23 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
 			if (PtInRegion(ellipseRgn, point.x, point.y))
 			{
-				pDoc->shapes[i]->isSelected = true;
+				
 				
 				AfxMessageBox(_T("Ellipse"));
 				//pDoc->shapes[i]->pen=newPen;
 				shapeIsFound = true;
+				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+				{
+					//unselecting others shapes
+					if (pDoc->shapes[i]->isSelected == true)
+					{
+						pDoc->shapes[i]->pen->DeleteObject();
+						pDoc->shapes[i]->isSelected = false;
+						break;
+					};
+				}
+				pDoc->shapes[i]->isSelected = true;
 				Invalidate();
-				
 			}
 			//pDoc->shapes[i]->centerOfShape
 			//AfxMessageBox(_T("ellipse"));
@@ -308,6 +318,18 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 				AfxMessageBox(_T("Rectangle"));
 				shapeIsFound = true;
+				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+				{
+					//unselecting others shapes
+					if (pDoc->shapes[i]->isSelected == true)
+					{
+						pDoc->shapes[i]->pen->DeleteObject();
+						pDoc->shapes[i]->isSelected = false;
+						break;
+					};
+				}
+				pDoc->shapes[i]->isSelected = true;
+				Invalidate();
 			}
 			
 			break;
@@ -330,6 +352,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 				AfxMessageBox(_T("Triangle"));
 				shapeIsFound = true;
+				for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+				{
+					//unselecting others shapes
+					if (pDoc->shapes[i]->isSelected == true)
+					{
+						pDoc->shapes[i]->pen->DeleteObject();
+						pDoc->shapes[i]->isSelected = false;
+						break;
+					};
+				}
+				pDoc->shapes[i]->isSelected = true;
+				Invalidate();
+
 			}
 			break;
 		}
