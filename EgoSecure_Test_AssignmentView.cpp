@@ -187,9 +187,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		pDoc->first.x = point.x;
 		pDoc->first.y = point.y;
-		CString str;
-		str.Format(_T("x: %d, y: %d"), pDoc->first.x, pDoc->first.y);
-		//AfxMessageBox(str);
+		
 	}
 	
 	
@@ -228,7 +226,8 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 
 void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	
+	int dx = 0;
+	int dy = 0;
 	auto pDoc = GetDocument();
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed==Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
@@ -242,6 +241,13 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
+		pDoc->dx = pDoc->second.x - pDoc->first.x;
+		pDoc->dy = pDoc->second.y - pDoc->first.y;
+		
+		//int d = sqrt(pow(dx, 2) + pow(dx, 2));
+
+
+		
 		//CPoint firstPoint = point;
 
 		/*pDoc->dx = pDoc->second.x - pDoc->first.x;
@@ -254,6 +260,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}*/
 		//pDoc->dx += sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - p;
 	}
+	//pDoc->dx_global += dx;
+	//pDoc->dy_global += dy;
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -413,6 +421,10 @@ void CEgoSecureTestAssignmentView::OnButtonMove()
 {
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::move;
+	CString str;
+	str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
+	//if(pDoc->dx_global>0)
+	AfxMessageBox(str);
 	//AfxMessageBox(_T("Move"));
 	// TODO: Add your command handler code here
 }

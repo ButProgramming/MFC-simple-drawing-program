@@ -55,6 +55,7 @@ void RectangleShape::draw(CDC* dc)
 
 void TriangleShape::draw(CDC* dc)
 {
+	auto pDoc = GetDocument();
 	if (!isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
@@ -68,7 +69,7 @@ void TriangleShape::draw(CDC* dc)
 	int side =  2 * h / sqrt(3);
 	
 	CPoint triangle[3];
-	triangle[0] = CPoint(centerOfShape.x, centerOfShape.y - 2*radius); //top
+	triangle[0] = CPoint(centerOfShape.x+, centerOfShape.y - 2*radius); //top
 	triangle[1] = CPoint(centerOfShape.x - side / 2, centerOfShape.y + radius); //left
 	triangle[2] = CPoint(centerOfShape.x + side / 2, centerOfShape.y + radius); //right
 
