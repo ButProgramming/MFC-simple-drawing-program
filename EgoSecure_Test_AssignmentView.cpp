@@ -159,6 +159,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		case Tools::ellipse:
 		{
+			
 			IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse);
 			pDoc->shapes.push_back(shape);
 			/*CString str;
@@ -181,6 +182,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			//delete shape;
 			break;
 		}
+	}
+	if (pDoc->toolIsUsed == Tools::move)
+	{
+		pDoc->first.x = point.x;
+		pDoc->first.y = point.y;
+		CString str;
+		str.Format(_T("x: %d, y: %d"), pDoc->first.x, pDoc->first.y);
+		//AfxMessageBox(str);
 	}
 	
 	
@@ -221,13 +230,29 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	
 	auto pDoc = GetDocument();
-	if (nFlags == MK_LBUTTON && pDoc->toolIsUsed!=Tools::select_tool)
+	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed==Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
-		auto pDoc = GetDocument();
+		//auto pDoc = GetDocument();
 		//pDoc->shapes.at(pDoc->shapes.size() - 1)->size; //sqrt(pow((pDoc->shapes.at(v.size() - 1).c_shapeCenter.x - point.x), 2) + pow((v.at(v.size() - 1).c_shapeCenter.y - point.y), 2));
 		//if (pDoc->shapes.size() > 0)
 		pDoc->shapes[pDoc->shapes.size()-1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
 		Invalidate();
+	}
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
+	{
+		pDoc->second.x = point.x;
+		pDoc->second.y = point.y;
+		//CPoint firstPoint = point;
+
+		/*pDoc->dx = pDoc->second.x - pDoc->first.x;
+		if (pDoc->second.x - pDoc->first.x > 100)
+		{
+			CString str;
+			int a = pDoc->second.x - pDoc->first.x;
+			str.Format(_T("%d"), a);
+			AfxMessageBox(str);
+		}*/
+		//pDoc->dx += sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - p;
 	}
 	CView::OnMouseMove(nFlags, point);
 }
@@ -388,6 +413,6 @@ void CEgoSecureTestAssignmentView::OnButtonMove()
 {
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::move;
-	AfxMessageBox(_T("Move"));
+	//AfxMessageBox(_T("Move"));
 	// TODO: Add your command handler code here
 }

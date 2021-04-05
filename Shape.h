@@ -4,6 +4,10 @@
 #include <cmath>
 using namespace std;
 
+//int move_dx=0; 
+//int move_dy=0;
+//int globalInt;
+
 enum class Tools { select_tool, ellipse, rectangle, triangle, move };
 enum class ShapeType { ellipse, rectangle, triangle };
 

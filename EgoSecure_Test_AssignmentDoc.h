@@ -16,6 +16,12 @@ protected: // create from serialization only
 public:
 	vector<IShape*> shapes;
 	Tools toolIsUsed;
+	//screen move dx and dy
+	struct first { int x; int y; } first; //point for first point of move feature
+	struct second { int x; int y; } second;//point for second point of move feature
+
+	int dx = 0;
+	int dy = 0;
 // Operations
 public:
 
