@@ -39,6 +39,7 @@ void EllipseShape::draw(CDC* dc)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
 	dc->Ellipse(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
+	delete pen;
 }
 
 
@@ -50,12 +51,13 @@ void RectangleShape::draw(CDC* dc)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
 	dc->Rectangle(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
+	delete pen;
 }
 
 
 void TriangleShape::draw(CDC* dc)
 {
-	auto pDoc = GetDocument();
+	//auto pDoc = GetDocument();
 	if (!isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
@@ -69,7 +71,7 @@ void TriangleShape::draw(CDC* dc)
 	int side =  2 * h / sqrt(3);
 	
 	CPoint triangle[3];
-	triangle[0] = CPoint(centerOfShape.x+, centerOfShape.y - 2*radius); //top
+	triangle[0] = CPoint(centerOfShape.x, centerOfShape.y - 2*radius); //top
 	triangle[1] = CPoint(centerOfShape.x - side / 2, centerOfShape.y + radius); //left
 	triangle[2] = CPoint(centerOfShape.x + side / 2, centerOfShape.y + radius); //right
 
@@ -79,6 +81,7 @@ void TriangleShape::draw(CDC* dc)
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(triangle, 3);
 	dc->FillRgn(triangleReg, brush);
+	delete pen;
 	delete brush;
 	delete triangleReg;
 }
