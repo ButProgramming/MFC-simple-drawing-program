@@ -3,7 +3,7 @@
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size)
 {
-	type = ellipse;
+	type = ShapeType::ellipse;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
@@ -12,7 +12,7 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size)
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size)
 {
-	type = rectangle;
+	type = ShapeType::rectangle;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
@@ -21,7 +21,7 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 
 TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size)
 {
-	type = triangle;
+	type = ShapeType::triangle;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;

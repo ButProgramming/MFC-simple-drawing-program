@@ -4,7 +4,8 @@
 #include <cmath>
 using namespace std;
 
-enum Tools { select_tool, ellipse, rectangle, triangle };
+enum class Tools { select_tool, ellipse, rectangle, triangle };
+enum class ShapeType { ellipse, rectangle, triangle };
 
 class IShape
 {
@@ -14,7 +15,7 @@ protected:
 	
 	//ShapeType typeOfShape;
 public:
-	enum ShapeType {ellipse, rectangle, triangle};
+	
 	ShapeType type;
 	int size; // length of inscribed circle in shape
 	bool isNormalized;

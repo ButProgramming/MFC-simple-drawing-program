@@ -156,7 +156,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	AfxMessageBox(str);*/
 	switch (pDoc->toolIsUsed)
 	{
-		case ellipse:
+		case Tools::ellipse:
 		{
 			IShape* shape = new EllipseShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
@@ -166,14 +166,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			//delete shape;
 			break;
 		}
-		case rectangle:
+		case Tools::rectangle:
 		{
 			IShape* shape = new RectangleShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
 			//delete shape;
 			break;
 		}
-		case triangle:
+		case Tools::triangle:
 		{
 			IShape* shape = new TriangleShape(point, true, 0);
 			pDoc->shapes.push_back(shape);
@@ -195,7 +195,7 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = ellipse;
+	pDoc->toolIsUsed = Tools::ellipse;
 
 }
 
@@ -204,7 +204,7 @@ void CEgoSecureTestAssignmentView::OnButtonRectangle()
 {
 	// TODO: Add your command handler code here}
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = rectangle;
+	pDoc->toolIsUsed = Tools::rectangle;
 }
 
 
@@ -212,7 +212,7 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = triangle;
+	pDoc->toolIsUsed = Tools::triangle;
 }
 
 
@@ -266,7 +266,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 {
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = select_tool;
+	pDoc->toolIsUsed = Tools::select_tool;
 	// TODO: Add your command handler code here
 }
 
@@ -274,14 +274,28 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	auto pDoc = GetDocument();
-	AfxMessageBox(_T("123"));
 	int sizeOfShapesVector = pDoc->shapes.size();
 	for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 	{
-		if (pDoc->shapes[i]->type==2)
+		switch (pDoc->shapes[i]->type)
 		{
-			AfxMessageBox(_T("123"));
+		case ShapeType::ellipse:
+		{
+			AfxMessageBox(_T("ellipse"));
+			break;
 		}
+		case ShapeType::rectangle:
+		{
+			AfxMessageBox(_T("rectangle"));
+			break;
+		}
+		case ShapeType::triangle:
+		{
+			AfxMessageBox(_T("triangle"));
+			break;
+		}
+		}
+		
 	}
 
 	CView::OnLButtonDblClk(nFlags, point);
