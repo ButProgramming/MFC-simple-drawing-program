@@ -78,15 +78,15 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	/*CRect rect;
 	GetClientRect(&rect);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));*/
-	CPen* pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
-	m_dc.SelectObject(pen);
-	pDC->SelectObject(pen);
+	/*CPen* pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+	m_dc.SelectObject(pen);*/
+	//pDC->SelectObject(pen);
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
 		//m_dc.Ellipse(0, 0, 200, 200);
 	}
-	pen->DeleteObject();
+	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 	/*CClientDC dc(this);
 	int x = ::GetSystemMetrics(SM_CXSCREEN);
@@ -219,8 +219,8 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	
-	
-	if (nFlags == MK_LBUTTON)
+	auto pDoc = GetDocument();
+	if (nFlags == MK_LBUTTON && pDoc->toolIsUsed!=Tools::select_tool)
 	{
 		auto pDoc = GetDocument();
 		//pDoc->shapes.at(pDoc->shapes.size() - 1)->size; //sqrt(pow((pDoc->shapes.at(v.size() - 1).c_shapeCenter.x - point.x), 2) + pow((v.at(v.size() - 1).c_shapeCenter.y - point.y), 2));
@@ -275,6 +275,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	auto pDoc = GetDocument();
 	int sizeOfShapesVector = pDoc->shapes.size();
+	bool shapeIsFound =false; //exit from for loop if = true
 	for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 	{
 		switch (pDoc->shapes[i]->type)
@@ -286,7 +287,13 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
 			if (PtInRegion(ellipseRgn, point.x, point.y))
 			{
+				pDoc->shapes[i]->isSelected = true;
+				
 				AfxMessageBox(_T("Ellipse"));
+				//pDoc->shapes[i]->pen=newPen;
+				shapeIsFound = true;
+				Invalidate();
+				
 			}
 			//pDoc->shapes[i]->centerOfShape
 			//AfxMessageBox(_T("ellipse"));
@@ -300,6 +307,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			if (PtInRegion(rectangleRgn, point.x, point.y))
 			{
 				AfxMessageBox(_T("Rectangle"));
+				shapeIsFound = true;
 			}
 			
 			break;
@@ -320,12 +328,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
 			if (PtInRegion(rectangleRgn, point.x, point.y))
 			{
-				AfxMessageBox(_T("Rectangle"));
+				AfxMessageBox(_T("Triangle"));
+				shapeIsFound = true;
 			}
 			break;
 		}
 		}
-		
+	
+		//AfxMessageBox(_T("Goto"));
+		//break;
+		if (shapeIsFound)
+		{
+			break;
+		}
 	}
 
 	CView::OnLButtonDblClk(nFlags, point);

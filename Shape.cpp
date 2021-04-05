@@ -31,18 +31,27 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size)
 void EllipseShape::draw(CDC* dc)
 {
 	//size = 100;
+	if(!isSelected)
+		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+	else if(isSelected)
+		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	dc->SelectObject(pen);
 	dc->Ellipse(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
 }
 
 
 void RectangleShape::draw(CDC* dc)
 {
+	pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+	dc->SelectObject(pen);
 	dc->Rectangle(centerOfShape.x - size, centerOfShape.y - size, centerOfShape.x + size, centerOfShape.y + size);
 }
 
 
 void TriangleShape::draw(CDC* dc)
 {
+	pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+	dc->SelectObject(pen);
 	CBrush* brush = new CBrush;
 	brush->CreateSolidBrush(RGB(0, 255, 0));
 	int radius = size; // for convinient

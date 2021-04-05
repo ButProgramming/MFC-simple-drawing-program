@@ -15,7 +15,8 @@ protected:
 	
 	//ShapeType typeOfShape;
 public:
-	
+	bool isSelected = false;
+	CPen* pen;
 	ShapeType type;
 	int size; // length of inscribed circle in shape
 	bool isNormalized;
