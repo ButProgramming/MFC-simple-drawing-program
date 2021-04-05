@@ -217,11 +217,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	auto pDoc = GetDocument();
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed==Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
-		//auto pDoc = GetDocument();
-		//pDoc->shapes.at(pDoc->shapes.size() - 1)->size; //sqrt(pow((pDoc->shapes.at(v.size() - 1).c_shapeCenter.x - point.x), 2) + pow((v.at(v.size() - 1).c_shapeCenter.y - point.y), 2));
-		//if (pDoc->shapes.size() > 0)
+	
 		pDoc->shapes[pDoc->shapes.size()-1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
-		//Invalidate();
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
 	{
@@ -229,31 +226,13 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		pDoc->second.y = point.y;
 		IShape::dx = pDoc->second.x - pDoc->first.x;
 		IShape::dy = pDoc->second.y - pDoc->first.y;
-
 		
-		//int d = sqrt(pow(dx, 2) + pow(dx, 2));
-
-
-		
-		//CPoint firstPoint = point;
-
-		/*pDoc->dx = pDoc->second.x - pDoc->first.x;
-		if (pDoc->second.x - pDoc->first.x > 100)
-		{
-			CString str;
-			int a = pDoc->second.x - pDoc->first.x;
-			str.Format(_T("%d"), a);
-			AfxMessageBox(str);
-		}*/
-		//pDoc->dx += sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - p;
 	}
-	/*if (nFlags != MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
-	{
 	
-	}*/
+
 	
-	//pDoc->dx_global += dx;
-	//pDoc->dy_global += dy;
+
+
 	Invalidate();
 	CView::OnMouseMove(nFlags, point);
 }
@@ -310,13 +289,24 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		{
 		case ShapeType::ellipse:
 		{
+		
 			CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
 			int ellipseSize = pDoc->shapes[i]->size; //convinient
 			HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
+			//
+			CRect rect;
+			//GetClientRect(&rect);
+			GetRgnBox(ellipseRgn, &rect);
+			CPoint cp;
+			cp = rect.BottomRight();
+			CString str;
+			str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
+			AfxMessageBox(str);
+			str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
+			AfxMessageBox(str);
+			//
 			if (PtInRegion(ellipseRgn, point.x, point.y))
 			{
-				
-				
 				//AfxMessageBox(_T("Ellipse"));
 				//pDoc->shapes[i]->pen=newPen;
 				shapeIsFound = true;
@@ -416,10 +406,7 @@ void CEgoSecureTestAssignmentView::OnButtonMove()
 	pDoc->toolIsUsed = Tools::move;
 	CString str;
 	str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
-	//if(pDoc->dx_global>0)
-	//AfxMessageBox(str);
-	//AfxMessageBox(_T("Move"));
-	// TODO: Add your command handler code here
+	
 }
 
 
@@ -449,26 +436,6 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		
 	}
-	//AfxMessageBox(_T("123"));
-	//auto pDoc = GetDocument();
-	//if (pDoc->toolIsUsed == Tools::move)
-	//{
-	//	IShape::dx = 0;
-	//	IShape::dy = 0;
-	//	IShape::dx = pDoc->second.x - pDoc->first.x;
-	//	IShape::dy = pDoc->second.y - pDoc->first.y;
-
-	//	if (pDoc->toolIsUsed == Tools::move)
-	//	{
-	//		for (auto s : pDoc->shapes)
-	//		{
-	//			CString str;
-	//			str.Format(_T("%d, %d"), s->centerOfShape.x, s->centerOfShape.y);
-	//			//AfxMessageBox(str);
-	//			s->centerOfShape.x = s->centerOfShape.x;
-	//			s->centerOfShape.y = s->centerOfShape.y;
-	//		}
-	//	}
-	//}
+	
 	CView::OnLButtonUp(nFlags, point);
 }
