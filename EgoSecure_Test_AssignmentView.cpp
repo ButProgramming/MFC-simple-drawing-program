@@ -338,20 +338,22 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 				CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
 				int ellipseSize = pDoc->shapes[i]->size; //convinient
-				HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
+				//HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
 				//
-				CRect rect;
+				CRgn* ellipseRgn = new CRgn;
+				ellipseRgn->CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);
+				//CRect rect;
 				//GetClientRect(&rect);
-				GetRgnBox(ellipseRgn, &rect);
+				//GetRgnBox(ellipseRgn, &rect);
 				CPoint cp;
-				cp = rect.BottomRight();
+				//cp = rect.BottomRight();
 				CString str;
 				str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
 				//AfxMessageBox(str);
 				str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
 				//AfxMessageBox(str);
 				//
-				if (PtInRegion(ellipseRgn, point.x, point.y))
+				if (PtInRegion(*ellipseRgn, point.x, point.y))
 				{
 					//AfxMessageBox(_T("Ellipse"));
 					//pDoc->shapes[i]->pen=newPen;
@@ -380,6 +382,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
 					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 				}
+				delete ellipseRgn;
 				//pDoc->shapes[i]->centerOfShape
 				//AfxMessageBox(_T("ellipse"));
 				break;
