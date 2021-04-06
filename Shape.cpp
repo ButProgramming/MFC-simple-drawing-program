@@ -55,8 +55,19 @@ void RectangleShape::draw(CDC* dc)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
 	// synchronized moving
-	dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	points[0] = CPoint(centerOfShape.x + dx - size, centerOfShape.y + dx - size); // left top
+	points[1] = CPoint(centerOfShape.x + dx + size, centerOfShape.y + dx - size); // right top
+	points[2] = CPoint(centerOfShape.x + dx + size, centerOfShape.y + dx + size); //right bottom
+	points[3] = CPoint(centerOfShape.x + dx - size, centerOfShape.y + dx + size); // left bottom
+	CRgn* rectangleReg = new CRgn;
+	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	/*CBrush* triangleBrush = new CBrush;
+	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
+	dc->Polygon(points, 4);
+	//dc->FillRgn(triangleReg, brush);
 	delete pen;
+	delete rectangleReg;
 }
 
 
@@ -95,6 +106,7 @@ void TriangleShape::draw(CDC* dc)
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(points, 3);
 	dc->FillRgn(triangleReg, brush);
+	// create points to change the triangle
 	if (isSelected)
 	{
 		for(int i=0; i<3; i++)
@@ -102,6 +114,8 @@ void TriangleShape::draw(CDC* dc)
 	}
 	
 	//delete points;
+	//delete triangleReg;
+	//delete dc;
 	delete pen;
 	delete brush;
 	delete triangleReg;
