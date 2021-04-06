@@ -385,7 +385,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 				CPoint rectangleCenter = pDoc->shapes[i]->centerOfShape; //convinient
 				int rectangleSize = pDoc->shapes[i]->size; //convinient
-				HRGN rectangleRgn = CreateRectRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+				HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);
 				if (PtInRegion(rectangleRgn, point.x, point.y))
 				{
 					//AfxMessageBox(_T("Rectangle"));
@@ -401,6 +401,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 						};
 					}
 					pDoc->shapes[i]->isSelected = true;
+					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
 					Invalidate();
 				}
 
@@ -435,6 +436,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 						};
 					}
 					pDoc->shapes[i]->isSelected = true;
+					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
 					Invalidate();
 
 				}
@@ -500,8 +502,17 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			//
 			if (pDoc->shapes[s]->isSelected)
 			{
+				int numberOfAngels = 0;
+				if (pDoc->shapes[s]->type == ::ShapeType::triangle)
+				{
+					numberOfAngels = 3;
+				}
+				else if (pDoc->shapes[s]->type == ::ShapeType::rectangle)
+				{
+					numberOfAngels = 4;
+				}
 				selected = true;
-				for (int a = 0; a < 3; a++)
+				for (int a = 0; a < numberOfAngels; a++)
 				{
 					pDoc->shapes[s]->dx_dy[a].x += pDoc->shapes[s]->dx_dy_temp[a].x;
 					pDoc->shapes[s]->dx_dy[a].y += pDoc->shapes[s]->dx_dy_temp[a].y;
