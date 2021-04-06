@@ -44,6 +44,7 @@ void EllipseShape::draw(CDC* dc)
 	dc->SelectObject(pen);
 	// synchronized moving
 	dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	//auto test = CreateEllipticRgn()
 	delete pen;
 }
 

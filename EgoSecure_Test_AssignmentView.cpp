@@ -374,8 +374,11 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					pDoc->shapes[i] = s2;
 					pDoc->shapes[pDoc->shapes.size() - 1] = s1;*/
 					
-					iter_swap(pDoc->shapes.begin()+i, pDoc->shapes.end()-1);
-					Invalidate();
+					pDoc->shapes[i]->isSelected = true;
+					IShape* shape;
+					pDoc->shapes.push_back(shape);
+					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
+					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 				}
 				//pDoc->shapes[i]->centerOfShape
 				//AfxMessageBox(_T("ellipse"));
@@ -401,7 +404,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 						};
 					}
 					pDoc->shapes[i]->isSelected = true;
+					IShape* shape;
+					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
+					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 					Invalidate();
 				}
 
@@ -436,7 +442,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 						};
 					}
 					pDoc->shapes[i]->isSelected = true;
+					IShape* shape;
+					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
+					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 					Invalidate();
 
 				}
