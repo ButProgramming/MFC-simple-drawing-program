@@ -11,6 +11,7 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
+	boxRect.CenterPoint() = centerOfShape;
 	this->isNormalized = isNormalized;
 	//this->typeOfShape = typeOfShape;
 }
@@ -42,18 +43,27 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	CRgn* ellipseRgn = new CRgn;
+	//boxRect.BottomRight().x
 	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
 	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
 	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
 	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 	ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
-																																	/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	dc->SelectObject(pen);
+	if (isSelected)
+	{
+		//dc->Ellipse(0, 0, 200, 200);
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+	}																														/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	GetRgnBox(ellipseReg, boxRect);
 	dc->Rectangle(boxRect);*/
-	dc->SelectObject(pen);
+	
 	// synchronized moving
+	dc->Rectangle(boxRect);
 	dc->Polygon(points, 4);
 	GetRgnBox(*ellipseRgn, boxRect);
+	//boxRect.BottomRight().x;
 	//dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	//auto test = CreateEllipticRgn()
 	dc->Ellipse(boxRect);
