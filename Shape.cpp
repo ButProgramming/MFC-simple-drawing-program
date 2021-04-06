@@ -114,8 +114,17 @@ void TriangleShape::draw(CDC* dc)
 	triangleReg->CreatePolygonRgn(points, 3, ALTERNATE);
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
+	GetRgnBox(*triangleReg, boxRect);
+	dc->Rectangle(boxRect);
 	dc->Polygon(points, 3);
 	dc->FillRgn(triangleReg, brush);
+	
+	
+	
+	
+	//CString str;
+	//str.Format(_T("%d"), rect.CenterPoint().x);
+	//AfxMessageBox(str);
 	// create points to change the triangle
 	if (isSelected)
 	{

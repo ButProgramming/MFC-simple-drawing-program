@@ -534,10 +534,13 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 	}
 	CString str;
-
-	str.Format(_T("x: %d, y: %d"), pDoc->shapes[0]->points[0].x);
-	//AfxMessageBox(str);
-	
+	if (pDoc->toolIsUsed == Tools::move)
+	{
+		str.Format(_T("centerOfShape: x: %d, y: %d"), pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+		AfxMessageBox(str);
+		str.Format(_T("boxRect: x: %d, y: %d"), pDoc->shapes[0]->boxRect.CenterPoint().x, pDoc->shapes[0]->boxRect.CenterPoint().y);
+		AfxMessageBox(str);
+	}
 	CView::OnLButtonUp(nFlags, point);
 }
 

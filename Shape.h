@@ -24,6 +24,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
+	CRect boxRect;
 	int numberOfAngle; //
 	CPoint dx_dy_temp[4];
 	CPoint dx_dy[4];
