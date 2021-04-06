@@ -25,8 +25,8 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	
 	int numberOfAngle; //
-	CPoint triangle_dx_dy_temp[3];
-	CPoint triangle_dx_dy[3];
+	CPoint dx_dy_temp[4];
+	CPoint dx_dy[4];
 	CPoint rectangle_dx_dy_temp[3];
 	CPoint rectangle_dx_dy[3];
 	CPoint points[4]; // the same array of points for triangle and rectangle shape

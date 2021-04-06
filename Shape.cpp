@@ -95,9 +95,9 @@ void TriangleShape::draw(CDC* dc)
 	// synchronized moving
 	
 
-	points[0] = CPoint(centerOfShape.x + dx + triangle_dx_dy[0].x + triangle_dx_dy_temp[0].x, centerOfShape.y + dy - 2 * radius + triangle_dx_dy[0].y + triangle_dx_dy_temp[0].y); //top
-	points[1] = CPoint(centerOfShape.x + dx + triangle_dx_dy[1].x + triangle_dx_dy_temp[1].x - side / 2, centerOfShape.y + dy + radius + triangle_dx_dy[1].y + triangle_dx_dy_temp[1].y); //left
-	points[2] = CPoint(centerOfShape.x + dx + triangle_dx_dy[2].x + triangle_dx_dy_temp[2].x + side / 2, centerOfShape.y + dy + radius + triangle_dx_dy[2].y + triangle_dx_dy_temp[2].y); //right
+	points[0] = CPoint(centerOfShape.x + dx + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - 2 * radius + dx_dy[0].y + dx_dy_temp[0].y); //top
+	points[1] = CPoint(centerOfShape.x + dx + dx_dy[1].x + dx_dy_temp[1].x - side / 2, centerOfShape.y + dy + radius + dx_dy[1].y + dx_dy_temp[1].y); //left
+	points[2] = CPoint(centerOfShape.x + dx + dx_dy[2].x + dx_dy_temp[2].x + side / 2, centerOfShape.y + dy + radius + dx_dy[2].y + dx_dy_temp[2].y); //right
 
 	/*rectangle_dx_dy[0].x = points[0].x;
 	rectangle_dx_dy[0].y = points[0].y;
