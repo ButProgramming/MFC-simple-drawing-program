@@ -359,12 +359,13 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					}
 					//swap
 					pDoc->shapes[i]->isSelected = true;
-					auto s1 = pDoc->shapes[i];
+
+					/*auto s1 = pDoc->shapes[i];
 					auto s2 = pDoc->shapes[pDoc->shapes.size()-1];
 					pDoc->shapes[i] = s2;
-					pDoc->shapes[pDoc->shapes.size() - 1] = s1;
+					pDoc->shapes[pDoc->shapes.size() - 1] = s1;*/
 					
-					//iter_swap(pDoc->shapes.begin()+i-1, pDoc->shapes.begin());
+					iter_swap(pDoc->shapes.begin()+i, pDoc->shapes.end()-1);
 					Invalidate();
 				}
 				//pDoc->shapes[i]->centerOfShape
