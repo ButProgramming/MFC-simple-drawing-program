@@ -15,18 +15,22 @@ enum class ShapeType { ellipse, rectangle, triangle };
 class IShape
 {
 protected:
-
+	
 
 
 	//ShapeType typeOfShape;
 public:
+	static int dx;
+	static int dy;
+	static int sizeOfPointToMoveAndChange;
+	
 	int numberOfAngle; //
 	CPoint triangle_dx_dy_temp[3];
 	CPoint triangle_dx_dy[3];
-	//CPoint 
-	CPoint points[4];
-	static int dx;
-	static int dy;
+	CPoint rectangle_dx_dy_temp[3];
+	CPoint rectangle_dx_dy[3];
+	CPoint points[4]; // the same array of points for triangle and rectangle shape
+	
 	static CPoint pointsOfTriangle[3];
 	bool isSelected = false;
 	CPen* pen;

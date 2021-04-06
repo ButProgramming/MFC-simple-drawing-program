@@ -1,3 +1,14 @@
-﻿  Shape.cpp
-C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(87,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+﻿  EgoSecure_Test_Assignment.cpp
+  EgoSecure_Test_AssignmentDoc.cpp
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(67,7): warning C4101: 'size': unreferenced local variable
+  EgoSecure_Test_AssignmentView.cpp
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(172,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(234,51): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(247,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(405,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(466,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(489,21): warning C4018: '<': signed/unsigned mismatch
+  Shape.cpp
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(88,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\Debug\EgoSecure_Test_Assignment.exe

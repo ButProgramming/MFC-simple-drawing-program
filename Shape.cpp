@@ -3,6 +3,7 @@
 
 int IShape::dx = 0;
 int IShape::dy = 0;
+int IShape::sizeOfPointToMoveAndChange = 3;
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
@@ -110,7 +111,7 @@ void TriangleShape::draw(CDC* dc)
 	if (isSelected)
 	{
 		for(int i=0; i<3; i++)
-			dc->Ellipse(points[i].x - 3, points[i].y - 3, points[i].x + 3, points[i].y + 3);
+			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 	
 	//delete points;

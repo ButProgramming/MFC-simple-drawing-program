@@ -177,7 +177,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					selected = true;
 					for (int a = 0; a < 3; a++)
 					{
-						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - 10, pDoc->shapes[s]->points[a].y - 10, pDoc->shapes[s]->points[a].x + 10, pDoc->shapes[s]->points[a].y + 10);
+						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].x + IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y + IShape::sizeOfPointToMoveAndChange*4);
 						if (PtInRegion(angle, point.x, point.y))
 						{
 
@@ -230,7 +230,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	CEgoSecureTestAssignmentDoc *pDoc = GetDocument();
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed==Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
-	
 		pDoc->shapes[pDoc->shapes.size()-1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
