@@ -251,8 +251,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			{
 				selected = true;
 				
-						pDoc->shapes[s]->rectangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
-						pDoc->shapes[s]->rectangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
+						pDoc->shapes[s]->triangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
+						pDoc->shapes[s]->triangle_dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
 					
 						Invalidate();
 						CString str;
@@ -494,10 +494,10 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				selected = true;
 				for (int a = 0; a < 3; a++)
 				{
-					pDoc->shapes[s]->rectangle_dx_dy[a].x += pDoc->shapes[s]->rectangle_dx_dy_temp[a].x;
-					pDoc->shapes[s]->rectangle_dx_dy[a].y += pDoc->shapes[s]->rectangle_dx_dy_temp[a].y;
-					pDoc->shapes[s]->rectangle_dx_dy_temp[a].x = 0;
-					pDoc->shapes[s]->rectangle_dx_dy_temp[a].y = 0;
+					pDoc->shapes[s]->triangle_dx_dy[a].x += pDoc->shapes[s]->triangle_dx_dy_temp[a].x;
+					pDoc->shapes[s]->triangle_dx_dy[a].y += pDoc->shapes[s]->triangle_dx_dy_temp[a].y;
+					pDoc->shapes[s]->triangle_dx_dy_temp[a].x = 0;
+					pDoc->shapes[s]->triangle_dx_dy_temp[a].y = 0;
 					//AfxMessageBox(_T("1"));
 
 				}

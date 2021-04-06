@@ -21,8 +21,9 @@ protected:
 	//ShapeType typeOfShape;
 public:
 	int numberOfAngle; //
-	CPoint rectangle_dx_dy_temp[3];
-	CPoint rectangle_dx_dy[3];
+	CPoint triangle_dx_dy_temp[3];
+	CPoint triangle_dx_dy[3];
+	//CPoint 
 	CPoint points[4];
 	static int dx;
 	static int dy;
