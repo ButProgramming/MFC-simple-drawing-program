@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_MOVE, &CEgoSecureTestAssignmentView::OnButtonMove)
 	ON_WM_LBUTTONUP()
 	ON_COMMAND(ID_BUTTON_CHANGE, &CEgoSecureTestAssignmentView::OnButtonChange)
+	ON_COMMAND(ID_BUTTON_ROTATE, &CEgoSecureTestAssignmentView::OnButtonRotate)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -456,8 +457,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			}
 			}
 
-			//AfxMessageBox(_T("Goto"));
-			//break;
+			
 			if (shapeIsFound)
 			{
 				break;
@@ -553,5 +553,15 @@ void CEgoSecureTestAssignmentView::OnButtonChange()
 	//AfxMessageBox(_T("Change"));
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::change;
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonRotate()
+{
+	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = Tools::rotate;
+	AfxMessageBox(_T("123"));
+	//SetWorldTransform()
 	// TODO: Add your command handler code here
 }

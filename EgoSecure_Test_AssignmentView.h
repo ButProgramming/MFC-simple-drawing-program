@@ -55,6 +55,7 @@ public:
 	afx_msg void OnButtonMove();
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnButtonChange();
+	afx_msg void OnButtonRotate();
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp

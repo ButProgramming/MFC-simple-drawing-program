@@ -9,7 +9,7 @@ using namespace std;
 //int move_dy=0;
 //int globalInt;
 
-enum class Tools { select_tool, ellipse, rectangle, triangle, move, change };
+enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate };
 enum class ShapeType { ellipse, rectangle, triangle };
 
 class IShape
