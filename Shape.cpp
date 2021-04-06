@@ -63,6 +63,12 @@ void RectangleShape::draw(CDC* dc)
 	points[3] = CPoint(centerOfShape.x + dx - size, centerOfShape.y + dx + size); // left bottom
 	CRgn* rectangleReg = new CRgn;
 	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	if (isSelected)
+	{
+		//dc->Ellipse(0, 0, 200, 200);
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+	}
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(points, 4);
@@ -110,6 +116,7 @@ void TriangleShape::draw(CDC* dc)
 	// create points to change the triangle
 	if (isSelected)
 	{
+		//dc->Ellipse(0, 0, 200, 200);
 		for(int i=0; i<3; i++)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}

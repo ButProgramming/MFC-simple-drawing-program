@@ -174,8 +174,17 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				//
 				if (pDoc->shapes[s]->isSelected)
 				{
+					int numberOfAngels = 0;
+					if (pDoc->shapes[s]->type == ::ShapeType::triangle)
+					{
+						numberOfAngels = 3;
+					}
+					else if (pDoc->shapes[s]->type == ::ShapeType::rectangle)
+					{
+						numberOfAngels = 4;
+					}
 					selected = true;
-					for (int a = 0; a < 3; a++)
+					for (int a = 0; a < numberOfAngels; a++)
 					{
 						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].x + IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y + IShape::sizeOfPointToMoveAndChange*4);
 						if (PtInRegion(angle, point.x, point.y))
@@ -256,6 +265,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 						Invalidate();
 						CString str;
 						str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);
+						AfxMessageBox(str);
 			
 			}
 			if (selected)
