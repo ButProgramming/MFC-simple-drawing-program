@@ -57,10 +57,12 @@ void RectangleShape::draw(CDC* dc)
 	dc->SelectObject(pen);
 	// synchronized moving
 	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
-	points[0] = CPoint(centerOfShape.x + dx - size, centerOfShape.y + dx - size); // left top
-	points[1] = CPoint(centerOfShape.x + dx + size, centerOfShape.y + dx - size); // right top
-	points[2] = CPoint(centerOfShape.x + dx + size, centerOfShape.y + dx + size); //right bottom
-	points[3] = CPoint(centerOfShape.x + dx - size, centerOfShape.y + dx + size); // left bottom
+	
+
+	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
+	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
+	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 	CRgn* rectangleReg = new CRgn;
 	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	if (isSelected)
