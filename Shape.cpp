@@ -41,10 +41,23 @@ void EllipseShape::draw(CDC* dc)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	CRgn* ellipseRgn = new CRgn;
+	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
+	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
+	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
+	ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+																																	/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	GetRgnBox(ellipseReg, boxRect);
+	dc->Rectangle(boxRect);*/
 	dc->SelectObject(pen);
 	// synchronized moving
-	dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	dc->Polygon(points, 4);
+	GetRgnBox(*ellipseRgn, boxRect);
+	//dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	//auto test = CreateEllipticRgn()
+	dc->Ellipse(boxRect);
+	delete ellipseRgn;
 	delete pen;
 }
 
@@ -114,8 +127,8 @@ void TriangleShape::draw(CDC* dc)
 	triangleReg->CreatePolygonRgn(points, 3, ALTERNATE);
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
-	GetRgnBox(*triangleReg, boxRect);
-	dc->Rectangle(boxRect);
+	//GetRgnBox(*triangleReg, boxRect);
+	//dc->Rectangle(boxRect);
 	dc->Polygon(points, 3);
 	dc->FillRgn(triangleReg, brush);
 	
