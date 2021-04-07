@@ -76,7 +76,6 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-		
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
@@ -85,41 +84,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
-	
-	//m_dc.Ellipse(100 - 20, 100 - 30, 100 + 20, 100 + 30);
-	int nGraphicsMode = SetGraphicsMode(*pDC, GM_ADVANCED);
-	XFORM xform;
-	int m_iAngle = 45;
-	double fangle = (double)m_iAngle / 180. * 3.1415926;
-	xform.eM11 = (float)cos(fangle);
-	xform.eM12 = (float)sin(fangle);
-	xform.eM21 = (float)-sin(fangle);
-	xform.eM22 = (float)cos(fangle);
-	xform.eDx = (float)(100 - cos(fangle) * 100 + sin(fangle) * 100);
-	xform.eDy = (float)(100 - cos(fangle) * 100 - sin(fangle) * 100);
-
-	SetWorldTransform(*pDC, &xform);
-	
-	//CPaintDC pDC2(NULL);
-	//CDC* pDC2 = GetDC();
-	//HDC hDc = pDC2->GetSafeHdc();
-	
-
-	// draw a rectangle or ellipse
-
-	//pDC->Ellipse(100 - 20, 100 - 30, 100 + 20, 100 + 30);
-	/*Ellipse(*pDC2,
-		100 - 20,
-		100 - 30,
-		100 + 20,
-		100 + 30);*/
-	//m_dc.Ellipse(0, 0, 200, 200);
-	//CPaintDC dc1(NULL); // device context for painting
-	
-
-	//CPaintDC dc(); // device context for painting
-	
-	
+		
 
 	// TODO: add draw code for native data here
 }
@@ -598,7 +563,41 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::rotate;
 	
+	CDC* pDC2 = GetDC();
+	pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
+	int nGraphicsMode = SetGraphicsMode(*pDC2, GM_ADVANCED);
+	XFORM xForm;
+	int m_iAngle = 45;
+	double fangle = (double)m_iAngle / 180. * 3.1415926;
+	xForm.eM11 = (float)cos(fangle);
+	xForm.eM12 = (float)sin(fangle);
+	xForm.eM21 = (float)-sin(fangle);
+	xForm.eM22 = (float)cos(fangle);
+	//xForm.eDx = (float)220;
+	//xForm.eDy = (float)-100;
+	xForm.eDx = (float)(100 - cos(fangle) * 100 + sin(fangle) * 100);
+	xForm.eDy = (float)(100 - cos(fangle) * 100 - sin(fangle) * 100);
 
+	
+	SetWorldTransform(*pDC2, &xForm);
+	pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
+
+
+
+	//
+	//pDC->Ellipse(pDoc->shapes[0]->centerOfShape.x - 50, pDoc->shapes[0]->centerOfShape.x - 30, pDoc->shapes[0]->centerOfShape.x + 20, pDoc->shapes[0]->centerOfShape.x + 30);
+
+	//ModifyWorldTransform(dc->m_hDC, &xForm, MWT_IDENTITY);
+	//ModifyWorldTransform(*pDC, &xForm, MWT_IDENTITY);
+	xForm.eM11 = (float)1.0;
+	xForm.eM12 = (float)0;
+	xForm.eM21 = (float)0;
+	xForm.eM22 = (float)1.0;
+	xForm.eDx = (float)0;
+	xForm.eDy = (float)0;
+
+	SetWorldTransform(*pDC2, &xForm);
+	SetGraphicsMode(*pDC2, GM_COMPATIBLE); // nGraphicsMode
 	AfxMessageBox(_T("123"));
 	//SetWorldTransform()
 	// TODO: Add your command handler code here

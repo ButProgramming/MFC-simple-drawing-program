@@ -43,31 +43,13 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	
-	//SetMapMode(*dc, MM_LOENGLISH);
-	int nGraphicsMode = SetGraphicsMode(*dc, GM_ADVANCED);
-	XFORM xform;
-	int m_iAngle = 45;
-	double fangle = (double)m_iAngle / 180. * 3.1415926;
-	xform.eM11 = (float)cos(fangle);
-	xform.eM12 = (float)sin(fangle);
-	xform.eM21 = (float)-sin(fangle);
-	xform.eM22 = (float)cos(fangle);
-	xform.eDx = (float)(100 - cos(fangle) * 100 + sin(fangle) * 100);
-	xform.eDy = (float)(100 - cos(fangle) * 100 - sin(fangle) * 100);
-
-	SetWorldTransform(*dc, &xform);
-	dc->Ellipse(100 - 20, 100 - 30, 100 + 20, 100 + 30);
-
-	//ModifyWorldTransform(dc->m_hDC, &xForm, MWT_IDENTITY);
-	ModifyWorldTransform(*dc, &xform, MWT_IDENTITY);
-	SetGraphicsMode(*dc, GM_COMPATIBLE);
-
 	CRgn* ellipseRgn = new CRgn;
-	//boxRect.BottomRight().x
+	
 	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top
 	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // right top
 	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //right bottom
 	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
+	
 	ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
 	dc->SelectObject(pen);
 	if (isSelected)
@@ -78,7 +60,7 @@ void EllipseShape::draw(CDC* dc)
 	}																														/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	GetRgnBox(ellipseReg, boxRect);
 	dc->Rectangle(boxRect);*/
-	
+
 	// synchronized moving
 	//dc->Rectangle(boxRect);
 	dc->Polygon(points, 4);
@@ -86,8 +68,9 @@ void EllipseShape::draw(CDC* dc)
 	//boxRect.BottomRight().x;
 	//dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	//auto test = CreateEllipticRgn()
-	
+
 	dc->Ellipse(boxRect);
+	
 	
 	
 	//dc->SelectObject(OldFont);
