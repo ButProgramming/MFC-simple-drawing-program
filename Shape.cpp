@@ -43,42 +43,115 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	
-	
+	CPoint circleCenter = centerOfShape;
 
-	CRgn* ellipseRgn = new CRgn;
-	
-	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top
-	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // right top
-	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //right bottom
-	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
-	
-	ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
-	dc->SelectObject(pen);
-	if (isSelected)
+	//int circleRadius = 100;
+	int a = 40;
+	int b = 20;
+	double t = 5.4;
+	CString str;
+	str.Format(_T("%g"), round(t));
+	//AfxMessageBox(str);
+
+
+	//
+	vector<CPoint> vec1;
+	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	for (int y = b - 1; y >= -b; y--)
 	{
-		//dc->Ellipse(0, 0, 200, 200);
-		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
-	}																														/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
-	GetRgnBox(ellipseReg, boxRect);
-	dc->Rectangle(boxRect);*/
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
+		CPoint temp1{ circleCenter.x - x, circleCenter.y + y };
+		vec1.push_back(temp1);
+		dc->MoveTo(circleCenter.x - x, circleCenter.y + y);
+	}
+	CPoint temp1{ circleCenter.x, circleCenter.y + b };
+	vec1.push_back(temp1);
+	//
 
-	// synchronized moving
-	//dc->Rectangle(boxRect);
-	dc->Polygon(points, 4);
-	GetRgnBox(*ellipseRgn, boxRect);
-	//boxRect.BottomRight().x;
-	//dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
-	//auto test = CreateEllipticRgn()
+	//
+	vector<CPoint> vec2;
+	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	for (int y = b - 1; y >= -b; y--)
+	{
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
+		CPoint temp2{ circleCenter.x + x, circleCenter.y + y };
+		vec2.push_back(temp2);
+		dc->MoveTo(circleCenter.x + x, circleCenter.y + y);
+	}
+	CPoint temp2{ circleCenter.x, circleCenter.y + b };
+	vec2.push_back(temp2);
+	//
+	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	/*CPoint* p1 = &vec1[0];
+	CPoint* p2 = &vec2[0];*/
+	CRgn* ellipseRgn1 = new CRgn;
+	CRgn* ellipseRgn2 = new CRgn;
 
-	dc->Ellipse(boxRect);
-	
-	
-	
-	//dc->SelectObject(OldFont);
-	////CPaintDC d(NULL);
-	delete ellipseRgn;
+	CBrush* brush = new CBrush;
+	brush->CreateSolidBrush(RGB(0, 255, 0));
+	ellipseRgn1->CreatePolygonRgn(&vec1[0], vec1.size(), ALTERNATE);
+	dc->FillRgn(ellipseRgn1, brush);
+	ellipseRgn2->CreatePolygonRgn(&vec2[0], vec2.size(), ALTERNATE);
+	dc->FillRgn(ellipseRgn2, brush);
+
+	//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+	/*delete p1;
+	delete p2;*/
 	delete pen;
+	delete ellipseRgn1;
+	delete ellipseRgn2;
+	delete brush;
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//CRgn* ellipseRgn = new CRgn;
+	//
+	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top
+	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //right bottom
+	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
+	//
+	//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+	//dc->SelectObject(pen);
+	//if (isSelected)
+	//{
+	//	//dc->Ellipse(0, 0, 200, 200);
+	//	for (int i = 0; i < 4; i++)
+	//		dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+	//}																														/*HRGN ellipseReg = CreateEllipticRgn(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	//GetRgnBox(ellipseReg, boxRect);
+	//dc->Rectangle(boxRect);*/
+
+	//// synchronized moving
+	////dc->Rectangle(boxRect);
+	//dc->Polygon(points, 4);
+	//GetRgnBox(*ellipseRgn, boxRect);
+	////boxRect.BottomRight().x;
+	////dc->Ellipse(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
+	////auto test = CreateEllipticRgn()
+
+	//dc->Ellipse(boxRect);
+	//
+	//
+	//
+	////dc->SelectObject(OldFont);
+	//////CPaintDC d(NULL);
+	//delete ellipseRgn;
+	//delete pen;
 }
 
 
