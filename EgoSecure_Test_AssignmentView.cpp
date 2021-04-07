@@ -85,14 +85,66 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 	
 
-	CPoint circleCenter{ 100, 100 };
+	CPoint circleCenter{ 500, 500 };
 	
-	int circleRadius = 20;
-
+	//int circleRadius = 100;
+	int a=400;
+	int b=200;
+	double t = 5.4;
 	CString str;
-	str.Format(_T("x: %d"), circleCenter.x);
-	AfxMessageBox(str);
-	pDC->LineTo(200, 200);
+	str.Format(_T("%g"), round(t));
+	//AfxMessageBox(str);
+
+
+	//
+	vector<CPoint> vec1;
+	pDC->MoveTo(circleCenter.x, circleCenter.y + b);
+	for (int y = b-1; y >= -b; y--)
+	{
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		pDC->LineTo(circleCenter.x - x, circleCenter.y + y);
+		CPoint temp1{ circleCenter.x - x, circleCenter.y + y };
+		vec1.push_back(temp1);
+		pDC->MoveTo(circleCenter.x - x, circleCenter.y + y);
+	}
+	CPoint temp1{ circleCenter.x, circleCenter.y + b};
+	vec1.push_back(temp1);
+	//
+
+	//
+	vector<CPoint> vec2;
+	pDC->MoveTo(circleCenter.x, circleCenter.y + b);
+	for (int y = b - 1; y >= -b; y--)
+	{
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		pDC->LineTo(circleCenter.x + x, circleCenter.y + y);
+		CPoint temp2{ circleCenter.x + x, circleCenter.y + y };
+		vec2.push_back(temp2);
+		pDC->MoveTo(circleCenter.x + x, circleCenter.y + y);
+	}
+	CPoint temp2{ circleCenter.x, circleCenter.y + b };
+	vec2.push_back(temp2);
+	//
+	pDC->MoveTo(circleCenter.x, circleCenter.y + b);
+	CPoint* p1 = &vec1[0];
+	CPoint* p2 = &vec2[0];
+	CRgn* ellipseRgn1 = new CRgn;
+	CRgn* ellipseRgn2 = new CRgn;
+
+	CBrush* brush = new CBrush;
+	brush->CreateSolidBrush(RGB(0, 255, 0));
+	ellipseRgn1->CreatePolygonRgn(p1, vec1.size(), ALTERNATE);
+	pDC->FillRgn(ellipseRgn1, brush);
+	ellipseRgn2->CreatePolygonRgn(p2, vec2.size(), ALTERNATE);
+	pDC->FillRgn(ellipseRgn2, brush);
+	
+		//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+
+	delete ellipseRgn1;
+	delete ellipseRgn2;
+	delete brush;
 
 	// TODO: add draw code for native data here
 }
