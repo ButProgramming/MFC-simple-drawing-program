@@ -43,11 +43,12 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	
-	CPoint circleCenter = centerOfShape;
+	dc->SelectObject(pen);
+	CPoint circleCenter{ 0,0 };
 
 	//int circleRadius = 100;
-	int a = 40;
-	int b = 20;
+	int a = size;
+	int b = size;
 	double t = 5.4;
 	CString str;
 	str.Format(_T("%g"), round(t));
@@ -91,12 +92,53 @@ void EllipseShape::draw(CDC* dc)
 	CRgn* ellipseRgn1 = new CRgn;
 	CRgn* ellipseRgn2 = new CRgn;
 
+	vector<CPoint> vecTest1(vec1);
+	vector<CPoint> vecTest2(vec2);
+
+	for (int i = 0; i < vec1.size(); i++)
+	{
+		vec1[i].x += centerOfShape.x;
+		vec1[i].y += centerOfShape.y;
+	}
+	for (int i = 0; i < vec2.size(); i++)
+	{
+		vec2[i].x += centerOfShape.x;
+		vec2[i].y += centerOfShape.y;
+	}
+
 	CBrush* brush = new CBrush;
 	brush->CreateSolidBrush(RGB(0, 255, 0));
 	ellipseRgn1->CreatePolygonRgn(&vec1[0], vec1.size(), ALTERNATE);
+	dc->Polygon(&vec1[0], vec1.size());
+	dc->Polygon(&vec2[0], vec2.size());
 	dc->FillRgn(ellipseRgn1, brush);
 	ellipseRgn2->CreatePolygonRgn(&vec2[0], vec2.size(), ALTERNATE);
 	dc->FillRgn(ellipseRgn2, brush);
+	
+
+
+	
+	for (int i = 0; i < vecTest1.size(); i++)
+	{
+		vecTest1[i].x = vecTest1[i].x * cos(ellipseAngleRad) - vecTest1[i].y * sin(ellipseAngleRad);
+		vecTest1[i].y = vecTest1[i].x * sin(ellipseAngleRad) + vecTest1[i].y * cos(ellipseAngleRad);
+		vecTest1[i].x += centerOfShape.x;
+		vecTest1[i].y += centerOfShape.y;
+		/*vecTest[i].x += 10;
+		vecTest[i].y += 10;*/
+	}
+	for (int i = 0; i < vecTest2.size(); i++)
+	{
+		vecTest2[i].x = vecTest2[i].x * cos(ellipseAngleRad) - vecTest2[i].y * sin(ellipseAngleRad);
+		vecTest2[i].y = vecTest2[i].x * sin(ellipseAngleRad) + vecTest2[i].y * cos(ellipseAngleRad);
+		vecTest2[i].x += centerOfShape.x;
+		vecTest2[i].y += centerOfShape.y;
+		/*vecTest[i].x += 10;
+		vecTest[i].y += 10;*/
+	}
+	dc->Polygon(&vecTest1[0], vecTest1.size());
+	dc->Polygon(&vecTest2[0], vecTest2.size());
+
 
 	//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
 	/*delete p1;

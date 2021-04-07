@@ -24,6 +24,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
+	double ellipseAngleRad = 0.2;
 	CRect boxRect;
 	int numberOfAngle; //
 	CPoint dx_dy_temp[4];
