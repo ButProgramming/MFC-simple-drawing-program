@@ -43,6 +43,8 @@ void EllipseShape::draw(CDC* dc)
 	else if(isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	
+	
+
 	CRgn* ellipseRgn = new CRgn;
 	
 	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top

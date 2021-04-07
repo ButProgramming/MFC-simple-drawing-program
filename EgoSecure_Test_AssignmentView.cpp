@@ -79,12 +79,20 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
-		
 	}
 	
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
-		
+	
+
+	CPoint circleCenter{ 100, 100 };
+	
+	int circleRadius = 20;
+
+	CString str;
+	str.Format(_T("x: %d"), circleCenter.x);
+	AfxMessageBox(str);
+	pDC->LineTo(200, 200);
 
 	// TODO: add draw code for native data here
 }
