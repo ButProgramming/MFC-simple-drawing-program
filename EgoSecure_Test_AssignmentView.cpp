@@ -80,10 +80,45 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
-		//m_dc.Ellipse(0, 0, 200, 200);
+		
 	}
+	
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
+	
+	//m_dc.Ellipse(100 - 20, 100 - 30, 100 + 20, 100 + 30);
+	int nGraphicsMode = SetGraphicsMode(*pDC, GM_ADVANCED);
+	XFORM xform;
+	int m_iAngle = 45;
+	double fangle = (double)m_iAngle / 180. * 3.1415926;
+	xform.eM11 = (float)cos(fangle);
+	xform.eM12 = (float)sin(fangle);
+	xform.eM21 = (float)-sin(fangle);
+	xform.eM22 = (float)cos(fangle);
+	xform.eDx = (float)(100 - cos(fangle) * 100 + sin(fangle) * 100);
+	xform.eDy = (float)(100 - cos(fangle) * 100 - sin(fangle) * 100);
+
+	SetWorldTransform(*pDC, &xform);
+	
+	//CPaintDC pDC2(NULL);
+	//CDC* pDC2 = GetDC();
+	//HDC hDc = pDC2->GetSafeHdc();
+	
+
+	// draw a rectangle or ellipse
+
+	//pDC->Ellipse(100 - 20, 100 - 30, 100 + 20, 100 + 30);
+	/*Ellipse(*pDC2,
+		100 - 20,
+		100 - 30,
+		100 + 20,
+		100 + 30);*/
+	//m_dc.Ellipse(0, 0, 200, 200);
+	//CPaintDC dc1(NULL); // device context for painting
+	
+
+	//CPaintDC dc(); // device context for painting
+	
 	
 
 	// TODO: add draw code for native data here
@@ -307,6 +342,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	int y = ::GetSystemMetrics(SM_CXSCREEN);
 	m_dc.CreateCompatibleDC(&dc);
 	m_bmt.CreateCompatibleBitmap(&dc, x, y);
+	
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	// TODO:  Add your specialized creation code here
@@ -561,6 +597,8 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 {
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::rotate;
+	
+
 	AfxMessageBox(_T("123"));
 	//SetWorldTransform()
 	// TODO: Add your command handler code here
