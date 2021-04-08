@@ -24,7 +24,9 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
-	double ellipseAngleDegree = 45;
+	HRGN ellipseRgn1;
+	HRGN ellipseRgn2;
+	double ellipseAngleDegree = 88;
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
 	CRect boxRect;
 	int numberOfAngle; //

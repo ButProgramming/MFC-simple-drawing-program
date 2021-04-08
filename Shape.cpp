@@ -48,8 +48,8 @@ void EllipseShape::draw(CDC* dc)
 
 	//int circleRadius = 100;
 
-	int a = 200;
-	int b = 500;
+	int a = size;
+	int b = size;
 	double t = 5.4;
 	CString str;
 	str.Format(_T("%g"), round(t));
@@ -90,8 +90,8 @@ void EllipseShape::draw(CDC* dc)
 	dc->MoveTo(circleCenter.x, circleCenter.y + b);
 	/*CPoint* p1 = &vec1[0];
 	CPoint* p2 = &vec2[0];*/
-	CRgn* ellipseRgn1 = new CRgn;
-	CRgn* ellipseRgn2 = new CRgn;
+	//ellipseRgn1 = new CRgn;
+	//ellipseRgn2 = new CRgn;
 
 	vector<CPoint> vecTest1(vec1);
 	vector<CPoint> vecTest2(vec2);
@@ -165,14 +165,14 @@ void EllipseShape::draw(CDC* dc)
 	}
 	dc->Polygon(&vecTest1[0], vecTest1.size());
 	dc->Polygon(&vecTest2[0], vecTest2.size());
-
-
+	ellipseRgn1 = CreatePolygonRgn(&vecTest1[0], vecTest1.size(), ALTERNATE);
+	ellipseRgn2 = CreatePolygonRgn(&vecTest2[0], vecTest2.size(), ALTERNATE);
 	//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
 	/*delete p1;
 	delete p2;*/
 	delete pen;
-	delete ellipseRgn1;
-	delete ellipseRgn2;
+	//delete ellipseRgn1;
+	//delete ellipseRgn2;
 	delete brush;
 
 
