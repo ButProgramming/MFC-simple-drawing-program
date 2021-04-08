@@ -138,8 +138,8 @@ void EllipseShape::draw(CDC* dc)
 		int tempY = ellipseFirstPart[i].y;
 		ellipseFirstPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		ellipseFirstPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		ellipseFirstPart[i].x += center.x + dx;
-		ellipseFirstPart[i].y += center.y + dy;
+		ellipseFirstPart[i].x += center.x /*+ dx*/;
+		ellipseFirstPart[i].y += center.y /*+ dy*/;
 		
 	}
 
@@ -153,8 +153,8 @@ void EllipseShape::draw(CDC* dc)
 		ellipseSecondPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		//vecTest2[i].x = vecTest2[i].x * double(cos(ellipseAngleRad)) - double(vecTest2[i].y) * sin(ellipseAngleRad);
 		//vecTest2[i].y = vecTest2[i].x * double(sin(ellipseAngleRad)) + double(vecTest2[i].y) * cos(ellipseAngleRad);
-		ellipseSecondPart[i].x += center.x + dx;
-		ellipseSecondPart[i].y += center.y + dy;
+		ellipseSecondPart[i].x += center.x /*+ dx*/;
+		ellipseSecondPart[i].y += center.y /*+ dy*/;
 
 	}
 
