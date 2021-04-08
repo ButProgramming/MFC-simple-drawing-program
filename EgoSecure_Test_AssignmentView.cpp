@@ -361,7 +361,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				
 				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
-					AfxMessageBox(_T("Ellipse"));
+					//AfxMessageBox(_T("Ellipse"));
 					//pDoc->shapes[i]->pen=newPen;
 					shapeIsFound = true;
 					for (int i = sizeOfShapesVector - 1; i >= 0; i--)

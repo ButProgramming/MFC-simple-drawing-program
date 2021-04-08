@@ -115,8 +115,6 @@ void EllipseShape::draw(CDC* dc)
 		ellipseFirstPart[i].y += centerOfShape.y + dy;
 		
 	}
-	double cosT1;
-	double sinT1;
 
 
 	for (int i = 0; i < ellipseSecondPart.size(); i++)
@@ -144,15 +142,22 @@ void EllipseShape::draw(CDC* dc)
 	{
 		
 		GetRgnBox(*ellipseRgn1, &boxRect);
-		points[0] = CPoint(boxRect.TopLeft().x, boxRect.TopLeft().y); //topleft
-		//dc->Rectangle(boxRect);
+		CPoint PTopLeft = boxRect.TopLeft();
 		GetRgnBox(*ellipseRgn2, &boxRect);
-		points[2] = CPoint(boxRect.BottomRight().x, boxRect.BottomRight().y); //bottomright
-		points[1] = CPoint(points[2].x, points[0].y); //topright
-		points[3] = CPoint(points[0].x, points[2].y); //bottomleft
+		CPoint PBottomRight = boxRect.BottomRight();
+
+		points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
+		points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
+		points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
+		points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
 		dc->Polygon(points, 4);
 	}
-	dc->Rectangle(boxRect);
+
+
+
+
+
+	//dc->Rectangle(boxRect);
 	dc->Polygon(&ellipseFirstPart[0], ellipseFirstPart.size());
 	dc->Polygon(&ellipseSecondPart[0], ellipseSecondPart.size());
 	if (isSelected)
@@ -162,6 +167,10 @@ void EllipseShape::draw(CDC* dc)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 	
+
+
+
+
 	//ellipseRgn1->DeleteObject();
 	//ellipseRgn2->DeleteObject();
 	delete ellipseRgn1;
