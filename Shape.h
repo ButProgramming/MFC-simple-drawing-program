@@ -26,10 +26,6 @@ public:
 	
 	vector<CPoint> ellipseFirstPart;
 	vector<CPoint> ellipseSecondPart;
-	//vector<CPoint> ellipse1;
-	//vector<CPoint> vect;
-	//HRGN* ellipseRgn1;
-	//HRGN* ellipseRgn2;
 	double ellipseAngleDegree = 88;
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
 	CRect boxRect;
