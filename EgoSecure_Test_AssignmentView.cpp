@@ -356,8 +356,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				AfxMessageBox(str);
 				str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
 				AfxMessageBox(str);*/
-				//
-				if (PtInRegion(pDoc->shapes[i]->ellipseRgn1, point.x, point.y) || PtInRegion(pDoc->shapes[i]->ellipseRgn1, point.x, point.y))
+				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->vecTest1[0]), pDoc->shapes[i]->vecTest1.size(), ALTERNATE);// = CreatePolygonRgn(;
+				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->vecTest2[0]), pDoc->shapes[i]->vecTest2.size(), ALTERNATE);
+				
+				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
 					AfxMessageBox(_T("Ellipse"));
 					//pDoc->shapes[i]->pen=newPen;

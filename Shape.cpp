@@ -93,8 +93,19 @@ void EllipseShape::draw(CDC* dc)
 	//ellipseRgn1 = new CRgn;
 	//ellipseRgn2 = new CRgn;
 
-	vector<CPoint> vecTest1(vec1);
-	vector<CPoint> vecTest2(vec2);
+	//vector<CPoint> vecTest1(vec1);
+	//vector<CPoint> vecTest2(vec2);
+	//for(int i-9;)
+	vecTest1.clear();
+	vecTest2.clear();
+	for (CPoint v1 : vec1)
+	{
+		vecTest1.push_back(v1);
+	}
+	for (CPoint v2 : vec2)
+	{
+		vecTest2.push_back(v2);
+	}
 
 	/*for (int i = 0; i < vec1.size(); i++)
 	{
@@ -127,8 +138,8 @@ void EllipseShape::draw(CDC* dc)
 		int tempY = vecTest1[i].y;
 		vecTest1[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		vecTest1[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		vecTest1[i].x += centerOfShape.x;
-		vecTest1[i].y += centerOfShape.y;
+		vecTest1[i].x += centerOfShape.x + dx;
+		vecTest1[i].y += centerOfShape.y + dy;
 		/*vecTest[i].x += 10;
 		vecTest[i].y += 10;*/
 	}
@@ -145,15 +156,15 @@ void EllipseShape::draw(CDC* dc)
 		vecTest2[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		//vecTest2[i].x = vecTest2[i].x * double(cos(ellipseAngleRad)) - double(vecTest2[i].y) * sin(ellipseAngleRad);
 		//vecTest2[i].y = vecTest2[i].x * double(sin(ellipseAngleRad)) + double(vecTest2[i].y) * cos(ellipseAngleRad);
-		vecTest2[i].x += centerOfShape.x;
-		vecTest2[i].y += centerOfShape.y;
+		vecTest2[i].x += centerOfShape.x + dx;
+		vecTest2[i].y += centerOfShape.y + dy;
 
 	}
 
 
 
 
-	for (int i = 0; i < vec1.size(); i++)
+	/*for (int i = 0; i < vec1.size(); i++)
 	{
 		vec1[i].x += centerOfShape.x;
 		vec1[i].y += centerOfShape.y;
@@ -162,11 +173,31 @@ void EllipseShape::draw(CDC* dc)
 	{
 		vec2[i].x += centerOfShape.x;
 		vec2[i].y += centerOfShape.y;
-	}
+	}*/
+	//if (size > 20)
+	//{
+	//	AfxMessageBox(_T("0")); //debug
+	//}
+	//if (vecTest1.size() > 5) // correct region 6 points and more
+	//{
+	//	CPoint points[4];
+	//	GetRgnBox(ellipseRgn1, &boxRect);
+	//	points[0] = CPoint(boxRect.TopLeft().x, boxRect.TopLeft().y); //topleft
+	//	dc->Rectangle(boxRect);
+	//	GetRgnBox(ellipseRgn2, &boxRect);
+	//	points[2] = CPoint(boxRect.BottomRight().x, boxRect.BottomRight().y); //bottomright
+	//	points[1] = CPoint(points[2].x, points[0].y); //topright
+	//	points[3] = CPoint(points[0].x, points[2].y); //bottomleft
+	//	dc->Polygon(points, 4);
+	//}
+	//dc->Rectangle(boxRect);
 	dc->Polygon(&vecTest1[0], vecTest1.size());
 	dc->Polygon(&vecTest2[0], vecTest2.size());
-	ellipseRgn1 = CreatePolygonRgn(&vecTest1[0], vecTest1.size(), ALTERNATE);
-	ellipseRgn2 = CreatePolygonRgn(&vecTest2[0], vecTest2.size(), ALTERNATE);
+	//ellipseRgn1 = new HRGN;
+	//ellipseRgn2 = new HRGN;
+	//*ellipseRgn1 = CreatePolygonRgn(&vecTest1[0], vecTest1.size(), ALTERNATE);
+	//*ellipseRgn2 = CreatePolygonRgn(&vecTest2[0], vecTest2.size(), ALTERNATE);
+	
 	//ellipseRgn->CreatePolygonRgn(points, 4, ALTERNATE);
 	/*delete p1;
 	delete p2;*/
