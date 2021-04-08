@@ -42,14 +42,41 @@ void EllipseShape::draw(CDC* dc)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
-
 	dc->SelectObject(pen);
+	
+	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top
+	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //right bottom
+	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
+	int xPoint = (points[2].x - points[0].x) / 2;
+	int yPoint = (points[2].y - points[0].y)/2;
+	CPoint center = CPoint(points[0].x+xPoint, points[0].y+yPoint);
+
+	//points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
+	//points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
+	//points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
+	//points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
+	CRgn* rectangleReg = new CRgn;
+
+	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	//GetRgnBox(*rectangleReg, boxRect);
+	//dc->Rectangle(boxRect);
+	if (isSelected)
+	{
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+	}
+
+	dc->Polygon(points, 4);
+
+	//delete rectangleReg;
+
 	CPoint circleCenter{ 0,0 };
 
 	//int circleRadius = 100;
 
-	int a = size;
-	int b = size;
+	int a = abs(points[1].y-points[2].y)/2;
+	int b = abs(points[1].x-points[0].x)/2;
 	double t = 5.4;
 	CString str;
 	str.Format(_T("%g"), round(t));
@@ -111,8 +138,8 @@ void EllipseShape::draw(CDC* dc)
 		int tempY = ellipseFirstPart[i].y;
 		ellipseFirstPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		ellipseFirstPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		ellipseFirstPart[i].x += centerOfShape.x + dx;
-		ellipseFirstPart[i].y += centerOfShape.y + dy;
+		ellipseFirstPart[i].x += center.x + dx;
+		ellipseFirstPart[i].y += center.y + dy;
 		
 	}
 
@@ -126,8 +153,8 @@ void EllipseShape::draw(CDC* dc)
 		ellipseSecondPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		//vecTest2[i].x = vecTest2[i].x * double(cos(ellipseAngleRad)) - double(vecTest2[i].y) * sin(ellipseAngleRad);
 		//vecTest2[i].y = vecTest2[i].x * double(sin(ellipseAngleRad)) + double(vecTest2[i].y) * cos(ellipseAngleRad);
-		ellipseSecondPart[i].x += centerOfShape.x + dx;
-		ellipseSecondPart[i].y += centerOfShape.y + dy;
+		ellipseSecondPart[i].x += center.x + dx;
+		ellipseSecondPart[i].y += center.y + dy;
 
 	}
 
@@ -146,10 +173,10 @@ void EllipseShape::draw(CDC* dc)
 		GetRgnBox(*ellipseRgn2, &boxRect);
 		CPoint PBottomRight = boxRect.BottomRight();
 
-		points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
-		points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
-		points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
-		points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
+		//points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
+		//points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
+		//points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
+		//points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
 		dc->Polygon(points, 4);
 	}
 
