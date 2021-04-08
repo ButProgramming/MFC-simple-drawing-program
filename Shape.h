@@ -24,10 +24,15 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
+	vector<CPoint> eFP;
+	vector<CPoint> eSP;
 	vector<CPoint> ellipseFirstPart;
 	vector<CPoint> ellipseSecondPart;
-	double ellipseAngleDegree = 45;
+	double ellipseAngleDegree = 135;
+	double rectEllipseDegree = 0;
+	
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
+	double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
 	CRect boxRect;
 	int numberOfAngle; //
 	CPoint dx_dy_temp[4];

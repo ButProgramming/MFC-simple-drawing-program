@@ -43,48 +43,38 @@ void EllipseShape::draw(CDC* dc)
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
-	
-	points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // left top
-	points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); // right top
-	points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //right bottom
-	points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
-	int xPoint = (points[2].x - points[0].x) / 2;
-	int yPoint = (points[2].y - points[0].y)/2;
-	CPoint center = CPoint(points[0].x+xPoint, points[0].y+yPoint);
+	CPoint circleCenter{ 0, 0 };
 
-	//points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
-	//points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
-	//points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
-	//points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
-	CRgn* rectangleReg = new CRgn;
+	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
+	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
+	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 
-	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
-	//GetRgnBox(*rectangleReg, boxRect);
-	//dc->Rectangle(boxRect);
-	if (isSelected)
+	//points[0] = CPoint(circleCenter.x - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, circleCenter.y + size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //leftbottom
+	//points[1] = CPoint(circleCenter.x + size - (dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x) + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, circleCenter.y + size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //rightbottom
+	//points[2] = CPoint(circleCenter.x + size - (dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x) + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, circleCenter.y - size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //righttop
+	//points[3] = CPoint(circleCenter.x - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, circleCenter.y - size - (dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y) + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //lefttop
+ 	
+	CPoint diffAr[4];
+	for (int i = 0; i < 4; i++)
 	{
-		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
 	}
 
-	dc->Polygon(points, 4);
+	points[0] = CPoint(circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
+	points[1] = CPoint(circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
+	points[2] = CPoint(circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
+	points[3] = CPoint(circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
-	//delete rectangleReg;
+	//1
+	//points[2].y += diffAr[2].y + diffAr[3].y;
+	//points[3].y += diffAr[2].y + diffAr[3].y;
 
-	CPoint circleCenter{ 0,0 };
+	int a = abs((points[1].x-points[0].x)/2);
+	int b = abs((points[2].y-points[1].y)/2);
 
-	//int circleRadius = 100;
-
-	int a = abs(points[1].y-points[2].y)/2;
-	int b = abs(points[1].x-points[0].x)/2;
-	double t = 5.4;
-	CString str;
-	str.Format(_T("%g"), round(t));
-	//AfxMessageBox(str);
-
-
-	//
-	vector<CPoint> vec1;
+	//vector<CPoint> eFP;
+	eFP.clear();
 	dc->MoveTo(circleCenter.x, circleCenter.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
@@ -92,15 +82,16 @@ void EllipseShape::draw(CDC* dc)
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
 		CPoint temp1{ circleCenter.x - x, circleCenter.y + y };
-		vec1.push_back(temp1);
+		eFP.push_back(temp1);
 		dc->MoveTo(circleCenter.x - x, circleCenter.y + y);
 	}
 	CPoint temp1{ circleCenter.x, circleCenter.y + b };
-	vec1.push_back(temp1);
+	eFP.push_back(temp1);
 	//
 
 	//
-	vector<CPoint> vec2;
+	eSP.clear();
+	//vector<CPoint> eSP;
 	dc->MoveTo(circleCenter.x, circleCenter.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
@@ -108,21 +99,21 @@ void EllipseShape::draw(CDC* dc)
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
 		CPoint temp2{ circleCenter.x + x, circleCenter.y + y };
-		vec2.push_back(temp2);
+		eSP.push_back(temp2);
 		dc->MoveTo(circleCenter.x + x, circleCenter.y + y);
 	}
 	CPoint temp2{ circleCenter.x, circleCenter.y + b };
-	vec2.push_back(temp2);
+	eSP.push_back(temp2);
 
 	dc->MoveTo(circleCenter.x, circleCenter.y + b);
 
 	ellipseFirstPart.clear();
 	ellipseSecondPart.clear();
-	for (CPoint v1 : vec1)
+	for (CPoint v1 : eFP)
 	{
 		ellipseFirstPart.push_back(v1);
 	}
-	for (CPoint v2 : vec2)
+	for (CPoint v2 : eSP)
 	{
 		ellipseSecondPart.push_back(v2);
 	}
@@ -131,62 +122,45 @@ void EllipseShape::draw(CDC* dc)
 	CBrush* brush = new CBrush;
 	brush->CreateSolidBrush(RGB(0, 255, 0));
 
-
-	for (int i = 0; i < ellipseFirstPart.size(); i++)
+	for (int i = 0; i < eFP.size(); i++)
 	{
-		int tempX = ellipseFirstPart[i].x;
-		int tempY = ellipseFirstPart[i].y;
-		ellipseFirstPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		ellipseFirstPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		ellipseFirstPart[i].x += center.x /*+ dx*/;
-		ellipseFirstPart[i].y += center.y /*+ dy*/;
-		
+		int tempX = eFP[i].x;
+		int tempY = eFP[i].y;
+		eFP[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		eFP[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		eFP[i].x += centerOfShape.x + dx;
+		eFP[i].y += centerOfShape.y + dy;
 	}
 
-
-	for (int i = 0; i < ellipseSecondPart.size(); i++)
+	for (int i = 0; i < eSP.size(); i++)
 	{
-
-		int tempX = ellipseSecondPart[i].x;
-		int tempY = ellipseSecondPart[i].y;
-		ellipseSecondPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		ellipseSecondPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		//vecTest2[i].x = vecTest2[i].x * double(cos(ellipseAngleRad)) - double(vecTest2[i].y) * sin(ellipseAngleRad);
-		//vecTest2[i].y = vecTest2[i].x * double(sin(ellipseAngleRad)) + double(vecTest2[i].y) * cos(ellipseAngleRad);
-		ellipseSecondPart[i].x += center.x /*+ dx*/;
-		ellipseSecondPart[i].y += center.y /*+ dy*/;
-
+		int tempX = eSP[i].x;
+		int tempY = eSP[i].y;
+		eSP[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		eSP[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		eSP[i].x += centerOfShape.x + dx;
+		eSP[i].y += centerOfShape.y + dy;
 	}
 
-
-
-	CRgn* ellipseRgn1 = new CRgn;
-	ellipseRgn1->CreatePolygonRgn(&ellipseFirstPart[0], ellipseFirstPart.size(), ALTERNATE);
-	CRgn* ellipseRgn2 = new CRgn;
-	ellipseRgn2->CreatePolygonRgn(&ellipseSecondPart[0], ellipseSecondPart.size(), ALTERNATE);
-	//CPoint points[4];
-	if (ellipseFirstPart.size() > 5) // correct region 6 points and more
+	for (int i = 0; i < 4; i++)
 	{
-		
-		GetRgnBox(*ellipseRgn1, &boxRect);
-		CPoint PTopLeft = boxRect.TopLeft();
-		GetRgnBox(*ellipseRgn2, &boxRect);
-		CPoint PBottomRight = boxRect.BottomRight();
-
-		//points[0] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topleft
-		//points[1] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PTopLeft.y + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //topright
-		//points[2] = CPoint(PBottomRight.x + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomright
-		//points[3] = CPoint(PTopLeft.x + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, PBottomRight.y + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //bottomleft
-		dc->Polygon(points, 4);
+		int tempX = points[i].x;
+		int tempY = points[i].y;
+		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		points[i].x += centerOfShape.x + dx;
+		points[i].y += centerOfShape.y + dy;
 	}
+	
+	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
+	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
+	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
+	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 
-
-
-
-
-	//dc->Rectangle(boxRect);
-	dc->Polygon(&ellipseFirstPart[0], ellipseFirstPart.size());
-	dc->Polygon(&ellipseSecondPart[0], ellipseSecondPart.size());
+	dc->Polygon(points, 4);
+	dc->Polygon(&eFP[0], eFP.size());
+	dc->Polygon(&eSP[0], eSP.size());
+	
 	if (isSelected)
 	{
 		//dc->Ellipse(0, 0, 200, 200);
@@ -194,17 +168,10 @@ void EllipseShape::draw(CDC* dc)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 	
-
-
-
-
-	//ellipseRgn1->DeleteObject();
-	//ellipseRgn2->DeleteObject();
-	delete ellipseRgn1;
-	delete ellipseRgn2;
+	/*delete ellipseRgn1;
+	delete ellipseRgn2;*/
 	delete pen;
 	delete brush;
-
 }
 
 
