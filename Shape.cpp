@@ -96,15 +96,15 @@ void EllipseShape::draw(CDC* dc)
 	//vector<CPoint> vecTest1(vec1);
 	//vector<CPoint> vecTest2(vec2);
 	//for(int i-9;)
-	vecTest1.clear();
-	vecTest2.clear();
+	ellipseFirstPart.clear();
+	ellipseSecondPart.clear();
 	for (CPoint v1 : vec1)
 	{
-		vecTest1.push_back(v1);
+		ellipseFirstPart.push_back(v1);
 	}
 	for (CPoint v2 : vec2)
 	{
-		vecTest2.push_back(v2);
+		ellipseSecondPart.push_back(v2);
 	}
 
 	/*for (int i = 0; i < vec1.size(); i++)
@@ -132,14 +132,14 @@ void EllipseShape::draw(CDC* dc)
 
 	
 
-	for (int i = 0; i < vecTest1.size(); i++)
+	for (int i = 0; i < ellipseFirstPart.size(); i++)
 	{
-		int tempX = vecTest1[i].x;
-		int tempY = vecTest1[i].y;
-		vecTest1[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		vecTest1[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		vecTest1[i].x += centerOfShape.x + dx;
-		vecTest1[i].y += centerOfShape.y + dy;
+		int tempX = ellipseFirstPart[i].x;
+		int tempY = ellipseFirstPart[i].y;
+		ellipseFirstPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		ellipseFirstPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		ellipseFirstPart[i].x += centerOfShape.x + dx;
+		ellipseFirstPart[i].y += centerOfShape.y + dy;
 		/*vecTest[i].x += 10;
 		vecTest[i].y += 10;*/
 	}
@@ -147,17 +147,17 @@ void EllipseShape::draw(CDC* dc)
 	double sinT1;
 
 
-	for (int i = 0; i < vecTest2.size(); i++)
+	for (int i = 0; i < ellipseSecondPart.size(); i++)
 	{
 
-		int tempX = vecTest2[i].x;
-		int tempY = vecTest2[i].y;
-		vecTest2[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		vecTest2[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		int tempX = ellipseSecondPart[i].x;
+		int tempY = ellipseSecondPart[i].y;
+		ellipseSecondPart[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		ellipseSecondPart[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		//vecTest2[i].x = vecTest2[i].x * double(cos(ellipseAngleRad)) - double(vecTest2[i].y) * sin(ellipseAngleRad);
 		//vecTest2[i].y = vecTest2[i].x * double(sin(ellipseAngleRad)) + double(vecTest2[i].y) * cos(ellipseAngleRad);
-		vecTest2[i].x += centerOfShape.x + dx;
-		vecTest2[i].y += centerOfShape.y + dy;
+		ellipseSecondPart[i].x += centerOfShape.x + dx;
+		ellipseSecondPart[i].y += centerOfShape.y + dy;
 
 	}
 
@@ -191,8 +191,8 @@ void EllipseShape::draw(CDC* dc)
 	//	dc->Polygon(points, 4);
 	//}
 	//dc->Rectangle(boxRect);
-	dc->Polygon(&vecTest1[0], vecTest1.size());
-	dc->Polygon(&vecTest2[0], vecTest2.size());
+	dc->Polygon(&ellipseFirstPart[0], ellipseFirstPart.size());
+	dc->Polygon(&ellipseSecondPart[0], ellipseSecondPart.size());
 	//ellipseRgn1 = new HRGN;
 	//ellipseRgn2 = new HRGN;
 	//*ellipseRgn1 = CreatePolygonRgn(&vecTest1[0], vecTest1.size(), ALTERNATE);
