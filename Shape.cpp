@@ -210,9 +210,9 @@ void RectangleShape::draw(CDC* dc)
 		points[i].y += centerOfShape.y + dy;
 	}
 
-	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
-	GetRgnBox(*rectangleReg, boxRect);
-	dc->Rectangle(boxRect);
+	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	//GetRgnBox(*rectangleReg, boxRect);
+	//dc->Rectangle(boxRect);
 	if (isSelected)
 	{
 		//dc->Ellipse(0, 0, 200, 200);
@@ -247,10 +247,23 @@ void TriangleShape::draw(CDC* dc)
 	// synchronized moving
 
 	//dc->Ellipse()
-	points[0] = CPoint(centerOfShape.x + dx + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - 2 * radius + dx_dy[0].y + dx_dy_temp[0].y); //top
-	points[1] = CPoint(centerOfShape.x + dx + dx_dy[1].x + dx_dy_temp[1].x - side / 2, centerOfShape.y + dy + radius + dx_dy[1].y + dx_dy_temp[1].y); //left
-	points[2] = CPoint(centerOfShape.x + dx + dx_dy[2].x + dx_dy_temp[2].x + side / 2, centerOfShape.y + dy + radius + dx_dy[2].y + dx_dy_temp[2].y); //right
+	points[0] = CPoint(dx_dy[0].x + dx_dy_temp[0].x, - 2 * radius + dx_dy[0].y + dx_dy_temp[0].y); //top
+	points[1] = CPoint(dx_dy[1].x + dx_dy_temp[1].x - side / 2, + radius + dx_dy[1].y + dx_dy_temp[1].y); //left
+	points[2] = CPoint(dx_dy[2].x + dx_dy_temp[2].x + side / 2, + radius + dx_dy[2].y + dx_dy_temp[2].y); //right
+	
+	
 
+	//centerOfShape = boxRect.CenterPoint();
+
+	for (int i = 0; i < 3; i++)
+	{
+		int tempX = points[i].x;
+		int tempY = points[i].y;
+		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		points[i].x += centerOfShape.x + dx;
+		points[i].y += centerOfShape.y + dy;
+	}
 	/*rectangle_dx_dy[0].x = points[0].x;
 	rectangle_dx_dy[0].y = points[0].y;
 	rectangle_dx_dy[1].x = points[1].x;
@@ -263,6 +276,7 @@ void TriangleShape::draw(CDC* dc)
 	triangleReg->CreatePolygonRgn(points, 3, ALTERNATE);
 	GetRgnBox(*triangleReg, boxRect);
 	dc->Rectangle(boxRect);
+	
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	//GetRgnBox(*triangleReg, boxRect);

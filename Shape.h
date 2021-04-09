@@ -24,13 +24,13 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
-
+	bool isDrawFirstTime{ false };
 	int lastY;
 	vector<CPoint> eFP;
 	vector<CPoint> eSP;
 	vector<CPoint> ellipseFirstPart;
 	vector<CPoint> ellipseSecondPart;
-	double ellipseAngleDegree = 30;
+	double ellipseAngleDegree = 0;
 	double rectEllipseDegree = 0;
 	
 
