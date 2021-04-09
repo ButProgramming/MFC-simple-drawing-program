@@ -304,17 +304,21 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate)
 	{
-		if (pDoc->shapes[0]->type == ::ShapeType::ellipse)
+		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
-			int temp = point.y - pDoc->shapes[0]->lastY;
-			pDoc->shapes[0]->ellipseAngleRad += temp * 0.01;
-			double db = pDoc->shapes[0]->ellipseAngleRad;
-			/*CString dbug;
-			dbug.Format(_T("%g"), 0.5);
-			AfxMessageBox(dbug);*/
-			Invalidate();
+			if (pDoc->shapes[s]->isSelected)
+			{
+				int temp = point.y - pDoc->shapes[s]->lastY;
+				pDoc->shapes[s]->ellipseAngleRad += temp * 0.01;
+				double db = pDoc->shapes[s]->ellipseAngleRad;
+				/*CString dbug;
+				dbug.Format(_T("%g"), 0.5);
+				AfxMessageBox(dbug);*/
+				Invalidate();
+			}
+			pDoc->shapes[s]->lastY = point.y;
 		}
-		pDoc->shapes[0]->lastY = point.y;
+		
 	}	
 	Invalidate();
 	CView::OnMouseMove(nFlags, point);

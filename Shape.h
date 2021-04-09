@@ -30,7 +30,7 @@ public:
 	vector<CPoint> eSP;
 	vector<CPoint> ellipseFirstPart;
 	vector<CPoint> ellipseSecondPart;
-	double ellipseAngleDegree = 0;
+	double ellipseAngleDegree = 30;
 	double rectEllipseDegree = 0;
 	
 
