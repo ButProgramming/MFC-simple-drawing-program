@@ -167,6 +167,21 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->first.x = point.x;
 			pDoc->first.y = point.y;
 			break;
+		case Tools::rotate:
+		{
+			bool selected = false;
+			for (int i = 0; i < pDoc->shapes.size(); i++)
+			{
+				if (pDoc->shapes[i]->isSelected)
+				{
+					pDoc->shapes[i]->lastY = point.y;
+					selected = true;
+				}
+				if (selected) break;
+			}
+
+			break;
+		}
 		case Tools::change:
 			pDoc->first.x = point.x;
 			pDoc->first.y = point.y;
@@ -291,13 +306,15 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		if (pDoc->shapes[0]->type == ::ShapeType::ellipse)
 		{
-			pDoc->shapes[0]->ellipseAngleRad += 0.01;
+			int temp = point.y - pDoc->shapes[0]->lastY;
+			pDoc->shapes[0]->ellipseAngleRad += temp * 0.01;
 			double db = pDoc->shapes[0]->ellipseAngleRad;
 			/*CString dbug;
 			dbug.Format(_T("%g"), 0.5);
 			AfxMessageBox(dbug);*/
 			Invalidate();
 		}
+		pDoc->shapes[0]->lastY = point.y;
 	}	
 	Invalidate();
 	CView::OnMouseMove(nFlags, point);
@@ -587,7 +604,7 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 	pDoc->toolIsUsed = Tools::rotate;
 	
 	CDC* pDC2 = GetDC();
-	pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
+	//pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
 	int nGraphicsMode = SetGraphicsMode(*pDC2, GM_ADVANCED);
 	XFORM xForm;
 	int m_iAngle = 45;
@@ -603,7 +620,7 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 
 	
 	SetWorldTransform(*pDC2, &xForm);
-	pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
+	//pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
 
 
 
@@ -621,7 +638,7 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 
 	SetWorldTransform(*pDC2, &xForm);
 	SetGraphicsMode(*pDC2, GM_COMPATIBLE); // nGraphicsMode
-	AfxMessageBox(_T("123"));
+	//AfxMessageBox(_T("123"));
 	//SetWorldTransform()
 	// TODO: Add your command handler code here
 }
