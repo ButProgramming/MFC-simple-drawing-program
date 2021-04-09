@@ -255,19 +255,31 @@ void TriangleShape::draw(CDC* dc)
 	
 	CPoint trianglePoints[3];
 
-	trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 0.5, points[3].y + (points[2].y - points[3].y) / 0.5);
+	trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 0.9, points[3].y + (points[2].y - points[3].y) / 0.5);
 	trianglePoints[1] = points[0];
 	trianglePoints[2] = points[1];
 
 	
-		int diff = trianglePoints[0].x - points[2].x;
-		//AfxMessageBox(_T("123123123"));
-		points[2].x += diff;
-		points[3].x -= diff;
-		points[1].x += diff;
-		points[0].x -= diff;
-		trianglePoints[1] = points[0];
-		trianglePoints[2] = points[1];
+		int diff = trianglePoints[0].x - abs(points[2].x);
+		if (diff > 0)
+		{
+			//AfxMessageBox(_T("123123123"));
+			points[2].x += diff;
+			points[3].x -= diff;
+			points[1].x += diff;
+			points[0].x -= diff;
+			trianglePoints[1] = points[0];
+			trianglePoints[2] = points[1];
+		}
+		else
+		{
+			points[2].x -= diff;
+			points[3].x += diff;
+			points[1].x -= diff;
+			points[0].x += diff;
+			trianglePoints[1] = points[0];
+			trianglePoints[2] = points[1];
+		}
 
 	/*trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 0.5, points[3].y + (points[2].y - points[3].y) / 0.5);
 	trianglePoints[1] = points[0];
@@ -297,8 +309,8 @@ void TriangleShape::draw(CDC* dc)
 	if (isSelected)
 	{
 		//dc->Ellipse(0, 0, 200, 200);
-		for (int i = 0; i < 2; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+		for (int i = 0; i < 3; i++)
+			dc->Ellipse(trianglePoints[i].x - sizeOfPointToMoveAndChange, trianglePoints[i].y - sizeOfPointToMoveAndChange, trianglePoints[i].x + sizeOfPointToMoveAndChange, trianglePoints[i].y + sizeOfPointToMoveAndChange);
 	}
 	dc->Polygon(points, 4);
 
