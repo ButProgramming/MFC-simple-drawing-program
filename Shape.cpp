@@ -339,24 +339,34 @@ void TriangleShape::draw(CDC* dc)
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	dc->SelectObject(pen);
-	CBrush* brush = new CBrush;
-	brush->CreateSolidBrush(RGB(0, 255, 0));
-	int radius = size; // for convinient
-
-	int h = 3 * size;
-	int side = 2 * h / sqrt(3);
-	// synchronized moving
-
-	//dc->Ellipse()
-	points[0] = CPoint(dx_dy[0].x + dx_dy_temp[0].x, - 2 * radius + dx_dy[0].y + dx_dy_temp[0].y); //top
-	points[1] = CPoint(dx_dy[1].x + dx_dy_temp[1].x - side / 2, + radius + dx_dy[1].y + dx_dy_temp[1].y); //left
-	points[2] = CPoint(dx_dy[2].x + dx_dy_temp[2].x + side / 2, + radius + dx_dy[2].y + dx_dy_temp[2].y); //right
+	CPoint rectangleCenter{ 0, 0 };
+	CPoint diffAr[4];
+	for (int i = 0; i < 4; i++)
+	{
+		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
+	}
+	points[0] = CPoint(rectangleCenter.x - 2*sqrt(3)/3*size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
+	points[1] = CPoint(rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
+	points[2] = CPoint(rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
+	points[3] = CPoint(rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 	
+	CPoint triangle[4];
+	triangle[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2, points[3].y + (points[2].y - points[3].y) / 2); 
+	triangle[1] = points[0]; 
+	triangle[2] = points[1]; 
 	
+	CRgn* triangleRgn = new CRgn;
+	triangleRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+	GetRgnBox(*triangleRgn, boxRect);
+	CPoint recFromRgn[4];
+	recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
+	recFromRgn[1] = CPoint(boxRect.BottomRight());
+	recFromRgn[2] = CPoint(boxRect.BottomRight().x, boxRect.TopLeft().y);
+	recFromRgn[3] = CPoint(boxRect.TopLeft());
 
-	//centerOfShape = boxRect.CenterPoint();
 
-	for (int i = 0; i < 3; i++)
+
+	for (int i = 0; i < 4; i++)
 	{
 		int tempX = points[i].x;
 		int tempY = points[i].y;
@@ -364,34 +374,34 @@ void TriangleShape::draw(CDC* dc)
 		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		points[i].x += centerOfShape.x + dx;
 		points[i].y += centerOfShape.y + dy;
+
+
+		tempX = recFromRgn[i].x;
+		tempY = recFromRgn[i].y;
+		recFromRgn[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		recFromRgn[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		recFromRgn[i].x += centerOfShape.x + dx;
+		recFromRgn[i].y += centerOfShape.y + dy;
 	}
-	/*rectangle_dx_dy[0].x = points[0].x;
-	rectangle_dx_dy[0].y = points[0].y;
-	rectangle_dx_dy[1].x = points[1].x;
-	rectangle_dx_dy[1].y = points[1].y;
-	rectangle_dx_dy[2].x = points[2].x;
-	rectangle_dx_dy[2].y = points[2].y;*/
-	//triangleArr[3] = triangle[3];
 
-	CRgn* triangleReg = new CRgn;
-	triangleReg->CreatePolygonRgn(points, 3, ALTERNATE);
-	GetRgnBox(*triangleReg, boxRect);
-	dc->Rectangle(boxRect);
-	
-	/*CBrush* triangleBrush = new CBrush;
-	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
-	//GetRgnBox(*triangleReg, boxRect);
+
+	for (int i = 0; i < 3; i++)
+	{
+		int tempX = triangle[i].x;
+		int tempY = triangle[i].y;
+		triangle[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		triangle[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		triangle[i].x += centerOfShape.x + dx;
+		triangle[i].y += centerOfShape.y + dy;	
+	}
+
+	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	//GetRgnBox(*rectangleReg, boxRect);
 	//dc->Rectangle(boxRect);
-	dc->Polygon(points, 3);
-	dc->FillRgn(triangleReg, brush);
-
-
-
-
-	//CString str;
-	//str.Format(_T("%d"), rect.CenterPoint().x);
-	//AfxMessageBox(str);
-	// create points to change the triangle
+	
+	points[0] = triangle[1];
+	points[1] = triangle[2];
+	points[2] = triangle[0];
 	if (isSelected)
 	{
 		//dc->Ellipse(0, 0, 200, 200);
@@ -399,12 +409,15 @@ void TriangleShape::draw(CDC* dc)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 
-	//delete points;
-	//delete triangleReg;
-	//delete dc;
+	/*CBrush* triangleBrush = new CBrush;
+	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
+	
+	//dc->Polygon(recFromRgn, 4);
+	
+	//dc->Polygon(points, 4);
+	dc->Polygon(triangle, 3);
+	delete triangleRgn;
 	delete pen;
-	delete brush;
-	delete triangleReg;
 }
 
 
