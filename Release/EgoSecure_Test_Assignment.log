@@ -1,1 +1,22 @@
-﻿  EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\Release\EgoSecure_Test_Assignment.exe
+﻿  Shape.cpp
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(82,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(99,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(125,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(129,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(130,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(135,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(139,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(140,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(149,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(150,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(207,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(208,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(347,11): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(394,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(395,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+  Generating code
+  1 of 531 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\EgoSecure_Test_Assignment\Release\EgoSecure_Test_Assignment.exe

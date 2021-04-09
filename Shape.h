@@ -24,6 +24,8 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
+
+	CPoint nextCenterTriangle{ -1,-1 };
 	bool isDrawFirstTime{ false };
 	int lastY;
 	vector<CPoint> eFP;
