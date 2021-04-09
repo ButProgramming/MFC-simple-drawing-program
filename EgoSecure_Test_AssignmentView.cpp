@@ -264,6 +264,14 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
 						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
 					
+						int tempX = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x;
+						int tempY = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y;
+						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = round(tempX * cos(-(pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->shapes[s]->ellipseAngleRad)));
+						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
+						//eSP[i].x += centerOfShape.x + dx;
+						//eSP[i].y += centerOfShape.y + dy;
+						
+
 						Invalidate();
 						CString str;
 						str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);

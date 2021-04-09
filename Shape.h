@@ -28,7 +28,7 @@ public:
 	vector<CPoint> eSP;
 	vector<CPoint> ellipseFirstPart;
 	vector<CPoint> ellipseSecondPart;
-	double ellipseAngleDegree = 135;
+	double ellipseAngleDegree = 70;
 	double rectEllipseDegree = 0;
 	
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
