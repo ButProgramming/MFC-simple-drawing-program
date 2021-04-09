@@ -186,8 +186,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 						numberOfAngels = 4;
 					}
 					selected = true;
+					pDoc->shapes[s]->numberOfAngle = -1;
 					for (int a = 0; a < numberOfAngels; a++)
 					{
+					    
 						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y - IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].x + IShape::sizeOfPointToMoveAndChange*4, pDoc->shapes[s]->points[a].y + IShape::sizeOfPointToMoveAndChange*4);
 						if (PtInRegion(angle, point.x, point.y))
 						{
@@ -198,6 +200,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 							str.Format(_T("%d"), a);
 							//AfxMessageBox(str);
 						}
+						
 					}
 				}
 				if (selected)
@@ -254,40 +257,48 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
 	{
 		bool selected = false; // control of the next loop
-		for (int s=0; s<pDoc->shapes.size(); s++)
+		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
 			//
 			if (pDoc->shapes[s]->isSelected)
 			{
 				selected = true;
-				
-						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
-						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
-					
-						int tempX = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x;
-						int tempY = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y;
-						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = round(tempX * cos(-(pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->shapes[s]->ellipseAngleRad)));
-						pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
-						//eSP[i].x += centerOfShape.x + dx;
-						//eSP[i].y += centerOfShape.y + dy;
-						
+				if (pDoc->shapes[s]->numberOfAngle != -1)
+				{
+					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = point.x - pDoc->first.x;
+					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = point.y - pDoc->first.y;
 
-						Invalidate();
-						CString str;
-						str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);
-						//AfxMessageBox(str);
-			
+					int tempX = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x;
+					int tempY = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y;
+					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = round(tempX * cos(-(pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->shapes[s]->ellipseAngleRad)));
+					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
+					//eSP[i].x += centerOfShape.x + dx;
+					//eSP[i].y += centerOfShape.y + dy;
+
+
+					Invalidate();
+					CString str;
+					str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);
+					//AfxMessageBox(str);
+				}
+
 			}
 			if (selected)
 				break;
 		}
-		
 	}
-	
-
-	
-
-	
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate)
+	{
+		if (pDoc->shapes[0]->type == ::ShapeType::ellipse)
+		{
+			pDoc->shapes[0]->ellipseAngleRad += 0.01;
+			double db = pDoc->shapes[0]->ellipseAngleRad;
+			/*CString dbug;
+			dbug.Format(_T("%g"), 0.5);
+			AfxMessageBox(dbug);*/
+			Invalidate();
+		}
+	}	
 	Invalidate();
 	CView::OnMouseMove(nFlags, point);
 }

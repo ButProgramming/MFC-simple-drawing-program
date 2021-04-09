@@ -157,6 +157,8 @@ void EllipseShape::draw(CDC* dc)
 	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
 	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 
+	
+
 	dc->Polygon(points, 4);
 	dc->Polygon(&eFP[0], eFP.size());
 	dc->Polygon(&eSP[0], eSP.size());
