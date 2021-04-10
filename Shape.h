@@ -4,13 +4,15 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+#include <queue>
 using namespace std;
 
 //int move_dx=0; 
 //int move_dy=0;
 //int globalInt;
 
-enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove };
+enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine
+};
 enum class ShapeType { ellipse, rectangle, triangle };
 
 
@@ -26,6 +28,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
+	
 	
 	int constID;
 	int ID;

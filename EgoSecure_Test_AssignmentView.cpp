@@ -298,7 +298,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				pDoc->shapes[s]->dSM.y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
 			}
 		}
-		
+
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
 	{
@@ -540,7 +540,82 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			}
 		}
 	}
+	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
+	{
+		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+		{
+			switch (pDoc->shapes[i]->type)
+			{
+			case ShapeType::ellipse:
+			{
 
+				CPoint cp;
+				CString str;
+				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+				{
+					if (pDoc->selectedShapesIDs.size() < 2)
+					{
+						pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+					}
+					else
+					{
+						pDoc->selectedShapesIDs.pop();
+						pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+					}
+					//unselected all shapes
+					for (int it = 0; it < pDoc->shapes.size(); it++)
+					{
+						pDoc->shapes[it]->isSelected = false; 
+					}
+					for (int it = 0; it < pDoc->shapes.size(); it++)
+					{
+						if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+						{
+							pDoc->shapes[it]->isSelected = true;
+						}
+					}
+					//AfxMessageBox(_T("Ellipse"));
+					//pDoc->shapes[i]->pen=newPen;
+					//shapeIsFound = true;
+					//for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+					//{
+					//	//unselecting others shapes
+					//	if (pDoc->shapes[i]->isSelected == true)
+					//	{
+					//		pDoc->shapes[i]->pen->DeleteObject();
+					//		pDoc->shapes[i]->isSelected = false;
+					//		break;
+					//	};
+					//}
+					//swap
+					//pDoc->shapes[i]->isSelectedFirst = true;
+
+					/*auto s1 = pDoc->shapes[i];
+					auto s2 = pDoc->shapes[pDoc->shapes.size()-1];
+					pDoc->shapes[i] = s2;
+					pDoc->shapes[pDoc->shapes.size() - 1] = s1;*/
+
+					
+					/*IShape* shape;
+					pDoc->shapes.push_back(shape);
+					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
+					pDoc->shapes.erase(pDoc->shapes.begin() + i);*/
+				}
+				//delete ellipseRgn;
+				//pDoc->shapes[i]->centerOfShape
+				//AfxMessageBox(_T("ellipse"));
+				break;
+			}
+			if (shapeIsFound)
+			{
+				//break;
+			}
+			}
+		}
+	}
 	CView::OnLButtonDblClk(nFlags, point);
 }
 
@@ -636,7 +711,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			pDoc->shapes[s]->dSM.x = 0;
 			pDoc->shapes[s]->dSM.y = 0;
 		}
-		
+
 		//IShape::diffShapeMove.y = 0;
 	}
 	CView::OnLButtonUp(nFlags, point);
@@ -718,7 +793,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 				{
 					tmp[i] = pDoc->shapes[s]->recFromRgn[i];
 				}
-				
+
 			}
 			else
 			{
@@ -728,7 +803,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 				}
 
 			}
-			
+
 			CPoint centerSidesPoints[2];
 			centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
 			centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
@@ -796,6 +871,7 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 {
 	//AfxMessageBox(_T("DoubleSelect"));
 	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = Tools::doubleSelectTool;
 	int s = pDoc->lines.size();
 	CString str;
 	str.Format(_T("Size lines vector: %d"), s);
@@ -805,10 +881,10 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 		//l->draw();
 	}
 
-	for (auto s : pDoc->shapes)
+	/*for (auto s : pDoc->shapes)
 	{
 		s->name;
-	}
+	}*/
 	// TODO: Add your command handler code here
 }
 

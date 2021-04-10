@@ -1,7 +1,7 @@
 #pragma once
 #include <afx.h>
 
-enum class LinesTools { SelectTool, BasicLine, LeftLine, RightLine, DoubleLine};
+//enum class LinesTools { };
 
 
 class Lines :
