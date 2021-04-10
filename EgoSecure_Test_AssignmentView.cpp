@@ -279,10 +279,15 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
-		pDoc->diffShapeMove.x = pDoc->second.x - pDoc->first.x;
-		pDoc->diffShapeMove.y = pDoc->second.y - pDoc->first.y;
+		for (int s = 0; s < pDoc->shapes.size(); s++)
+		{
+			if (pDoc->shapes[s]->isSelected)
+			{
+				pDoc->shapes[s]->dSM.x = pDoc->second.x - pDoc->first.x;
+				pDoc->shapes[s]->dSM.y = pDoc->second.y - pDoc->first.y;
+			}
+		}
 		
-
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
 	{
@@ -610,10 +615,14 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			if (pDoc->shapes[s]->isSelected)
 			{
-				pDoc->shapes[s]->centerOfShape.x += pDoc->diffShapeMove.x;
-				pDoc->shapes[s]->centerOfShape.y += pDoc->diffShapeMove.y;
+				pDoc->shapes[s]->centerOfShape.x += pDoc->shapes[s]->dSM.x;
+				pDoc->shapes[s]->centerOfShape.y += pDoc->shapes[s]->dSM.y;
 			}
+			pDoc->shapes[s]->dSM.x = 0;
+			pDoc->shapes[s]->dSM.y = 0;
 		}
+		
+		//IShape::diffShapeMove.y = 0;
 	}
 	CView::OnLButtonUp(nFlags, point);
 }
@@ -736,9 +745,13 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::shapeMove;
 
-	
-	pDoc->diffShapeMove.x = 0;
-	pDoc->diffShapeMove.y = 0;
+	for (int s = 0; s < pDoc->shapes.size(); s++)
+	{
+		pDoc->shapes[s]->dSM.x = 0;
+		pDoc->shapes[s]->dSM.y = 0;
+	}
+	//pDoc->shapes[s]->diffShapeMove.x = 0;
+	//IShape::diffShapeMove.y = 0;
 	Invalidate();
 	//AfxMessageBox(_T("ckeck"));
 	// TODO: Add your command handler code here

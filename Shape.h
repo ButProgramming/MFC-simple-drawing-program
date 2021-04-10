@@ -25,6 +25,7 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	
 	
+	struct diffShapeMove { int x; int y; } dSM;
 	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
