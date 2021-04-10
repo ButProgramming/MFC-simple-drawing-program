@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <string>
 using namespace std;
 
 //int move_dx=0; 
@@ -24,8 +25,11 @@ public:
 	static int dx;
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
+	static int countOfShape;
 	
-	
+	int constID;
+	int ID;
+	string name;
 	struct diffShapeMove { int x = 0; int y = 0; } dSM;
 	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };

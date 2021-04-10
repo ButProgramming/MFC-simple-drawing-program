@@ -21,3 +21,6 @@ void DoubleLine::draw()
 	AfxMessageBox(_T("DoubleLine"));
 }
 
+Lines::~Lines()
+{
+}

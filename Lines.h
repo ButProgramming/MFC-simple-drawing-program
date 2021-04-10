@@ -9,6 +9,7 @@ class Lines :
 {
 public:
     virtual void draw() = 0;
+    virtual ~Lines();
 };
 
 class BasicLine : public Lines
@@ -37,3 +38,4 @@ class DoubleLine : public Lines
 public:
     void draw();
 };
+

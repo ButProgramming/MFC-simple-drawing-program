@@ -4,34 +4,47 @@
 int IShape::dx = 0;
 int IShape::dy = 0;
 int IShape::sizeOfPointToMoveAndChange = 3;
+int IShape::countOfShape = 0;
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
+	constID = countOfShape;
+	ID = countOfShape;
+	name = "ellipseShape" + to_string(constID);
 	//type = ShapeType::ellipse;
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	boxRect.CenterPoint() = centerOfShape;
 	this->isNormalized = isNormalized;
+	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
+	constID = countOfShape;
+	ID = countOfShape;
+	name = "rectangleShape" + to_string(constID);
 	//type = ShapeType::rectangle;
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
+	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
 
 TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
+	constID = countOfShape;
+	ID = countOfShape;
+	name = "triangleShape" + to_string(constID);
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	this->isNormalized = isNormalized;
+	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
 

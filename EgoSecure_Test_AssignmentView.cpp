@@ -794,34 +794,61 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 {
-	AfxMessageBox(_T("DoubleSelect"));
+	//AfxMessageBox(_T("DoubleSelect"));
+	auto pDoc = GetDocument();
+	int s = pDoc->lines.size();
+	CString str;
+	str.Format(_T("Size lines vector: %d"), s);
+	//AfxMessageBox(str);
+	for (Lines* l : pDoc->lines)
+	{
+		//l->draw();
+	}
+
+	for (auto s : pDoc->shapes)
+	{
+		s->name;
+	}
 	// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
-	AfxMessageBox(_T("BasicLine"));
+	auto pDoc = GetDocument();
+	Lines* BL = new BasicLine;
+	pDoc->lines.push_back(BL);
+	//AfxMessageBox(_T("BasicLine"));
+
 	// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
-	AfxMessageBox(_T("RightLine"));
+	auto pDoc = GetDocument();
+	Lines* BL = new RightLine;
+	pDoc->lines.push_back(BL);
+	//AfxMessageBox(_T("RightLine"));
 	// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
-	AfxMessageBox(_T("LeftLine"));
+	auto pDoc = GetDocument();
+	Lines* BL = new LeftLine;
+	pDoc->lines.push_back(BL);
+	//AfxMessageBox(_T("LeftLine"));
 	// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
-	AfxMessageBox(_T("DoubleLine"));
+	auto pDoc = GetDocument();
+	Lines* BL = new DoubleLine;
+	pDoc->lines.push_back(BL);
+	//AfxMessageBox(_T("DoubleLine"));
 	// TODO: Add your command handler code here
 }
