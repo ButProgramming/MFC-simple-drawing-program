@@ -61,10 +61,10 @@ void EllipseShape::draw(CDC* dc)
 		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
 	}
 
-	points[0] = CPoint(circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-	points[1] = CPoint(circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-	points[2] = CPoint(circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-	points[3] = CPoint(circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
+	points[0] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
+	points[1] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
+	points[2] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
+	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
 	//1
 	//points[2].y += diffAr[2].y + diffAr[3].y;
@@ -81,28 +81,28 @@ void EllipseShape::draw(CDC* dc)
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
-		CPoint temp1{ circleCenter.x - x, circleCenter.y + y };
+		CPoint temp1{ dSM.x + circleCenter.x - x,dSM.y + circleCenter.y + y };
 		eFP.push_back(temp1);
-		dc->MoveTo(circleCenter.x - x, circleCenter.y + y);
+		dc->MoveTo(dSM.x + circleCenter.x - x, dSM.y + circleCenter.y + y);
 	}
-	CPoint temp1{ circleCenter.x, circleCenter.y + b };
+	CPoint temp1{ dSM.x + circleCenter.x, dSM.y + circleCenter.y + b };
 	eFP.push_back(temp1);
 	//
 
 	//
 	eSP.clear();
 	//vector<CPoint> eSP;
-	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	dc->MoveTo(dSM.x + circleCenter.x, dSM.y + circleCenter.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
-		CPoint temp2{ circleCenter.x + x, circleCenter.y + y };
+		CPoint temp2{ dSM.x + circleCenter.x + x, dSM.y + circleCenter.y + y };
 		eSP.push_back(temp2);
-		dc->MoveTo(circleCenter.x + x, circleCenter.y + y);
+		dc->MoveTo(dSM.x + circleCenter.x + x, dSM.y + circleCenter.y + y);
 	}
-	CPoint temp2{ circleCenter.x, circleCenter.y + b };
+	CPoint temp2{ dSM.x + circleCenter.x,dSM.y + circleCenter.y + b };
 	eSP.push_back(temp2);
 
 	dc->MoveTo(circleCenter.x, circleCenter.y + b);
@@ -356,10 +356,10 @@ void TriangleShape::draw(CDC* dc)
 	{
 		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
 	}
-	points[0] = CPoint(rectangleCenter.x - 2*sqrt(3)/3*size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-	points[1] = CPoint(rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-	points[2] = CPoint(rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-	points[3] = CPoint(rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
+	points[0] = CPoint(dSM.x + rectangleCenter.x - 2*sqrt(3)/3*size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
+	points[1] = CPoint(dSM.x + rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
+	points[2] = CPoint(dSM.x + rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
+	points[3] = CPoint(dSM.x + rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 	
 	CPoint triangle[4];
 	triangle[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2, points[3].y + (points[2].y - points[3].y) / 2); 
