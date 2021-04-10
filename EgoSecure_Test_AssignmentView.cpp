@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_WM_LBUTTONUP()
 	ON_COMMAND(ID_BUTTON_CHANGE, &CEgoSecureTestAssignmentView::OnButtonChange)
 	ON_COMMAND(ID_BUTTON_ROTATE, &CEgoSecureTestAssignmentView::OnButtonRotate)
+	ON_COMMAND(ID_BUTTON_SHAPE_NORMALIZE, &CEgoSecureTestAssignmentView::OnButtonShapeNormalize)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -644,5 +645,12 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 	SetGraphicsMode(*pDC2, GM_COMPATIBLE); // nGraphicsMode
 	//AfxMessageBox(_T("123"));
 	//SetWorldTransform()
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
+{
+	AfxMessageBox(_T("1234567"));
 	// TODO: Add your command handler code here
 }

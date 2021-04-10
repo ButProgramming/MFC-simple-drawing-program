@@ -131,8 +131,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				shape->isSelected = isSelected;
 			}
 			
-			shapes.emplace_back(shape);
-			
+			//shapes.emplace_back(shape);
+			shapes.push_back(shape);
 		}
 		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here

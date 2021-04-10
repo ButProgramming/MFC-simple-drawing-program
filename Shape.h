@@ -25,8 +25,8 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	
 
-	CPoint nextCenterTriangle{ -1,-1 };
-	bool isDrawFirstTime{ false };
+	//CPoint nextCenterTriangle{ -1,-1 };
+	//bool isDrawFirstTime{ false };
 	int lastY;
 	vector<CPoint> eFP;
 	vector<CPoint> eSP;
@@ -35,8 +35,6 @@ public:
 	double ellipseAngleDegree = 0;
 	double rectEllipseDegree = 0;
 	
-
-
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
 	double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
 	CRect boxRect;
