@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_ROTATE, &CEgoSecureTestAssignmentView::OnButtonRotate)
 	ON_COMMAND(ID_BUTTON_SHAPE_NORMALIZE, &CEgoSecureTestAssignmentView::OnButtonShapeNormalize)
 	ON_COMMAND(ID_BUTTON_SHAPE_MOVE, &CEgoSecureTestAssignmentView::OnButtonShapeMove)
+	ON_COMMAND(ID_BUTTON_DELETE, &CEgoSecureTestAssignmentView::OnButtonDelete)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -763,5 +764,24 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 	//IShape::diffShapeMove.y = 0;
 	Invalidate();
 	//AfxMessageBox(_T("ckeck"));
+	// TODO: Add your command handler code here
+}
+
+
+
+void CEgoSecureTestAssignmentView::OnButtonDelete()
+{
+	auto pDoc = GetDocument();
+	//AfxMessageBox(_T("del"));
+	for (int i = 0; i < pDoc->shapes.size(); i++)
+	{
+		if (pDoc->shapes[i]->isSelected)
+		{
+			/*IShape* shape;
+			pDoc->shapes.push_back(shape);
+			iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
+			pDoc->shapes.erase(pDoc->shapes.begin() + i);
+		}
+	}
 	// TODO: Add your command handler code here
 }
