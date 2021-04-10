@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_CHANGE, &CEgoSecureTestAssignmentView::OnButtonChange)
 	ON_COMMAND(ID_BUTTON_ROTATE, &CEgoSecureTestAssignmentView::OnButtonRotate)
 	ON_COMMAND(ID_BUTTON_SHAPE_NORMALIZE, &CEgoSecureTestAssignmentView::OnButtonShapeNormalize)
+	ON_COMMAND(ID_BUTTON_SHAPE_MOVE, &CEgoSecureTestAssignmentView::OnButtonShapeMove)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -688,7 +689,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 			min = (l1 < l2) ? l1 : l2;
 			CString dbug;
 			dbug.Format(_T("%d, %d"), l1, l2);
-			AfxMessageBox(dbug);
+			//AfxMessageBox(dbug);
 			for (int i = 0; i < 4; i++)
 			{
 				pDoc->shapes[s]->dx_dy[i].x = 0;
@@ -701,5 +702,12 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 		}
 	}
 
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonShapeMove()
+{
+	AfxMessageBox(_T("ckeck"));
 	// TODO: Add your command handler code here
 }
