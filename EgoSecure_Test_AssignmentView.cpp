@@ -285,6 +285,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			{
 				pDoc->shapes[s]->dSM.x = pDoc->second.x - pDoc->first.x;
 				pDoc->shapes[s]->dSM.y = pDoc->second.y - pDoc->first.y;
+
+				int tempX = pDoc->shapes[s]->dSM.x;
+				int tempY = pDoc->shapes[s]->dSM.y;
+				pDoc->shapes[s]->dSM.x = round(tempX * cos(-(pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->shapes[s]->ellipseAngleRad)));
+				pDoc->shapes[s]->dSM.y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
 			}
 		}
 		
@@ -615,6 +620,10 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			if (pDoc->shapes[s]->isSelected)
 			{
+				int tempX = pDoc->shapes[s]->dSM.x;
+				int tempY = pDoc->shapes[s]->dSM.y;
+				pDoc->shapes[s]->dSM.x = round(tempX * cos((pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin((pDoc->shapes[s]->ellipseAngleRad)));
+				pDoc->shapes[s]->dSM.y = round(tempX * sin((pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos((pDoc->shapes[s]->ellipseAngleRad)));
 				pDoc->shapes[s]->centerOfShape.x += pDoc->shapes[s]->dSM.x;
 				pDoc->shapes[s]->centerOfShape.y += pDoc->shapes[s]->dSM.y;
 			}
