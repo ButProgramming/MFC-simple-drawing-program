@@ -419,14 +419,18 @@ void TriangleShape::draw(CDC* dc)
 		for (int i = 0; i < 3; i++)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
-
-	/*CBrush* triangleBrush = new CBrush;
-	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
-	
+	CRgn* triangleNewRgn = new CRgn;
+	triangleNewRgn->CreatePolygonRgn(triangle, 3, ALTERNATE);
+	CBrush* triangleBrush = new CBrush(HS_CROSS, RGB(0,255,0));
+	//triangleBrush->CreateSolidBrush(RGB(0, 255, 0)); // Microsoft C++ exception: CResourceException at memory location 0x0098F310
+	//triangleBrush->CreateSolidBrush(HS_DIAGCROSS);
 	//dc->Polygon(recFromRgn, 4);
 	
 	//dc->Polygon(points, 4);
 	dc->Polygon(triangle, 3);
+	dc->FillRgn(triangleNewRgn, triangleBrush);
+	delete triangleNewRgn;
+	delete triangleBrush;
 	delete triangleRgn;
 	delete pen;
 }
