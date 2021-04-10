@@ -59,6 +59,11 @@ public:
 	afx_msg void OnButtonShapeNormalize();
 	afx_msg void OnButtonShapeMove();
 	afx_msg void OnButtonDelete();
+	afx_msg void OnButtonDoubleSelect();
+	afx_msg void OnButtonBasicLine();
+	afx_msg void OnButtonRightLine();
+	afx_msg void OnButtonLeftLine();
+	afx_msg void OnButtonDoubleLine();
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp

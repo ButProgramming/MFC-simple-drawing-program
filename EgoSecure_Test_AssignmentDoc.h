@@ -5,6 +5,7 @@
 
 #pragma once
 #include "Shape.h"
+#include "Lines.h"
 
 class CEgoSecureTestAssignmentDoc : public CDocument
 {
@@ -15,6 +16,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	vector<IShape*> shapes;
+	vector<Lines*> lines;
 	Tools toolIsUsed;
 	//screen move dx and dy
 	struct first { int x; int y; } first; //point for first point of move feature

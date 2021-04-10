@@ -41,6 +41,11 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_SHAPE_NORMALIZE, &CEgoSecureTestAssignmentView::OnButtonShapeNormalize)
 	ON_COMMAND(ID_BUTTON_SHAPE_MOVE, &CEgoSecureTestAssignmentView::OnButtonShapeMove)
 	ON_COMMAND(ID_BUTTON_DELETE, &CEgoSecureTestAssignmentView::OnButtonDelete)
+	ON_COMMAND(ID_BUTTON_DOUBLE_SELECT, &CEgoSecureTestAssignmentView::OnButtonDoubleSelect)
+	ON_COMMAND(ID_BUTTON_BASIC_LINE, &CEgoSecureTestAssignmentView::OnButtonBasicLine)
+	ON_COMMAND(ID_BUTTON_RIGHT_LINE, &CEgoSecureTestAssignmentView::OnButtonRightLine)
+	ON_COMMAND(ID_BUTTON_LEFT_LINE, &CEgoSecureTestAssignmentView::OnButtonLeftLine)
+	ON_COMMAND(ID_BUTTON_DOUBLE_LINE, &CEgoSecureTestAssignmentView::OnButtonDoubleLine)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -783,5 +788,40 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 			pDoc->shapes.erase(pDoc->shapes.begin() + i);
 		}
 	}
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
+{
+	AfxMessageBox(_T("DoubleSelect"));
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonBasicLine()
+{
+	AfxMessageBox(_T("BasicLine"));
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonRightLine()
+{
+	AfxMessageBox(_T("RightLine"));
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonLeftLine()
+{
+	AfxMessageBox(_T("LeftLine"));
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
+{
+	AfxMessageBox(_T("DoubleLine"));
 	// TODO: Add your command handler code here
 }

@@ -12,6 +12,7 @@ using namespace std;
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove };
 enum class ShapeType { ellipse, rectangle, triangle };
 
+
 class IShape
 {
 protected:

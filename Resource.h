@@ -41,15 +41,20 @@
 #define ID_BUTTON_SHAPE_NORMALIZE_      32785
 #define ID_BUTTON_SHAPE_NORMALIZE       32785
 #define ID_BUTTON_SHAPE_MOVE            32786
-#define ID_BUTTON32787                  32787
 #define ID_BUTTON_DELETE                32787
+#define ID_BUTTON_BASIC_LINE            32788
+#define ID_BUTTON_RIGHT_LINE            32789
+#define ID_BUTTON_LEFT_LINE             32790
+#define ID_BUTTON32791                  32791
+#define ID_BUTTON_DOUBLE_SELECT         32801
+#define ID_BUTTON_DOUBLE_LINE           32802
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_COMMAND_VALUE         32803
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
