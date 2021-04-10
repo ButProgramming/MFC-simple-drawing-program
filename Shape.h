@@ -25,6 +25,7 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	
 
+	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
 	int lastY;

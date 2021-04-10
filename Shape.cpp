@@ -193,6 +193,16 @@ void RectangleShape::draw(CDC* dc)
 	{
 		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
 	}
+	
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	if (diffAr[i] != CPoint(0, 0) || ellipseAngleRad!=0)
+	//	{
+	//		isNormalized = false;
+
+	//	}
+	//}
 
 	points[0] = CPoint(rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
 	points[1] = CPoint(rectangleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
@@ -223,6 +233,7 @@ void RectangleShape::draw(CDC* dc)
 	/*CBrush* triangleBrush = new CBrush;
 	triangleBrush->CreateSolidBrush(RGB(0, 255, 0));*/ // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	dc->Polygon(points, 4);
+	
 	//dc->FillRgn(triangleReg, brush);
 	delete pen;
 	//delete rectangleReg;
@@ -358,7 +369,7 @@ void TriangleShape::draw(CDC* dc)
 	CRgn* triangleRgn = new CRgn;
 	triangleRgn->CreatePolygonRgn(points, 4, ALTERNATE);
 	GetRgnBox(*triangleRgn, boxRect);
-	CPoint recFromRgn[4];
+	
 	recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
 	recFromRgn[1] = CPoint(boxRect.BottomRight());
 	recFromRgn[2] = CPoint(boxRect.BottomRight().x, boxRect.TopLeft().y);
