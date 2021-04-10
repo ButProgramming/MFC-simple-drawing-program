@@ -169,6 +169,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		pDoc->first.x = point.x;
 		pDoc->first.y = point.y;
 		break;
+	case Tools::shapeMove:
+		pDoc->first.x = point.x;
+		pDoc->first.y = point.y;
+		break;
 	case Tools::rotate:
 	{
 		bool selected = false;
@@ -269,6 +273,15 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		pDoc->second.y = point.y;
 		IShape::dx = pDoc->second.x - pDoc->first.x;
 		IShape::dy = pDoc->second.y - pDoc->first.y;
+
+	}
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::shapeMove)
+	{
+		pDoc->second.x = point.x;
+		pDoc->second.y = point.y;
+		pDoc->diffShapeMove.x = pDoc->second.x - pDoc->first.x;
+		pDoc->diffShapeMove.y = pDoc->second.y - pDoc->first.y;
+		
 
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
@@ -591,6 +604,17 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		str.Format(_T("boxRect: x: %d, y: %d"), pDoc->shapes[0]->boxRect.CenterPoint().x, pDoc->shapes[0]->boxRect.CenterPoint().y);
 		//AfxMessageBox(str);
 	}
+	if (pDoc->toolIsUsed == Tools::shapeMove)
+	{
+		for (int s = 0; s < pDoc->shapes.size(); s++)
+		{
+			if (pDoc->shapes[s]->isSelected)
+			{
+				pDoc->shapes[s]->centerOfShape.x += pDoc->diffShapeMove.x;
+				pDoc->shapes[s]->centerOfShape.y += pDoc->diffShapeMove.y;
+			}
+		}
+	}
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -654,6 +678,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 {
 	//AfxMessageBox(_T("1234567"));
 	auto pDoc = GetDocument();
+	//pDoc->toolIsUsed = Tools::shapeNormalize; //don't need
 	for (int s = 0; s < pDoc->shapes.size(); s++)
 	{
 		if (pDoc->shapes[s]->isSelected)
@@ -708,6 +733,13 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 
 void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 {
-	AfxMessageBox(_T("ckeck"));
+	auto pDoc = GetDocument();
+	pDoc->toolIsUsed = Tools::shapeMove;
+
+	
+	pDoc->diffShapeMove.x = 0;
+	pDoc->diffShapeMove.y = 0;
+	Invalidate();
+	//AfxMessageBox(_T("ckeck"));
 	// TODO: Add your command handler code here
 }

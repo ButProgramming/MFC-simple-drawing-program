@@ -9,7 +9,7 @@ using namespace std;
 //int move_dy=0;
 //int globalInt;
 
-enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate };
+enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove };
 enum class ShapeType { ellipse, rectangle, triangle };
 
 class IShape
@@ -24,7 +24,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	
-
+	
 	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
