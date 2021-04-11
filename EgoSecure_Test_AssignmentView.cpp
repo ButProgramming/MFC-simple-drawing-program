@@ -547,74 +547,212 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		{
 			switch (pDoc->shapes[i]->type)
 			{
-			case ShapeType::ellipse:
-			{
-
-				CPoint cp;
-				CString str;
-				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
-				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
-
-				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+				case ShapeType::ellipse:
 				{
-					if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
-					{
-						i = -1;
-						break;
-					}
-					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
-					{
-						continue;
-					}
-					else
-					{
-						if (pDoc->selectedShapesIDs.size() < 2)
-						{
 
-							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+					CPoint cp;
+					CString str;
+					HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+					HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+					if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+					{
+						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						{
+							i = -1;
+							break;
+						}
+						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+						{
+							continue;
 						}
 						else
 						{
-							pDoc->selectedShapesIDs.pop();
-							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-						}
-						//unselected all shapes
-						for (int it = 0; it < pDoc->shapes.size(); it++)
-						{
-							/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
-								continue;
-							else*/
-								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
-						}
-						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-						{
-							for (int s = pDoc->shapes.size() - 1; s >= 0 ; s--)
+							if (pDoc->selectedShapesIDs.size() < 2)
 							{
-								if (pDoc->shapes[s]->constID == constIDit)
-								{
-									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-									{
-										//int contsID = pDoc->shapes[it]->constID;
-										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
-										shapeIsFound = true;
-										IShape* shape;
-										pDoc->shapes.push_back(shape);
-										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
-										pDoc->shapes.erase(pDoc->shapes.begin() + s);
-										//Invalidate();
-									}
-								}
-								else
-								{
+
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							else
+							{
+								pDoc->selectedShapesIDs.pop();
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							//unselected all shapes
+							for (int it = 0; it < pDoc->shapes.size(); it++)
+							{
+								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
 									continue;
+								else*/
+									pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+							}
+							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+							{
+								for (int s = pDoc->shapes.size() - 1; s >= 0 ; s--)
+								{
+									if (pDoc->shapes[s]->constID == constIDit)
+									{
+										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+										{
+											//int contsID = pDoc->shapes[it]->constID;
+											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+											shapeIsFound = true;
+											IShape* shape;
+											pDoc->shapes.push_back(shape);
+											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+											pDoc->shapes.erase(pDoc->shapes.begin() + s);
+											//Invalidate();
+										}
+									}
+									else
+									{
+										continue;
+									}
 								}
 							}
 						}
-					}
 
+					}
+					break;
 				}
-				break;
-			}
+
+				case ShapeType::rectangle:
+				{
+
+					CPoint cp;
+					CString str;
+					HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);// = CreatePolygonRgn(;
+					//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+					if (PtInRegion(rectangleRgn, point.x, point.y))
+					{
+						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						{
+							i = -1;
+							break;
+						}
+						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+						{
+							continue;
+						}
+						else
+						{
+							if (pDoc->selectedShapesIDs.size() < 2)
+							{
+
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							else
+							{
+								pDoc->selectedShapesIDs.pop();
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							//unselected all shapes
+							for (int it = 0; it < pDoc->shapes.size(); it++)
+							{
+								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+									continue;
+								else*/
+								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+							}
+							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+							{
+								for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
+								{
+									if (pDoc->shapes[s]->constID == constIDit)
+									{
+										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+										{
+											//int contsID = pDoc->shapes[it]->constID;
+											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+											shapeIsFound = true;
+											IShape* shape;
+											pDoc->shapes.push_back(shape);
+											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+											pDoc->shapes.erase(pDoc->shapes.begin() + s);
+											//Invalidate();
+										}
+									}
+									else
+									{
+										continue;
+									}
+								}
+							}
+						}
+
+					}
+					break;
+				}
+
+				case ShapeType::triangle:
+				{
+
+					CPoint cp;
+					CString str;
+					HRGN triangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 3, ALTERNATE);// = CreatePolygonRgn(;
+					//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+					if (PtInRegion(triangleRgn, point.x, point.y))
+					{
+						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						{
+							i = -1;
+							break;
+						}
+						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+						{
+							continue;
+						}
+						else
+						{
+							if (pDoc->selectedShapesIDs.size() < 2)
+							{
+
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							else
+							{
+								pDoc->selectedShapesIDs.pop();
+								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+							}
+							//unselected all shapes
+							for (int it = 0; it < pDoc->shapes.size(); it++)
+							{
+								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+									continue;
+								else*/
+								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+							}
+							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+							{
+								for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
+								{
+									if (pDoc->shapes[s]->constID == constIDit)
+									{
+										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+										{
+											//int contsID = pDoc->shapes[it]->constID;
+											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+											shapeIsFound = true;
+											IShape* shape;
+											pDoc->shapes.push_back(shape);
+											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+											pDoc->shapes.erase(pDoc->shapes.begin() + s);
+											//Invalidate();
+										}
+									}
+									else
+									{
+										continue;
+									}
+								}
+							}
+						}
+
+					}
+					break;
+				}
 			
 			}
 			if (shapeIsFound)

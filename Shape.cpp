@@ -202,10 +202,12 @@ void EllipseShape::draw(CDC* dc)
 
 void RectangleShape::draw(CDC* dc)
 {
-	if (!isSelected)
+	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	else
+		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
 	// synchronized moving
 	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
@@ -262,116 +264,16 @@ void RectangleShape::draw(CDC* dc)
 	//delete rectangleReg;
 }
 
-
-
-//void TriangleShape::draw(CDC* dc)
-//{
-//	if (!isSelected)
-//		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
-//	else if (isSelected)
-//		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
-//	dc->SelectObject(pen);
-//	
-//
-//	// create rectange to draw an triangle into
-//	CPoint rectangleCenter{ 0, 0 };
-//
-//	CPoint diffAr[4];
-//	for (int i = 0; i < 4; i++)
-//	{
-//		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
-//	}
-//
-//	points[0] = CPoint(rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-//	points[1] = CPoint(rectangleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-//	points[2] = CPoint(rectangleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-//	points[3] = CPoint(rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
-//	
-//	CPoint trianglePoints[3];
-//
-//	trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2 , points[3].y + (points[2].y - points[3].y) / 2);
-//	trianglePoints[1] = points[0];
-//	trianglePoints[2] = points[1];
-//
-//	
-//		int diff1 = (trianglePoints[0].x - centerOfShape.x) - (abs(points[2].x) - centerOfShape.x);
-//		//int diff2 = trianglePoints[0].x - abs(points[3].x);
-//		if (diff1 > 0)
-//		{
-//			//AfxMessageBox(_T("123123123"));
-//			points[2].x += diff1;
-//			points[3].x -= diff1;
-//			points[1].x += diff1;
-//			points[0].x -= diff1;
-//			trianglePoints[1] = points[0];
-//			trianglePoints[2] = points[1];
-//		}
-//		/*else
-//		{
-//			points[2].x -= diff1;
-//			points[3].x += diff1;
-//			points[1].x -= diff1;
-//			points[0].x += diff1;
-//			trianglePoints[1] = points[0];
-//			trianglePoints[2] = points[1];
-//		}*/
-//
-//	/*trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 0.5, points[3].y + (points[2].y - points[3].y) / 0.5);
-//	trianglePoints[1] = points[0];
-//	trianglePoints[2] = points[1];*/
-//
-//	for (int i = 0; i < 4; i++)
-//	{
-//		int tempX = points[i].x;
-//		int tempY = points[i].y;
-//		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-//		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-//		points[i].x += centerOfShape.x + dx;
-//		points[i].y += centerOfShape.y + dy;
-//	}
-//
-//	for (int i = 0; i < 3; i++)
-//	{
-//		int tempX = trianglePoints[i].x;
-//		int tempY = trianglePoints[i].y;
-//		trianglePoints[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-//		trianglePoints[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-//		trianglePoints[i].x += centerOfShape.x + dx;
-//		trianglePoints[i].y += centerOfShape.y + dy;
-//	}
-//
-//
-//	if (isSelected)
-//	{
-//		//dc->Ellipse(0, 0, 200, 200);
-//		for (int i = 0; i < 3; i++)
-//			dc->Ellipse(trianglePoints[i].x - sizeOfPointToMoveAndChange, trianglePoints[i].y - sizeOfPointToMoveAndChange, trianglePoints[i].x + sizeOfPointToMoveAndChange, trianglePoints[i].y + sizeOfPointToMoveAndChange);
-//	}
-//	dc->Polygon(points, 4);
-//
-//	/*CPoint trianglePoints[3];
-//
-//	trianglePoints[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 1.5, points[3].y + (points[2].y - points[3].y) / 1.5);
-//	trianglePoints[1] = points[0];
-//	trianglePoints[2] = points[1];*/
-//	
-//
-//	dc->Polygon(trianglePoints, 3);
-//
-//	delete pen;
-//}
-
-
-
-
 void TriangleShape::draw(CDC* dc)
 {
 	//auto pDoc = GetDocument();
 
-	if (!isSelected)
+	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	else
+		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
 	CPoint rectangleCenter{ 0, 0 };
 	CPoint diffAr[4];
