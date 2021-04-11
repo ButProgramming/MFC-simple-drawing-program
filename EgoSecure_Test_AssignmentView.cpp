@@ -88,27 +88,21 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	{
 		s->draw(&m_dc);
 	}
-	for (Lines* l : pDoc->lines)
+	for (int i=0; i<pDoc->lines.size(); i++)
 	{
 		CPoint firstPoint;
 		CPoint secondPoint;
-		int firstID = l->FirstShapeConstID;
-		int secondID = l->SecondShapeConstID;
-
-		/*for (int i = 0; i < 4; i++)
-		{
-			int tempX = points[i].x;
-			int tempY = points[i].y;
-			points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-			points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-			points[i].x += centerOfShape.x + dx;
-			points[i].y += centerOfShape.y + dy;
-		}*/
-
+		int firstID = pDoc->lines[i]->FirstShapeConstID;
+		int secondID = pDoc->lines[i]->SecondShapeConstID;
+		
+		
+	
+		bool found = false;
 		for (auto s : pDoc->shapes)
 		{
 			if (s->constID == firstID)
 			{
+				found = true;
 				firstPoint = s->centerOfShape;
 				int temp_dSM_x = s->dSM.x;
 				int temp_dSM_y = s->dSM.y;
@@ -116,29 +110,51 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 				int temp2_dSM_y = temp_dSM_y;
 				temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
 				temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
-				
-				firstPoint.x += temp_dSM_x;
-				firstPoint.y += temp_dSM_y;
+
+				firstPoint.x += temp_dSM_x + IShape::dx;
+				firstPoint.y += temp_dSM_y + IShape::dy;
 				//Invalidate();
 				break;
 			}
 		}
+		if (!found)
+		{
+			pDoc->lines[i]->first_ID_not_excist = true;
+		}
+		found = false;
 		for (auto s : pDoc->shapes)
 		{
 			if (s->constID == secondID)
 			{
 				secondPoint = s->centerOfShape;
+				found = true;
 				int temp_dSM_x = s->dSM.x;
 				int temp_dSM_y = s->dSM.y;
 				int temp2_dSM_x = temp_dSM_x;
 				int temp2_dSM_y = temp_dSM_y;
 				temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
 				temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
-
-				secondPoint.x += temp_dSM_x;
-				secondPoint.y += temp_dSM_y;
+				secondPoint.x += temp_dSM_x + IShape::dx;
+				secondPoint.y += temp_dSM_y + IShape::dy;
 				break;
 			}
+		}
+		if (!found)
+		{
+			pDoc->lines[i]->second_ID_not_exceist = true;
+		}
+		bool deleteThisLine = pDoc->lines[i]->first_ID_not_excist || pDoc->lines[i]->second_ID_not_exceist;
+		if (deleteThisLine)
+		{
+			
+			
+			delete pDoc->lines[i];
+			pDoc->lines.erase(pDoc->lines.begin() + i);
+			CString str;
+			int size = pDoc->lines.size();
+			str.Format(_T("Size of lines vector: %d"), size);
+			AfxMessageBox(str);
+			break;
 		}
 		m_dc.MoveTo(firstPoint);
 		m_dc.LineTo(secondPoint);
@@ -1096,6 +1112,7 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 
 	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
 	pDoc->lines.push_back(line);
+	Invalidate();
 	//AfxMessageBox(_T("BasicLine"));
 
 	// TODO: Add your command handler code here

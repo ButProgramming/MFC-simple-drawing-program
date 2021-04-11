@@ -8,6 +8,8 @@ class Lines :
     public CObject
 {
 public:
+    bool first_ID_not_excist = false; //default
+    bool second_ID_not_exceist = false; //default
     int FirstShapeConstID;
     int SecondShapeConstID;
     LineType type;
