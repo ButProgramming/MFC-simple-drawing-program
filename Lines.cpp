@@ -25,5 +25,5 @@ Lines::Lines(int FirstShapeConstID, int SecondShapeConstID, LineType type)
 	}
 	CString debug;
 	debug.Format(_T("First: %d, second %d, line type: %s"), FirstShapeConstID, SecondShapeConstID, strType);
-	AfxMessageBox(debug);
+	//AfxMessageBox(debug);
 }
