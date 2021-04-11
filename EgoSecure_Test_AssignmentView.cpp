@@ -153,7 +153,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			CString str;
 			int size = pDoc->lines.size();
 			str.Format(_T("Size of lines vector: %d"), size);
-			AfxMessageBox(str);
+			//AfxMessageBox(str);
 			break;
 		}
 		m_dc.MoveTo(firstPoint);
@@ -1109,10 +1109,12 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
-
-	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
-	pDoc->lines.push_back(line);
-	Invalidate();
+	if (pDoc->selectedShapesIDs.size()>1)
+	{
+		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
+		pDoc->lines.push_back(line);
+		Invalidate();
+	}
 	//AfxMessageBox(_T("BasicLine"));
 
 	// TODO: Add your command handler code here
@@ -1122,22 +1124,36 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
 	auto pDoc = GetDocument();
-	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
-	pDoc->lines.push_back(line);
+	if (pDoc->selectedShapesIDs.size() > 1)
+	{
+		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
+		pDoc->lines.push_back(line);
+		Invalidate();
+	}
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
 	auto pDoc = GetDocument();
-	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
-	pDoc->lines.push_back(line);
+	if (pDoc->selectedShapesIDs.size() > 1)
+	{
+		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
+		pDoc->lines.push_back(line);
+		Invalidate();
+	}
+
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
 	auto pDoc = GetDocument();
-	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
-	pDoc->lines.push_back(line);
+	if (pDoc->selectedShapesIDs.size() > 1)
+	{
+		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
+		pDoc->lines.push_back(line);
+		Invalidate();
+	}
+	
 }
