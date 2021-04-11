@@ -556,27 +556,67 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
-					if (pDoc->selectedShapesIDs.size() < 2)
+					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
 					{
-						pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+						continue;
 					}
 					else
 					{
-						pDoc->selectedShapesIDs.pop();
-						pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-					}
-					//unselected all shapes
-					for (int it = 0; it < pDoc->shapes.size(); it++)
-					{
-						pDoc->shapes[it]->isSelected = false; 
-					}
-					for (int it = 0; it < pDoc->shapes.size(); it++)
-					{
-						if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+						if (pDoc->selectedShapesIDs.size() < 2)
 						{
-							pDoc->shapes[it]->isSelected = true;
+
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
 						}
+						else
+						{
+							pDoc->selectedShapesIDs.pop();
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+						}
+						//unselected all shapes
+						for (int it = 0; it < pDoc->shapes.size(); it++)
+						{
+							pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+						}
+						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+						{
+							for (int s = 0; s < pDoc->shapes.size(); s++)
+							{
+								if (pDoc->shapes[s]->constID == constIDit)
+								{
+									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+									{
+										//int contsID = pDoc->shapes[it]->constID;
+										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+										IShape* shape;
+										pDoc->shapes.push_back(shape);
+										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+										pDoc->shapes.erase(pDoc->shapes.begin() + s);
+										//Invalidate();
+									}
+								}
+								else
+								{
+									continue;
+								}
+							}
+						}
+
+						//for (int it = 0; it < pDoc->shapes.size(); it++)
+						//{
+						//	int constID = pDoc->shapes[it]->constID;
+						//	//AfxMessageBox(_T("123"));
+						//	if (constID == pDoc->selectedShapesIDs.front() || constID == pDoc->selectedShapesIDs.back())
+						//	{
+						//		//int contsID = pDoc->shapes[it]->constID;
+						//		pDoc->shapes[it]->isSelected = true;
+						//		IShape* shape;
+						//		pDoc->shapes.push_back(shape);
+						//		iter_swap(pDoc->shapes.begin() + it, pDoc->shapes.end() - 1);
+						//		pDoc->shapes.erase(pDoc->shapes.begin() + it);
+						//	}
+						//}
 					}
+					
 					//AfxMessageBox(_T("Ellipse"));
 					//pDoc->shapes[i]->pen=newPen;
 					//shapeIsFound = true;
@@ -876,16 +916,15 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 	CString str;
 	str.Format(_T("Size lines vector: %d"), s);
 	//AfxMessageBox(str);
-	for (Lines* l : pDoc->lines)
+	//for (Lines* l : pDoc->lines)
+	//{
+	//	//l->draw();
+	//}
+	for (auto s : pDoc->shapes)
 	{
-		//l->draw();
+		s->isSelected = false;
 	}
 
-	/*for (auto s : pDoc->shapes)
-	{
-		s->name;
-	}*/
-	// TODO: Add your command handler code here
 }
 
 

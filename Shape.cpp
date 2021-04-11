@@ -51,10 +51,12 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 void EllipseShape::draw(CDC* dc)
 {
 	//size = 100;
-	if (!isSelected)
+	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	else
+		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
 	CPoint circleCenter{ 0, 0 };
 

@@ -29,7 +29,7 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
 	
-	
+	bool isSelectedFromDoubleSelectingTool = false;
 	int constID;
 	int ID;
 	string name;
