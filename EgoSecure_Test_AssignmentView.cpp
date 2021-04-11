@@ -542,6 +542,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
 	{
+	bool shapeIsFound = false;
 		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 		{
 			switch (pDoc->shapes[i]->type)
@@ -556,6 +557,11 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
+					if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+					{
+						i = -1;
+						break;
+					}
 					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
 					{
 						continue;
@@ -575,11 +581,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 						//unselected all shapes
 						for (int it = 0; it < pDoc->shapes.size(); it++)
 						{
-							pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+							/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+								continue;
+							else*/
+								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
 						}
 						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
 						{
-							for (int s = 0; s < pDoc->shapes.size(); s++)
+							for (int s = pDoc->shapes.size() - 1; s >= 0 ; s--)
 							{
 								if (pDoc->shapes[s]->constID == constIDit)
 								{
@@ -587,6 +596,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 									{
 										//int contsID = pDoc->shapes[it]->constID;
 										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+										shapeIsFound = true;
 										IShape* shape;
 										pDoc->shapes.push_back(shape);
 										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
@@ -600,61 +610,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 								}
 							}
 						}
-
-						//for (int it = 0; it < pDoc->shapes.size(); it++)
-						//{
-						//	int constID = pDoc->shapes[it]->constID;
-						//	//AfxMessageBox(_T("123"));
-						//	if (constID == pDoc->selectedShapesIDs.front() || constID == pDoc->selectedShapesIDs.back())
-						//	{
-						//		//int contsID = pDoc->shapes[it]->constID;
-						//		pDoc->shapes[it]->isSelected = true;
-						//		IShape* shape;
-						//		pDoc->shapes.push_back(shape);
-						//		iter_swap(pDoc->shapes.begin() + it, pDoc->shapes.end() - 1);
-						//		pDoc->shapes.erase(pDoc->shapes.begin() + it);
-						//	}
-						//}
 					}
-					
-					//AfxMessageBox(_T("Ellipse"));
-					//pDoc->shapes[i]->pen=newPen;
-					//shapeIsFound = true;
-					//for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-					//{
-					//	//unselecting others shapes
-					//	if (pDoc->shapes[i]->isSelected == true)
-					//	{
-					//		pDoc->shapes[i]->pen->DeleteObject();
-					//		pDoc->shapes[i]->isSelected = false;
-					//		break;
-					//	};
-					//}
-					//swap
-					//pDoc->shapes[i]->isSelectedFirst = true;
 
-					/*auto s1 = pDoc->shapes[i];
-					auto s2 = pDoc->shapes[pDoc->shapes.size()-1];
-					pDoc->shapes[i] = s2;
-					pDoc->shapes[pDoc->shapes.size() - 1] = s1;*/
-
-					
-					/*IShape* shape;
-					pDoc->shapes.push_back(shape);
-					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
-					pDoc->shapes.erase(pDoc->shapes.begin() + i);*/
 				}
-				//delete ellipseRgn;
-				//pDoc->shapes[i]->centerOfShape
-				//AfxMessageBox(_T("ellipse"));
 				break;
+			}
+			
 			}
 			if (shapeIsFound)
 			{
-				//break;
-			}
+				break;
 			}
 		}
+		
 	}
 	CView::OnLButtonDblClk(nFlags, point);
 }
