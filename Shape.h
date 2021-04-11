@@ -33,7 +33,7 @@ public:
 	int constID;
 	int ID;
 	string name;
-	struct diffShapeMove { int x = 0; int y = 0; } dSM;
+	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };

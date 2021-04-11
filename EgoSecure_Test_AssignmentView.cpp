@@ -88,7 +88,62 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	{
 		s->draw(&m_dc);
 	}
+	for (Lines* l : pDoc->lines)
+	{
+		CPoint firstPoint;
+		CPoint secondPoint;
+		int firstID = l->FirstShapeConstID;
+		int secondID = l->SecondShapeConstID;
 
+		/*for (int i = 0; i < 4; i++)
+		{
+			int tempX = points[i].x;
+			int tempY = points[i].y;
+			points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+			points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+			points[i].x += centerOfShape.x + dx;
+			points[i].y += centerOfShape.y + dy;
+		}*/
+
+		for (auto s : pDoc->shapes)
+		{
+			if (s->constID == firstID)
+			{
+				firstPoint = s->centerOfShape;
+				int temp_dSM_x = s->dSM.x;
+				int temp_dSM_y = s->dSM.y;
+				int temp2_dSM_x = temp_dSM_x;
+				int temp2_dSM_y = temp_dSM_y;
+				temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
+				temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
+				
+				firstPoint.x += temp_dSM_x;
+				firstPoint.y += temp_dSM_y;
+				//Invalidate();
+				break;
+			}
+		}
+		for (auto s : pDoc->shapes)
+		{
+			if (s->constID == secondID)
+			{
+				secondPoint = s->centerOfShape;
+				int temp_dSM_x = s->dSM.x;
+				int temp_dSM_y = s->dSM.y;
+				int temp2_dSM_x = temp_dSM_x;
+				int temp2_dSM_y = temp_dSM_y;
+				temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
+				temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
+
+				secondPoint.x += temp_dSM_x;
+				secondPoint.y += temp_dSM_y;
+				break;
+			}
+		}
+		m_dc.MoveTo(firstPoint);
+		m_dc.LineTo(secondPoint);
+
+	}
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 
@@ -1009,6 +1064,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 			pDoc->shapes.erase(pDoc->shapes.begin() + i);
 		}
 	}
+	Invalidate();
 	// TODO: Add your command handler code here
 }
 
@@ -1037,8 +1093,9 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
-	Lines* BL = new BasicLine;
-	pDoc->lines.push_back(BL);
+
+	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
+	pDoc->lines.push_back(line);
 	//AfxMessageBox(_T("BasicLine"));
 
 	// TODO: Add your command handler code here
@@ -1048,28 +1105,22 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
 	auto pDoc = GetDocument();
-	Lines* BL = new RightLine;
-	pDoc->lines.push_back(BL);
-	//AfxMessageBox(_T("RightLine"));
-	// TODO: Add your command handler code here
+	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
+	pDoc->lines.push_back(line);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
 	auto pDoc = GetDocument();
-	Lines* BL = new LeftLine;
-	pDoc->lines.push_back(BL);
-	//AfxMessageBox(_T("LeftLine"));
-	// TODO: Add your command handler code here
+	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
+	pDoc->lines.push_back(line);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
 	auto pDoc = GetDocument();
-	Lines* BL = new DoubleLine;
-	pDoc->lines.push_back(BL);
-	//AfxMessageBox(_T("DoubleLine"));
-	// TODO: Add your command handler code here
+	Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
+	pDoc->lines.push_back(line);
 }

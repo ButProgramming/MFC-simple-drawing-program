@@ -1,41 +1,18 @@
 #pragma once
 #include <afx.h>
 
-//enum class LinesTools { };
+enum class LineType { Basic, Left, Right, Double };
 
 
 class Lines :
     public CObject
 {
 public:
-    virtual void draw() = 0;
-    virtual ~Lines();
+    int FirstShapeConstID;
+    int SecondShapeConstID;
+    LineType type;
+    //void draw(int, int, LineType);
+    Lines(int, int, LineType);
 };
 
-class BasicLine : public Lines
-{
-public:
-    void draw();
-
-};
-
-class RightLine : public Lines
-{
-public:
-    void draw();
-};
-
-class LeftLine : public Lines
-{
-public:
-    void draw();
-};
-
-
-
-class DoubleLine : public Lines
-{
-public:
-    void draw();
-};
 
