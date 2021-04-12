@@ -529,7 +529,12 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelected = false;
+	}
 	pDoc->toolIsUsed = Tools::ellipse;
+	Invalidate();
 
 }
 
@@ -538,7 +543,12 @@ void CEgoSecureTestAssignmentView::OnButtonRectangle()
 {
 	// TODO: Add your command handler code here}
 	auto pDoc = GetDocument();
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelected = false;
+	}
 	pDoc->toolIsUsed = Tools::rectangle;
+	Invalidate();
 }
 
 
@@ -546,7 +556,12 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 {
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelected = false;
+	}
 	pDoc->toolIsUsed = Tools::triangle;
+	Invalidate();
 }
 
 
@@ -677,7 +692,18 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 {
 	auto pDoc = GetDocument();
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelected = false;
+	}
+	queue<int> clear;
+	swap(clear, pDoc->selectedShapesIDs);
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelectedFromDoubleSelectingTool = false;
+	}
 	pDoc->toolIsUsed = Tools::select_tool;
+	Invalidate();
 	// TODO: Add your command handler code here
 }
 
@@ -1284,8 +1310,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 void CEgoSecureTestAssignmentView::OnButtonDelete()
 {
 	auto pDoc = GetDocument();
-	if (pDoc->toolIsUsed == Tools::select_tool)
-	{
+	
 		//AfxMessageBox(_T("del"));
 		for (int i = 0; i < pDoc->shapes.size(); i++)
 		{
@@ -1298,8 +1323,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 			}
 		}
 		
-	}
-	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
+	if (pDoc->toolIsUsed == Tools::doubleSelectTool)
 	{
 		int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
 		int ID2_is_selected = pDoc->selectedShapesIDs.back();
