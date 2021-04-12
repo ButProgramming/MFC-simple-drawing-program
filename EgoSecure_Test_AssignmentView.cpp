@@ -264,35 +264,18 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 
 			CPoint firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
 			CPoint secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-			//dbug.Format(_T("legX: %g, legY: %g"), legX, legY);
 
-			//if (lengthOFLeg > 80 && lengthOFLeg < 120)
-			//{
-			//	//AfxMessageBox(dbug);
-			//}
-
-			//m_dc.Ellipse(firstLegPoint.x - 5, firstLegPoint.y - 5, firstLegPoint.x + 5, firstLegPoint.y + 5);
-			//m_dc.Ellipse(firstPointOfArrow.x - 5, firstPointOfArrow.y - 5, firstPointOfArrow.x + 5, firstPointOfArrow.y + 5);
-			//m_dc.Ellipse(secondPointOfArrow.x - 5, secondPointOfArrow.y - 5, secondPointOfArrow.x + 5, secondPointOfArrow.y + 5);
-			//m_dc.Ellipse(secondLegPoint.x - 5, secondLegPoint.y - 5, secondLegPoint.x + 5, secondLegPoint.y + 5);
 			m_dc.MoveTo(firstPoint);
 			m_dc.LineTo(firstPointOfArrow);
 			m_dc.MoveTo(firstPoint);
 			m_dc.LineTo(secondPointOfArrow);
 
-			////lenghtOfHypotenuse = 
-			////m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-			///*int angleDegree = 45;
-			//double angleRadian = (double)angleDegree * 3.14 / 180.0f;
-			//double tempX = (centerOfArrowGround.x - secondPoint.x) * tan(angleRadian);
-			//double tempY = (centerOfArrowGround.y - secondPoint.y) * tan(angleRadian);
-			//CPoint leftPointOfArrowGround = CPoint(centerOfArrowGround.x, centerOfArrowGround.y + 20);
-			//m_dc.Ellipse(leftPointOfArrowGround.x - 5, leftPointOfArrowGround.y - 5, leftPointOfArrowGround.x + 5, leftPointOfArrowGround.y + 5);*/
+
 		}
-		else
+		else if (pDoc->lines[i]->type == LineType::Double)
 		{
 
-
+		//drawing first arrow
 		CPoint centerOfArrowGround = CPoint(firstPoint.x + (secondPoint.x - firstPoint.x) / 1.07, firstPoint.y + (secondPoint.y - firstPoint.y) / 1.07);
 		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
 		double angleOfTriangleDeg = 12;
@@ -337,48 +320,33 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			//AfxMessageBox(dbug);
 		}
 
-		//m_dc.Ellipse(firstLegPoint.x - 5, firstLegPoint.y - 5, firstLegPoint.x + 5, firstLegPoint.y + 5);
-		//m_dc.Ellipse(firstPointOfArrow.x - 5, firstPointOfArrow.y - 5, firstPointOfArrow.x + 5, firstPointOfArrow.y + 5);
-		//m_dc.Ellipse(secondPointOfArrow.x - 5, secondPointOfArrow.y - 5, secondPointOfArrow.x + 5, secondPointOfArrow.y + 5);
-		//m_dc.Ellipse(secondLegPoint.x - 5, secondLegPoint.y - 5, secondLegPoint.x + 5, secondLegPoint.y + 5);
+
 		m_dc.MoveTo(secondPoint);
 		m_dc.LineTo(firstPointOfArrow);
 		m_dc.MoveTo(secondPoint);
 		m_dc.LineTo(secondPointOfArrow);
 
-		//lenghtOfHypotenuse = 
-		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-		/*int angleDegree = 45;
-		double angleRadian = (double)angleDegree * 3.14 / 180.0f;
-		double tempX = (centerOfArrowGround.x - secondPoint.x) * tan(angleRadian);
-		double tempY = (centerOfArrowGround.y - secondPoint.y) * tan(angleRadian);
-		CPoint leftPointOfArrowGround = CPoint(centerOfArrowGround.x, centerOfArrowGround.y + 20);
-		m_dc.Ellipse(leftPointOfArrowGround.x - 5, leftPointOfArrowGround.y - 5, leftPointOfArrowGround.x + 5, leftPointOfArrowGround.y + 5);*/
+	
 
 
 
 
-
+		//drawing second arrow
 		centerOfArrowGround = CPoint(secondPoint.x - (secondPoint.x - firstPoint.x) / 1.07, secondPoint.y - (secondPoint.y - firstPoint.y) / 1.07);
-		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
+
 		angleOfTriangleDeg = 12;
 		angleOfTriangleRad = angleOfTriangleDeg * 3.14 / 180.f;
-		//double angleBigTriangleRad;
-		//double angleBigTriangleDeg;
 
-		//double lengthOFLeg;
-		//double lengthOfHypotenuse;
 		firstLegPoint = CPoint(firstPoint.x, firstPoint.y);
 		secondLegPoint = CPoint(centerOfArrowGround.x, firstPoint.y);
 		lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-		//CString dbug;
 
 
 		lengthOFLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
 		angleBigTriangleRad = acos(lengthOFLeg / lengthOfHypotenuse);
 		angleBigTriangleDeg = angleBigTriangleRad * 180.0f / 3.14;
 		dbug.Format(_T("Length of hyp: %g, leg: %g, deg: %g"), lengthOfHypotenuse, lengthOFLeg, angleBigTriangleDeg);
-		//AfxMessageBox(dbug);
+
 
 		lengthOfArrow = sqrt(pow(centerOfArrowGround.x - firstPoint.x, 2) + pow(centerOfArrowGround.y - firstPoint.y, 2));
 		lengthOfPerpendicular = lengthOfArrow * tan(angleOfTriangleRad);
@@ -397,30 +365,12 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 
 		firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
 		secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-		//dbug.Format(_T("legX: %g, legY: %g"), legX, legY);
 
-		//if (lengthOFLeg > 80 && lengthOFLeg < 120)
-		//{
-		//	//AfxMessageBox(dbug);
-		//}
-
-		//m_dc.Ellipse(firstLegPoint.x - 5, firstLegPoint.y - 5, firstLegPoint.x + 5, firstLegPoint.y + 5);
-		//m_dc.Ellipse(firstPointOfArrow.x - 5, firstPointOfArrow.y - 5, firstPointOfArrow.x + 5, firstPointOfArrow.y + 5);
-		//m_dc.Ellipse(secondPointOfArrow.x - 5, secondPointOfArrow.y - 5, secondPointOfArrow.x + 5, secondPointOfArrow.y + 5);
-		//m_dc.Ellipse(secondLegPoint.x - 5, secondLegPoint.y - 5, secondLegPoint.x + 5, secondLegPoint.y + 5);
 		m_dc.MoveTo(firstPoint);
 		m_dc.LineTo(firstPointOfArrow);
 		m_dc.MoveTo(firstPoint);
 		m_dc.LineTo(secondPointOfArrow);
 
-		////lenghtOfHypotenuse = 
-		////m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-		///*int angleDegree = 45;
-		//double angleRadian = (double)angleDegree * 3.14 / 180.0f;
-		//double tempX = (centerOfArrowGround.x - secondPoint.x) * tan(angleRadian);
-		//double tempY = (centerOfArrowGround.y - secondPoint.y) * tan(angleRadian);
-		//CPoint leftPointOfArrowGround = CPoint(centerOfArrowGround.x, centerOfArrowGround.y + 20);
-		//m_dc.Ellipse(leftPointOfArrowGround.x - 5, leftPointOfArrowGround.y - 5, leftPointOfArrowGround.x + 5, leftPointOfArrowGround.y + 5);*/
 
 
  }
@@ -1374,12 +1324,27 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
-	if (pDoc->selectedShapesIDs.size()>1)
+	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
-		pDoc->lines.push_back(line);
-		Invalidate();
+		bool LineExists = false;
+		for (auto l : pDoc->lines)
+		{
+			if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+			{
+				LineExists = true;
+				break;
+			}
+		}
+		if (!LineExists)
+		{
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
+			pDoc->lines.push_back(line);
+			Invalidate();
+		}
 	}
+	CString db;
+	db.Format(_T("lines.size() = %d"), pDoc->lines.size()); 
+	AfxMessageBox(db);
 	//AfxMessageBox(_T("BasicLine"));
 
 	// TODO: Add your command handler code here
@@ -1389,11 +1354,23 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
 	auto pDoc = GetDocument();
-	if (pDoc->selectedShapesIDs.size() > 1)
+	bool LineExists = false;
+	for (auto l : pDoc->lines)
 	{
-		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
-		pDoc->lines.push_back(line);
-		Invalidate();
+		if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+		{
+			LineExists = true;
+			break;
+		}
+	}
+	if (!LineExists)
+	{
+		if (pDoc->selectedShapesIDs.size() > 1)
+		{
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
+			pDoc->lines.push_back(line);
+			Invalidate();
+		}
 	}
 }
 
@@ -1401,12 +1378,25 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
 	auto pDoc = GetDocument();
-	if (pDoc->selectedShapesIDs.size() > 1)
+	bool LineExists = false;
+	for (auto l : pDoc->lines)
 	{
-		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
-		pDoc->lines.push_back(line);
-		Invalidate();
+		if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+		{
+			LineExists = true;
+			break;
+		}
 	}
+	if (!LineExists)
+	{
+		if (pDoc->selectedShapesIDs.size() > 1)
+		{
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
+			pDoc->lines.push_back(line);
+			Invalidate();
+		}
+	}
+	
 
 }
 
@@ -1414,11 +1404,24 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
 	auto pDoc = GetDocument();
-	if (pDoc->selectedShapesIDs.size() > 1)
+	bool LineExists = false;
+	for (auto l : pDoc->lines)
 	{
-		Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
-		pDoc->lines.push_back(line);
-		Invalidate();
+		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		{
+			LineExists = true;
+			break;
+		}
 	}
+	if (!LineExists)
+	{
+		if (pDoc->selectedShapesIDs.size() > 1)
+		{
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
+			pDoc->lines.push_back(line);
+			Invalidate();
+		}
+	}
+	
 	
 }
