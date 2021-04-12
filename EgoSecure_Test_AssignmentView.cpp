@@ -100,6 +100,9 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		bool found = false;
 		for (auto s : pDoc->shapes)
 		{
+			CString d;
+			d.Format(_T("%d"), s->constID);
+			//AfxMessageBox(d);
 			if (s->constID == firstID)
 			{
 				found = true;

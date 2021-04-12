@@ -51,6 +51,11 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 		delete s;
 	}
 	shapes.clear();
+	for (auto l : lines)
+	{
+		delete l;
+	}
+	lines.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
@@ -68,14 +73,22 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 	{
 		int ST;
 		int size;
-		int vectorSize = shapes.size();
-		ar << vectorSize;
+		int vectorShapeSize = shapes.size();
+		int vectorLinesSize = lines.size();
+		ar << vectorShapeSize;
+		ar << vectorLinesSize;
+		for (auto l : lines)
+		{
+			ar << l->FirstShapeConstID;
+			ar << l->SecondShapeConstID;
+		}
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->isSelected;
 			ar << s->size;
 			ar << s->ellipseAngleRad;
+			ar << s->constID;
 			for (int i = 0; i < 4; i++)
 			{
 				ar << s->dx_dy[i];
@@ -99,6 +112,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 			
 		}
+
+		
 		// TODO: add storing code here
 	}
 	else
@@ -109,19 +124,35 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int size;
 		CPoint centerOfShape;
 		bool isSelected;
-		int vectorSize;
+		int vectorShapeSize;
+		int vectorLinesSize;
+
 		double ellipseAngleRad;
 		CPoint dx_dy[4];
-		ar >> vectorSize;
+		int FirstShapeConstID;
+		int SecondShapeConstID;
+		int constID;
+		Lines* temp;
+		ar >> vectorShapeSize;
+		ar >> vectorLinesSize;
 		CString str;
-		str.Format(_T("Size: %d"), vectorSize);
+		str.Format(_T("Shapes: %d, lines: %d"), vectorShapeSize, vectorLinesSize);
 		AfxMessageBox(str);
-		for (int i = 0; i < vectorSize; i++)
+		for (int i = 0; i < vectorLinesSize; i++)
+		{
+			ar >> FirstShapeConstID;
+			ar >> SecondShapeConstID;
+
+			temp = new Lines(FirstShapeConstID, SecondShapeConstID, LineType::Basic);
+			lines.push_back(temp);
+		}
+		for (int i = 0; i < vectorShapeSize; i++)
 		{
 			ar >> centerOfShape.x >> centerOfShape.y;
 			ar >> isSelected;
 			ar >> size;
 			ar >> ellipseAngleRad;
+			ar >> constID;
 			for (int i = 0; i < 4; i++)
 			{
 				ar >> dx_dy[i];
@@ -153,11 +184,17 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			//shapes.emplace_back(shape);
 			shapes.push_back(shape);
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
+			shapes[shapes.size() - 1]->constID = constID;
 			for (int i = 0; i < 4; i++)
 			{
 				shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
 			}
 		}
+		
+		
+		//CString str;
+		str.Format(_T("Shapes: %d, lines: %d"), shapes.size(), lines.size());
+		AfxMessageBox(str);
 		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here
 	}
