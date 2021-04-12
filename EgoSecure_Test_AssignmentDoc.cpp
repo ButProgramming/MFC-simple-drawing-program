@@ -71,24 +71,22 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		int ST;
-		int size;
+		int ST; // shape type
+		int LT; //line type
+		int size; 
 		int vectorShapeSize = shapes.size();
 		int vectorLinesSize = lines.size();
 		ar << vectorShapeSize;
 		ar << vectorLinesSize;
-		for (auto l : lines)
-		{
-			ar << l->FirstShapeConstID;
-			ar << l->SecondShapeConstID;
-		}
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->isSelected;
+			ar << s->isSelectedFromDoubleSelectingTool;
 			ar << s->size;
 			ar << s->ellipseAngleRad;
 			ar << s->constID;
+			
 			for (int i = 0; i < 4; i++)
 			{
 				ar << s->dx_dy[i];
@@ -112,18 +110,47 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 			
 		}
+		for (auto l : lines)
+		{
+			ar << l->FirstShapeConstID;
+			ar << l->SecondShapeConstID;
+			if (l->type == LineType::Basic)
+			{
+				//ST = static_cast<ShapeType::ellipse>();
+				LT = 0;
+				ar << LT;
+			}
+			else if (l->type == LineType::Right)
+			{
+				LT = 1;
+				ar << LT;
+			}
+			else if(l->type == LineType::Left)
+			{
+				LT = 2;
+				ar << LT;
+			}
+			else
+			{
+				LT = 3;
+				ar << LT;
+			}
+		}
 
 		
 		// TODO: add storing code here
 	}
 	else
 	{
-		IShape* shape;
-		ShapeType type;
+		IShape* shapeTemp;
+		ShapeType shapeType;
+		LineType lineType;
 		int ST;
+		int LT;
 		int size;
 		CPoint centerOfShape;
 		bool isSelected;
+		bool isSelectedFromDoubleSelectingTool;
 		int vectorShapeSize;
 		int vectorLinesSize;
 
@@ -132,24 +159,17 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int FirstShapeConstID;
 		int SecondShapeConstID;
 		int constID;
-		Lines* temp;
+		Lines* lineTemp;
 		ar >> vectorShapeSize;
 		ar >> vectorLinesSize;
 		CString str;
 		str.Format(_T("Shapes: %d, lines: %d"), vectorShapeSize, vectorLinesSize);
 		AfxMessageBox(str);
-		for (int i = 0; i < vectorLinesSize; i++)
-		{
-			ar >> FirstShapeConstID;
-			ar >> SecondShapeConstID;
-
-			temp = new Lines(FirstShapeConstID, SecondShapeConstID, LineType::Basic);
-			lines.push_back(temp);
-		}
 		for (int i = 0; i < vectorShapeSize; i++)
 		{
 			ar >> centerOfShape.x >> centerOfShape.y;
 			ar >> isSelected;
+			ar >> isSelectedFromDoubleSelectingTool;
 			ar >> size;
 			ar >> ellipseAngleRad;
 			ar >> constID;
@@ -164,37 +184,70 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> ST;
 			if (ST == 0)
 			{
-				type = ShapeType::ellipse;
-				shape = new EllipseShape(centerOfShape, true, size, type);
-				shape->isSelected = isSelected;
+				shapeType = ShapeType::ellipse;
+				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType);
+				shapeTemp->isSelected = isSelected;
 			}
 			else if (ST == 1)
 			{
-				type = ShapeType::rectangle;
-				shape = new RectangleShape(centerOfShape, true, size, type);
-				shape->isSelected = isSelected;
+				shapeType = ShapeType::rectangle;
+				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType);
+				shapeTemp->isSelected = isSelected;
 			}
 			else
 			{
-				type = ShapeType::triangle;
-				shape = new TriangleShape(centerOfShape, true, size, type);
-				shape->isSelected = isSelected;
+				shapeType = ShapeType::triangle;
+				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType);
+				shapeTemp->isSelected = isSelected;
 			}
 			
 			//shapes.emplace_back(shape);
-			shapes.push_back(shape);
+			shapes.push_back(shapeTemp);
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
 			shapes[shapes.size() - 1]->constID = constID;
+			shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
 			for (int i = 0; i < 4; i++)
 			{
 				shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
 			}
 		}
-		
+		for (int i = 0; i < vectorLinesSize; i++)
+		{
+			ar >> FirstShapeConstID;
+			ar >> SecondShapeConstID;
+
+			ar >> LT;
+			if (LT == 0)
+			{
+				lineType = LineType::Basic;
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				//lineTemp->isSelected = isSelected;
+			}
+			else if (LT == 1)
+			{
+				lineType = LineType::Right;
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				//lineTemp->isSelected = isSelected;
+			}
+			else if (LT == 2)
+			{
+				lineType = LineType::Left;
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				//lineTemp->isSelected = isSelected;
+			}
+			else
+			{
+				lineType = LineType::Double;
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				//lineTemp->isSelected = isSelected;
+			}
+			lines.push_back(lineTemp);
+		}
 		
 		//CString str;
 		str.Format(_T("Shapes: %d, lines: %d"), shapes.size(), lines.size());
-		AfxMessageBox(str);
+		//AfxMessageBox(str);
+
 		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here
 	}
