@@ -1284,15 +1284,33 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 void CEgoSecureTestAssignmentView::OnButtonDelete()
 {
 	auto pDoc = GetDocument();
-	//AfxMessageBox(_T("del"));
-	for (int i = 0; i < pDoc->shapes.size(); i++)
+	if (pDoc->toolIsUsed == Tools::select_tool)
 	{
-		if (pDoc->shapes[i]->isSelected)
+		//AfxMessageBox(_T("del"));
+		for (int i = 0; i < pDoc->shapes.size(); i++)
 		{
-			/*IShape* shape;
-			pDoc->shapes.push_back(shape);
-			iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
-			pDoc->shapes.erase(pDoc->shapes.begin() + i);
+			if (pDoc->shapes[i]->isSelected)
+			{
+				/*IShape* shape;
+				pDoc->shapes.push_back(shape);
+				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
+				pDoc->shapes.erase(pDoc->shapes.begin() + i);
+			}
+		}
+		
+	}
+	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
+	{
+		int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
+		int ID2_is_selected = pDoc->selectedShapesIDs.back();
+		for (int i=0; i<pDoc->lines.size(); i++)
+		{
+			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
+			{
+				delete pDoc->lines[i];
+				pDoc->lines.erase(pDoc->lines.begin() + i);
+				
+			}
 		}
 	}
 	Invalidate();
