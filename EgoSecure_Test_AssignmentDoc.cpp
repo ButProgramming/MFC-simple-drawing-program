@@ -18,6 +18,9 @@
 #define new DEBUG_NEW
 #endif
 
+#include <cmath>
+using namespace std;
+
 // CEgoSecureTestAssignmentDoc
 
 IMPLEMENT_DYNCREATE(CEgoSecureTestAssignmentDoc, CDocument)
@@ -72,6 +75,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->isSelected;
 			ar << s->size;
+			ar << s->ellipseAngleRad;
 			if (s->type == ShapeType::ellipse)
 			{
 				//ST = static_cast<ShapeType::ellipse>();
@@ -101,6 +105,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		CPoint centerOfShape;
 		bool isSelected;
 		int vectorSize;
+		double ellipseAngleRad;
 		ar >> vectorSize;
 		CString str;
 		str.Format(_T("Size: %d"), vectorSize);
@@ -110,7 +115,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> centerOfShape.x >> centerOfShape.y;
 			ar >> isSelected;
 			ar >> size;
+			ar >> ellipseAngleRad;
 			ar >> ST;
+
 			
 			if (ST == 0)
 			{
@@ -133,6 +140,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			
 			//shapes.emplace_back(shape);
 			shapes.push_back(shape);
+			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
 		}
 		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here
