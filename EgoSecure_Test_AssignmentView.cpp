@@ -1359,7 +1359,13 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 	{
 		s->isSelected = false;
 	}
-
+	for (auto s : pDoc->shapes)
+	{
+		s->isSelectedFromDoubleSelectingTool = false;
+	}
+	queue<int> clear;
+	swap(clear, pDoc->selectedShapesIDs);
+	Invalidate();
 }
 
 
