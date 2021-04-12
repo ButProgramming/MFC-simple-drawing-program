@@ -1377,7 +1377,7 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 		bool LineExists = false;
 		for (auto l : pDoc->lines)
 		{
-			if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
 			{
 				LineExists = true;
 				break;
@@ -1405,7 +1405,7 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 	bool LineExists = false;
 	for (auto l : pDoc->lines)
 	{
-		if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
 		{
 			LineExists = true;
 			break;
@@ -1429,7 +1429,7 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 	bool LineExists = false;
 	for (auto l : pDoc->lines)
 	{
-		if (l->FirstShapeConstID == pDoc->selectedShapesIDs.front() || l->FirstShapeConstID == pDoc->selectedShapesIDs.back() || l->SecondShapeConstID == pDoc->selectedShapesIDs.front() || l->SecondShapeConstID == pDoc->selectedShapesIDs.back())
+		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
 		{
 			LineExists = true;
 			break;

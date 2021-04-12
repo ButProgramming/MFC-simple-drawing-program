@@ -76,6 +76,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->isSelected;
 			ar << s->size;
 			ar << s->ellipseAngleRad;
+			for (int i = 0; i < 4; i++)
+			{
+				ar << s->dx_dy[i];
+			}
+
 			if (s->type == ShapeType::ellipse)
 			{
 				//ST = static_cast<ShapeType::ellipse>();
@@ -106,6 +111,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		bool isSelected;
 		int vectorSize;
 		double ellipseAngleRad;
+		CPoint dx_dy[4];
 		ar >> vectorSize;
 		CString str;
 		str.Format(_T("Size: %d"), vectorSize);
@@ -116,9 +122,15 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> isSelected;
 			ar >> size;
 			ar >> ellipseAngleRad;
-			ar >> ST;
+			for (int i = 0; i < 4; i++)
+			{
+				ar >> dx_dy[i];
+			}
 
-			
+
+
+
+			ar >> ST;
 			if (ST == 0)
 			{
 				type = ShapeType::ellipse;
@@ -141,6 +153,10 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			//shapes.emplace_back(shape);
 			shapes.push_back(shape);
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
+			for (int i = 0; i < 4; i++)
+			{
+				shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
+			}
 		}
 		toolIsUsed = Tools::select_tool;
 		// TODO: add loading code here
