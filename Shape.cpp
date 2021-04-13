@@ -17,23 +17,10 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	{
 		for (auto it = IDs.begin(); it != IDs.end(); it++)
 		{
-			/*if (i != *it || IShape::IDs.empty())
-			{
-				ID = i;
-				IShape::IDs.
-				break;
-			}*/
 			int empt = IDs.empty();
 			CString str;
 			str.Format(_T("%d"), empt);
-			//AfxMessageBox(str);
-			/*if (IDs.empty())
-			{
-				ID = i;
-				IDs.insert(ID);
-				break;
-			}*/
-
+			
 			auto pos = IDs.find(i);
 			if (pos == IDs.end())
 			{

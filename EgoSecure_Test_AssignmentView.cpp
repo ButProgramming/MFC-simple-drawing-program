@@ -1321,10 +1321,13 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 		{
 			if (pDoc->shapes[i]->isSelected)
 			{
+				int deleteID = pDoc->shapes[i]->ID;
+				IShape::IDs.erase(deleteID); // erase ID because ID won't exist
 				/*IShape* shape;
 				pDoc->shapes.push_back(shape);
 				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
-				pDoc->shapes.erase(pDoc->shapes.begin() + i);
+				delete pDoc->shapes[i]; // memory clear
+				pDoc->shapes.erase(pDoc->shapes.begin() + i); //erase from vector
 			}
 		}
 		
