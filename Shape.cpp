@@ -461,9 +461,9 @@ void TriangleShape::draw(CDC* dc)
 	}
 	CRgn* triangleNewRgn = new CRgn;
 	triangleNewRgn->CreatePolygonRgn(triangle, 3, ALTERNATE);
-	//CBrush* triangleBrush = new CBrush(HS_CROSS, RGB(0, 255, 0));
-	CBrush* triangleBrush = new CBrush;
-	triangleBrush->CreateSolidBrush(RGB(fR, fG, fB)); // Microsoft C++ exception: CResourceException at memory location 0x0098F310
+	CBrush* triangleBrush = new CBrush(HS_DIAGCROSS , RGB(0, 255, 0));
+	//CBrush* triangleBrush = new CBrush;
+	//triangleBrush->CreateSolidBrush(RGB(fR, fG, fB)); // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	//triangleBrush->CreateSolidBrush(HS_DIAGCROSS);
 	//dc->Polygon(recFromRgn, 4);
 

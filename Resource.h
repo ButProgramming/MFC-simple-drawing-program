@@ -33,12 +33,12 @@
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO_OUTLINE_SIZE          1008
-#define IDC_COMBO2                      1009
 #define IDC_COMBO_OUTLINE_TYPE          1009
 #define IDC_MFCCOLORBUTTON_FILL         1010
-#define IDC_COMBO4                      1012
+#define IDC_COMBO_FILL_TYPE             1012
 #define IDC_MFCCOLORBUTTON3             1013
 #define IDC_COMBO5                      1014
+#define IDC_MFCCOLORBUTTON_OUTLINE2     1020
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
