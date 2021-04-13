@@ -26,6 +26,7 @@ public:
 
 	int dx = 0;
 	int dy = 0;
+	COLORREF m_outline_color;
 // Operations
 public:
 

@@ -22,4 +22,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CMFCColorButton m_color_outline;
+	COLORREF m_color;
+	afx_msg void OnBnClickedOk();
 };

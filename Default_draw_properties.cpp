@@ -29,7 +29,22 @@ void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(Default_draw_properties, CDialogEx)
+	ON_BN_CLICKED(IDOK, &Default_draw_properties::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
 // Default_draw_properties message handlers
+
+
+void Default_draw_properties::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	
+	m_color = m_color_outline.GetColor();
+	int outlineR = GetRValue(m_color);
+	int outlineG = GetGValue(m_color);
+	int outlineB = GetBValue(m_color);
+	CString str;
+	str.Format(_T("R: %d, G: %d, B: %d"), outlineR, outlineG, outlineB);
+	CDialogEx::OnOK();
+}

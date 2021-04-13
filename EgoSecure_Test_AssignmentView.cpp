@@ -435,6 +435,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 	//Shape* s = new Shape;
 	auto pDoc = GetDocument();
+	auto Ddp = new Default_draw_properties;
 	/*CString str;
 	str.Format(_T("%d"), pDoc->typeOfShape);
 	AfxMessageBox(str);*/
@@ -442,7 +443,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 	case Tools::ellipse:
 	{
-		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse);
+		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color);
 		pDoc->shapes.push_back(shape);
 		/*CString str;
 		str.Format(_T("%d"), pDoc->shapes.size());
@@ -452,14 +453,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::rectangle:
 	{
-		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle);
+		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
 	}
 	case Tools::triangle:
 	{
-		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle);
+		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
@@ -1521,4 +1522,6 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	auto pDoc = GetDocument();
 	Default_draw_properties dlg;
 	dlg.DoModal();
+	pDoc->m_outline_color = dlg.m_color;
+	//AfxMessageBox(_T("123"));
 }

@@ -8,8 +8,9 @@ int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 
 
-EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor)
 {
+	this->outlineColor = outlineColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
 	bool isFound = false;
@@ -45,8 +46,9 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	//this->typeOfShape = typeOfShape;
 }
 
-RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor)
 {
+	this->outlineColor = outlineColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
 	bool isFound = false;
@@ -81,9 +83,9 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	//this->typeOfShape = typeOfShape;
 }
 
-TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor)
 {
-
+	this->outlineColor = outlineColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
 	bool isFound = false;
@@ -120,8 +122,11 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 void EllipseShape::draw(CDC* dc)
 {
 	//size = 100;
+	int R = GetRValue(outlineColor);
+	int G = GetGValue(outlineColor);
+	int B = GetBValue(outlineColor);
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+		pen = new CPen(PS_SOLID, 4, RGB(R, G, B));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -271,8 +276,11 @@ void EllipseShape::draw(CDC* dc)
 
 void RectangleShape::draw(CDC* dc)
 {
+	int R = GetRValue(outlineColor);
+	int G = GetGValue(outlineColor);
+	int B = GetBValue(outlineColor);
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+		pen = new CPen(PS_SOLID, 4, RGB(R, G, B));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -336,9 +344,11 @@ void RectangleShape::draw(CDC* dc)
 void TriangleShape::draw(CDC* dc)
 {
 	//auto pDoc = GetDocument();
-
+	int R = GetRValue(outlineColor);
+	int G = GetGValue(outlineColor);
+	int B = GetBValue(outlineColor);
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(255, 0, 0));
+		pen = new CPen(PS_SOLID, 4, RGB(R, G, B));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
