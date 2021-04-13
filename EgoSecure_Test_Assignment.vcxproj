@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Default_draw_properties.h" />
     <ClInclude Include="EgoSecure_Test_Assignment.h" />
     <ClInclude Include="EgoSecure_Test_AssignmentDoc.h" />
     <ClInclude Include="EgoSecure_Test_AssignmentView.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Default_draw_properties.cpp" />
     <ClCompile Include="EgoSecure_Test_Assignment.cpp" />
     <ClCompile Include="EgoSecure_Test_AssignmentDoc.cpp" />
     <ClCompile Include="EgoSecure_Test_AssignmentView.cpp" />
