@@ -31,9 +31,9 @@ public:
 	
 //	CComboBox m_combobox_outline;
 	CComboBox m_cb_outline_size;
-	int num_cb_outline_size;
+	int num_cb_outline_size = 2;
 	CComboBox m_cb_outline_type;
-	int num_cb_outline_type;
+	int num_cb_outline_type = 0;
 	CComboBox m_cb_fill_type;
-	int num_cb_fill_type;
+	int num_cb_fill_type = -1;
 };

@@ -91,7 +91,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->size;
 			ar << s->ellipseAngleRad;
 			ar << s->constID;
-			int R = GetRValue(outlineColor);
+			ar << s->oR;
+			ar << s->oG;
+			ar << s->oB;
 			//ar << s->GetRValue(outlineColor);
 
 			
@@ -161,7 +163,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		bool isSelectedFromDoubleSelectingTool;
 		int vectorShapeSize;
 		int vectorLinesSize;
-
+		int oR, oG, oB;
+		int fR, fG, fB;
 		double ellipseAngleRad;
 		CPoint dx_dy[4];
 		int FirstShapeConstID;
@@ -181,6 +184,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> size;
 			ar >> ellipseAngleRad;
 			ar >> constID;
+			ar >> oR;
+			ar >> oG;
+			ar >> oB;
 			for (int i = 0; i < 4; i++)
 			{
 				ar >> dx_dy[i];
@@ -190,19 +196,19 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			if (ST == 0)
 			{
 				shapeType = ShapeType::ellipse;
-				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
+				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			else if (ST == 1)
 			{
 				shapeType = ShapeType::rectangle;
-				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
+				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			else
 			{
 				shapeType = ShapeType::triangle;
-				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
+				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			
@@ -211,13 +217,18 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
 			shapes[shapes.size() - 1]->constID = constID;
 			shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
+			shapes[shapes.size() - 1]->oR = oR;
+			shapes[shapes.size() - 1]->oG = oG;
+			shapes[shapes.size() - 1]->oB = oB;
+
 			for (int i = 0; i < 4; i++)
 			{
 				shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
 			}
-		}
-		for (int i = 0; i < vectorLinesSize; i++)
-		{
+
+			}
+			for (int i = 0; i < vectorLinesSize; i++)
+			{
 			ar >> FirstShapeConstID;
 			ar >> SecondShapeConstID;
 

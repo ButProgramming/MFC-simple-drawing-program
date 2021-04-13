@@ -45,12 +45,18 @@ END_MESSAGE_MAP()
 void Default_draw_properties::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	
+	bool cannotBeClosed = true;
 	m_color_outline_COLORREF = m_color_outline.GetColor();
 	m_color_fill_COLORREF = m_color_fill.GetColor();
 	num_cb_outline_size = m_cb_outline_size.GetCurSel();
 	num_cb_outline_type = m_cb_outline_type.GetCurSel();
 	num_cb_fill_type = m_cb_fill_type.GetCurSel() - 1; // because #DEFINE beginn with 0
+	if (num_cb_outline_size == -1)
+		num_cb_outline_size = 2;
+	if (num_cb_outline_type == -1)
+		num_cb_outline_type = 0;
+	if (num_cb_fill_type == -2)
+		num_cb_fill_type = -1;
 
 	CDialogEx::OnOK();
 }
