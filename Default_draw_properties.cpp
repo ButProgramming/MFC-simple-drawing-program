@@ -24,6 +24,7 @@ Default_draw_properties::~Default_draw_properties()
 void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON_OUTLINE, m_color_outline);
 }
 
 

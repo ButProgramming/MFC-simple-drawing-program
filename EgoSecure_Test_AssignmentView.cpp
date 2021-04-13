@@ -18,6 +18,7 @@
 #endif
 #include "Shape.h"
 #include "List_Control.h"
+#include "Default_draw_properties.h"
 
 // CEgoSecureTestAssignmentView
 
@@ -49,6 +50,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_DOUBLE_LINE, &CEgoSecureTestAssignmentView::OnButtonDoubleLine)
 	ON_COMMAND(ID_PROPERTIES_ALLSHAPESANDLINES, &CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines)
 	ON_COMMAND(IDC_LISTCONTROL_SHAPES, &CEgoSecureTestAssignmentView::OnListcontrolShapes)
+	ON_COMMAND(ID_PROPERTIES_DEFAULTDRAWPROPERTIES, &CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -1510,4 +1512,13 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 void CEgoSecureTestAssignmentView::OnListcontrolShapes()
 {
 	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
+{
+	// TODO: Add your command handler code here
+	auto pDoc = GetDocument();
+	Default_draw_properties dlg;
+	dlg.DoModal();
 }

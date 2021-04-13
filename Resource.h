@@ -29,10 +29,10 @@
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
 #define IDD_LISTCONTROL                 310
-#define IDD_DIALOG_DEFAULT_DRAW_PROPERTIE 321
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_MFCCOLORBUTTON1             1007
+#define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO1                      1008
 #define IDC_COMBO2                      1009
 #define IDC_MFCCOLORBUTTON2             1010
@@ -60,13 +60,14 @@
 #define ID_BUTTON_DOUBLE_LINE           32802
 #define ID_PROPERTIES_ALLSHAPESANDLINES 32803
 #define ID_PROPERTIES_12345             32804
+#define ID_PROPERTIES_DEFAULTDRAWPROPERTIES 32805
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
-#define _APS_NEXT_COMMAND_VALUE         32805
+#define _APS_NEXT_COMMAND_VALUE         32806
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

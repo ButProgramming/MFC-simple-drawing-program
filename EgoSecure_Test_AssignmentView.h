@@ -66,6 +66,7 @@ public:
 	afx_msg void OnButtonDoubleLine();
 	afx_msg void OnPropertiesAllshapesandlines();
 	afx_msg void OnListcontrolShapes();
+	afx_msg void OnPropertiesDefaultdrawproperties();
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp
