@@ -13,6 +13,7 @@ public:
     static set<int> IDs;
     static int countOfLines;
 
+    CString name;
     int constID;
     int ID;
     bool first_ID_not_excist = false; //default

@@ -61,6 +61,27 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	{
 		str.Format(_T("%d"), l->ID);
 		nItem = m_listControl_shapes.InsertItem(0, str);
+		if (l->type == LineType::Basic)
+		{
+			m_listControl_shapes.SetItemText(nItem, 1, _T("Basic line"));
+		}
+		else if (l->type == LineType::Right)
+		{
+			m_listControl_shapes.SetItemText(nItem, 1, _T("Right line"));
+		}
+		else if (l->type == LineType::Left)
+		{
+			m_listControl_shapes.SetItemText(nItem, 1, _T("Left line"));
+		}
+		else
+		{
+			m_listControl_shapes.SetItemText(nItem, 1, _T("Double line"));
+		}
+		m_listControl_shapes.SetItemText(nItem, 2, l->name);
+		//str.Format(_T("x: %d, y: %d"), s->centerOfShape.x, s->centerOfShape.y);
+		m_listControl_shapes.SetItemText(nItem, 3, _T("-"));
+		//str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
+		m_listControl_shapes.SetItemText(nItem, 4, _T("-"));
 	}
 	
 }
