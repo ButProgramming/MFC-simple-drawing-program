@@ -29,4 +29,7 @@ public:
 	afx_msg void OnBnClickedOk();
 //	CMFCColorButton m_fill_color;
 	
+//	CComboBox m_combobox_outline;
+	CComboBox m_cb_outline_size;
+	int num_cb_outline_size;
 };

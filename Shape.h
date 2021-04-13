@@ -32,6 +32,7 @@ public:
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
 	
+	int outlineSize;
 	COLORREF fillColor;
 	COLORREF outlineColor;
 	bool isSelectedFromDoubleSelectingTool = false;
@@ -78,7 +79,7 @@ class EllipseShape :public IShape
 private:
 	
 public:
-	EllipseShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF);
+	EllipseShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int);
 	void draw(CDC* dc);
 	
 };
@@ -88,7 +89,7 @@ class RectangleShape :public IShape
 private:
 	
 public:
-	RectangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF);
+	RectangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int);
 	void draw(CDC* dc);
 	
 
@@ -101,7 +102,7 @@ private:
 public:
 	CPoint triangle[3];
 	int test;
-	TriangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF);
+	TriangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int);
 	void draw(CDC* dc);
 	
 };

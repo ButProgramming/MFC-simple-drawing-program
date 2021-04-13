@@ -8,8 +8,9 @@ int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 
 
-EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
 {
+	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
 	IDs.insert(-1);
@@ -47,10 +48,10 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	//this->typeOfShape = typeOfShape;
 }
 
-RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor)
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
 {
 
-	
+	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
 	IDs.insert(-1);
@@ -87,8 +88,9 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	//this->typeOfShape = typeOfShape;
 }
 
-TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor)
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
 {
+	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
 	IDs.insert(-1);
@@ -136,7 +138,7 @@ void EllipseShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(oR, oG, oB));
+		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -299,7 +301,7 @@ void RectangleShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(oR, oG, oB));
+		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -379,7 +381,7 @@ void TriangleShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, 4, RGB(oR, oG, oB));
+		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else

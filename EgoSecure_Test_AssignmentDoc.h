@@ -28,6 +28,7 @@ public:
 	int dy = 0;
 	COLORREF m_outline_color;
 	COLORREF m_fill_color;
+	int num_cb_outline_size;
 // Operations
 public:
 
