@@ -22,6 +22,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CMFCColorButton m_color_outline;
-	COLORREF m_color;
+	CMFCColorButton m_color_fill;
+	COLORREF m_color_outline_COLORREF;
+	COLORREF m_color_fill_COLORREF;
+
 	afx_msg void OnBnClickedOk();
+//	CMFCColorButton m_fill_color;
+	
 };

@@ -25,6 +25,8 @@ void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MFCCOLORBUTTON_OUTLINE, m_color_outline);
+	//  DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_fill_color);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_color_fill);
 }
 
 
@@ -40,11 +42,13 @@ void Default_draw_properties::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	
-	m_color = m_color_outline.GetColor();
-	int outlineR = GetRValue(m_color);
-	int outlineG = GetGValue(m_color);
-	int outlineB = GetBValue(m_color);
+	m_color_outline_COLORREF = m_color_outline.GetColor();
+	int outlineR = GetRValue(m_color_outline_COLORREF);
+	int outlineG = GetGValue(m_color_outline_COLORREF);
+	int outlineB = GetBValue(m_color_outline_COLORREF);
 	CString str;
 	str.Format(_T("R: %d, G: %d, B: %d"), outlineR, outlineG, outlineB);
 	CDialogEx::OnOK();
+
+	m_color_fill_COLORREF = m_color_fill.GetColor();
 }

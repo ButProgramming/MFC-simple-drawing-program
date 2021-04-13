@@ -443,7 +443,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 	case Tools::ellipse:
 	{
-		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color);
+		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color);
 		pDoc->shapes.push_back(shape);
 		/*CString str;
 		str.Format(_T("%d"), pDoc->shapes.size());
@@ -453,14 +453,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::rectangle:
 	{
-		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color);
+		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
 	}
 	case Tools::triangle:
 	{
-		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color);
+		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color, pDoc->m_fill_color);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
@@ -1522,6 +1522,8 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	auto pDoc = GetDocument();
 	Default_draw_properties dlg;
 	dlg.DoModal();
-	pDoc->m_outline_color = dlg.m_color;
+	pDoc->m_outline_color = dlg.m_color_outline_COLORREF;
+	pDoc->m_fill_color = dlg.m_color_fill_COLORREF;
+
 	//AfxMessageBox(_T("123"));
 }
