@@ -56,6 +56,10 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 		delete l;
 	}
 	lines.clear();
+	IShape::countOfShape = 0;
+	Lines::countOfLines = 0;
+	IShape::IDs.clear();
+	Lines::IDs.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
@@ -78,6 +82,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int vectorLinesSize = lines.size();
 		ar << vectorShapeSize;
 		ar << vectorLinesSize;
+		
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
