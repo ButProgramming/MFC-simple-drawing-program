@@ -183,26 +183,23 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				ar >> dx_dy[i];
 			}
 
-
-
-
 			ar >> ST;
 			if (ST == 0)
 			{
 				shapeType = ShapeType::ellipse;
-				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0);
+				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			else if (ST == 1)
 			{
 				shapeType = ShapeType::rectangle;
-				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0);
+				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			else
 			{
 				shapeType = ShapeType::triangle;
-				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0);
+				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(255, 0, 0), RGB(255, 0, 0), 2, 0, -1);
 				shapeTemp->isSelected = isSelected;
 			}
 			

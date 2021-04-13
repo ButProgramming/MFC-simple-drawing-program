@@ -8,8 +8,9 @@ int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 
 
-EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
@@ -49,8 +50,9 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	//this->typeOfShape = typeOfShape;
 }
 
-RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
@@ -89,8 +91,9 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	//this->typeOfShape = typeOfShape;
 }
 
-TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
@@ -355,9 +358,17 @@ void RectangleShape::draw(CDC* dc)
 		for (int i = 0; i < 4; i++)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
-
-	CBrush* rectangleBrush = new CBrush;
-	rectangleBrush->CreateSolidBrush(RGB(fR, fG, fB));
+	CBrush* rectangleBrush;
+	if (fillType == -1)
+	{
+		rectangleBrush = new CBrush;
+		rectangleBrush->CreateSolidBrush(RGB(fR, fG, fB));
+	}
+	else
+	{
+		rectangleBrush = new CBrush(fillType, RGB(fR, fG, fB));
+	}
+	
 	CRgn* rectangleReg = new CRgn;
 	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	dc->Polygon(points, 4);

@@ -443,7 +443,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 	case Tools::ellipse:
 	{
-		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type);
+		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
 		/*CString str;
 		str.Format(_T("%d"), pDoc->shapes.size());
@@ -453,14 +453,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::rectangle:
 	{
-		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type);
+		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
 	}
 	case Tools::triangle:
 	{
-		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type);
+		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
 		//delete shape;
 		break;
@@ -1526,5 +1526,6 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	pDoc->m_fill_color = dlg.m_color_fill_COLORREF;
 	pDoc->num_cb_outline_size = dlg.num_cb_outline_size;
 	pDoc->num_cb_outline_type = dlg.num_cb_outline_type;
+	pDoc->num_cb_fill_type = dlg.num_cb_fill_type;
 	//AfxMessageBox(_T("123"));
 }

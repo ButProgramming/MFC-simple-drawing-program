@@ -26,10 +26,11 @@ public:
 
 	int dx = 0;
 	int dy = 0;
-	COLORREF m_outline_color;
-	COLORREF m_fill_color;
-	int num_cb_outline_size;
-	int num_cb_outline_type;
+	COLORREF m_outline_color = RGB(0, 0, 0);
+	COLORREF m_fill_color = RGB(255, 255, 255);
+	int num_cb_outline_size = 2;
+	int num_cb_outline_type = 0;
+	int num_cb_fill_type = -1;
 // Operations
 public:
 

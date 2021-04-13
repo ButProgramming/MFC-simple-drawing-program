@@ -34,4 +34,6 @@ public:
 	int num_cb_outline_size;
 	CComboBox m_cb_outline_type;
 	int num_cb_outline_type;
+	CComboBox m_cb_fill_type;
+	int num_cb_fill_type;
 };
