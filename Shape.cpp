@@ -47,8 +47,30 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	constID = countOfShape;
-	ID = countOfShape;
+	IDs.insert(-1);
+	constID = IShape::countOfShape;
+	bool isFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = IDs.begin(); it != IDs.end(); it++)
+		{
+			int empt = IDs.empty();
+			CString str;
+			str.Format(_T("%d"), empt);
+
+			auto pos = IDs.find(i);
+			if (pos == IDs.end())
+			{
+				isFound = true;
+				ID = i;
+				IDs.insert(ID);
+				break;
+			}
+		}
+		if (isFound)
+			break;
+	}
+
 	name.Format(_T("rectangleShape%d"), constID);
 	//type = ShapeType::rectangle;
 	this->type = type;
@@ -61,8 +83,31 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 
 TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	constID = countOfShape;
-	ID = countOfShape;
+
+	IDs.insert(-1);
+	constID = IShape::countOfShape;
+	bool isFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = IDs.begin(); it != IDs.end(); it++)
+		{
+			int empt = IDs.empty();
+			CString str;
+			str.Format(_T("%d"), empt);
+
+			auto pos = IDs.find(i);
+			if (pos == IDs.end())
+			{
+				isFound = true;
+				ID = i;
+				IDs.insert(ID);
+				break;
+			}
+		}
+		if (isFound)
+			break;
+	}
+
 	name.Format(_T("triangleShape%d"), constID);
 	this->type = type;
 	this->size = size;
