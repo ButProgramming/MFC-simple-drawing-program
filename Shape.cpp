@@ -5,11 +5,48 @@ int IShape::dx = 0;
 int IShape::dy = 0;
 int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
+set<int> IShape::IDs;
+
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type)
 {
-	constID = countOfShape;
-	ID = countOfShape;
+	IDs.insert(-1);
+	constID = IShape::countOfShape;
+	bool isFound = false;
+	for(int i=0; i<countOfShape+10; i++)
+	{
+		for (auto it = IDs.begin(); it != IDs.end(); it++)
+		{
+			/*if (i != *it || IShape::IDs.empty())
+			{
+				ID = i;
+				IShape::IDs.
+				break;
+			}*/
+			int empt = IDs.empty();
+			CString str;
+			str.Format(_T("%d"), empt);
+			//AfxMessageBox(str);
+			/*if (IDs.empty())
+			{
+				ID = i;
+				IDs.insert(ID);
+				break;
+			}*/
+
+			auto pos = IDs.find(i);
+			if (pos == IDs.end())
+			{
+				isFound = true;
+				ID = i;
+				IDs.insert(ID);
+				break;
+			}
+		}
+		if (isFound)
+			break;
+	}
+	
 	name.Format(_T("ellipseShape%d"), constID);
 	//type = ShapeType::ellipse;
 	this->type = type;

@@ -440,7 +440,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 	case Tools::ellipse:
 	{
-
 		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse);
 		pDoc->shapes.push_back(shape);
 		/*CString str;

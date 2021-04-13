@@ -5,8 +5,9 @@
 #include <algorithm>
 #include <string>
 #include <queue>
+#include <set>
 using namespace std;
-#include <afx.h>
+
 
 //int move_dx=0; 
 //int move_dy=0;
@@ -17,7 +18,7 @@ enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rota
 enum class ShapeType { ellipse, rectangle, triangle };
 
 
-class IShape :public CObject
+class IShape
 {
 protected:
 	
@@ -25,10 +26,12 @@ protected:
 
 	//ShapeType typeOfShape;
 public:
+	static set<int> IDs;
 	static int dx;
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
+	
 	
 	bool isSelectedFromDoubleSelectingTool = false;
 	int constID;
