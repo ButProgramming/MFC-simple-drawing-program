@@ -8,8 +8,9 @@ int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 
 
-EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
+EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
 {
+	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
@@ -48,9 +49,9 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	//this->typeOfShape = typeOfShape;
 }
 
-RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
+RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
 {
-
+	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
@@ -88,8 +89,9 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	//this->typeOfShape = typeOfShape;
 }
 
-TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize)
+TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType)
 {
+	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
@@ -128,6 +130,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 
 void EllipseShape::draw(CDC* dc)
 {
+	
 	//size = 100;
 	int oR = GetRValue(outlineColor);
 	int oG = GetGValue(outlineColor);
@@ -138,7 +141,7 @@ void EllipseShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -301,7 +304,7 @@ void RectangleShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -362,7 +365,7 @@ void RectangleShape::draw(CDC* dc)
 	//dc->FillRgn(triangleReg, brush);
 	/*delete pen;
 	delete rectangleBrush;
-	delete rectangleReg;*/
+	//delete rectangleReg;*/
 	pen->DeleteObject();
 	rectangleBrush->DeleteObject();
 	rectangleReg->DeleteObject();
@@ -381,7 +384,7 @@ void TriangleShape::draw(CDC* dc)
 	int fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(PS_SOLID, outlineSize, RGB(oR, oG, oB));
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 	else if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else

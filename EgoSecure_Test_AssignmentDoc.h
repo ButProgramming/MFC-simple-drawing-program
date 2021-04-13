@@ -29,6 +29,7 @@ public:
 	COLORREF m_outline_color;
 	COLORREF m_fill_color;
 	int num_cb_outline_size;
+	int num_cb_outline_type;
 // Operations
 public:
 

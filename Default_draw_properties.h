@@ -32,4 +32,6 @@ public:
 //	CComboBox m_combobox_outline;
 	CComboBox m_cb_outline_size;
 	int num_cb_outline_size;
+	CComboBox m_cb_outline_type;
+	int num_cb_outline_type;
 };

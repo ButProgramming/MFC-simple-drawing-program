@@ -29,6 +29,7 @@ void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_color_fill);
 	//  DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, m_combobox_outline);
 	DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, m_cb_outline_size);
+	DDX_Control(pDX, IDC_COMBO_OUTLINE_TYPE, m_cb_outline_type);
 }
 
 
@@ -47,5 +48,6 @@ void Default_draw_properties::OnBnClickedOk()
 	m_color_outline_COLORREF = m_color_outline.GetColor();
 	m_color_fill_COLORREF = m_color_fill.GetColor();
 	num_cb_outline_size = m_cb_outline_size.GetCurSel();
+	num_cb_outline_type = m_cb_outline_type.GetCurSel();
 	CDialogEx::OnOK();
 }

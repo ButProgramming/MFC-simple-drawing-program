@@ -32,9 +32,9 @@
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
-#define IDC_COMBO1                      1008
 #define IDC_COMBO_OUTLINE_SIZE          1008
 #define IDC_COMBO2                      1009
+#define IDC_COMBO_OUTLINE_TYPE          1009
 #define IDC_MFCCOLORBUTTON_FILL         1010
 #define IDC_COMBO4                      1012
 #define IDC_MFCCOLORBUTTON3             1013
