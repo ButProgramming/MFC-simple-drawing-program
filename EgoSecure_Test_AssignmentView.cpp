@@ -17,6 +17,7 @@
 #define new DEBUG_NEW
 #endif
 #include "Shape.h"
+#include "List_Control.h"
 
 // CEgoSecureTestAssignmentView
 
@@ -46,6 +47,8 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_RIGHT_LINE, &CEgoSecureTestAssignmentView::OnButtonRightLine)
 	ON_COMMAND(ID_BUTTON_LEFT_LINE, &CEgoSecureTestAssignmentView::OnButtonLeftLine)
 	ON_COMMAND(ID_BUTTON_DOUBLE_LINE, &CEgoSecureTestAssignmentView::OnButtonDoubleLine)
+	ON_COMMAND(ID_PROPERTIES_ALLSHAPESANDLINES, &CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines)
+	ON_COMMAND(IDC_LISTCONTROL_SHAPES, &CEgoSecureTestAssignmentView::OnListcontrolShapes)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -1475,4 +1478,28 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 	}
 	
 	
+}
+
+
+void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
+{
+	//AfxMessageBox(_T("12345"));
+	auto pDoc = GetDocument();
+	List_Control dlg;
+	for (auto s : pDoc->shapes)
+	{
+		dlg.shapes.push_back(s);
+	}
+	
+	dlg.DoModal();
+	
+	
+
+	// TODO: Add your command handler code here
+}
+
+
+void CEgoSecureTestAssignmentView::OnListcontrolShapes()
+{
+	// TODO: Add your command handler code here
 }

@@ -28,6 +28,8 @@
 #define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
+#define IDD_LISTCONTROL                 310
+#define IDC_LISTCONTROL_SHAPES          1002
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
@@ -45,17 +47,17 @@
 #define ID_BUTTON_BASIC_LINE            32788
 #define ID_BUTTON_RIGHT_LINE            32789
 #define ID_BUTTON_LEFT_LINE             32790
-#define ID_BUTTON32791                  32791
 #define ID_BUTTON_DOUBLE_SELECT         32801
 #define ID_BUTTON_DOUBLE_LINE           32802
+#define ID_PROPERTIES_ALLSHAPESANDLINES 32803
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32803
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        313
+#define _APS_NEXT_COMMAND_VALUE         32804
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

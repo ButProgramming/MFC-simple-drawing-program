@@ -10,7 +10,7 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 {
 	constID = countOfShape;
 	ID = countOfShape;
-	name = "ellipseShape" + to_string(constID);
+	name.Format(_T("ellipseShape%d"), constID);
 	//type = ShapeType::ellipse;
 	this->type = type;
 	this->size = size;
@@ -25,7 +25,7 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 {
 	constID = countOfShape;
 	ID = countOfShape;
-	name = "rectangleShape" + to_string(constID);
+	name.Format(_T("rectangleShape%d"), constID);
 	//type = ShapeType::rectangle;
 	this->type = type;
 	this->size = size;
@@ -39,7 +39,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 {
 	constID = countOfShape;
 	ID = countOfShape;
-	name = "triangleShape" + to_string(constID);
+	name.Format(_T("triangleShape%d"), constID);
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;

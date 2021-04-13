@@ -6,6 +6,7 @@
 #include <string>
 #include <queue>
 using namespace std;
+#include <afx.h>
 
 //int move_dx=0; 
 //int move_dy=0;
@@ -16,7 +17,7 @@ enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rota
 enum class ShapeType { ellipse, rectangle, triangle };
 
 
-class IShape
+class IShape :public CObject
 {
 protected:
 	
@@ -32,7 +33,7 @@ public:
 	bool isSelectedFromDoubleSelectingTool = false;
 	int constID;
 	int ID;
-	string name;
+	CString name;
 	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 	CPoint recFromRgn[4];
 	//CPoint nextCenterTriangle{ -1,-1 };

@@ -188,6 +188,7 @@
     <ClInclude Include="EgoSecure_Test_AssignmentView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Lines.h" />
+    <ClInclude Include="List_Control.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="EgoSecure_Test_AssignmentDoc.cpp" />
     <ClCompile Include="EgoSecure_Test_AssignmentView.cpp" />
     <ClCompile Include="Lines.cpp" />
+    <ClCompile Include="List_Control.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
