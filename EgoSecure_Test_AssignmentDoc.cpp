@@ -91,6 +91,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->size;
 			ar << s->ellipseAngleRad;
 			ar << s->constID;
+			int R = GetRValue(outlineColor);
+			//ar << s->GetRValue(outlineColor);
+
 			
 			for (int i = 0; i < 4; i++)
 			{

@@ -135,13 +135,13 @@ void EllipseShape::draw(CDC* dc)
 {
 	
 	//size = 100;
-	int oR = GetRValue(outlineColor);
-	int oG = GetGValue(outlineColor);
-	int oB = GetBValue(outlineColor);
+	oR = GetRValue(outlineColor);
+	oG = GetGValue(outlineColor);
+	oB = GetBValue(outlineColor);
 
-	int fR = GetRValue(fillColor);
-	int fG = GetGValue(fillColor);
-	int fB = GetBValue(fillColor);
+	fR = GetRValue(fillColor);
+	fG = GetGValue(fillColor);
+	fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
@@ -225,9 +225,16 @@ void EllipseShape::draw(CDC* dc)
 		ellipseSecondPart.push_back(v2);
 	}
 
-
-	CBrush* brush = new CBrush;
-	brush->CreateSolidBrush(RGB(fR, fG, fB));
+	CBrush* ellipseBrush;
+	if (fillType == -1)
+	{
+		ellipseBrush = new CBrush;
+		ellipseBrush->CreateSolidBrush(RGB(fR, fG, fB));
+	}
+	else
+	{
+		ellipseBrush = new CBrush(fillType, RGB(fR, fG, fB));
+	}
 
 	for (int i = 0; i < eFP.size(); i++)
 	{
@@ -274,8 +281,8 @@ void EllipseShape::draw(CDC* dc)
 	//dc->Polygon(points, 4);
 	dc->Polygon(&eFP[0], eFP.size());
 	dc->Polygon(&eSP[0], eSP.size());
-	dc->FillRgn(ellipseRgn1, brush);
-	dc->FillRgn(ellipseRgn2, brush);
+	dc->FillRgn(ellipseRgn1, ellipseBrush);
+	dc->FillRgn(ellipseRgn2, ellipseBrush);
 
 
 	if (isSelected)
@@ -292,19 +299,19 @@ void EllipseShape::draw(CDC* dc)
 	ellipseRgn1->DeleteObject();
 	ellipseRgn2->DeleteObject();
 	pen->DeleteObject();
-	brush->DeleteObject();
+	ellipseBrush->DeleteObject();
 }
 
 
 void RectangleShape::draw(CDC* dc)
 {
-	int oR = GetRValue(outlineColor);
-	int oG = GetGValue(outlineColor);
-	int oB = GetBValue(outlineColor);
+	oR = GetRValue(outlineColor);
+	oG = GetGValue(outlineColor);
+	oB = GetBValue(outlineColor);
 
-	int fR = GetRValue(fillColor);
-	int fG = GetGValue(fillColor);
-	int fB = GetBValue(fillColor);
+	fR = GetRValue(fillColor);
+	fG = GetGValue(fillColor);
+	fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
@@ -386,13 +393,13 @@ void RectangleShape::draw(CDC* dc)
 void TriangleShape::draw(CDC* dc)
 {
 	//auto pDoc = GetDocument();
-	int oR = GetRValue(outlineColor);
-	int oG = GetGValue(outlineColor);
-	int oB = GetBValue(outlineColor);
+	oR = GetRValue(outlineColor);
+	oG = GetGValue(outlineColor);
+	oB = GetBValue(outlineColor);
 
-	int fR = GetRValue(fillColor);
-	int fG = GetGValue(fillColor);
-	int fB = GetBValue(fillColor);
+	fR = GetRValue(fillColor);
+	fG = GetGValue(fillColor);
+	fB = GetBValue(fillColor);
 
 	if (!isSelected && !isSelectedFromDoubleSelectingTool)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
@@ -472,7 +479,16 @@ void TriangleShape::draw(CDC* dc)
 	}
 	CRgn* triangleNewRgn = new CRgn;
 	triangleNewRgn->CreatePolygonRgn(triangle, 3, ALTERNATE);
-	CBrush* triangleBrush = new CBrush(HS_DIAGCROSS , RGB(0, 255, 0));
+	CBrush* triangleBrush;
+	if (fillType == -1)
+	{
+		triangleBrush = new CBrush;
+		triangleBrush->CreateSolidBrush(RGB(fR, fG, fB));
+	}
+	else
+	{
+		triangleBrush = new CBrush(fillType, RGB(fR, fG, fB));
+	}
 	//CBrush* triangleBrush = new CBrush;
 	//triangleBrush->CreateSolidBrush(RGB(fR, fG, fB)); // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	//triangleBrush->CreateSolidBrush(HS_DIAGCROSS);

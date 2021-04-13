@@ -51,5 +51,6 @@ void Default_draw_properties::OnBnClickedOk()
 	num_cb_outline_size = m_cb_outline_size.GetCurSel();
 	num_cb_outline_type = m_cb_outline_type.GetCurSel();
 	num_cb_fill_type = m_cb_fill_type.GetCurSel() - 1; // because #DEFINE beginn with 0
+
 	CDialogEx::OnOK();
 }

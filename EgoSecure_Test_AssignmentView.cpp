@@ -1522,6 +1522,7 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	auto pDoc = GetDocument();
 	Default_draw_properties dlg;
 	dlg.DoModal();
+	dlg.m_color_outline.SetColor(RGB(255, 0, 0));
 	pDoc->m_outline_color = dlg.m_color_outline_COLORREF;
 	pDoc->m_fill_color = dlg.m_color_fill_COLORREF;
 	pDoc->num_cb_outline_size = dlg.num_cb_outline_size;

@@ -36,7 +36,9 @@ public:
 	int outlineType;
 	int outlineSize;
 	COLORREF fillColor;
+	int fR; int fG; int fB; // for safe convinience
 	COLORREF outlineColor;
+	int oR; int oG; int oB; // for safe convinience
 	bool isSelectedFromDoubleSelectingTool = false;
 	int constID;
 	int ID;
