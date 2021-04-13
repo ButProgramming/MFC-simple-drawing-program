@@ -1339,6 +1339,8 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 		{
 			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
 			{
+				int deleteID = pDoc->lines[i]->ID;
+				Lines::IDs.erase(deleteID);
 				delete pDoc->lines[i];
 				pDoc->lines.erase(pDoc->lines.begin() + i);
 				
@@ -1400,7 +1402,7 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 	}
 	CString db;
 	db.Format(_T("lines.size() = %d"), pDoc->lines.size()); 
-	AfxMessageBox(db);
+	//AfxMessageBox(db);
 	//AfxMessageBox(_T("BasicLine"));
 
 	// TODO: Add your command handler code here
@@ -1491,6 +1493,10 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 	for (auto s : pDoc->shapes)
 	{
 		dlg.shapes.push_back(s);
+	}
+	for (auto l : pDoc->lines)
+	{
+		dlg.lines.push_back(l);
 	}
 	
 	dlg.DoModal();

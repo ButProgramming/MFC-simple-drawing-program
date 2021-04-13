@@ -1,6 +1,7 @@
 #pragma once
 #include <afx.h>
 #include "Shape.h"
+#include "Lines.h"
 
 // List_Control dialog
 
@@ -24,5 +25,6 @@ protected:
 public:
 	CListCtrl m_listControl_shapes;
 	vector<IShape*> shapes;
+	vector<Lines*> lines;
 	afx_msg void OnItemchangedListcontrolShapes(NMHDR* pNMHDR, LRESULT* pResult);
 };

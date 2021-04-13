@@ -33,10 +33,9 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	this->m_listControl_shapes.InsertColumn(4, _T("Angle"), LVCFMT_CENTER, 70);
 
 	int nItem;
+	CString str;
 	for (auto s:shapes)
 	{
-	
-		CString str;
 		str.Format(_T("%d"), s->ID);
 		nItem = m_listControl_shapes.InsertItem(0, str);
 		if (s->type == ShapeType::ellipse)
@@ -57,6 +56,11 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		m_listControl_shapes.SetItemText(nItem, 3, str);
 		str.Format(_T("%g degree"), s->ellipseAngleRad*180.f/3.14);
 		m_listControl_shapes.SetItemText(nItem, 4, str);
+	}
+	for (auto l : lines)
+	{
+		str.Format(_T("%d"), l->ID);
+		nItem = m_listControl_shapes.InsertItem(0, str);
 	}
 	
 }
