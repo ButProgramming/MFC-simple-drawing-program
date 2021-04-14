@@ -36,6 +36,12 @@ void Dialog_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_R, m_outline_R);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_G, m_outline_G);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_B, m_outline_B);
+	DDX_Control(pDX, IDC_EDIT_DEGREE, m_degree);
+	DDX_Control(pDX, IDC_EDIT_ID, m_id);
+	DDX_Control(pDX, IDC_EDIT_NAME, m_name);
+	DDX_Control(pDX, IDC_EDIT_OUTLINE_R2, m_fill_R);
+	DDX_Control(pDX, IDC_EDIT_OUTLINE_G2, m_fill_G);
+	DDX_Control(pDX, IDC_EDIT_OUTLINE_B2, m_fill_B);
 }
 
 
@@ -88,6 +94,17 @@ BOOL Dialog_Properties::ContinueModal()
 		m_outline_G.SetWindowTextW(str);
 		str.Format(_T("%d"), value_outline_B);
 		m_outline_B.SetWindowTextW(str);
+		str.Format(_T("%d"), value_fill_R);
+		m_fill_R.SetWindowTextW(str);
+		str.Format(_T("%d"), value_fill_G);
+		m_fill_G.SetWindowTextW(str);
+		str.Format(_T("%d"), value_fill_B);
+		m_fill_B.SetWindowTextW(str);
+		str.Format(_T("%d"), value_degree);
+		m_degree.SetWindowTextW(str);
+		str.Format(_T("%d"), value_id);
+		m_id.SetWindowTextW(str);
+		m_name.SetWindowTextW(value_name);
 		firstTime = false;
 	}
 	return CDialogEx::ContinueModal();

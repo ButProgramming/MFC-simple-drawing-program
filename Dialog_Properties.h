@@ -45,4 +45,16 @@ public:
 	int value_outline_R;
 	int value_outline_G;
 	int value_outline_B;
+	CEdit m_degree;
+	CEdit m_id;
+	CEdit m_name;
+	int value_degree;
+	int value_id;
+	CString value_name;
+	CEdit m_fill_R;
+	CEdit m_fill_G;
+	CEdit m_fill_B;
+	int value_fill_R;
+	int value_fill_G;
+	int value_fill_B;
 };

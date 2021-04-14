@@ -1569,6 +1569,12 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			dlg.value_outline_R = pDoc->shapes[s]->oR;
 			dlg.value_outline_G = pDoc->shapes[s]->oG;
 			dlg.value_outline_B = pDoc->shapes[s]->oB;
+			dlg.value_fill_R = pDoc->shapes[s]->fR;
+			dlg.value_fill_G = pDoc->shapes[s]->fG;
+			dlg.value_fill_B = pDoc->shapes[s]->fB;
+			dlg.value_degree = pDoc->shapes[s]->ellipseAngleRad * 180.f / 3.14;
+			dlg.value_id = pDoc->shapes[s]->ID;
+			dlg.value_name = pDoc->shapes[s]->name;
 			dlg.DoModal();
 		}
 	}
