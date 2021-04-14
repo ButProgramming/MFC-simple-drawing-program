@@ -236,25 +236,25 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			if (LT == 0)
 			{
 				lineType = LineType::Basic;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0,0,0), 1, 0);
 				//lineTemp->isSelected = isSelected;
 			}
 			else if (LT == 1)
 			{
 				lineType = LineType::Right;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
 				//lineTemp->isSelected = isSelected;
 			}
 			else if (LT == 2)
 			{
 				lineType = LineType::Left;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
 				//lineTemp->isSelected = isSelected;
 			}
 			else
 			{
 				lineType = LineType::Double;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType);
+				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
 				//lineTemp->isSelected = isSelected;
 			}
 			lines.push_back(lineTemp);

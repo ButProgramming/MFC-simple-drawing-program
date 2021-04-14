@@ -13,6 +13,10 @@ public:
     static set<int> IDs;
     static int countOfLines;
 
+    COLORREF lineColor;
+    int lR, lG, lB;
+    int lineType;
+    int lineSize;
     CString name;
     int constID;
     int ID;
@@ -22,7 +26,7 @@ public:
     int SecondShapeConstID;
     LineType type;
     //void draw(int, int, LineType);
-    Lines(int, int, LineType);
+    Lines(int, int, LineType, COLORREF, int, int);
 };
 
 

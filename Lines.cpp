@@ -5,8 +5,14 @@ set<int> Lines::IDs;
 int Lines::countOfLines = 0;
 
 
-Lines::Lines(int FirstShapeConstID, int SecondShapeConstID, LineType type)
+Lines::Lines(int FirstShapeConstID, int SecondShapeConstID, LineType type, COLORREF lineColor, int lineSize, int lineType)
 {
+	this -> lineSize = lineSize;
+	this->lineColor = lineColor;
+	lR = GetRValue(lineColor);
+	lG = GetGValue(lineColor);
+	lB = GetBValue(lineColor);
+	this->lineType = lineType;
 	IDs.insert(-1);
 	constID = Lines::countOfLines;
 	

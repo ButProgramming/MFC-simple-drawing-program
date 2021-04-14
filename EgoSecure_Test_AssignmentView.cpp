@@ -93,8 +93,11 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	{
 		s->draw(&m_dc);
 	}
+	
 	for (int i=0; i<pDoc->lines.size(); i++)
 	{
+		CPen* linePen;
+		linePen = new CPen(pDoc->lines[i]->lineType, pDoc->lines[i]->lineSize, RGB(pDoc->lines[i]->lR, pDoc->lines[i]->lG, pDoc->lines[i]->lB));
 		CPoint firstPoint;
 		CPoint secondPoint;
 		int firstID = pDoc->lines[i]->FirstShapeConstID;
@@ -166,8 +169,10 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			//AfxMessageBox(str);
 			break;
 		}
+		m_dc.SelectObject(linePen);
 		m_dc.MoveTo(firstPoint);
 		m_dc.LineTo(secondPoint);
+		
 		if (pDoc->lines[i]->type == LineType::Right)
 		{
 			CPoint centerOfArrowGround = CPoint(firstPoint.x + (secondPoint.x - firstPoint.x) / 1.07, firstPoint.y + (secondPoint.y - firstPoint.y) / 1.07);
@@ -231,7 +236,11 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			double tempY = (centerOfArrowGround.y - secondPoint.y) * tan(angleRadian);
 			CPoint leftPointOfArrowGround = CPoint(centerOfArrowGround.x, centerOfArrowGround.y + 20);
 			m_dc.Ellipse(leftPointOfArrowGround.x - 5, leftPointOfArrowGround.y - 5, leftPointOfArrowGround.x + 5, leftPointOfArrowGround.y + 5);*/
+			
 		}
+
+
+
 		else if (pDoc->lines[i]->type == LineType::Left)
 		{
 			CPoint centerOfArrowGround = CPoint(secondPoint.x - (secondPoint.x - firstPoint.x) / 1.07, secondPoint.y - (secondPoint.y - firstPoint.y) / 1.07);
@@ -380,9 +389,10 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		m_dc.LineTo(secondPointOfArrow);
 
 
-
+		linePen->DeleteObject();
  }
 	}
+	
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 
@@ -1398,7 +1408,7 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 		}
 		if (!LineExists)
 		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic);
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 			pDoc->lines.push_back(line);
 			Invalidate();
 		}
@@ -1428,7 +1438,7 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 	{
 		if (pDoc->selectedShapesIDs.size() > 1)
 		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right);
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 			pDoc->lines.push_back(line);
 			Invalidate();
 		}
@@ -1452,7 +1462,7 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 	{
 		if (pDoc->selectedShapesIDs.size() > 1)
 		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left);
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 			pDoc->lines.push_back(line);
 			Invalidate();
 		}
@@ -1478,7 +1488,7 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 	{
 		if (pDoc->selectedShapesIDs.size() > 1)
 		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double);
+			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 			pDoc->lines.push_back(line);
 			Invalidate();
 		}
@@ -1521,6 +1531,12 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
 	Default_draw_properties dlg;
+	//dlg.SetDataDefaultDrawProperties(pDoc->num_cb_outline_size);
+	//dlg.
+	//dlg.m_color_outline.SetColor(pDoc->m_outline_color);
+	//dlg.m_cb_outline_size.SelectString(0, _T("123"));
+	//dlg.m_cb_outline_type.SetCurSel(2);
+
 	dlg.DoModal();
 	dlg.m_color_outline.SetColor(RGB(255, 0, 0));
 	pDoc->m_outline_color = dlg.m_color_outline_COLORREF;
@@ -1528,5 +1544,11 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	pDoc->num_cb_outline_size = dlg.num_cb_outline_size;
 	pDoc->num_cb_outline_type = dlg.num_cb_outline_type;
 	pDoc->num_cb_fill_type = dlg.num_cb_fill_type;
+	pDoc->num_cb_link_type = dlg.num_cb_link_type;
+	pDoc->m_color_link = dlg.m_color_link_COLORREF;
+	pDoc->num_cb_line_size = dlg.num_cb_line_size;
+	//dlg.UpdateData(true);
+	//dlg.SetDataDefaultDrawProperties();
+	//dlg.m_cb_outline_size.SetCurSel(0);
 	//AfxMessageBox(_T("123"));
 }
