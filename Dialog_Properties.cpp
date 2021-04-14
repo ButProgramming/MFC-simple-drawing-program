@@ -171,6 +171,18 @@ void Dialog_Properties::OnBnClickedOk()
 	value_fill_B = _ttoi(str);
 	if (value_fill_B > 255)
 		value_fill_B = 0;
+	// outline size
+	value_outline_size = m_cb_outline_size.GetCurSel();
+	// outline type
+	value_outline_type = m_cb_outline_type.GetCurSel();
+	// fill type
+	value_fill_type = m_cb_fill_type.GetCurSel()-1;
+	// degree
+	m_degree.GetWindowTextW(str);
+	value_degree = _ttoi(str);
+	// ID
+	m_id.GetWindowTextW(str);
+	value_id = _ttoi(str);
 	//AfxMessageBox(str);
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();

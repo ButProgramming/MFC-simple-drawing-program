@@ -1590,6 +1590,25 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			pDoc->shapes[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->shapes[s]->fillColor), GetBValue(pDoc->shapes[s]->fillColor));
 			pDoc->shapes[s]->fillColor = RGB(GetRValue(pDoc->shapes[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->shapes[s]->fillColor));
 			pDoc->shapes[s]->fillColor = RGB(GetRValue(pDoc->shapes[s]->fillColor), GetGValue(pDoc->shapes[s]->fillColor), dlg.value_fill_B);
+			// outline size
+			pDoc->shapes[s]->outlineSize = dlg.value_outline_size;
+			// outline type
+			pDoc->shapes[s]->outlineType = dlg.value_outline_type;
+			// fill type
+			pDoc->shapes[s]->fillType = dlg.value_fill_type;
+			// degree
+			pDoc->shapes[s]->ellipseAngleRad = dlg.value_degree * 3.14 / 180.f;
+			// ID
+			//for (auto sh : pDoc->shapes)
+			{
+				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
+				{
+					IShape::IDs.erase(pDoc->shapes[s]->ID);
+					pDoc->shapes[s]->ID = dlg.value_id;
+					//IShape::IDs.erase(dlg.value_id);
+				}
+			}
+			
 		}
 	}
 	

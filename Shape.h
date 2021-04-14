@@ -27,7 +27,8 @@ protected:
 	//ShapeType typeOfShape;
 public:
 	static set<int> IDs;
-	static int dx;
+	//static set<int>
+ 	static int dx;
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
