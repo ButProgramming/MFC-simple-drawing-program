@@ -116,5 +116,21 @@ void Dialog_Link_Properties::OnBnClickedOk()
 	m_link_shape_second_id.GetWindowTextW(str);
 	value_link_shape_second_id = _ttoi(str);
 
+	// get link size
+	value_link_size = m_cb_link_size.GetCurSel();
+
+	// get line type
+	value_link_type = m_cb_link_type.GetCurSel();
+
+	// get link type
+	value_link_type_link = m_cb_link_type_link.GetCurSel();
+
+	// get ID
+	m_link_id.GetWindowTextW(str);
+	value_link_id = _ttoi(str);
+
+	// get name
+	m_link_name.GetWindowTextW(name);
+
 	CDialogEx::OnOK();
 }

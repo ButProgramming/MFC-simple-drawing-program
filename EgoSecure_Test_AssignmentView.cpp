@@ -1612,6 +1612,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			{
 				IShape::IDs.erase(pDoc->shapes[s]->ID);
 				pDoc->shapes[s]->ID = dlg.value_id;
+				IShape::IDs.insert(dlg.value_id);
 				//IShape::IDs.erase(dlg.value_id);
 			}
 			// name
@@ -1619,6 +1620,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			{
 				IShape::names.erase(pDoc->shapes[s]->name);
 				pDoc->shapes[s]->name = dlg.value_name;
+				IShape::names.insert(dlg.value_name);
 
 			}
 			break;
@@ -1664,7 +1666,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				{
 					dlg.value_link_type_link = 2;
 				}
-				else
+				else if (pDoc->lines[l]->type == LineType::Double)
 				{
 					dlg.value_link_type_link = 3;
 				}
@@ -1690,6 +1692,47 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 					}
 
 				}
+				pDoc->lines[l]->lineSize = dlg.value_link_size;
+				pDoc->lines[l]->lineType = dlg.value_link_type;
+				switch (dlg.value_link_type_link)
+				{
+					case 0:
+					{
+						pDoc->lines[l]->type = LineType::Basic;
+						break;
+					}
+					case 1:
+					{
+						pDoc->lines[l]->type = LineType::Right;
+						break;
+					}
+					case 2:
+					{
+						pDoc->lines[l]->type = LineType::Left;
+						break;
+					}
+					case 3:
+					{
+						pDoc->lines[l]->type = LineType::Double;
+						break;
+					}
+				}
+				if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
+				{
+					Lines::IDs.erase(pDoc->lines[l]->ID);
+					pDoc->lines[l]->ID = dlg.value_link_id;
+					Lines::IDs.insert(dlg.value_link_id);
+					//IShape::IDs.erase(dlg.value_id);
+				}
+				// name
+				if (Lines::names.find(dlg.name) == Lines::names.end())
+				{
+					Lines::names.erase(pDoc->lines[l]->name);
+					pDoc->lines[l]->name = dlg.name;
+					Lines::names.insert(dlg.name);
+				}
+				/*pDoc->lines[l]->ID = dlg.value_link_id;
+				pDoc->lines[l]->name = dlg.name;*/
 				/*if ((pDoc->lines[l]->SecondShapeConstID != dlg.value_link_shape_first_id) && (pDoc->lines[l]->FirstShapeConstID != dlg.value_link_shape_second_id))
 				{
 					set<int> tempConstIDs;
