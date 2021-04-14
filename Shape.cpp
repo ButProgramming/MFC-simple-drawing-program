@@ -594,7 +594,8 @@ void TriangleShape::draw(CDC* dc)
 
 IShape::~IShape()
 {
-
+	IShape::IDs.erase(ID); // erase ID because ID won't exist
+	IShape::names.erase(name);
 }
 
 

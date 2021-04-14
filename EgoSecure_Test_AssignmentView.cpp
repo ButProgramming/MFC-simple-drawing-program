@@ -1337,9 +1337,8 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 		{
 			if (pDoc->shapes[i]->isSelected)
 			{
-				int deleteID = pDoc->shapes[i]->ID;
-				IShape::IDs.erase(deleteID); // erase ID because ID won't exist
-				IShape::names.erase(pDoc->shapes[i]->name);
+				//IShape::IDs.erase(pDoc->shapes[i]->ID); // erase ID because ID won't exist
+				//IShape::names.erase(pDoc->shapes[i]->name);
 				/*IShape* shape;
 				pDoc->shapes.push_back(shape);
 				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
@@ -1357,7 +1356,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 		{
 			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
 			{
-				int deleteID = pDoc->lines[i]->ID;
+				//int deleteID = pDoc->lines[i]->ID;
 				/*Lines::IDs.erase(deleteID);
 				Lines::names.erase(pDoc->lines[i]->name);*/
 				delete pDoc->lines[i];
