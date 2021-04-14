@@ -1611,12 +1611,18 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			{
 				IShape::names.erase(pDoc->shapes[s]->name);
 				pDoc->shapes[s]->name = dlg.value_name;
-			}
-			
-			
+
+			}			
 		}
 	}
-	
+	for (int l = 0; l < pDoc->lines.size(); l++)
+	{
+		if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		{
+
+		}
+			//AfxMessageBox(_T("0"));
+	}
 	//dlg.OnBnClickedButtonGetData();
 	//dlg.OnBnClickedButtonGetData();
 	// AfxMessageBox(_T("123"));
