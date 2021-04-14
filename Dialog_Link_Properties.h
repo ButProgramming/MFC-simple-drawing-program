@@ -28,9 +28,21 @@ public:
 	CEdit m_link_color_R;
 	CEdit m_link_color_G;
 	CEdit m_link_color_B;
-	int value_link_color_R;
-	int value_link_color_G;
-	int value_link_color_B;
+	int value_link_color_R = 0;
+	int value_link_color_G = 0;
+	int value_link_color_B = 0;
 
 	virtual BOOL ContinueModal();
+	CEdit m_link_shape_first_id;
+	CEdit m_link_shape_second_id;
+	int value_link_shape_first_id = -1;
+	int value_link_shape_second_id = -1;
+//	CComboBox m_link_size;
+	CComboBox m_cb_link_size;
+	CComboBox m_cb_link_type;
+	int value_link_size = 1;
+	int value_link_type = 0;
+//	CComboBox m_link_type_link;
+	CComboBox m_cb_link_type_link;
+	int value_link_type_link;
 };

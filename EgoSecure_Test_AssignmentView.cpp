@@ -1561,7 +1561,7 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 void CEgoSecureTestAssignmentView::OnButtonProperties()
 {
 	auto pDoc = GetDocument();
-	for (int s=0; s<pDoc->shapes.size(); s++)
+	for (int s = 0; s < pDoc->shapes.size(); s++)
 	{
 		/*CString str;
 		str.Format(_T("%d"), s);
@@ -1616,25 +1616,65 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				IShape::names.erase(pDoc->shapes[s]->name);
 				pDoc->shapes[s]->name = dlg.value_name;
 
-			}		
+			}
 			break;
 		}
 	}
-	for (int l = 0; l < pDoc->lines.size(); l++)
+	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		for (int l = 0; l < pDoc->lines.size(); l++)
 		{
-			Dialog_Link_Properties dlg;
-			dlg.value_link_color_R = pDoc->lines[l]->lR;
-			CString str;
-			str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
-			dlg.DoModal();
-			//AfxMessageBox(str);
-		}
+			if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+			{
+				int foundedFirstID;
+				int foundedSecondID;
+				Dialog_Link_Properties dlg;
+				dlg.value_link_color_R = pDoc->lines[l]->lR;
+				dlg.value_link_color_G = pDoc->lines[l]->lG;
+				dlg.value_link_color_B = pDoc->lines[l]->lB;
+				for (auto s : pDoc->shapes)
+				{
+					if (s->constID == pDoc->lines[l]->FirstShapeConstID)
+					{
+						foundedFirstID = s->ID;
+					}
+					else if (s->constID == pDoc->lines[l]->SecondShapeConstID)
+					{
+						foundedSecondID = s->ID;
+					}
+
+				}
+				dlg.value_link_shape_first_id = foundedFirstID;
+				dlg.value_link_shape_second_id = foundedSecondID;
+				dlg.value_link_size = pDoc->lines[l]->lineSize;
+				dlg.value_link_type = pDoc->lines[l]->lineType;
+				if (pDoc->lines[l]->type == LineType::Basic)
+				{
+					dlg.value_link_type_link = 0;
+				}
+				else if (pDoc->lines[l]->type == LineType::Right)
+				{
+					dlg.value_link_type_link = 1;
+				}
+				else if (pDoc->lines[l]->type == LineType::Left)
+				{
+					dlg.value_link_type_link = 2;
+				}
+				else
+				{
+					dlg.value_link_type_link = 3;
+				}
+					
+				CString str;
+				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
+				dlg.DoModal();
+				//AfxMessageBox(str);
+			}
 			//AfxMessageBox(_T("0"));
+		}
+		//dlg.OnBnClickedButtonGetData();
+		//dlg.OnBnClickedButtonGetData();
+		// AfxMessageBox(_T("123"));
+		// TODO: Add your command handler code here
 	}
-	//dlg.OnBnClickedButtonGetData();
-	//dlg.OnBnClickedButtonGetData();
-	// AfxMessageBox(_T("123"));
-	// TODO: Add your command handler code here
 }

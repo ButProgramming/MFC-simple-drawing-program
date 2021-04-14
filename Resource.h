@@ -58,8 +58,13 @@
 #define IDC_COMBO3                      1030
 #define IDC_EDIT_LINK_COLOR_R           1031
 #define IDC_EDIT_LINK_COLOR_G           1032
-#define IDC_EDIT3                       1033
 #define IDC_EDIT_LINK_COLOR_B           1033
+#define IDC_COMBO_LINK_SIZE             1034
+#define IDC_EDIT_LINK_SHAPE_FIRST_ID    1037
+#define IDC_EDIT_LINK_SHAPE_SECOND_ID   1038
+#define IDC_COMBO_LINK_TYPE             1041
+#define IDC_COMBO_LINK_TYPE2            1042
+#define IDC_COMBO_LINK_TYPE_LINK        1042
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
@@ -88,9 +93,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        331
+#define _APS_NEXT_RESOURCE_VALUE        332
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
