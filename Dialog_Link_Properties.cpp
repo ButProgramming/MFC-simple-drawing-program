@@ -40,6 +40,7 @@ void Dialog_Link_Properties::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(Dialog_Link_Properties, CDialogEx)
+	ON_BN_CLICKED(IDOK, &Dialog_Link_Properties::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -81,4 +82,39 @@ BOOL Dialog_Link_Properties::ContinueModal()
 		m_link_name.SetWindowTextW(name);
 	}
 	return CDialogEx::ContinueModal();
+}
+
+
+void Dialog_Link_Properties::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	CString str;
+
+	// get R color
+	m_link_color_R.GetWindowTextW(str);
+	value_link_color_R = _ttoi(str);
+	if (value_link_color_R > 255)
+		value_link_color_R = 0;
+
+	// get G color
+	m_link_color_G.GetWindowTextW(str);
+	value_link_color_G = _ttoi(str);
+	if (value_link_color_G > 255)
+		value_link_color_G = 0;
+
+	// get B color
+	m_link_color_B.GetWindowTextW(str);
+	value_link_color_B = _ttoi(str);
+	if (value_link_color_B > 255)
+		value_link_color_B = 0;
+
+	// get first shape
+	m_link_shape_first_id.GetWindowTextW(str);
+	value_link_shape_first_id = _ttoi(str);
+
+	// get second shape
+	m_link_shape_second_id.GetWindowTextW(str);
+	value_link_shape_second_id = _ttoi(str);
+
+	CDialogEx::OnOK();
 }

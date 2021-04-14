@@ -100,6 +100,9 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	for (int i=0; i<pDoc->lines.size(); i++)
 	{
 		CPen* linePen;
+		pDoc->lines[i]->lR = GetRValue(pDoc->lines[i]->lineColor);
+		pDoc->lines[i]->lG = GetGValue(pDoc->lines[i]->lineColor);
+		pDoc->lines[i]->lB = GetBValue(pDoc->lines[i]->lineColor);
 		linePen = new CPen(pDoc->lines[i]->lineType, pDoc->lines[i]->lineSize, RGB(pDoc->lines[i]->lR, pDoc->lines[i]->lG, pDoc->lines[i]->lB));
 		CPoint firstPoint;
 		CPoint secondPoint;
@@ -1630,7 +1633,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				int foundedFirstID;
 				int foundedSecondID;
 				Dialog_Link_Properties dlg;
-				dlg.value_link_color_R = pDoc->lines[l]->lR;
+				dlg.value_link_color_R = GetRValue(pDoc->lines[l]->lineColor);
 				dlg.value_link_color_G = pDoc->lines[l]->lG;
 				dlg.value_link_color_B = pDoc->lines[l]->lB;
 				for (auto s : pDoc->shapes)
@@ -1667,10 +1670,44 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				}
 				dlg.value_link_id = pDoc->lines[l]->ID;
 				dlg.name = pDoc->lines[l]->name;
+
 					
 				CString str;
 				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
 				dlg.DoModal();
+				pDoc->lines[l]->lineColor = RGB(dlg.value_link_color_R, dlg.value_link_color_G, dlg.value_link_color_B);
+				if ((dlg.value_link_shape_first_id!= dlg.value_link_shape_second_id)) // can be swaped
+				{
+					set<int> tempConstIDs;
+					for (auto s : pDoc->shapes)
+					{
+						tempConstIDs.insert(s->constID);
+					}
+					if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
+					{
+						pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
+						pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
+					}
+
+				}
+				/*if ((pDoc->lines[l]->SecondShapeConstID != dlg.value_link_shape_first_id) && (pDoc->lines[l]->FirstShapeConstID != dlg.value_link_shape_second_id))
+				{
+					set<int> tempConstIDs;
+					for (auto s : pDoc->shapes)
+					{
+						tempConstIDs.insert(s->constID);
+					}
+					if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
+					{
+						pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
+						pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
+					}
+					
+				}*/
+				//pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
+				
+
+
 				//AfxMessageBox(str);
 			}
 			//AfxMessageBox(_T("0"));

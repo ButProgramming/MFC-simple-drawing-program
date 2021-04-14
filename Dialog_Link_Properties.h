@@ -49,4 +49,5 @@ public:
 	CEdit m_link_name;
 	int value_link_id;
 	CString name;
+	afx_msg void OnBnClickedOk();
 };
