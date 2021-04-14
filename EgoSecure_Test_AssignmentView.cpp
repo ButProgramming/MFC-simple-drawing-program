@@ -19,6 +19,7 @@
 #include "Shape.h"
 #include "List_Control.h"
 #include "Default_draw_properties.h"
+#include "Dialog_Properties.h"
 
 // CEgoSecureTestAssignmentView
 
@@ -51,6 +52,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_PROPERTIES_ALLSHAPESANDLINES, &CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines)
 	ON_COMMAND(IDC_LISTCONTROL_SHAPES, &CEgoSecureTestAssignmentView::OnListcontrolShapes)
 	ON_COMMAND(ID_PROPERTIES_DEFAULTDRAWPROPERTIES, &CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties)
+	ON_COMMAND(ID_BUTTON_PROPERTIES, &CEgoSecureTestAssignmentView::OnButtonProperties)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -1551,4 +1553,28 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	//dlg.SetDataDefaultDrawProperties();
 	//dlg.m_cb_outline_size.SetCurSel(0);
 	//AfxMessageBox(_T("123"));
+}
+
+
+void CEgoSecureTestAssignmentView::OnButtonProperties()
+{
+	auto pDoc = GetDocument();
+	for (int s=0; s<pDoc->shapes.size(); s++)
+	{
+		if (pDoc->shapes[s]->isSelected)
+		{
+			Dialog_Properties dlg;
+			dlg.value_x = pDoc->shapes[s]->centerOfShape.x;
+			dlg.value_y = pDoc->shapes[s]->centerOfShape.y;
+			dlg.value_outline_R = pDoc->shapes[s]->oR;
+			dlg.value_outline_G = pDoc->shapes[s]->oG;
+			dlg.value_outline_B = pDoc->shapes[s]->oB;
+			dlg.DoModal();
+		}
+	}
+	
+	//dlg.OnBnClickedButtonGetData();
+	//dlg.OnBnClickedButtonGetData();
+	// AfxMessageBox(_T("123"));
+	// TODO: Add your command handler code here
 }

@@ -30,6 +30,7 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_LISTCONTROL                 310
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
+#define IDD_DIALOG_PROPERTIES           326
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO_OUTLINE_SIZE          1008
@@ -38,7 +39,18 @@
 #define IDC_COMBO_LINE_SIZE             1011
 #define IDC_COMBO_FILL_TYPE             1012
 #define IDC_MFCCOLORBUTTON3             1013
+#define IDC_BUTTON_GET_DATA             1013
 #define IDC_COMBO5                      1014
+#define IDC_EDIT_X                      1015
+#define IDC_EDIT_OUTLINE_R              1017
+#define IDC_CHECK1                      1018
+#define IDC_EDIT_OUTLINE_G              1020
+#define IDC_EDIT_B                      1021
+#define IDC_EDIT_OUTLINE_B              1021
+#define IDC_EDIT7                       1022
+#define IDC_EDIT8                       1023
+#define IDC_EDIT9                       1024
+#define IDC_EDITY                       1025
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
@@ -61,14 +73,15 @@
 #define ID_PROPERTIES_ALLSHAPESANDLINES 32803
 #define ID_PROPERTIES_12345             32804
 #define ID_PROPERTIES_DEFAULTDRAWPROPERTIES 32805
+#define ID_BUTTON_PROPERTIES            32807
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        326
-#define _APS_NEXT_COMMAND_VALUE         32806
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_RESOURCE_VALUE        328
+#define _APS_NEXT_COMMAND_VALUE         32808
+#define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

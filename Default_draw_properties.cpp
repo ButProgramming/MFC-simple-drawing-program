@@ -48,7 +48,7 @@ END_MESSAGE_MAP()
 void Default_draw_properties::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	m_cb_outline_size.SetCurSel(1);
+	//m_cb_outline_size.SetCurSel(1);
 	m_color_outline_COLORREF = m_color_outline.GetColor();
 	m_color_fill_COLORREF = m_color_fill.GetColor();
 	m_color_link_COLORREF = m_color_link.GetColor();
