@@ -31,6 +31,7 @@
 #define IDD_LISTCONTROL                 310
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
 #define IDD_DIALOG_PROPERTIES           326
+#define IDD_DIALOG_PROPERTIES_LINK      329
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO_OUTLINE_SIZE          1008
@@ -53,9 +54,12 @@
 #define IDC_EDIT_OUTLINE_R2             1026
 #define IDC_EDIT_OUTLINE_G2             1027
 #define IDC_EDIT_OUTLINE_B2             1028
-#define IDC_EDIT_OUTLINE_R3             1029
 #define IDC_COMBO2                      1029
 #define IDC_COMBO3                      1030
+#define IDC_EDIT_LINK_COLOR_R           1031
+#define IDC_EDIT_LINK_COLOR_G           1032
+#define IDC_EDIT3                       1033
+#define IDC_EDIT_LINK_COLOR_B           1033
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
@@ -84,9 +88,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        329
+#define _APS_NEXT_RESOURCE_VALUE        331
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         1031
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

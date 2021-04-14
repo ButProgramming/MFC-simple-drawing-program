@@ -20,6 +20,7 @@
 #include "List_Control.h"
 #include "Default_draw_properties.h"
 #include "Dialog_Properties.h"
+#include "Dialog_Link_Properties.h"
 
 // CEgoSecureTestAssignmentView
 
@@ -1562,6 +1563,9 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 	auto pDoc = GetDocument();
 	for (int s=0; s<pDoc->shapes.size(); s++)
 	{
+		/*CString str;
+		str.Format(_T("%d"), s);
+		AfxMessageBox(str);*/
 		if (pDoc->shapes[s]->isSelected)
 		{
 			Dialog_Properties dlg;
@@ -1612,14 +1616,20 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				IShape::names.erase(pDoc->shapes[s]->name);
 				pDoc->shapes[s]->name = dlg.value_name;
 
-			}			
+			}		
+			break;
 		}
 	}
 	for (int l = 0; l < pDoc->lines.size(); l++)
 	{
 		if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
 		{
-
+			Dialog_Link_Properties dlg;
+			dlg.value_link_color_R = pDoc->lines[l]->lR;
+			CString str;
+			str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
+			dlg.DoModal();
+			//AfxMessageBox(str);
 		}
 			//AfxMessageBox(_T("0"));
 	}
