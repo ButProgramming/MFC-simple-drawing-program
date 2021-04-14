@@ -34,6 +34,9 @@ public:
 	int num_cb_fill_type = -1;
 	int num_cb_link_type = 0;
 	int num_cb_line_size = 1;
+
+
+
 // Operations
 public:
 

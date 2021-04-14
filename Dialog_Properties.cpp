@@ -52,6 +52,7 @@ void Dialog_Properties::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(Dialog_Properties, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_GET_DATA, &Dialog_Properties::OnBnClickedButtonGetData)
 	//ON_EN_CHANGE(IDC_EDIT6, &Dialog_Properties::OnEnChangeEdit6)
+	ON_BN_CLICKED(IDOK, &Dialog_Properties::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -127,4 +128,50 @@ void Dialog_Properties::OnEnChangeEdit6()
 	// with the ENM_CHANGE flag ORed into the mask.
 
 	// TODO:  Add your control notification handler code here
+}
+
+
+void Dialog_Properties::OnBnClickedOk()
+{
+	CString str;
+	// coordinate X
+	m_edit_x.GetWindowTextW(str);
+	value_x = _ttoi(str);
+	str.Format(_T("%d"), value_x);
+	// coordinate Y
+	m_edit_y.GetWindowTextW(str);
+	value_y = _ttoi(str);
+	// R outline color
+	m_outline_R.GetWindowTextW(str);
+	value_outline_R = _ttoi(str);
+	if (value_outline_R > 255)
+		value_outline_R = 0;
+	// G outline color
+	m_outline_G.GetWindowTextW(str);
+	value_outline_G = _ttoi(str);
+	if (value_outline_G > 255)
+		value_outline_G = 0;
+	// B outline color
+	m_outline_B.GetWindowTextW(str);
+	value_outline_B = _ttoi(str);
+	if (value_outline_B > 255)
+		value_outline_B = 0;
+	// R outline color
+	m_fill_R.GetWindowTextW(str);
+	value_fill_R = _ttoi(str);
+	if (value_fill_R > 255)
+		value_fill_R = 0;
+	// G outline color
+	m_fill_G.GetWindowTextW(str);
+	value_fill_G = _ttoi(str);
+	if (value_fill_G > 255)
+		value_fill_G = 0;
+	// B outline color
+	m_fill_B.GetWindowTextW(str);
+	value_fill_B = _ttoi(str);
+	if (value_fill_B > 255)
+		value_fill_B = 0;
+	//AfxMessageBox(str);
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnOK();
 }

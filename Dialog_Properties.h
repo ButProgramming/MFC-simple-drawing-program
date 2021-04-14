@@ -1,5 +1,8 @@
 #pragma once
-
+#include <sstream>
+#include <string>
+#include <cstdlib>
+using namespace std;
 
 // Dialog_Properties dialog
 
@@ -64,4 +67,5 @@ public:
 	int value_outline_type;
 	CComboBox m_cb_fill_type;
 	int value_fill_type;
+	afx_msg void OnBnClickedOk();
 };

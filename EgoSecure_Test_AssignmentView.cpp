@@ -1580,6 +1580,16 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			dlg.value_fill_type = pDoc->shapes[s]->fillType;
 			//AfxMessageBox(_T("1"));
 			dlg.DoModal();
+			pDoc->shapes[s]->centerOfShape.x = dlg.value_x;
+			pDoc->shapes[s]->centerOfShape.y = dlg.value_y;
+			// outline color
+			pDoc->shapes[s]->outlineColor = RGB(dlg.value_outline_R, GetGValue(pDoc->shapes[s]->outlineColor), GetBValue(pDoc->shapes[s]->outlineColor));
+			pDoc->shapes[s]->outlineColor = RGB(GetRValue(pDoc->shapes[s]->outlineColor), dlg.value_outline_G, GetBValue(pDoc->shapes[s]->outlineColor));
+			pDoc->shapes[s]->outlineColor = RGB(GetRValue(pDoc->shapes[s]->outlineColor), GetGValue(pDoc->shapes[s]->outlineColor), dlg.value_outline_B);
+			// fill color
+			pDoc->shapes[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->shapes[s]->fillColor), GetBValue(pDoc->shapes[s]->fillColor));
+			pDoc->shapes[s]->fillColor = RGB(GetRValue(pDoc->shapes[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->shapes[s]->fillColor));
+			pDoc->shapes[s]->fillColor = RGB(GetRValue(pDoc->shapes[s]->fillColor), GetGValue(pDoc->shapes[s]->fillColor), dlg.value_fill_B);
 		}
 	}
 	
