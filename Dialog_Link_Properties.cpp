@@ -74,6 +74,11 @@ BOOL Dialog_Link_Properties::ContinueModal()
 		m_cb_link_type.SetCurSel(value_link_type);
 		// set link type (basic, right, left, double)
 		m_cb_link_type_link.SetCurSel(value_link_type_link);
+		// set ID
+		str.Format(_T("%d"), value_link_id);
+		m_link_id.SetWindowTextW(str);
+		// set name
+		m_link_name.SetWindowTextW(name);
 	}
 	return CDialogEx::ContinueModal();
 }

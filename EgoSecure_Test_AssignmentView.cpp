@@ -1666,6 +1666,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 					dlg.value_link_type_link = 3;
 				}
 				dlg.value_link_id = pDoc->lines[l]->ID;
+				dlg.name = pDoc->lines[l]->name;
 					
 				CString str;
 				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
