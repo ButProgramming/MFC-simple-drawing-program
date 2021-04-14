@@ -6,6 +6,7 @@ int IShape::dy = 0;
 int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
 set<int> IShape::IDs;
+set<CString> IShape::names;
 
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
@@ -17,7 +18,7 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->fillColor = fillColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
-	bool isFound = false;
+	bool isNotFound = false;
 	for(int i=0; i<countOfShape+10; i++)
 	{
 		for (auto it = IDs.begin(); it != IDs.end(); it++)
@@ -29,17 +30,48 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 			auto pos = IDs.find(i);
 			if (pos == IDs.end())
 			{
-				isFound = true;
+				isNotFound = true;
 				ID = i;
 				IDs.insert(ID);
 				break;
 			}
 		}
-		if (isFound)
+		if (isNotFound)
 			break;
 	}
-	
-	name.Format(_T("ellipseShape%d"), constID);
+
+
+
+	//////////////////////////////////////////////////
+	CString str;
+	str.Format(_T("-1"));
+	names.insert(str);
+	isNotFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = names.begin(); it != names.end(); it++)
+		{
+			int empt = names.empty();
+			//CString name;
+			name.Format(_T("ellipseShape%d"), i);
+
+			auto pos = names.find(name);
+			if (pos == names.end())
+			{
+				isNotFound = true;
+				name.Format(_T("ellipseShape%d"), i);
+				names.insert(name);
+				break;
+			}
+		}
+		if (isNotFound)
+			break;
+	}
+	/////////////////////////////////////////////////
+
+
+
+	//name.Format(_T("ellipseShape%d"), constID);
 	//type = ShapeType::ellipse;
 	this->type = type;
 	this->size = size;

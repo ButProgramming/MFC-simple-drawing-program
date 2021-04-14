@@ -27,7 +27,7 @@ protected:
 	//ShapeType typeOfShape;
 public:
 	static set<int> IDs;
-	//static set<int>
+	static set<CString> names;
  	static int dx;
 	static int dy;
 	static int sizeOfPointToMoveAndChange;

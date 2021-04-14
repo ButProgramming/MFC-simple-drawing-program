@@ -1338,6 +1338,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 			{
 				int deleteID = pDoc->shapes[i]->ID;
 				IShape::IDs.erase(deleteID); // erase ID because ID won't exist
+				IShape::names.erase(pDoc->shapes[i]->name);
 				/*IShape* shape;
 				pDoc->shapes.push_back(shape);
 				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
@@ -1599,15 +1600,19 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			// degree
 			pDoc->shapes[s]->ellipseAngleRad = dlg.value_degree * 3.14 / 180.f;
 			// ID
-			//for (auto sh : pDoc->shapes)
+			if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
 			{
-				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
-				{
-					IShape::IDs.erase(pDoc->shapes[s]->ID);
-					pDoc->shapes[s]->ID = dlg.value_id;
-					//IShape::IDs.erase(dlg.value_id);
-				}
+				IShape::IDs.erase(pDoc->shapes[s]->ID);
+				pDoc->shapes[s]->ID = dlg.value_id;
+				//IShape::IDs.erase(dlg.value_id);
 			}
+			// name
+			if (IShape::names.find(dlg.value_name) == IShape::names.end())
+			{
+				IShape::names.erase(pDoc->shapes[s]->name);
+				pDoc->shapes[s]->name = dlg.value_name;
+			}
+			
 			
 		}
 	}

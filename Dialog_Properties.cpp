@@ -183,6 +183,9 @@ void Dialog_Properties::OnBnClickedOk()
 	// ID
 	m_id.GetWindowTextW(str);
 	value_id = _ttoi(str);
+	// name
+	m_name.GetWindowTextW(value_name);
+
 	//AfxMessageBox(str);
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();

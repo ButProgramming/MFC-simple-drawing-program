@@ -48,6 +48,7 @@ C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignme
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1121,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1184,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1185,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1375,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1575,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1376,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1576,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  LINK : C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe not found or not built by the last incremental link; performing full link
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe
