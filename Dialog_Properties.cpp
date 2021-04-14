@@ -42,6 +42,10 @@ void Dialog_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_R2, m_fill_R);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_G2, m_fill_G);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_B2, m_fill_B);
+	DDX_Control(pDX, IDC_COMBO1, m_cb_outline_size);
+	//  DDX_Control(pDX, IDC_COMBO2, m_outline_type);
+	DDX_Control(pDX, IDC_COMBO2, m_cb_outline_type);
+	DDX_Control(pDX, IDC_COMBO3, m_cb_fill_type);
 }
 
 
@@ -105,6 +109,10 @@ BOOL Dialog_Properties::ContinueModal()
 		str.Format(_T("%d"), value_id);
 		m_id.SetWindowTextW(str);
 		m_name.SetWindowTextW(value_name);
+		str.Format(_T("%d"), value_outline_size);
+		m_cb_outline_size.SetCurSel(value_outline_size);
+		m_cb_outline_type.SetCurSel(value_outline_type);
+		m_cb_fill_type.SetCurSel(value_fill_type+1);
 		firstTime = false;
 	}
 	return CDialogEx::ContinueModal();

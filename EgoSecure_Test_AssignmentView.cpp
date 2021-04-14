@@ -1575,6 +1575,10 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			dlg.value_degree = pDoc->shapes[s]->ellipseAngleRad * 180.f / 3.14;
 			dlg.value_id = pDoc->shapes[s]->ID;
 			dlg.value_name = pDoc->shapes[s]->name;
+			dlg.value_outline_size = pDoc->shapes[s]->outlineSize;
+			dlg.value_outline_type = pDoc->shapes[s]->outlineType;
+			dlg.value_fill_type = pDoc->shapes[s]->fillType;
+			//AfxMessageBox(_T("1"));
 			dlg.DoModal();
 		}
 	}

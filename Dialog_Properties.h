@@ -57,4 +57,11 @@ public:
 	int value_fill_R;
 	int value_fill_G;
 	int value_fill_B;
+	CComboBox m_cb_outline_size;
+	int value_outline_size;
+//	CComboBox m_outline_type;
+	CComboBox m_cb_outline_type;
+	int value_outline_type;
+	CComboBox m_cb_fill_type;
+	int value_fill_type;
 };

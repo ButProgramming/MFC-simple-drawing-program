@@ -43,6 +43,7 @@
 #define IDC_COMBO5                      1014
 #define IDC_EDIT_X                      1015
 #define IDC_EDIT_OUTLINE_R              1017
+#define IDC_COMBO1                      1019
 #define IDC_EDIT_OUTLINE_G              1020
 #define IDC_EDIT_OUTLINE_B              1021
 #define IDC_EDIT_DEGREE                 1022
@@ -52,6 +53,9 @@
 #define IDC_EDIT_OUTLINE_R2             1026
 #define IDC_EDIT_OUTLINE_G2             1027
 #define IDC_EDIT_OUTLINE_B2             1028
+#define IDC_EDIT_OUTLINE_R3             1029
+#define IDC_COMBO2                      1029
+#define IDC_COMBO3                      1030
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775
@@ -80,9 +84,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        328
+#define _APS_NEXT_RESOURCE_VALUE        329
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         1019
+#define _APS_NEXT_CONTROL_VALUE         1031
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
