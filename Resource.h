@@ -63,8 +63,10 @@
 #define IDC_EDIT_LINK_SHAPE_FIRST_ID    1037
 #define IDC_EDIT_LINK_SHAPE_SECOND_ID   1038
 #define IDC_COMBO_LINK_TYPE             1041
-#define IDC_COMBO_LINK_TYPE2            1042
 #define IDC_COMBO_LINK_TYPE_LINK        1042
+#define IDC_EDIT_LINK_ID                1046
+#define IDC_EDIT_LINK_SHAPE_SECOND_ID2  1047
+#define IDC_EDIT_LINK_NAME              1047
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772
 #define ID_BUTTON_TRIANGLE              32775

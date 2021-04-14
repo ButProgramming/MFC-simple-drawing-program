@@ -91,7 +91,7 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->fillColor = fillColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
-	bool isFound = false;
+	bool isNotFound = false;
 	for (int i = 0; i < countOfShape + 10; i++)
 	{
 		for (auto it = IDs.begin(); it != IDs.end(); it++)
@@ -103,17 +103,44 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 			auto pos = IDs.find(i);
 			if (pos == IDs.end())
 			{
-				isFound = true;
+				isNotFound = true;
 				ID = i;
 				IDs.insert(ID);
 				break;
 			}
 		}
-		if (isFound)
+		if (isNotFound)
 			break;
 	}
+	//////////////////////////////////////////////////
+	CString str;
+	str.Format(_T("-1"));
+	names.insert(str);
+	isNotFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = names.begin(); it != names.end(); it++)
+		{
+			int empt = names.empty();
+			//CString name;
+			name.Format(_T("rectangleShape%d"), i);
 
-	name.Format(_T("rectangleShape%d"), constID);
+			auto pos = names.find(name);
+			if (pos == names.end())
+			{
+				isNotFound = true;
+				name.Format(_T("rectangleShape%d"), i);
+				names.insert(name);
+				break;
+			}
+		}
+		if (isNotFound)
+			break;
+	}
+	/////////////////////////////////////////////////
+
+
+	//name.Format(_T("rectangleShape%d"), constID);
 	//type = ShapeType::rectangle;
 	this->type = type;
 	this->size = size;
@@ -132,7 +159,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->fillColor = fillColor;
 	IDs.insert(-1);
 	constID = IShape::countOfShape;
-	bool isFound = false;
+	bool isNotFound = false;
 	for (int i = 0; i < countOfShape + 10; i++)
 	{
 		for (auto it = IDs.begin(); it != IDs.end(); it++)
@@ -144,17 +171,42 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 			auto pos = IDs.find(i);
 			if (pos == IDs.end())
 			{
-				isFound = true;
+				isNotFound = true;
 				ID = i;
 				IDs.insert(ID);
 				break;
 			}
 		}
-		if (isFound)
+		if (isNotFound)
 			break;
 	}
+	//////////////////////////////////////////////////
+	CString str;
+	str.Format(_T("-1"));
+	names.insert(str);
+	isNotFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = names.begin(); it != names.end(); it++)
+		{
+			int empt = names.empty();
+			//CString name;
+			name.Format(_T("triangleShape%d"), i);
 
-	name.Format(_T("triangleShape%d"), constID);
+			auto pos = names.find(name);
+			if (pos == names.end())
+			{
+				isNotFound = true;
+				name.Format(_T("triangleShape%d"), i);
+				names.insert(name);
+				break;
+			}
+		}
+		if (isNotFound)
+			break;
+	}
+	/////////////////////////////////////////////////
+	//name.Format(_T("triangleShape%d"), constID);
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;

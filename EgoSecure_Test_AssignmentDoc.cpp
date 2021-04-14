@@ -61,6 +61,7 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 	IShape::IDs.clear();
 	Lines::IDs.clear();
 	IShape::names.clear();
+	Lines::names.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 

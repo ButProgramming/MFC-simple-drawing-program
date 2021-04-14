@@ -1345,6 +1345,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
 				delete pDoc->shapes[i]; // memory clear
 				pDoc->shapes.erase(pDoc->shapes.begin() + i); //erase from vector
+				Invalidate();
 			}
 		}
 		
@@ -1357,7 +1358,8 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
 			{
 				int deleteID = pDoc->lines[i]->ID;
-				Lines::IDs.erase(deleteID);
+				/*Lines::IDs.erase(deleteID);
+				Lines::names.erase(pDoc->lines[i]->name);*/
 				delete pDoc->lines[i];
 				pDoc->lines.erase(pDoc->lines.begin() + i);
 				
@@ -1664,6 +1666,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				{
 					dlg.value_link_type_link = 3;
 				}
+				dlg.value_link_id = pDoc->lines[l]->ID;
 					
 				CString str;
 				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);

@@ -34,6 +34,8 @@ void Dialog_Link_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_LINK_TYPE, m_cb_link_type);
 	//  DDX_Control(pDX, IDC_COMBO_LINK_TYPE_LINK, m_link_type_link);
 	DDX_Control(pDX, IDC_COMBO_LINK_TYPE_LINK, m_cb_link_type_link);
+	DDX_Control(pDX, IDC_EDIT_LINK_ID, m_link_id);
+	DDX_Control(pDX, IDC_EDIT_LINK_NAME, m_link_name);
 }
 
 

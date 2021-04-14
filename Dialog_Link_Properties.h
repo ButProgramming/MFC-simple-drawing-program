@@ -45,4 +45,8 @@ public:
 //	CComboBox m_link_type_link;
 	CComboBox m_cb_link_type_link;
 	int value_link_type_link;
+	CEdit m_link_id;
+	CEdit m_link_name;
+	int value_link_id;
+	CString name;
 };

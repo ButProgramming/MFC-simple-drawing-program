@@ -11,6 +11,7 @@ class Lines :
 {
 public:
     static set<int> IDs;
+    static set<CString> names;
     static int countOfLines;
 
     COLORREF lineColor;
@@ -27,6 +28,7 @@ public:
     LineType type;
     //void draw(int, int, LineType);
     Lines(int, int, LineType, COLORREF, int, int);
+    ~Lines();
 };
 
 
