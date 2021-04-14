@@ -35,7 +35,6 @@
 #define IDC_COMBO_OUTLINE_SIZE          1008
 #define IDC_COMBO_OUTLINE_TYPE          1009
 #define IDC_MFCCOLORBUTTON_FILL         1010
-#define IDC_COMBO_OUTLINE_SIZE2         1011
 #define IDC_COMBO_LINE_SIZE             1011
 #define IDC_COMBO_FILL_TYPE             1012
 #define IDC_MFCCOLORBUTTON3             1013
@@ -67,7 +66,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32806
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           310
