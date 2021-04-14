@@ -91,9 +91,19 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->size;
 			ar << s->ellipseAngleRad;
 			ar << s->constID;
+			
 			ar << s->oR;
 			ar << s->oG;
 			ar << s->oB;
+
+			ar << s->fR;
+			ar << s->fG;
+			ar << s->fB;
+
+			ar << s->outlineSize;
+			ar << s->outlineType;
+			ar << s->fillType;
+
 			//ar << s->GetRValue(outlineColor);
 
 			
@@ -124,6 +134,15 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		{
 			ar << l->FirstShapeConstID;
 			ar << l->SecondShapeConstID;
+
+			ar << l->lR;
+			ar << l->lG;
+			ar << l->lB;
+
+			ar << l->lineSize;
+			ar << l->lineType;
+
+
 			if (l->type == LineType::Basic)
 			{
 				//ST = static_cast<ShapeType::ellipse>();
@@ -165,6 +184,15 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int vectorLinesSize;
 		int oR, oG, oB;
 		int fR, fG, fB;
+		int lR, lG, lB;
+
+		int outlineSize;
+		int outlineType;
+		int fillType;
+
+		int line_Size;
+		int line_Type;
+
 		double ellipseAngleRad;
 		CPoint dx_dy[4];
 		int FirstShapeConstID;
@@ -187,6 +215,15 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> oR;
 			ar >> oG;
 			ar >> oB;
+			
+			ar >> fR;
+			ar >> fG;
+			ar >> fB;
+
+			ar >> outlineSize;
+			ar >> outlineType;
+			ar >> fillType;
+
 			for (int i = 0; i < 4; i++)
 			{
 				ar >> dx_dy[i];
@@ -196,19 +233,19 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			if (ST == 0)
 			{
 				shapeType = ShapeType::ellipse;
-				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
+				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 				shapeTemp->isSelected = isSelected;
 			}
 			else if (ST == 1)
 			{
 				shapeType = ShapeType::rectangle;
-				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
+				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 				shapeTemp->isSelected = isSelected;
 			}
 			else
 			{
 				shapeType = ShapeType::triangle;
-				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(255, 0, 0), 10, 0, -1);
+				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 				shapeTemp->isSelected = isSelected;
 			}
 			
@@ -229,35 +266,43 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 			for (int i = 0; i < vectorLinesSize; i++)
 			{
-			ar >> FirstShapeConstID;
-			ar >> SecondShapeConstID;
+				ar >> FirstShapeConstID;
+				ar >> SecondShapeConstID;
 
-			ar >> LT;
-			if (LT == 0)
-			{
-				lineType = LineType::Basic;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0,0,0), 1, 0);
-				//lineTemp->isSelected = isSelected;
-			}
-			else if (LT == 1)
-			{
-				lineType = LineType::Right;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
-				//lineTemp->isSelected = isSelected;
-			}
-			else if (LT == 2)
-			{
-				lineType = LineType::Left;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
-				//lineTemp->isSelected = isSelected;
-			}
-			else
-			{
-				lineType = LineType::Double;
-				lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(0, 0, 0), 1, 0);
-				//lineTemp->isSelected = isSelected;
-			}
-			lines.push_back(lineTemp);
+				ar >> lR;
+				ar >> lG;
+				ar >> lB;
+
+				ar >> line_Size;
+				ar >> line_Type;
+				//ar >> lineType;
+
+				ar >> LT;
+				if (LT == 0)
+				{
+					lineType = LineType::Basic;
+					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR,lG,lB), line_Size, line_Type);
+					//lineTemp->isSelected = isSelected;
+				}
+				else if (LT == 1)
+				{
+					lineType = LineType::Right;
+					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp->isSelected = isSelected;
+				}
+				else if (LT == 2)
+				{
+					lineType = LineType::Left;
+					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp->isSelected = isSelected;
+				}
+				else
+				{
+					lineType = LineType::Double;
+					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp->isSelected = isSelected;
+				}
+				lines.push_back(lineTemp);
 		}
 		
 		//CString str;
