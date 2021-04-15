@@ -365,8 +365,8 @@ void EllipseShape::draw(CDC* dc)
 	//dc->Polygon(points, 4);
 	dc->Polygon(&eFP[0], eFP.size());
 	dc->Polygon(&eSP[0], eSP.size());
-	dc->FillRgn(ellipseRgn1, ellipseBrush);
-	dc->FillRgn(ellipseRgn2, ellipseBrush);
+	//dc->FillRgn(ellipseRgn1, ellipseBrush);
+	//dc->FillRgn(ellipseRgn2, ellipseBrush);
 
 
 	if (isSelected)
@@ -430,6 +430,21 @@ void RectangleShape::draw(CDC* dc)
 	points[3] = CPoint(dSM.x + rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 	//CRgn* rectangleReg = new CRgn;
 
+	//create new smaller region
+	CPoint pointsReg[4];
+	pointsReg[0].x = points[0].x + 1; //bl
+	pointsReg[0].y = points[0].y - 1;
+
+	pointsReg[1].x = points[1].x - 1; //br
+	pointsReg[1].y = points[1].y - 1;
+
+	pointsReg[2].x = points[2].x - 1; //tr
+	pointsReg[2].y = points[2].y + 1;
+
+	pointsReg[3].x = points[3].x + 1; //tl
+	pointsReg[3].y = points[3].y + 1;
+
+	// rotate shape
 	for (int i = 0; i < 4; i++)
 	{
 		int tempX = points[i].x;
@@ -438,6 +453,17 @@ void RectangleShape::draw(CDC* dc)
 		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		points[i].x += centerOfShape.x + dx;
 		points[i].y += centerOfShape.y + dy;
+	}
+
+	//rotate shape region points
+	for (int i = 0; i < 4; i++)
+	{
+		int tempX = pointsReg[i].x;
+		int tempY = pointsReg[i].y;
+		pointsReg[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		pointsReg[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		pointsReg[i].x += centerOfShape.x + dx;
+		pointsReg[i].y += centerOfShape.y + dy;
 	}
 
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
@@ -460,8 +486,10 @@ void RectangleShape::draw(CDC* dc)
 		rectangleBrush = new CBrush(fillType, RGB(fR, fG, fB));
 	}
 	
+	
+
 	CRgn* rectangleReg = new CRgn;
-	rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
+	rectangleReg->CreatePolygonRgn(pointsReg, 4, ALTERNATE);
 	dc->Polygon(points, 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
 	//dc->FillRgn(triangleReg, brush);
