@@ -44,4 +44,9 @@ public:
 	int num_cb_link_type = 0;
 	CComboBox m_cb_line_size;
 	int num_cb_line_size = 1; 
+	virtual BOOL ContinueModal();
+
+	//
+	bool firstTime = true;
+	COLORREF value_color;
 };

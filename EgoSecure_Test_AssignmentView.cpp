@@ -1519,7 +1519,6 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 	{
 		dlg.lines.push_back(l);
 	}
-	
 	dlg.DoModal();
 	
 	
@@ -1544,7 +1543,14 @@ void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 	//dlg.m_color_outline.SetColor(pDoc->m_outline_color);
 	//dlg.m_cb_outline_size.SelectString(0, _T("123"));
 	//dlg.m_cb_outline_type.SetCurSel(2);
-
+	dlg.m_color_outline_COLORREF = pDoc->m_outline_color;
+	dlg.m_color_fill_COLORREF = pDoc->m_fill_color;
+	dlg.m_color_link_COLORREF = pDoc->m_color_link;
+	dlg.num_cb_outline_size = pDoc->num_cb_outline_size;
+	dlg.num_cb_outline_type = pDoc->num_cb_outline_type;
+	dlg.num_cb_fill_type = pDoc->num_cb_fill_type;
+	dlg.num_cb_line_size = pDoc->num_cb_line_size;
+	dlg.num_cb_link_type = pDoc->num_cb_link_type;
 	dlg.DoModal();
 	dlg.m_color_outline.SetColor(RGB(255, 0, 0));
 	pDoc->m_outline_color = dlg.m_color_outline_COLORREF;

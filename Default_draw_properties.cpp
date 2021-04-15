@@ -78,3 +78,34 @@ void Default_draw_properties::OnBnClickedOk()
 //	//m_cb_outline_size.SetCurSel(size);
 //	// TODO: Add your implementation code here.
 //}
+
+
+BOOL Default_draw_properties::ContinueModal()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (firstTime)
+	{
+		//color
+		m_color_outline.SetColor(m_color_outline_COLORREF);
+		m_color_fill.SetColor(m_color_fill_COLORREF);
+		m_color_link.SetColor(m_color_link_COLORREF);
+
+		//outline size
+		m_cb_outline_size.SetCurSel(num_cb_outline_size);
+
+		//outline type
+		m_cb_outline_type.SetCurSel(num_cb_outline_type);
+
+		//fill type
+		m_cb_fill_type.SetCurSel(num_cb_fill_type + 1);
+
+		//link size
+		m_cb_line_size.SetCurSel(num_cb_line_size);
+
+		//link type
+		m_cb_link_type.SetCurSel(num_cb_link_type);
+
+		firstTime = false;
+	}
+	return CDialogEx::ContinueModal();
+}

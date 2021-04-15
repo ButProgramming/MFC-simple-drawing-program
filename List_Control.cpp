@@ -28,16 +28,16 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LISTCONTROL_SHAPES, m_listControl_shapes);
 
 	// InsertColumt for shapes
-	m_listControl_shapes.InsertColumn(0, _T("ID"), LVCFMT_LEFT, 30);
-	m_listControl_shapes.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(0, _T("ID"), LVCFMT_LEFT, 50);
+	m_listControl_shapes.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 100);
 	m_listControl_shapes.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
-	m_listControl_shapes.InsertColumn(3, _T("Center"), LVCFMT_CENTER, 120);
-	m_listControl_shapes.InsertColumn(4, _T("Angle"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(3, _T("Center"), LVCFMT_CENTER, 150);
+	m_listControl_shapes.InsertColumn(4, _T("Angle"), LVCFMT_CENTER, 100);
 	m_listControl_shapes.InsertColumn(5, _T("Outline RGB"), LVCFMT_CENTER, 150);
-	m_listControl_shapes.InsertColumn(6, _T("Outline size"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(6, _T("Outline size"), LVCFMT_CENTER, 100);
 	m_listControl_shapes.InsertColumn(7, _T("Outline type"), LVCFMT_CENTER, 100);
 	m_listControl_shapes.InsertColumn(8, _T("Fill RGB"), LVCFMT_CENTER, 150);
-	m_listControl_shapes.InsertColumn(9, _T("Fill type"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(9, _T("Fill type"), LVCFMT_CENTER, 100);
 
 
 	//m_listControl_shapes.InsertColumn(5, _T("Is selected"), LVCFMT_CENTER, 70);
@@ -47,11 +47,11 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	m_listControl_lines.InsertColumn(0, _T("ID"), LVCFMT_CENTER, 50);
 	m_listControl_lines.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 100);
 	m_listControl_lines.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(3, _T("First shape id"), LVCFMT_CENTER, 50);
-	m_listControl_lines.InsertColumn(4, _T("First shape type"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(5, _T("Second shape id"), LVCFMT_CENTER, 50);
-	m_listControl_lines.InsertColumn(6, _T("Second shape type"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(7, _T("Line RGB"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(3, _T("First shape id"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(4, _T("First shape type"), LVCFMT_CENTER, 150);
+	m_listControl_lines.InsertColumn(5, _T("Second shape id"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(6, _T("Second shape type"), LVCFMT_CENTER, 150);
+	m_listControl_lines.InsertColumn(7, _T("Line RGB"), LVCFMT_CENTER, 150);
 	m_listControl_lines.InsertColumn(8, _T("Line size"), LVCFMT_CENTER, 100);
 	m_listControl_lines.InsertColumn(9, _T("Line type"), LVCFMT_CENTER, 100);
 
