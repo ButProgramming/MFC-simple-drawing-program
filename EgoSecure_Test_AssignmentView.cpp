@@ -1608,12 +1608,15 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			// degree
 			pDoc->shapes[s]->ellipseAngleRad = dlg.value_degree * 3.14 / 180.f;
 			// ID
-			if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
+			if (dlg.value_degree > 0)
 			{
-				IShape::IDs.erase(pDoc->shapes[s]->ID);
-				pDoc->shapes[s]->ID = dlg.value_id;
-				IShape::IDs.insert(dlg.value_id);
-				//IShape::IDs.erase(dlg.value_id);
+				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
+				{
+					IShape::IDs.erase(pDoc->shapes[s]->ID);
+					pDoc->shapes[s]->ID = dlg.value_id;
+					IShape::IDs.insert(dlg.value_id);
+					//IShape::IDs.erase(dlg.value_id);
+				}
 			}
 			// name
 			if (IShape::names.find(dlg.value_name) == IShape::names.end())
@@ -1626,7 +1629,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			break;
 		}
 	}
-	if (pDoc->selectedShapesIDs.size() > 1)
+	if (pDoc->selectedShapesIDs.size() > 1) // check if min 2 selected shapes exist
 	{
 		for (int l = 0; l < pDoc->lines.size(); l++)
 		{
@@ -1717,13 +1720,17 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 						break;
 					}
 				}
-				if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
+				if (dlg.value_link_id > 0)
 				{
-					Lines::IDs.erase(pDoc->lines[l]->ID);
-					pDoc->lines[l]->ID = dlg.value_link_id;
-					Lines::IDs.insert(dlg.value_link_id);
-					//IShape::IDs.erase(dlg.value_id);
+					if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
+					{
+						Lines::IDs.erase(pDoc->lines[l]->ID);
+						pDoc->lines[l]->ID = dlg.value_link_id;
+						Lines::IDs.insert(dlg.value_link_id);
+						//IShape::IDs.erase(dlg.value_id);
+					}
 				}
+				
 				// name
 				if (Lines::names.find(dlg.name) == Lines::names.end())
 				{
