@@ -51,6 +51,9 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	m_listControl_lines.InsertColumn(4, _T("First shape type"), LVCFMT_CENTER, 100);
 	m_listControl_lines.InsertColumn(5, _T("Second shape id"), LVCFMT_CENTER, 50);
 	m_listControl_lines.InsertColumn(6, _T("Second shape type"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(7, _T("Line RGB"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(8, _T("Line size"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(9, _T("Line type"), LVCFMT_CENTER, 100);
 
 	// filling shapes listview
 	int nItem;
@@ -241,6 +244,41 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		str.Format(_T("%d"), tempFoundedID2);
 		m_listControl_lines.SetItemText(nItem, 5, str);
 		m_listControl_lines.SetItemText(nItem, 6, type2);
+		str.Format(_T("R: %d, G: %d, B: %d"), l->lR, l->lG, l->lB);
+		m_listControl_lines.SetItemText(nItem, 7, str);
+		str.Format(_T("%d"), l->lineSize);
+		m_listControl_lines.SetItemText(nItem, 8, str);
+		// ____ ;_ _ _;.....;_._;_.._;
+		switch (l->lineType)
+		{
+			case 0:
+			{
+				str.Format(_T("____"));
+				break;
+			}
+			case 1:
+			{
+				str.Format(_T("_ _ _"));
+				break;
+			}
+			case 2:
+			{
+				str.Format(_T("....."));
+				break;
+			}
+			case 3:
+			{
+				str.Format(_T("_._"));
+				break;
+			}
+			case 4:
+			{
+				str.Format(_T("_.._"));
+				break;
+			}
+		}
+		//str.Format(_T("%d"), l->lineSize);
+		m_listControl_lines.SetItemText(nItem, 9, str);
 	}
 
 	
