@@ -37,12 +37,14 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 
 	// InsertColumnt for lines
 	DDX_Control(pDX, IDC_LISTCONTROL_LINES, m_listControl_lines);
-	m_listControl_lines.InsertColumn(0, _T("ID"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(0, _T("ID"), LVCFMT_CENTER, 50);
 	m_listControl_lines.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 100);
 	m_listControl_lines.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(3, _T("First shape id"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(4, _T("Second shape id"), LVCFMT_CENTER, 100);
-	
+	m_listControl_lines.InsertColumn(3, _T("First shape id"), LVCFMT_CENTER, 50);
+	m_listControl_lines.InsertColumn(4, _T("First shape type"), LVCFMT_CENTER, 100);
+	m_listControl_lines.InsertColumn(5, _T("Second shape id"), LVCFMT_CENTER, 50);
+	m_listControl_lines.InsertColumn(6, _T("Second shape type"), LVCFMT_CENTER, 100);
+
 	// filling shapes listview
 	int nItem;
 	CString str;
@@ -104,17 +106,67 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		m_listControl_lines.SetItemText(nItem, 2, l->name);
 		// find ID from constID
 		int tempFoundedID1;
+		int tempFoundedID2;
+		CString type1; // type of shapes that will be founded
+		CString type2; // ---
 		for (auto s : shapes)
 		{
 			if (s->constID == l->FirstShapeConstID)
 			{
 				tempFoundedID1 = s->ID;
+				switch (s->type)
+				{
+					case ShapeType::ellipse:
+					{
+						type1 = _T("Ellipse");
+						break;
+					}
+					case ShapeType::rectangle:
+					{
+						type1 = _T("Rectangle");
+						break;
+					}
+					case ShapeType::triangle:
+					{
+						type1 = _T("Triangle");
+						break;
+					}
+					
+				}
+				//break; don't need because constID's are unique
+				
+			}
+			else if (s->constID == l->SecondShapeConstID)
+			{
+				tempFoundedID2 = s->ID;
+				switch (s->type)
+				{
+				case ShapeType::ellipse:
+				{
+					type2 = _T("Ellipse");
+					break;
+				}
+				case ShapeType::rectangle:
+				{
+					type2 = _T("Rectangle");
+					break;
+				}
+				case ShapeType::triangle:
+				{
+					type2 = _T("Triangle");
+					break;
+				}
+				}
+				//break; don't need because constID's are unique
 			}
 		}
+
 		str.Format(_T("%d"), tempFoundedID1);
 		m_listControl_lines.SetItemText(nItem, 3, str);
-		//str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
-		m_listControl_lines.SetItemText(nItem, 4, _T("-"));
+		m_listControl_lines.SetItemText(nItem, 4, type1);
+		str.Format(_T("%d"), tempFoundedID2);
+		m_listControl_lines.SetItemText(nItem, 5, str);
+		m_listControl_lines.SetItemText(nItem, 6, type2);
 	}
 
 	
