@@ -236,16 +236,6 @@ void EllipseShape::draw(CDC* dc)
 	dc->SelectObject(pen);
 	CPoint circleCenter{ 0, 0 };
 
-	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
-	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
-	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
-	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
-
-	//points[0] = CPoint(circleCenter.x - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, circleCenter.y + size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //leftbottom
-	//points[1] = CPoint(circleCenter.x + size - (dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x) + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, circleCenter.y + size + dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y); //rightbottom
-	//points[2] = CPoint(circleCenter.x + size - (dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x) + dx_dy[1].x + dx_dy_temp[1].x + dx_dy[2].x + dx_dy_temp[2].x, circleCenter.y - size + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //righttop
-	//points[3] = CPoint(circleCenter.x - size + dx_dy[0].x + dx_dy_temp[0].x + dx_dy[3].x + dx_dy_temp[3].x, circleCenter.y - size - (dx_dy[0].y + dx_dy_temp[0].y + dx_dy[1].y + dx_dy_temp[1].y) + dx_dy[2].y + dx_dy_temp[2].y + dx_dy[3].y + dx_dy_temp[3].y); //lefttop
-
 	CPoint diffAr[4];
 	for (int i = 0; i < 4; i++)
 	{
@@ -257,9 +247,6 @@ void EllipseShape::draw(CDC* dc)
 	points[2] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
 	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
-	//1
-	//points[2].y += diffAr[2].y + diffAr[3].y;
-	//points[3].y += diffAr[2].y + diffAr[3].y;
 
 	int a = abs((points[1].x - points[0].x) / 2);
 	int b = abs((points[2].y - points[1].y) / 2);
@@ -350,7 +337,95 @@ void EllipseShape::draw(CDC* dc)
 		points[i].y += centerOfShape.y + dy;
 	}
 
+	// create smaller ellipse to fill region
+	a = a - 1;
+	b = b - 1;
+	///
+	vector<CPoint> smallerRgn1;
+	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	for (int y = b - 1; y >= -b; y--)
+	{
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
+		CPoint temp1{ dSM.x + circleCenter.x - x,dSM.y + circleCenter.y + y };
+		smallerRgn1.push_back(temp1);
+		dc->MoveTo(dSM.x + circleCenter.x - x, dSM.y + circleCenter.y + y);
+	}
+	CPoint temp1_2{ dSM.x + circleCenter.x, dSM.y + circleCenter.y + b };
+	smallerRgn1.push_back(temp1);
+	//
 
+	//
+	vector<CPoint> smallerRgn2;
+	//vector<CPoint> eSP;
+	dc->MoveTo(dSM.x + circleCenter.x, dSM.y + circleCenter.y + b);
+	for (int y = b - 1; y >= -b; y--)
+	{
+		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
+		int x = a * temp;
+		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
+		CPoint temp2{ dSM.x + circleCenter.x + x, dSM.y + circleCenter.y + y };
+		smallerRgn2.push_back(temp2);
+		dc->MoveTo(dSM.x + circleCenter.x + x, dSM.y + circleCenter.y + y);
+	}
+	CPoint temp2_2{ dSM.x + circleCenter.x,dSM.y + circleCenter.y + b };
+	smallerRgn2.push_back(temp2);
+
+	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+
+	ellipseFirstPart.clear();
+	ellipseSecondPart.clear();
+	for (CPoint v1 : smallerRgn1)
+	{
+		ellipseFirstPart.push_back(v1);
+	}
+	for (CPoint v2 : smallerRgn2)
+	{
+		ellipseSecondPart.push_back(v2);
+	}
+
+	/*CBrush* ellipseBrush;
+	if (fillType == -1)
+	{
+		ellipseBrush = new CBrush;
+		ellipseBrush->CreateSolidBrush(RGB(fR, fG, fB));
+	}
+	else
+	{
+		ellipseBrush = new CBrush(fillType, RGB(fR, fG, fB));
+	}*/
+
+	for (int i = 0; i < smallerRgn1.size(); i++)
+	{
+		int tempX = smallerRgn1[i].x;
+		int tempY = smallerRgn1[i].y;
+		smallerRgn1[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		smallerRgn1[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		smallerRgn1[i].x += centerOfShape.x + dx;
+		smallerRgn1[i].y += centerOfShape.y + dy;
+	}
+
+	for (int i = 0; i < smallerRgn2.size(); i++)
+	{
+		int tempX = smallerRgn2[i].x;
+		int tempY = smallerRgn2[i].y;
+		smallerRgn2[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		smallerRgn2[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		smallerRgn2[i].x += centerOfShape.x + dx;
+		smallerRgn2[i].y += centerOfShape.y + dy;
+	}
+
+	/*for (int i = 0; i < 4; i++)
+	{
+		int tempX = points[i].x;
+		int tempY = points[i].y;
+		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		points[i].x += centerOfShape.x + dx;
+		points[i].y += centerOfShape.y + dy;
+	}*/
+	///
 
 	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
 	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
@@ -358,15 +433,15 @@ void EllipseShape::draw(CDC* dc)
 	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
 
 	CRgn* ellipseRgn1 = new CRgn;
-	ellipseRgn1->CreatePolygonRgn(&eFP[0], eFP.size(), ALTERNATE);
+	ellipseRgn1->CreatePolygonRgn(&smallerRgn1[0], smallerRgn1.size(), ALTERNATE);
 	CRgn* ellipseRgn2 = new CRgn;
-	ellipseRgn2->CreatePolygonRgn(&eSP[0], eSP.size(), ALTERNATE);
+	ellipseRgn2->CreatePolygonRgn(&smallerRgn2[0], smallerRgn2.size(), ALTERNATE);
 
 	//dc->Polygon(points, 4);
 	dc->Polygon(&eFP[0], eFP.size());
 	dc->Polygon(&eSP[0], eSP.size());
-	//dc->FillRgn(ellipseRgn1, ellipseBrush);
-	//dc->FillRgn(ellipseRgn2, ellipseBrush);
+	dc->FillRgn(ellipseRgn1, ellipseBrush);
+	dc->FillRgn(ellipseRgn2, ellipseBrush);
 
 
 	if (isSelected)
@@ -532,9 +607,20 @@ void TriangleShape::draw(CDC* dc)
 	points[3] = CPoint(dSM.x + rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
 	CPoint triangle[4];
-	triangle[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2, points[3].y + (points[2].y - points[3].y) / 2);
-	triangle[1] = points[0];
-	triangle[2] = points[1];
+	triangle[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2, points[3].y + (points[2].y - points[3].y) / 2); //top
+	triangle[1] = points[0]; // left
+	triangle[2] = points[1]; // right
+
+	// create smaller triangle for smaller region
+	CPoint trianglePointsRgn[3];
+	trianglePointsRgn[0].x = triangle[0].x;
+	trianglePointsRgn[0].y = triangle[0].y + 1;
+
+	trianglePointsRgn[1].x = triangle[1].x + 1;
+	trianglePointsRgn[1].y = triangle[1].y - 1;
+
+	trianglePointsRgn[2].x = triangle[2].x - 1;
+	trianglePointsRgn[2].y = triangle[2].y - 1;
 
 	CRgn* triangleRgn = new CRgn;
 	triangleRgn->CreatePolygonRgn(points, 4, ALTERNATE);
@@ -576,6 +662,16 @@ void TriangleShape::draw(CDC* dc)
 		triangle[i].y += centerOfShape.y + dy;
 	}
 
+	for (int i = 0; i < 3; i++)
+	{
+		int tempX = trianglePointsRgn[i].x;
+		int tempY = trianglePointsRgn[i].y;
+		trianglePointsRgn[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		trianglePointsRgn[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		trianglePointsRgn[i].x += centerOfShape.x + dx;
+		trianglePointsRgn[i].y += centerOfShape.y + dy;
+	}
+
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	//GetRgnBox(*rectangleReg, boxRect);
 	//dc->Rectangle(boxRect);
@@ -590,7 +686,7 @@ void TriangleShape::draw(CDC* dc)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 	CRgn* triangleNewRgn = new CRgn;
-	triangleNewRgn->CreatePolygonRgn(triangle, 3, ALTERNATE);
+	triangleNewRgn->CreatePolygonRgn(trianglePointsRgn, 3, ALTERNATE);
 	CBrush* triangleBrush;
 	if (fillType == -1)
 	{
