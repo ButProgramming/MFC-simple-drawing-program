@@ -33,6 +33,13 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	m_listControl_shapes.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
 	m_listControl_shapes.InsertColumn(3, _T("Center"), LVCFMT_CENTER, 120);
 	m_listControl_shapes.InsertColumn(4, _T("Angle"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(5, _T("Outline RGB"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(6, _T("Outline size"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(7, _T("Outline type"), LVCFMT_CENTER, 100);
+	m_listControl_shapes.InsertColumn(8, _T("Fill RGB"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(9, _T("Fill type"), LVCFMT_CENTER, 70);
+
+
 	//m_listControl_shapes.InsertColumn(5, _T("Is selected"), LVCFMT_CENTER, 70);
 
 	// InsertColumnt for lines
@@ -70,7 +77,52 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		m_listControl_shapes.SetItemText(nItem, 3, str);
 		str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
 		m_listControl_shapes.SetItemText(nItem, 4, str);
-		if (s->isSelected)
+		str.Format(_T("R: %d, G: %d, B: %d"), s->oR, s->oG, s->oB);
+		m_listControl_shapes.SetItemText(nItem, 5, str);
+		str.Format(_T("%d"), s->outlineSize);
+		m_listControl_shapes.SetItemText(nItem, 6, str);
+		// outlineType
+		switch (s->outlineType)
+		{
+			case 0:
+			{
+				str.Format(_T("___"));
+				break;
+			}
+			case 1:
+			{
+				str.Format(_T("_ _"));
+				break;
+			}
+			case 2:
+			{
+				str.Format(_T("...."));
+				break;
+			}
+			case 3:
+			{
+				str.Format(_T("_._"));
+				break;
+			}
+			case 4:
+			{
+				str.Format(_T("_.._"));
+				break;
+			}
+		}
+		m_listControl_shapes.SetItemText(nItem, 7, str);
+		str.Format(_T("R: %d, G: %d, B: %d"), s->fR, s->fG, s->fB);
+		m_listControl_shapes.SetItemText(nItem, 8, str);
+		switch (s->fillType)
+		{
+		case -1:
+		{
+
+		}
+		}
+		/*str.Format(_T("%d"), s->size);
+		m_listControl_shapes.SetItemText(nItem, 6, str);*/
+		/*if (s->isSelected)
 		{
 			str.Format(_T("true"));
 			m_listControl_shapes.SetItemText(nItem, 5, str);
@@ -79,7 +131,7 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		{
 			str.Format(_T("false"));
 			m_listControl_shapes.SetItemText(nItem, 5, str);
-		}
+		}*/
 	}
 
 	// filling line listview
