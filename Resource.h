@@ -33,6 +33,8 @@
 #define IDD_DIALOG_PROPERTIES           326
 #define IDD_DIALOG_PROPERTIES_LINK      329
 #define IDC_LISTCONTROL_SHAPES          1002
+#define IDC_LISTCONTROL_SHAPES2         1005
+#define IDC_LISTCONTROL_LINES           1005
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO_OUTLINE_SIZE          1008
 #define IDC_COMBO_OUTLINE_TYPE          1009
@@ -65,7 +67,6 @@
 #define IDC_COMBO_LINK_TYPE             1041
 #define IDC_COMBO_LINK_TYPE_LINK        1042
 #define IDC_EDIT_LINK_ID                1046
-#define IDC_EDIT_LINK_SHAPE_SECOND_ID2  1047
 #define IDC_EDIT_LINK_NAME              1047
 #define ID_BUTTON_ELLIPSE               32771
 #define ID_BUTTON_RECTANGLE             32772

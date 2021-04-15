@@ -26,11 +26,12 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	//auto pDoc = 
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LISTCONTROL_SHAPES, m_listControl_shapes);
-	this->m_listControl_shapes.InsertColumn(0, _T("ID"), LVCFMT_LEFT, 30);
-	this->m_listControl_shapes.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 70);
+	m_listControl_shapes.InsertColumn(0, _T("ID"), LVCFMT_LEFT, 30);
+	m_listControl_shapes.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 70);
 	this->m_listControl_shapes.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
 	this->m_listControl_shapes.InsertColumn(3, _T("Center"), LVCFMT_CENTER, 120);
 	this->m_listControl_shapes.InsertColumn(4, _T("Angle"), LVCFMT_CENTER, 70);
+	this->m_listControl_shapes.InsertColumn(5, _T("Is selected"), LVCFMT_CENTER, 70);
 
 	int nItem;
 	CString str;
@@ -56,33 +57,43 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		m_listControl_shapes.SetItemText(nItem, 3, str);
 		str.Format(_T("%g degree"), s->ellipseAngleRad*180.f/3.14);
 		m_listControl_shapes.SetItemText(nItem, 4, str);
-	}
-	for (auto l : lines)
-	{
-		str.Format(_T("%d"), l->ID);
-		nItem = m_listControl_shapes.InsertItem(0, str);
-		if (l->type == LineType::Basic)
+		if (s->isSelected)
 		{
-			m_listControl_shapes.SetItemText(nItem, 1, _T("Basic line"));
-		}
-		else if (l->type == LineType::Right)
-		{
-			m_listControl_shapes.SetItemText(nItem, 1, _T("Right line"));
-		}
-		else if (l->type == LineType::Left)
-		{
-			m_listControl_shapes.SetItemText(nItem, 1, _T("Left line"));
+			str.Format(_T("true"));
+			m_listControl_shapes.SetItemText(nItem, 5, str);
 		}
 		else
 		{
-			m_listControl_shapes.SetItemText(nItem, 1, _T("Double line"));
+			str.Format(_T("false"));
+			m_listControl_shapes.SetItemText(nItem, 5, str);
 		}
-		m_listControl_shapes.SetItemText(nItem, 2, l->name);
-		//str.Format(_T("x: %d, y: %d"), s->centerOfShape.x, s->centerOfShape.y);
-		m_listControl_shapes.SetItemText(nItem, 3, _T("-"));
-		//str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
-		m_listControl_shapes.SetItemText(nItem, 4, _T("-"));
 	}
+	//for (auto l : lines)
+	//{
+	//	str.Format(_T("%d"), l->ID);
+	//	nItem = m_listControl_shapes.InsertItem(0, str);
+	//	if (l->type == LineType::Basic)
+	//	{
+	//		m_listControl_shapes.SetItemText(nItem, 1, _T("Basic line"));
+	//	}
+	//	else if (l->type == LineType::Right)
+	//	{
+	//		m_listControl_shapes.SetItemText(nItem, 1, _T("Right line"));
+	//	}
+	//	else if (l->type == LineType::Left)
+	//	{
+	//		m_listControl_shapes.SetItemText(nItem, 1, _T("Left line"));
+	//	}
+	//	else
+	//	{
+	//		m_listControl_shapes.SetItemText(nItem, 1, _T("Double line"));
+	//	}
+	//	m_listControl_shapes.SetItemText(nItem, 2, l->name);
+	//	//str.Format(_T("x: %d, y: %d"), s->centerOfShape.x, s->centerOfShape.y);
+	//	m_listControl_shapes.SetItemText(nItem, 3, _T("-"));
+	//	//str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
+	//	m_listControl_shapes.SetItemText(nItem, 4, _T("-"));
+	//}
 	
 }
 
