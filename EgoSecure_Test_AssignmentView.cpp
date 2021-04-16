@@ -1410,20 +1410,24 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 	auto pDoc = GetDocument();
 	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		bool LineExists = false;
-		for (auto l : pDoc->lines)
+
+		if (pDoc->selectedShapesIDs.size() > 1)
 		{
-			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+			bool LineExists = false;
+			for (auto l : pDoc->lines)
 			{
-				LineExists = true;
-				break;
+				if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+				{
+					LineExists = true;
+					break;
+				}
 			}
-		}
-		if (!LineExists)
-		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-			pDoc->lines.push_back(line);
-			Invalidate();
+			if (!LineExists)
+			{
+				Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				pDoc->lines.push_back(line);
+				Invalidate();
+			}
 		}
 	}
 	CString db;
@@ -1439,21 +1443,24 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
 	auto pDoc = GetDocument();
 	bool LineExists = false;
-	for (auto l : pDoc->lines)
+	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		for (auto l : pDoc->lines)
 		{
-			LineExists = true;
-			break;
+			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+			{
+				LineExists = true;
+				break;
+			}
 		}
-	}
-	if (!LineExists)
-	{
-		if (pDoc->selectedShapesIDs.size() > 1)
+		if (!LineExists)
 		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-			pDoc->lines.push_back(line);
-			Invalidate();
+			if (pDoc->selectedShapesIDs.size() > 1)
+			{
+				Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				pDoc->lines.push_back(line);
+				Invalidate();
+			}
 		}
 	}
 }
@@ -1463,24 +1470,26 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
 	auto pDoc = GetDocument();
 	bool LineExists = false;
-	for (auto l : pDoc->lines)
+	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		for (auto l : pDoc->lines)
 		{
-			LineExists = true;
-			break;
+			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+			{
+				LineExists = true;
+				break;
+			}
+		}
+		if (!LineExists)
+		{
+			if (pDoc->selectedShapesIDs.size() > 1)
+			{
+				Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				pDoc->lines.push_back(line);
+				Invalidate();
+			}
 		}
 	}
-	if (!LineExists)
-	{
-		if (pDoc->selectedShapesIDs.size() > 1)
-		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-			pDoc->lines.push_back(line);
-			Invalidate();
-		}
-	}
-	
 
 }
 
@@ -1489,24 +1498,26 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
 	auto pDoc = GetDocument();
 	bool LineExists = false;
-	for (auto l : pDoc->lines)
+	if (pDoc->selectedShapesIDs.size() > 1)
 	{
-		if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		for (auto l : pDoc->lines)
 		{
-			LineExists = true;
-			break;
+			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+			{
+				LineExists = true;
+				break;
+			}
+		}
+		if (!LineExists)
+		{
+			if (pDoc->selectedShapesIDs.size() > 1)
+			{
+				Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				pDoc->lines.push_back(line);
+				Invalidate();
+			}
 		}
 	}
-	if (!LineExists)
-	{
-		if (pDoc->selectedShapesIDs.size() > 1)
-		{
-			Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-			pDoc->lines.push_back(line);
-			Invalidate();
-		}
-	}
-	
 	
 }
 
