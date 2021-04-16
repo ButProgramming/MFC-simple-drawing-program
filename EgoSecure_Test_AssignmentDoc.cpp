@@ -139,6 +139,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		{
 			ar << l->FirstShapeConstID;
 			ar << l->SecondShapeConstID;
+			ar << l->ID;
+			ar << l->constID;
 
 			ar << l->lR;
 			ar << l->lG;
@@ -202,8 +204,10 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		CPoint dx_dy[4];
 		int FirstShapeConstID;
 		int SecondShapeConstID;
-		int constID;
-		int ID;
+		int shapeConstID;
+		int shapeID;
+		int lineConstID;
+		int lineID;
 		Lines* lineTemp;
 		ar >> vectorShapeSize;
 		ar >> vectorLinesSize;
@@ -217,8 +221,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> isSelectedFromDoubleSelectingTool;
 			ar >> size;
 			ar >> ellipseAngleRad;
-			ar >> ID;
-			ar >> constID;
+			ar >> shapeID;
+			ar >> shapeConstID;
 			ar >> shapeName;
 
 			ar >> oR;
@@ -262,8 +266,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes.push_back(shapeTemp);
 			shapes[shapes.size() - 1]->constID;
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
-			shapes[shapes.size() - 1]->ID = ID;
-			shapes[shapes.size() - 1]->constID = constID;
+			shapes[shapes.size() - 1]->ID = shapeID;
+			shapes[shapes.size() - 1]->constID = shapeConstID;
 			shapes[shapes.size() - 1]->name = shapeName;
 			shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
 			shapes[shapes.size() - 1]->oR = oR;
@@ -280,6 +284,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			{
 				ar >> FirstShapeConstID;
 				ar >> SecondShapeConstID;
+				ar >> lineID;
+				ar >> lineConstID;
 
 				ar >> lR;
 				ar >> lG;
@@ -315,6 +321,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 					//lineTemp->isSelected = isSelected;
 				}
 				lines.push_back(lineTemp);
+				lines[lines.size() - 1]->ID = lineID;
+				lines[lines.size() - 1]->constID = lineConstID;
 		}
 		
 		//CString str;

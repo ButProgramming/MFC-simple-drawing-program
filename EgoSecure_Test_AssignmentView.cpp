@@ -86,6 +86,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
+	// get parameters for CDC
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
@@ -93,15 +94,14 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	for (IShape* s : pDoc->shapes)
-	{
-		s->constID;
-	}
+	
+	//draw all shapes
 	for (IShape* s : pDoc->shapes)
 	{
 		s->draw(&m_dc);
 	}
 	
+	//draw all lines
 	for (int i=0; i<pDoc->lines.size(); i++)
 	{
 		CPen* linePen;
@@ -113,9 +113,6 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		CPoint secondPoint;
 		int firstID = pDoc->lines[i]->FirstShapeConstID;
 		int secondID = pDoc->lines[i]->SecondShapeConstID;
-		
-		
-	
 		bool found = false;
 		for (auto s : pDoc->shapes)
 		{
@@ -126,8 +123,6 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			{
 				found = true;
 				firstPoint = s->centerOfShape;
-
-
 				int temp_dSM_x = s->dSM.x;
 				int temp_dSM_y = s->dSM.y;
 				int temp2_dSM_x = temp_dSM_x;
@@ -184,7 +179,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		m_dc.MoveTo(firstPoint);
 		m_dc.LineTo(secondPoint);
 		
-		if (pDoc->lines[i]->type == LineType::Right)
+		if (pDoc->lines[i]->type == LineType::Right) // draw right line
 		{
 			CPoint centerOfArrowGround = CPoint(firstPoint.x + (secondPoint.x - firstPoint.x) / 1.07, firstPoint.y + (secondPoint.y - firstPoint.y) / 1.07);
 			//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
@@ -250,8 +245,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 			
 		}
 
-
-
+		// draw left line
 		else if (pDoc->lines[i]->type == LineType::Left)
 		{
 			CPoint centerOfArrowGround = CPoint(secondPoint.x - (secondPoint.x - firstPoint.x) / 1.07, secondPoint.y - (secondPoint.y - firstPoint.y) / 1.07);
@@ -300,7 +294,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 
 
 		}
-		else if (pDoc->lines[i]->type == LineType::Double)
+		else if (pDoc->lines[i]->type == LineType::Double) // draw double line
 		{
 
 		//drawing first arrow
@@ -460,6 +454,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	/*CString str;
 	str.Format(_T("%d"), pDoc->typeOfShape);
 	AfxMessageBox(str);*/
+	
+	// create shape or choose an other tool
 	switch (pDoc->toolIsUsed)
 	{
 	case Tools::ellipse:
@@ -598,6 +594,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	int dx = 0;
 	int dy = 0;
+
+	// change size of shape
 	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed == Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
@@ -663,7 +661,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				break;
 		}
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate)
+	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate) // rotate shape
 	{
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
@@ -1760,33 +1758,10 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 					pDoc->lines[l]->name = dlg.name;
 					Lines::names.insert(dlg.name);
 				}
-				/*pDoc->lines[l]->ID = dlg.value_link_id;
-				pDoc->lines[l]->name = dlg.name;*/
-				/*if ((pDoc->lines[l]->SecondShapeConstID != dlg.value_link_shape_first_id) && (pDoc->lines[l]->FirstShapeConstID != dlg.value_link_shape_second_id))
-				{
-					set<int> tempConstIDs;
-					for (auto s : pDoc->shapes)
-					{
-						tempConstIDs.insert(s->constID);
-					}
-					if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
-					{
-						pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
-						pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
-					}
-					
-				}*/
-				//pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
 				
-
-
-				//AfxMessageBox(str);
 			}
-			//AfxMessageBox(_T("0"));
+
 		}
-		//dlg.OnBnClickedButtonGetData();
-		//dlg.OnBnClickedButtonGetData();
-		// AfxMessageBox(_T("123"));
-		// TODO: Add your command handler code here
+
 	}
 }

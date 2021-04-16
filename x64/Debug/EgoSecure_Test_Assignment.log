@@ -1,4 +1,13 @@
-﻿  EgoSecure_Test_AssignmentView.cpp
+﻿  pch.cpp
+  Default_draw_properties.cpp
+  Dialog_Link_Properties.cpp
+  Dialog_Properties.cpp
+  EgoSecure_Test_Assignment.cpp
+  EgoSecure_Test_AssignmentDoc.cpp
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(84,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(85,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(83,7): warning C4101: 'size': unreferenced local variable
+  EgoSecure_Test_AssignmentView.cpp
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
@@ -50,4 +59,46 @@ C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignme
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1194,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1386,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1606,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Lines.cpp
+  List_Control.cpp
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
+  MainFrm.cpp
+  Shape.cpp
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(260,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(277,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(314,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(315,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(324,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(325,19): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(334,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(335,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(349,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(366,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(403,27): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(404,27): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(413,27): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(414,27): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(436,78): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(438,78): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(441,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(442,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(527,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(528,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(538,25): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(539,25): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(604,100): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(605,100): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(606,100): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(607,100): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(640,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(641,22): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(648,26): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(649,26): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(659,24): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(660,24): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(669,33): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(670,33): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+  Generating Code...
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe
