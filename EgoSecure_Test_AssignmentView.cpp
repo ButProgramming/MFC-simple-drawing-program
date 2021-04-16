@@ -60,6 +60,7 @@ END_MESSAGE_MAP()
 
 CEgoSecureTestAssignmentView::CEgoSecureTestAssignmentView() noexcept
 {
+	
 	// TODO: add construction code here
 
 }

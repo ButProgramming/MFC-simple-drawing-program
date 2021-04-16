@@ -148,6 +148,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, FALSE);
+
 	return 0;
 }
 

@@ -11,9 +11,10 @@
 #define IDS_TOOLBAR_STANDARD            124
 #define IDS_TOOLBAR_CUSTOMIZE           125
 #define ID_VIEW_CUSTOMIZE               126
-#define IDR_MAINFRAME                   128
-#define IDR_MAINFRAME_256               129
-#define IDR_EgoSecureTestAssignmentTYPE 130
+#define IDI_ICON1                       128
+#define IDR_MAINFRAME                   129
+#define IDR_MAINFRAME_256               130
+#define IDR_EgoSecureTestAssignmentTYPE 131
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        205
@@ -32,8 +33,8 @@
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
 #define IDD_DIALOG_PROPERTIES           326
 #define IDD_DIALOG_PROPERTIES_LINK      329
+
 #define IDC_LISTCONTROL_SHAPES          1002
-#define IDC_LISTCONTROL_SHAPES2         1005
 #define IDC_LISTCONTROL_LINES           1005
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
 #define IDC_COMBO_OUTLINE_SIZE          1008
@@ -96,7 +97,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        332
+#define _APS_NEXT_RESOURCE_VALUE        364
 #define _APS_NEXT_COMMAND_VALUE         32808
 #define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           310

@@ -33,6 +33,7 @@ END_MESSAGE_MAP()
 
 CEgoSecureTestAssignmentDoc::CEgoSecureTestAssignmentDoc() noexcept
 {
+
 	// TODO: add one-time construction code here
 
 }

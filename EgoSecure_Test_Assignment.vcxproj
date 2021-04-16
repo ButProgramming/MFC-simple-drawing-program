@@ -220,8 +220,19 @@
     <ResourceCompile Include="EgoSecureTestAssignment.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\i.ico" />
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0).ico" />
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0)_64.bmp" />
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0)_64.png" />
+    <Image Include="..\..\..\..\..\Downloads\Material Icons_e418(0)_64.bmp" />
+    <Image Include="res\256.ico" />
+    <Image Include="res\64.bmp" />
     <Image Include="res\EgoSecure_Test_Assignment.ico" />
     <Image Include="res\EgoSecure_Test_AssignmentDoc.ico" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\icon2.ico" />
+    <Image Include="res\Material Icons_e3b7(0).ico" />
+    <Image Include="res\Material Icons_e418(0).ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\userimages.bmp" />

@@ -114,6 +114,39 @@
     <Image Include="res\Toolbar256.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0)_64.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\Material Icons_e418(0)_64.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Downloads\Material Icons_e418(0)_64.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\64.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Material Icons_e418(0).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\256.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\i.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Material Icons_e3b7(0).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\EgoSecureTestAssignment.rc2">

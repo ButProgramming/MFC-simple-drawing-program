@@ -26,7 +26,7 @@ public:
 
 	int dx = 0;
 	int dy = 0;
-	COLORREF m_outline_color/* = RGB(0, 0, 0)*/;
+	COLORREF m_outline_color = RGB(0, 0, 0);
 	COLORREF m_fill_color = RGB(255, 255, 255);
 	COLORREF m_color_link/* = RGB(0, 0, 0)*/;
 	int num_cb_outline_size = 2;
