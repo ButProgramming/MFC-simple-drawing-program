@@ -95,6 +95,10 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	for (IShape* s : pDoc->shapes)
 	{
+		s->constID;
+	}
+	for (IShape* s : pDoc->shapes)
+	{
 		s->draw(&m_dc);
 	}
 	

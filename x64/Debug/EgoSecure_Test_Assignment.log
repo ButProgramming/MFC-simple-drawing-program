@@ -1,1 +1,5 @@
-﻿  EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe
+﻿  EgoSecure_Test_AssignmentDoc.cpp
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(84,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(85,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(83,7): warning C4101: 'size': unreferenced local variable
+  EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe
