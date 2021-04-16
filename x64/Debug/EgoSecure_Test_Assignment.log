@@ -1,9 +1,4 @@
-﻿  EgoSecure_Test_Assignment.cpp
-  EgoSecure_Test_AssignmentDoc.cpp
-C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(84,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(85,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(83,7): warning C4101: 'size': unreferenced local variable
-  EgoSecure_Test_AssignmentView.cpp
+﻿  EgoSecure_Test_AssignmentView.cpp
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
@@ -55,5 +50,4 @@ C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignme
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1190,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1382,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1591,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  Generating Code...
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\Pr\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe

@@ -1615,7 +1615,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			// degree
 			pDoc->shapes[s]->ellipseAngleRad = dlg.value_degree * 3.14 / 180.f;
 			// ID
-			if (dlg.value_id > 0)
+			if (dlg.value_id >= 0)
 			{
 				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
 				{
@@ -1727,7 +1727,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 						break;
 					}
 				}
-				if (dlg.value_link_id > 0)
+				if (dlg.value_link_id >= 0)
 				{
 					if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
 					{
