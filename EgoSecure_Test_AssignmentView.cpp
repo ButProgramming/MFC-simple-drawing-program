@@ -748,22 +748,22 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				circleQuarter tempEnum;
 				if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y < pDoc->shapes[s]->centerOfShape.y)
 				{
-					//cout << "first" << endl;
+					cout << "first" << endl;
 					tempEnum = first;
 				}
 				else if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.y)
 				{
-					//cout << "second" << endl;
+					cout << "second" << endl;
 					tempEnum = second;
 				}
 				else if (point.x < pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.y)
 				{
-					//cout << "third" << endl;
+					cout << "third" << endl;
 					tempEnum = third;
 				}
 				else
 				{
-					//cout << "fourth" << endl;
+					cout << "fourth" << endl;
 					tempEnum = fourth;
 				}
 				pDoc->shapes[s]->getFirstClickedPoint().y;
@@ -777,8 +777,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				//cout << "cos: " << cosOfCenterAngle << endl;
 				int tempX = point.x - pDoc->shapes[s]->getFirstClickedPoint().x;
 				int tempY = point.y - pDoc->shapes[s]->getFirstClickedPoint().y;
-				//cout << "X: " << pDoc->shapes[s]->lastValueX << endl;
-				//cout << "Y: " << pDoc->shapes[s]->lastValueY << endl;
+				cout << "lastX: " << pDoc->shapes[s]->lastValueX << endl;
+				cout << "lastY: " << pDoc->shapes[s]->lastValueY << endl;
+				cout << "X: " << tempX << endl;
+				cout << "Y: " << tempY << endl;
+				cout << "--------------" << endl;
 				if (tempX > 0 || tempX < 0)
 				{
 					pDoc->shapes[s]->lastValueX = tempX;
@@ -787,23 +790,34 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				{
 					pDoc->shapes[s]->lastValueY = tempY;
 				}
-				double centerAngleRad = NULL;
-				if ((tempEnum == first || tempEnum == third) && (pDoc->shapes[s]->lastValueX*pDoc->shapes[s]->lastValueY)>0)
+				double centerAngleRad = 0;
+				if ((tempEnum == first) && (pDoc->shapes[s]->lastValueX>0 && pDoc->shapes[s]->lastValueY>0 || (tempY==0 && pDoc->shapes[s]->lastValueX >0)))
 				{
 					centerAngleRad = acos(cosOfCenterAngle);
 				}
-				else if((tempEnum == first || tempEnum == third) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY<0))
+				else if ((tempEnum == first) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY < 0 || (tempY == 0 && pDoc->shapes[s]->lastValueX < 0)))
 				{
 					centerAngleRad = -acos(cosOfCenterAngle);
 				}
-				else if ((tempEnum == second || tempEnum == fourth) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY > 0))
+				else if ((tempEnum == second) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY > 0 || (tempX == 0 && pDoc->shapes[s]->lastValueY > 0)))
+				{
+					centerAngleRad = acos(cosOfCenterAngle);
+
+				}
+				else if ((tempEnum == second) && (pDoc->shapes[s]->lastValueX > 0 && pDoc->shapes[s]->lastValueY < 0 || (tempX >= 0 && pDoc->shapes[s]->lastValueY < 0)))
+				{
+					centerAngleRad = -acos(cosOfCenterAngle);
+					cout << "here" << endl;
+
+				}
+				/*else if ((tempEnum == second || tempEnum == fourth) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY > 0))
 				{
 					centerAngleRad = acos(cosOfCenterAngle);
 				}
 				else if ((tempEnum == second || tempEnum == fourth) && (pDoc->shapes[s]->lastValueX > 0 && pDoc->shapes[s]->lastValueY < 0))
 				{
 					centerAngleRad = -acos(cosOfCenterAngle);
-				}
+				}*/
 				//double centerAngleRad = acos(cosOfCenterAngle);
 				//cout << "rad: " << centerAngleRad << endl;
 				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
