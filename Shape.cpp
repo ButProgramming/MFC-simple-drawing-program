@@ -472,15 +472,7 @@ void EllipseShape::draw(CDC* dc)
 	ellipseBrush->DeleteObject();
 }
 
-CPoint EllipseShape::getPointForRotateTool()
-{
-	return centerPoint23Top;
-}
 
-void EllipseShape::setFirstClickedPoints(CPoint point)
-{
-	firstClickedPoint = point;
-}
 
 
 void RectangleShape::draw(CDC* dc)

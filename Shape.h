@@ -6,6 +6,7 @@
 #include <string>
 #include <queue>
 #include <set>
+#include <array>
 using namespace std;
 
 
@@ -17,10 +18,13 @@ enum class ShapeType { ellipse, rectangle, triangle };
 class IShape
 {
 public:
+	int lastValueY = 0;
+	int lastValueX = 0;
+public:
 	virtual void draw(CDC* dc) = 0;
 	virtual CPoint getPointForRotateTool() = 0;
-	virtual void setFirstClickedPoints(CPoint point) {}; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	virtual void getFirstClickedPoints(CPoint& point) {}; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual void setFirstClickedPoint(CPoint point) {}; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual CPoint getFirstClickedPoint() { return CPoint(0, 0); }; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -86,9 +90,9 @@ class EllipseShape :public IShape
 public:
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	CPoint getPointForRotateTool();
-	void setFirstClickedPoints(CPoint point);
-	void getFirstClickedPoints(CPoint& point) {};
+	CPoint getPointForRotateTool() { return centerPoint23Top; };
+	void setFirstClickedPoint(CPoint point)  { firstClickedPoint = point; };
+	CPoint getFirstClickedPoint() { return firstClickedPoint; };
 	
 };
 

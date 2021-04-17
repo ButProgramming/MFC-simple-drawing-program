@@ -15,12 +15,16 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 #include "Shape.h"
 #include "List_Control.h"
 #include "Default_draw_properties.h"
 #include "Dialog_Properties.h"
 #include "Dialog_Link_Properties.h"
+
+
+
 
 // CEgoSecureTestAssignmentView
 
@@ -576,6 +580,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		{
 			if (pDoc->shapes[i]->isSelected)
 			{
+				pDoc->shapes[i]->setFirstClickedPoint(point);
 				pDoc->shapes[i]->lastY = point.y;
 				selected = true;
 			}
@@ -734,16 +739,86 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate) // rotate shape
 	{
+		
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
 			if (pDoc->shapes[s]->isSelected)
 			{
+				enum circleQuarter{first, second, third, fourth};
+				circleQuarter tempEnum;
+				if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y < pDoc->shapes[s]->centerOfShape.y)
+				{
+					//cout << "first" << endl;
+					tempEnum = first;
+				}
+				else if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.y)
+				{
+					//cout << "second" << endl;
+					tempEnum = second;
+				}
+				else if (point.x < pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.y)
+				{
+					//cout << "third" << endl;
+					tempEnum = third;
+				}
+				else
+				{
+					//cout << "fourth" << endl;
+					tempEnum = fourth;
+				}
+				pDoc->shapes[s]->getFirstClickedPoint().y;
+				//int temp2 = point.y - pDoc->shapes[s]->getFirstClickedPoint().y;
+				array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
+				sides[0] = sqrt(pow(pDoc->shapes[s]->getFirstClickedPoint().x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(pDoc->shapes[s]->getFirstClickedPoint().y - pDoc->shapes[s]->centerOfShape.y, 2));
+				sides[1] = sqrt(pow(pDoc->shapes[s]->getFirstClickedPoint().x - point.x, 2) + pow(pDoc->shapes[s]->getFirstClickedPoint().y - point.y, 2));
+				sides[2] = sqrt(pow(pDoc->shapes[s]->centerOfShape.x - point.x, 2) + pow(pDoc->shapes[s]->centerOfShape.y - point.y, 2));
+				//cout << "sides[2]: " << sides[2] << endl;
+				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2))/((2*sides[0]*sides[2]));//using law of cosines
+				//cout << "cos: " << cosOfCenterAngle << endl;
+				int tempX = point.x - pDoc->shapes[s]->getFirstClickedPoint().x;
+				int tempY = point.y - pDoc->shapes[s]->getFirstClickedPoint().y;
+				//cout << "X: " << pDoc->shapes[s]->lastValueX << endl;
+				//cout << "Y: " << pDoc->shapes[s]->lastValueY << endl;
+				if (tempX > 0 || tempX < 0)
+				{
+					pDoc->shapes[s]->lastValueX = tempX;
+				}
+				if (tempY > 0 || tempY < 0)
+				{
+					pDoc->shapes[s]->lastValueY = tempY;
+				}
+				double centerAngleRad = NULL;
+				if ((tempEnum == first || tempEnum == third) && (pDoc->shapes[s]->lastValueX*pDoc->shapes[s]->lastValueY)>0)
+				{
+					centerAngleRad = acos(cosOfCenterAngle);
+				}
+				else if((tempEnum == first || tempEnum == third) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY<0))
+				{
+					centerAngleRad = -acos(cosOfCenterAngle);
+				}
+				else if ((tempEnum == second || tempEnum == fourth) && (pDoc->shapes[s]->lastValueX < 0 && pDoc->shapes[s]->lastValueY > 0))
+				{
+					centerAngleRad = acos(cosOfCenterAngle);
+				}
+				else if ((tempEnum == second || tempEnum == fourth) && (pDoc->shapes[s]->lastValueX > 0 && pDoc->shapes[s]->lastValueY < 0))
+				{
+					centerAngleRad = -acos(cosOfCenterAngle);
+				}
+				//double centerAngleRad = acos(cosOfCenterAngle);
+				//cout << "rad: " << centerAngleRad << endl;
+				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
+				//cout << "deg: " << centerAngleDegree << endl;
+				//cout << pDoc->shapes[s]->size << endl;
 				int temp = point.y - pDoc->shapes[s]->lastY;
-				pDoc->shapes[s]->ellipseAngleRad += temp * 0.01;
-				double db = pDoc->shapes[s]->ellipseAngleRad;
+				
+				//pDoc->shapes[s]->ellipseAngleRad += temp * 0.01;
+				if(sides[2]>20)
+					pDoc->shapes[s]->ellipseAngleRad += centerAngleRad;
 				Invalidate();
 			}
 			pDoc->shapes[s]->lastY = point.y;
+			pDoc->shapes[s]->setFirstClickedPoint(point);
+			
 		}
 
 	}
