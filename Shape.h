@@ -8,24 +8,15 @@
 #include <set>
 using namespace std;
 
-
-//int move_dx=0; 
-//int move_dy=0;
-//int globalInt;
-
-enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine
-};
+enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle };
-
 
 class IShape
 {
-protected:
-	
-
-
-	//ShapeType typeOfShape;
 public:
+	virtual void draw(CDC* dc) = 0;
+	virtual ~IShape();
+
 	static set<int> IDs;
 	static set<CString> names;
  	static int dx;
@@ -74,44 +65,32 @@ public:
 	bool isNormalized;
 	CPoint centerOfShape;
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
-	virtual void draw(CDC* dc) = 0;
 	
-	virtual ~IShape();
 };
 
 class EllipseShape :public IShape
 {
-private:
-	
 public:
-	EllipseShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int, int, int);
+	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
 	
 };
 
 class RectangleShape :public IShape
 {
-private:
-	
 public:
-	RectangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int, int, int);
+	RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	
 
 };
 
 class TriangleShape : public IShape
 {
-private:
-	
 public:
-	CPoint triangle[3];
-	int test;
-	TriangleShape(CPoint, bool, int, ShapeType, COLORREF, COLORREF, int, int, int);
+	TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	
+
 };
 
-//My own global attributes
 
 

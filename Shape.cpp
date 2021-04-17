@@ -385,17 +385,6 @@ void EllipseShape::draw(CDC* dc)
 		ellipseSecondPart.push_back(v2);
 	}
 
-	/*CBrush* ellipseBrush;
-	if (fillType == -1)
-	{
-		ellipseBrush = new CBrush;
-		ellipseBrush->CreateSolidBrush(RGB(fR, fG, fB));
-	}
-	else
-	{
-		ellipseBrush = new CBrush(fillType, RGB(fR, fG, fB));
-	}*/
-
 	for (int i = 0; i < smallerRgn1.size(); i++)
 	{
 		int tempX = smallerRgn1[i].x;
@@ -416,22 +405,6 @@ void EllipseShape::draw(CDC* dc)
 		smallerRgn2[i].y += centerOfShape.y + dy;
 	}
 
-	/*for (int i = 0; i < 4; i++)
-	{
-		int tempX = points[i].x;
-		int tempY = points[i].y;
-		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		points[i].x += centerOfShape.x + dx;
-		points[i].y += centerOfShape.y + dy;
-	}*/
-	///
-
-	//points[0] = CPoint(centerOfShape.x + dx - size + dx_dy[0].x + dx_dy_temp[0].x, centerOfShape.y + dy - size + dx_dy[0].y + dx_dy_temp[0].y); // left top
-	//points[1] = CPoint(centerOfShape.x + dx + size + dx_dy[1].x + dx_dy_temp[1].x, centerOfShape.y + dy - size + dx_dy[1].y + dx_dy_temp[1].y); // right top
-	//points[2] = CPoint(centerOfShape.x + dx + size + dx_dy[2].x + dx_dy_temp[2].x, centerOfShape.y + dy + size + dx_dy[2].y + dx_dy_temp[2].y); //right bottom
-	//points[3] = CPoint(centerOfShape.x + dx - size + dx_dy[3].x + dx_dy_temp[3].x, centerOfShape.y + dy + size + dx_dy[3].y + dx_dy_temp[3].y); // left bottom
-
 	CRgn* ellipseRgn1 = new CRgn;
 	ellipseRgn1->CreatePolygonRgn(&smallerRgn1[0], smallerRgn1.size(), ALTERNATE);
 	CRgn* ellipseRgn2 = new CRgn;
@@ -451,10 +424,6 @@ void EllipseShape::draw(CDC* dc)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 
-	/*delete ellipseRgn1;
-	delete ellipseRgn2;
-	delete pen;
-	delete brush;*/
 	ellipseRgn1->DeleteObject();
 	ellipseRgn2->DeleteObject();
 	pen->DeleteObject();

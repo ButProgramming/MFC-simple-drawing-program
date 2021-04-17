@@ -7,15 +7,15 @@
 
 class CEgoSecureTestAssignmentView : public CView
 {
-protected: // create from serialization only
-	CEgoSecureTestAssignmentView() noexcept;
-	DECLARE_DYNCREATE(CEgoSecureTestAssignmentView)
-
 // Attributes
 public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
 	CDC m_dc;
 	CBitmap m_bmt;
+
+protected: // create from serialization only
+	CEgoSecureTestAssignmentView() noexcept;
+	DECLARE_DYNCREATE(CEgoSecureTestAssignmentView)
 
 // Operations
 public:

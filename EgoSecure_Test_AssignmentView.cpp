@@ -448,13 +448,80 @@ CEgoSecureTestAssignmentDoc* CEgoSecureTestAssignmentView::GetDocument() const /
 void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	//Shape* s = new Shape;
 	auto pDoc = GetDocument();
-	auto Ddp = new Default_draw_properties;
-	/*CString str;
-	str.Format(_T("%d"), pDoc->typeOfShape);
-	AfxMessageBox(str);*/
-	
+	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove) // shape unselect if click on empty place
+	{
+		for (int shapeNum = pDoc->shapes.size()-1; shapeNum >= 0 ; shapeNum--)
+		{
+			
+			if (pDoc->shapes[shapeNum]->type == ShapeType::ellipse)
+			{
+				bool shapeIsFound = false;
+				CPoint cp = NULL;
+				CString str = NULL;
+				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eFP[0]), pDoc->shapes[shapeNum]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eSP[0]), pDoc->shapes[shapeNum]->eSP.size(), ALTERNATE);
+
+				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+				{
+					shapeIsFound = true;
+
+					//unselecting others shapes
+					for (int shapesNumUnselect = pDoc->shapes.size()-1; shapesNumUnselect >= 0; shapesNumUnselect--)
+					{
+						if (pDoc->shapes[shapesNumUnselect]->isSelected == true)
+						{
+							pDoc->shapes[shapesNumUnselect]->pen->DeleteObject();
+							pDoc->shapes[shapesNumUnselect]->isSelected = false;
+							break;
+						};
+					}
+					
+					pDoc->shapes[shapeNum]->isSelected = true;
+
+					//swap
+					IShape* shape = NULL;
+					pDoc->shapes.push_back(shape);
+					iter_swap(pDoc->shapes.begin() + shapeNum, pDoc->shapes.end() - 1);
+					pDoc->shapes.erase(pDoc->shapes.begin() + shapeNum);
+
+					//using shape
+					pDoc->toolIsUsed = Tools::shapeMove;
+					//AfxMessageBox(_T("I'm here"));
+				}
+				if(shapeIsFound) break;
+
+				//check for selected shape if is point in region of "changePoint" 
+				if (pDoc->shapes[shapeNum]->isSelected == true)
+				{
+					HRGN angleRgn = NULL;
+					for (int angleNum = 0; angleNum < 4; angleNum++)
+					{
+						angleRgn = CreateEllipticRgn(pDoc->shapes[shapeNum]->points[angleNum].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y + IShape::sizeOfPointToMoveAndChange * 4);
+						if (PtInRegion(angleRgn, point.x, point.y))
+						{
+
+							//pDoc->shapes[shapeNum]->numberOfAngle = a;
+							//Invalidate();
+							/*CString str;
+							str.Format(_T("%d"), a);*/
+							//AfxMessageBox(_T("I'm here"));
+							pDoc->toolIsUsed = Tools::change;
+
+						}
+					}
+				}
+				
+				
+				
+				if (pDoc->toolIsUsed != Tools::change)
+				{
+					pDoc->shapes[shapeNum]->isSelected = false;
+				}
+							}
+		}
+		//
+	}
 	// create shape or choose an other tool
 	switch (pDoc->toolIsUsed)
 	{
@@ -462,24 +529,18 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
-		/*CString str;
-		str.Format(_T("%d"), pDoc->shapes.size());
-		AfxMessageBox(str);*/
-		//delete shape;
 		break;
 	}
 	case Tools::rectangle:
 	{
 		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
-		//delete shape;
 		break;
 	}
 	case Tools::triangle:
 	{
 		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->shapes.push_back(shape);
-		//delete shape;
 		break;
 	}
 	case Tools::move:
@@ -502,7 +563,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			}
 			if (selected) break;
 		}
-
 		break;
 	}
 	case Tools::change:
@@ -511,7 +571,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
-			//
 			if (pDoc->shapes[s]->isSelected)
 			{
 				int numberOfAngels = 0;
@@ -536,7 +595,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 						Invalidate();
 						CString str;
 						str.Format(_T("%d"), a);
-						//AfxMessageBox(str);
 					}
 
 				}
@@ -646,14 +704,9 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 					int tempY = pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y;
 					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].x = round(tempX * cos(-(pDoc->shapes[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->shapes[s]->ellipseAngleRad)));
 					pDoc->shapes[s]->dx_dy_temp[pDoc->shapes[s]->numberOfAngle].y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
-					//eSP[i].x += centerOfShape.x + dx;
-					//eSP[i].y += centerOfShape.y + dy;
-
-
 					Invalidate();
 					CString str;
 					str.Format(_T("%d"), pDoc->shapes[s]->numberOfAngle);
-					//AfxMessageBox(str);
 				}
 
 			}
@@ -670,9 +723,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				int temp = point.y - pDoc->shapes[s]->lastY;
 				pDoc->shapes[s]->ellipseAngleRad += temp * 0.01;
 				double db = pDoc->shapes[s]->ellipseAngleRad;
-				/*CString dbug;
-				dbug.Format(_T("%g"), 0.5);
-				AfxMessageBox(dbug);*/
 				Invalidate();
 			}
 			pDoc->shapes[s]->lastY = point.y;
@@ -749,30 +799,13 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			{
 			case ShapeType::ellipse:
 			{
-				//CPoint ellipseCenter = pDoc->shapes[i]->centerOfShape; //convinient
-				//int ellipseSize = pDoc->shapes[i]->size; //convinient
-				//HRGN ellipseRgn = CreateEllipticRgn(ellipseCenter.x - ellipseSize, ellipseCenter.y - ellipseSize, ellipseCenter.x + ellipseSize, ellipseCenter.y + ellipseSize);
-				//
-				//CRgn* ellipseRgn = new CRgn;
-				//ellipseRgn->CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);
-				//CRect rect;
-				//GetClientRect(&rect);
-				//GetRgnBox(ellipseRgn, &rect);
-
 				CPoint cp;
-				//cp = rect.BottomRight();
 				CString str;
-				/*str.Format(_T("x: %d, y: %d"), cp.x, cp.y);
-				AfxMessageBox(str);
-				str.Format(_T("x: %d, y: %d"), pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
-				AfxMessageBox(str);*/
 				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
 				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
 
 				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
-					//AfxMessageBox(_T("Ellipse"));
-					//pDoc->shapes[i]->pen=newPen;
 					shapeIsFound = true;
 					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 					{
@@ -786,21 +819,12 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					}
 					//swap
 					pDoc->shapes[i]->isSelected = true;
-
-					/*auto s1 = pDoc->shapes[i];
-					auto s2 = pDoc->shapes[pDoc->shapes.size()-1];
-					pDoc->shapes[i] = s2;
-					pDoc->shapes[pDoc->shapes.size() - 1] = s1;*/
-
 					pDoc->shapes[i]->isSelected = true;
 					IShape* shape;
 					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
 					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 				}
-				//delete ellipseRgn;
-				//pDoc->shapes[i]->centerOfShape
-				//AfxMessageBox(_T("ellipse"));
 				break;
 			}
 			case ShapeType::rectangle:
@@ -839,16 +863,10 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				int h = 3 * rectangleSize;
 				int side = 2 * h / sqrt(3);
 
-				//CPoint triangle[3];
-				//triangle[0] = CPoint(rectangleCenter.x, rectangleCenter.y - 2 * rectangleSize); //top
-				//triangle[1] = CPoint(rectangleCenter.x - side / 2, rectangleCenter.y + rectangleSize); //left
-				//triangle[2] = CPoint(rectangleCenter.x + side / 2, rectangleCenter.y + rectangleSize); //right
-
 				HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 3, ALTERNATE);
 				//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
 				if (PtInRegion(rectangleRgn, point.x, point.y))
 				{
-					//AfxMessageBox(_T("Triangle"));
 					shapeIsFound = true;
 					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 					{
@@ -1119,6 +1137,19 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
+	if (pDoc->toolIsUsed == Tools::ellipse)
+	{
+		pDoc->shapes[pDoc->shapes.size() - 1]->isSelected = true;
+		pDoc->toolIsUsed = Tools::change;
+
+	}
+
+
+
+
+
+
+
 	if (pDoc->toolIsUsed == Tools::move)
 	{
 		// move all shapes

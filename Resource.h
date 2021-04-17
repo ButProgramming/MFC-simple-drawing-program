@@ -33,7 +33,6 @@
 #define IDD_DIALOG_DEFAULT_DRAW_PROPERTIES 321
 #define IDD_DIALOG_PROPERTIES           326
 #define IDD_DIALOG_PROPERTIES_LINK      329
-
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_LISTCONTROL_LINES           1005
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
@@ -65,6 +64,7 @@
 #define IDC_COMBO_LINK_SIZE             1034
 #define IDC_EDIT_LINK_SHAPE_FIRST_ID    1037
 #define IDC_EDIT_LINK_SHAPE_SECOND_ID   1038
+#define IDC_SCROLLBAR2                  1038
 #define IDC_COMBO_LINK_TYPE             1041
 #define IDC_COMBO_LINK_TYPE_LINK        1042
 #define IDC_EDIT_LINK_ID                1046
@@ -99,7 +99,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        364
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
