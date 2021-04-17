@@ -449,6 +449,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
+	bool canBeUnselected = true;
 	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove) // shape unselect if click on empty place
 	{
 		for (int shapeNum = pDoc->shapes.size()-1; shapeNum >= 0 ; shapeNum--)
@@ -456,15 +457,33 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			
 			if (pDoc->shapes[shapeNum]->type == ShapeType::ellipse)
 			{
-				bool shapeIsFound = false;
+				bool breakLoop = false;
+				bool ifSearchInRgn = true;
 				CPoint cp = NULL;
 				CString str = NULL;
 				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eFP[0]), pDoc->shapes[shapeNum]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
 				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eSP[0]), pDoc->shapes[shapeNum]->eSP.size(), ALTERNATE);
 
-				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+				if (pDoc->shapes[shapeNum]->isSelected == true)
 				{
-					shapeIsFound = true;
+					HRGN angleRgn = NULL;
+					for (int angleNum = 0; angleNum < 4; angleNum++)
+					{
+						angleRgn = CreateEllipticRgn(pDoc->shapes[shapeNum]->points[angleNum].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y + IShape::sizeOfPointToMoveAndChange * 4);
+						if (PtInRegion(angleRgn, point.x, point.y))
+						{
+
+							pDoc->toolIsUsed = Tools::change;
+							canBeUnselected = false;
+							ifSearchInRgn = false;
+							breakLoop = true; // if point is founded than break the loop
+
+						}
+					}
+				}
+				if (ifSearchInRgn && (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y)))
+				{
+					breakLoop = true; // is shape is found than break the loop
 
 					//unselecting others shapes
 					for (int shapesNumUnselect = pDoc->shapes.size()-1; shapesNumUnselect >= 0; shapesNumUnselect--)
@@ -489,36 +508,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					pDoc->toolIsUsed = Tools::shapeMove;
 					//AfxMessageBox(_T("I'm here"));
 				}
-				if(shapeIsFound) break;
+				if(breakLoop) break;
 
+			
 				//check for selected shape if is point in region of "changePoint" 
-				if (pDoc->shapes[shapeNum]->isSelected == true)
-				{
-					HRGN angleRgn = NULL;
-					for (int angleNum = 0; angleNum < 4; angleNum++)
-					{
-						angleRgn = CreateEllipticRgn(pDoc->shapes[shapeNum]->points[angleNum].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y + IShape::sizeOfPointToMoveAndChange * 4);
-						if (PtInRegion(angleRgn, point.x, point.y))
-						{
-
-							//pDoc->shapes[shapeNum]->numberOfAngle = a;
-							//Invalidate();
-							/*CString str;
-							str.Format(_T("%d"), a);*/
-							//AfxMessageBox(_T("I'm here"));
-							pDoc->toolIsUsed = Tools::change;
-
-						}
-					}
-				}
 				
 				
 				
-				if (pDoc->toolIsUsed != Tools::change)
+				
+				if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected))
 				{
 					pDoc->shapes[shapeNum]->isSelected = false;
 				}
-							}
+			}
 		}
 		//
 	}
@@ -1140,10 +1142,9 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	if (pDoc->toolIsUsed == Tools::ellipse)
 	{
 		pDoc->shapes[pDoc->shapes.size() - 1]->isSelected = true;
-		pDoc->toolIsUsed = Tools::change;
-
+		pDoc->toolIsUsed = Tools::shapeMove;
 	}
-
+	
 
 
 
