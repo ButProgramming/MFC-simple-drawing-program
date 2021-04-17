@@ -227,10 +227,10 @@ void EllipseShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
-	if (!isSelected && !isSelectedFromDoubleSelectingTool)
+	if (!isSelectedFromDoubleSelectingTool)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
-	else if (isSelected)
-		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
+	/*else if (isSelected)
+		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));*/
 	else
 		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
@@ -296,7 +296,7 @@ void EllipseShape::draw(CDC* dc)
 		ellipseSecondPart.push_back(v2);
 	}
 
-	CBrush* ellipseBrush;
+	CBrush* ellipseBrush = NULL;
 	if (fillType == -1)
 	{
 		ellipseBrush = new CBrush;
@@ -410,7 +410,28 @@ void EllipseShape::draw(CDC* dc)
 	CRgn* ellipseRgn2 = new CRgn;
 	ellipseRgn2->CreatePolygonRgn(&smallerRgn2[0], smallerRgn2.size(), ALTERNATE);
 
-	//dc->Polygon(points, 4);
+	if (isSelected)
+	{
+		CPen* tempPen = new CPen(1, 1, RGB(100,100,100));
+		dc->SelectObject(tempPen);
+		// draw rectangle that demonstrate selecting shape
+		for (int pointNum = 0; pointNum < 4; pointNum++)
+		{
+			if (pointNum == 3)
+			{
+				dc->MoveTo(points[3]);
+				dc->LineTo(points[0]);
+				break;
+			}
+			dc->MoveTo(points[pointNum]);
+			dc->LineTo(points[pointNum+1]);
+			
+		}
+		
+		tempPen->DeleteObject();
+	}
+	
+	dc->SelectObject(pen);
 	dc->Polygon(&eFP[0], eFP.size());
 	dc->Polygon(&eSP[0], eSP.size());
 	dc->FillRgn(ellipseRgn1, ellipseBrush);
