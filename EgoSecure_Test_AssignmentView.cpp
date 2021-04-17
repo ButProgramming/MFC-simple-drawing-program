@@ -450,7 +450,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
 	bool canBeUnselected = true;
-	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove) // shape unselect if click on empty place
+	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
 	{
 		for (int shapeNum = pDoc->shapes.size()-1; shapeNum >= 0 ; shapeNum--)
 		{
@@ -464,6 +464,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eFP[0]), pDoc->shapes[shapeNum]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
 				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eSP[0]), pDoc->shapes[shapeNum]->eSP.size(), ALTERNATE);
 
+
+				if (pDoc->shapes[shapeNum]->isSelected == true)
+				{
+					CPoint ellipseCenter = pDoc->shapes[shapeNum]->getPointForRotateTool();
+					HRGN ellipseForRotateTool = CreateEllipticRgn(ellipseCenter.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
+					if (PtInRegion(ellipseForRotateTool, point.x, point.y))
+					{
+						pDoc->toolIsUsed = Tools::rotate;
+						canBeUnselected = false;
+						ifSearchInRgn = false;
+						breakLoop = true; // if point is founded than break the loop
+					}
+				}
 				if (pDoc->shapes[shapeNum]->isSelected == true)
 				{
 					HRGN angleRgn = NULL;
@@ -516,7 +529,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				
 				
 				
-				if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected))
+				if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected) || (pDoc->toolIsUsed == Tools::rotate))
 				{
 					pDoc->shapes[shapeNum]->isSelected = false;
 				}
@@ -524,6 +537,9 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 		//
 	}
+
+	// when is clicked on the shape then it is selected
+	Invalidate();
 	// create shape or choose an other tool
 	switch (pDoc->toolIsUsed)
 	{
@@ -1145,12 +1161,6 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		pDoc->toolIsUsed = Tools::shapeMove;
 	}
 	
-
-
-
-
-
-
 	if (pDoc->toolIsUsed == Tools::move)
 	{
 		// move all shapes
@@ -1231,6 +1241,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		//IShape::diffShapeMove.y = 0;
 	}
+	// when shape is drawed then screen updates automatically
+	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -1249,41 +1261,6 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::rotate;
 
-	CDC* pDC2 = GetDC();
-	//pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
-	int nGraphicsMode = SetGraphicsMode(*pDC2, GM_ADVANCED);
-	XFORM xForm;
-	int m_iAngle = 45;
-	double fangle = (double)m_iAngle / 180. * 3.1415926;
-	xForm.eM11 = (float)cos(fangle);
-	xForm.eM12 = (float)sin(fangle);
-	xForm.eM21 = (float)-sin(fangle);
-	xForm.eM22 = (float)cos(fangle);
-	//xForm.eDx = (float)220;
-	//xForm.eDy = (float)-100;
-	xForm.eDx = (float)(100 - cos(fangle) * 100 + sin(fangle) * 100);
-	xForm.eDy = (float)(100 - cos(fangle) * 100 - sin(fangle) * 100);
-
-
-	SetWorldTransform(*pDC2, &xForm);
-	//pDC2->Ellipse(200 - 20, 200 - 30, 200 + 20, 200 + 30);
-
-
-
-	//
-	//pDC->Ellipse(pDoc->shapes[0]->centerOfShape.x - 50, pDoc->shapes[0]->centerOfShape.x - 30, pDoc->shapes[0]->centerOfShape.x + 20, pDoc->shapes[0]->centerOfShape.x + 30);
-
-	//ModifyWorldTransform(dc->m_hDC, &xForm, MWT_IDENTITY);
-	//ModifyWorldTransform(*pDC, &xForm, MWT_IDENTITY);
-	xForm.eM11 = (float)1.0;
-	xForm.eM12 = (float)0;
-	xForm.eM21 = (float)0;
-	xForm.eM22 = (float)1.0;
-	xForm.eDx = (float)0;
-	xForm.eDy = (float)0;
-
-	SetWorldTransform(*pDC2, &xForm);
-	SetGraphicsMode(*pDC2, GM_COMPATIBLE); // nGraphicsMode
 	//AfxMessageBox(_T("123"));
 	//SetWorldTransform()
 	// TODO: Add your command handler code here

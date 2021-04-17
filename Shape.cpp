@@ -247,6 +247,11 @@ void EllipseShape::draw(CDC* dc)
 	points[2] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
 	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
+	// points that needed for drawing rotate tool
+	centerPoint23Bottom = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
+	centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+	//if(size>100)
+	
 
 	int a = abs((points[1].x - points[0].x) / 2);
 	int b = abs((points[2].y - points[1].y) / 2);
@@ -337,6 +342,20 @@ void EllipseShape::draw(CDC* dc)
 		points[i].y += centerOfShape.y + dy;
 	}
 
+	int tempXBottom = centerPoint23Bottom.x;
+	int tempYBottom = centerPoint23Bottom.y;
+	centerPoint23Bottom.x = round(tempXBottom * cos(ellipseAngleRad) - tempYBottom * sin(ellipseAngleRad));
+	centerPoint23Bottom.y = round(tempXBottom * sin(ellipseAngleRad) + tempYBottom * cos(ellipseAngleRad));
+	centerPoint23Bottom.x += centerOfShape.x + dx;
+	centerPoint23Bottom.y += centerOfShape.y + dy;
+
+	int tempXTop = centerPoint23Top.x;
+	int tempYTop = centerPoint23Top.y;
+	centerPoint23Top.x = round(tempXTop * cos(ellipseAngleRad) - tempYTop * sin(ellipseAngleRad));
+	centerPoint23Top.y = round(tempXTop * sin(ellipseAngleRad) + tempYTop * cos(ellipseAngleRad));
+	centerPoint23Top.x += centerOfShape.x + dx;
+	centerPoint23Top.y += centerOfShape.y + dy;
+
 	// create smaller ellipse to fill region
 	a = a - 1;
 	b = b - 1;
@@ -410,10 +429,26 @@ void EllipseShape::draw(CDC* dc)
 	CRgn* ellipseRgn2 = new CRgn;
 	ellipseRgn2->CreatePolygonRgn(&smallerRgn2[0], smallerRgn2.size(), ALTERNATE);
 
+	
+	dc->SelectObject(pen);
+	//dc->Ellipse(centerPoint23Bottom.x - 10, centerPoint23Bottom.y - 10, centerPoint23Bottom.x + 10, centerPoint23Bottom.y + 10);
+	dc->Polygon(&eFP[0], eFP.size());
+	dc->Polygon(&eSP[0], eSP.size());
+	dc->FillRgn(ellipseRgn1, ellipseBrush);
+	dc->FillRgn(ellipseRgn2, ellipseBrush);
+
+
 	if (isSelected)
 	{
-		CPen* tempPen = new CPen(1, 1, RGB(100,100,100));
+		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
 		dc->SelectObject(tempPen);
+		dc->MoveTo(centerPoint23Bottom);
+		dc->LineTo(centerPoint23Top);
+		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+		
+		
 		// draw rectangle that demonstrate selecting shape
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
@@ -424,31 +459,27 @@ void EllipseShape::draw(CDC* dc)
 				break;
 			}
 			dc->MoveTo(points[pointNum]);
-			dc->LineTo(points[pointNum+1]);
-			
+			dc->LineTo(points[pointNum + 1]);
+
 		}
-		
+
 		tempPen->DeleteObject();
-	}
-	
-	dc->SelectObject(pen);
-	dc->Polygon(&eFP[0], eFP.size());
-	dc->Polygon(&eSP[0], eSP.size());
-	dc->FillRgn(ellipseRgn1, ellipseBrush);
-	dc->FillRgn(ellipseRgn2, ellipseBrush);
-
-
-	if (isSelected)
-	{
-		//dc->Ellipse(0, 0, 200, 200);
-		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 	}
 
 	ellipseRgn1->DeleteObject();
 	ellipseRgn2->DeleteObject();
 	pen->DeleteObject();
 	ellipseBrush->DeleteObject();
+}
+
+CPoint EllipseShape::getPointForRotateTool()
+{
+	return centerPoint23Top;
+}
+
+void EllipseShape::setFirstClickedPoints(CPoint point)
+{
+	firstClickedPoint = point;
 }
 
 
@@ -565,6 +596,11 @@ void RectangleShape::draw(CDC* dc)
 	rectangleBrush->DeleteObject();
 	rectangleReg->DeleteObject();
 
+}
+
+CPoint RectangleShape::getPointForRotateTool()
+{
+	return CPoint();
 }
 
 void TriangleShape::draw(CDC* dc)
@@ -703,6 +739,11 @@ void TriangleShape::draw(CDC* dc)
 	triangleRgn->DeleteObject();
 	triangleBrush->DeleteObject();
 	triangleNewRgn->DeleteObject();
+}
+
+CPoint TriangleShape::getPointForRotateTool()
+{
+	return CPoint();
 }
 
 

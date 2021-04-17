@@ -8,6 +8,9 @@
 #include <set>
 using namespace std;
 
+
+#define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
+
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle };
 
@@ -15,6 +18,9 @@ class IShape
 {
 public:
 	virtual void draw(CDC* dc) = 0;
+	virtual CPoint getPointForRotateTool() = 0;
+	virtual void setFirstClickedPoints(CPoint point) {}; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual void getFirstClickedPoints(CPoint& point) {}; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -23,6 +29,8 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
+	
+
 	
 	int fillType;
 	int outlineType;
@@ -66,6 +74,11 @@ public:
 	CPoint centerOfShape;
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 	
+protected:
+	CPoint centerPoint23Bottom;			// center of rectangle topside. Needed to select shape
+	CPoint centerPoint23Top;			// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
+	CPoint firstClickedPoint{ NULL, NULL }; // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
+	
 };
 
 class EllipseShape :public IShape
@@ -73,6 +86,9 @@ class EllipseShape :public IShape
 public:
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
+	CPoint getPointForRotateTool();
+	void setFirstClickedPoints(CPoint point);
+	void getFirstClickedPoints(CPoint& point) {};
 	
 };
 
@@ -81,7 +97,7 @@ class RectangleShape :public IShape
 public:
 	RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-
+	CPoint getPointForRotateTool();
 };
 
 class TriangleShape : public IShape
@@ -89,7 +105,7 @@ class TriangleShape : public IShape
 public:
 	TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-
+	CPoint getPointForRotateTool();
 };
 
 
