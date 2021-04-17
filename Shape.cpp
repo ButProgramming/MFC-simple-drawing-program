@@ -7,6 +7,8 @@ int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 set<CString> IShape::names;
+CPoint IShape::firstPoint{ 0, 0 };
+
 
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
@@ -250,6 +252,7 @@ void EllipseShape::draw(CDC* dc)
 	// points that needed for drawing rotate tool
 	centerPoint23Bottom = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
 	centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+	firstPoint = centerPoint23Top;
 	//if(size>100)
 	
 
@@ -355,6 +358,14 @@ void EllipseShape::draw(CDC* dc)
 	centerPoint23Top.y = round(tempXTop * sin(ellipseAngleRad) + tempYTop * cos(ellipseAngleRad));
 	centerPoint23Top.x += centerOfShape.x + dx;
 	centerPoint23Top.y += centerOfShape.y + dy;
+
+	int tempXFP = firstPoint.x;
+	int tempYFP = firstPoint.y;
+	firstPoint.x = round(tempXTop * 1 - tempYTop * 0);
+	firstPoint.y = round(tempXTop * 0 + tempYTop * 1);
+	firstPoint.x += centerOfShape.x + dx;
+	firstPoint.y += centerOfShape.y + dy;
+	
 
 	// create smaller ellipse to fill region
 	a = a - 1;

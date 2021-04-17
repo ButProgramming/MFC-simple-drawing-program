@@ -18,8 +18,7 @@ enum class ShapeType { ellipse, rectangle, triangle };
 class IShape
 {
 public:
-	int lastValueY = 0;
-	int lastValueX = 0;
+	
 public:
 	virtual void draw(CDC* dc) = 0;
 	virtual CPoint getPointForRotateTool() = 0;
@@ -33,7 +32,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
-	
+	static CPoint firstPoint;
 
 	
 	int fillType;
