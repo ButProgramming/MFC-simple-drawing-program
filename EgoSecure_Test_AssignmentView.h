@@ -4,6 +4,8 @@
 
 #pragma once
 
+constexpr UINT IDC_BUTTON1{ 101 };
+constexpr UINT IDC_SB1{ 102 };
 
 class CEgoSecureTestAssignmentView : public CView
 {
@@ -12,6 +14,8 @@ public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
 	CDC m_dc;
 	CBitmap m_bmt;
+	CButton m_button;
+	CScrollBar m_sb;
 
 protected: // create from serialization only
 	CEgoSecureTestAssignmentView() noexcept;
@@ -69,6 +73,7 @@ public:
 	afx_msg void OnPropertiesDefaultdrawproperties();
 	afx_msg void OnButtonProperties();
 	afx_msg void OnEditNormalize();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp

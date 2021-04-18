@@ -59,6 +59,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_PROPERTIES_DEFAULTDRAWPROPERTIES, &CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties)
 	ON_COMMAND(ID_BUTTON_PROPERTIES, &CEgoSecureTestAssignmentView::OnButtonProperties)
 	ON_COMMAND(ID_EDIT_NORMALIZE, &CEgoSecureTestAssignmentView::OnEditNormalize)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -100,6 +101,10 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	
+	CScrollBar sb;
+	sb.Create(SBS_BOTTOMALIGN, rect, this, 0);
+
+
 	//draw all shapes
 	for (IShape* s : pDoc->shapes)
 	{
@@ -420,8 +425,29 @@ void CEgoSecureTestAssignmentView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 
 void CEgoSecureTestAssignmentView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
+	auto pDoc = GetDocument();
+	CMenu menu;
+	menu.LoadMenu(IDR_POPUP_EDIT);
+	CMenu* pMenu = menu.GetSubMenu(0);
+
+	//PopulateBookmarkMenu(pMenu);
+	bool selectedShapeDontExcist = true;
+	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+	{
+		if (pDoc->shapes[shapeNum]->isSelected)
+		{
+			selectedShapeDontExcist = false;
+			break;
+		}
+	}
+	if (selectedShapeDontExcist)
+	{
+		pMenu->EnableMenuItem(ID_EDIT_NORMALIZE, MF_DISABLED | MF_GRAYED);
+	}
+
+	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this, NULL);
 #ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
 }
 
@@ -842,9 +868,36 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	// TODO:  Add your specialized creation code here
-
+	m_button.Create(_T("Press me!"), BS_PUSHBUTTON, CRect(5, 5, 100, 300), this, IDC_BUTTON1);
+	//m_button.ShowWindow(SW_SHOW);
+	m_sb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD |
+		WS_VISIBLE,
+		CRect(50, 50, 1500, 300), this, IDC_SB1);
+	//m_sb.SetScrollPos(2000, 1);
+	m_sb.SetScrollRange(0, 100);
+	
+	m_sb.ShowWindow(SW_SHOW);
+	
+	
 	return 0;
 }
+
+
+int value = 0;
+
+void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: Add your message handler code here and/or call default
+	switch (nSBCode)
+	{
+	case SB_THUMBTRACK:
+		value = nPos;
+	}
+	m_sb.SetScrollPos(value);
+	cout << m_sb.GetScrollPos() << endl;
+	CView::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
 
 
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
