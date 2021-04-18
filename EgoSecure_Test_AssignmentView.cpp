@@ -100,9 +100,10 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
+	rectForScrollBar = rect;
+
 	
-	CScrollBar sb;
-	sb.Create(SBS_BOTTOMALIGN, rect, this, 0);
+	
 
 
 	//draw all shapes
@@ -853,10 +854,14 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
+	cout << "cx: " << lpCreateStruct->cx << "cy: " << lpCreateStruct->cy << "x: " << lpCreateStruct->x << "y: " << lpCreateStruct->y << endl;
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
 	GetClientRect(&rect);
+	cout << point.x << " " << point.y << endl;
+	//CPoint scrollBarPos = CPoint(rect.TopLeft().x, rect.BottomRight().y);
+	//cout << scrollBarPos.x << " " << scrollBarPos.y << endl;
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
@@ -867,16 +872,13 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	// TODO:  Add your specialized creation code here
-	m_button.Create(_T("Press me!"), BS_PUSHBUTTON, CRect(5, 5, 100, 300), this, IDC_BUTTON1);
-	//m_button.ShowWindow(SW_SHOW);
 	m_sb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD |
 		WS_VISIBLE,
-		CRect(50, 50, 1500, 300), this, IDC_SB1);
-	//m_sb.SetScrollPos(2000, 1);
-	m_sb.SetScrollRange(0, 100);
+		CRect(0, y/2, x*0.96, 300), this, IDC_SB1);
+	m_sb.SetScrollRange(-1000, 1000);
+
 	
-	m_sb.ShowWindow(SW_SHOW);
+	//m_sb.ShowWindow(SW_SHOW);
 	
 	
 	return 0;
@@ -888,13 +890,22 @@ int value = 0;
 void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
+	auto pDoc = GetDocument();
 	switch (nSBCode)
 	{
 	case SB_THUMBTRACK:
 		value = nPos;
 	}
 	m_sb.SetScrollPos(value);
-	cout << m_sb.GetScrollPos() << endl;
+	//cout << m_sb.GetScrollPos() << endl;
+
+	IShape::dx = -2*m_sb.GetScrollPos();
+	/*if (m_sb.GetScrollPos()>= 999)
+	{
+		m_sb.SetScrollRange(-1000, 1500);
+		m_sb.SetScrollPos(999, 1);
+	}*/
+	Invalidate();
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 

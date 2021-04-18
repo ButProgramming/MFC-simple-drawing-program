@@ -16,6 +16,7 @@ public:
 	CBitmap m_bmt;
 	CButton m_button;
 	CScrollBar m_sb;
+	CRect rectForScrollBar;
 
 protected: // create from serialization only
 	CEgoSecureTestAssignmentView() noexcept;
