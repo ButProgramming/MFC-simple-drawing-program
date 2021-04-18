@@ -58,6 +58,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(IDC_LISTCONTROL_SHAPES, &CEgoSecureTestAssignmentView::OnListcontrolShapes)
 	ON_COMMAND(ID_PROPERTIES_DEFAULTDRAWPROPERTIES, &CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties)
 	ON_COMMAND(ID_BUTTON_PROPERTIES, &CEgoSecureTestAssignmentView::OnButtonProperties)
+	ON_COMMAND(ID_EDIT_NORMALIZE, &CEgoSecureTestAssignmentView::OnEditNormalize)
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -1835,4 +1836,59 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 		}
 
 	}
+}
+
+void CEgoSecureTestAssignmentView::OnEditNormalize()
+{
+	//AfxMessageBox(_T("1234567"));
+	auto pDoc = GetDocument();
+	//pDoc->toolIsUsed = Tools::shapeNormalize; //don't need
+	for (int s = 0; s < pDoc->shapes.size(); s++)
+	{
+		if (pDoc->shapes[s]->isSelected)
+		{
+
+
+			//pDoc->shapes[s]->isNormalized = true;
+			pDoc->shapes[s]->ellipseAngleRad = 0;
+			CPoint tmp[4];
+			if (pDoc->shapes[s]->type == ShapeType::triangle)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					tmp[i] = pDoc->shapes[s]->recFromRgn[i];
+				}
+
+			}
+			else
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					tmp[i] = pDoc->shapes[s]->points[i];
+				}
+
+			}
+
+			CPoint centerSidesPoints[2];
+			centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
+			centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
+			int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->shapes[s]->centerOfShape.y, 2));
+			int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->shapes[s]->centerOfShape.y, 2));
+			int min;
+			min = (l1 < l2) ? l1 : l2;
+			CString dbug;
+			dbug.Format(_T("%d, %d"), l1, l2);
+			//AfxMessageBox(dbug);
+			for (int i = 0; i < 4; i++)
+			{
+				pDoc->shapes[s]->dx_dy[i].x = 0;
+				pDoc->shapes[s]->dx_dy[i].y = 0;
+				pDoc->shapes[s]->dx_dy_temp[i].x = 0;
+				pDoc->shapes[s]->dx_dy_temp[i].y = 0;
+			}
+			pDoc->shapes[s]->size = min;
+			Invalidate();
+		}
+	}
+	// TODO: Add your command handler code here
 }

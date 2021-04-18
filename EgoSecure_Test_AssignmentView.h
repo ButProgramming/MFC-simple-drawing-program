@@ -68,6 +68,7 @@ public:
 	afx_msg void OnListcontrolShapes();
 	afx_msg void OnPropertiesDefaultdrawproperties();
 	afx_msg void OnButtonProperties();
+	afx_msg void OnEditNormalize();
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp

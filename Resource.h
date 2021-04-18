@@ -64,7 +64,6 @@
 #define IDC_COMBO_LINK_SIZE             1034
 #define IDC_EDIT_LINK_SHAPE_FIRST_ID    1037
 #define IDC_EDIT_LINK_SHAPE_SECOND_ID   1038
-#define IDC_SCROLLBAR2                  1038
 #define IDC_COMBO_LINK_TYPE             1041
 #define IDC_COMBO_LINK_TYPE_LINK        1042
 #define IDC_EDIT_LINK_ID                1046
@@ -92,13 +91,14 @@
 #define ID_PROPERTIES_12345             32804
 #define ID_PROPERTIES_DEFAULTDRAWPROPERTIES 32805
 #define ID_BUTTON_PROPERTIES            32807
+#define ID_EDIT_NORMALIZE               32808
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        364
-#define _APS_NEXT_COMMAND_VALUE         32808
+#define _APS_NEXT_COMMAND_VALUE         32809
 #define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
