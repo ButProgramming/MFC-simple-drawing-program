@@ -886,6 +886,8 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 
 int value = 0;
+int prevX = 0;
+
 
 void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
@@ -899,13 +901,15 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	m_sb.SetScrollPos(value);
 	//cout << m_sb.GetScrollPos() << endl;
 
-	IShape::dx = -2*m_sb.GetScrollPos();
-	/*if (m_sb.GetScrollPos()>= 999)
+	IShape::dx = prevX - 2*m_sb.GetScrollPos();
+	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
-		m_sb.SetScrollRange(-1000, 1500);
-		m_sb.SetScrollPos(999, 1);
-	}*/
+		pDoc->shapes[shapeNum]->centerOfShape.x += IShape::dx;
+	}
+	
+	IShape::dx = 0;
 	Invalidate();
+	prevX = 2 * m_sb.GetScrollPos();
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
