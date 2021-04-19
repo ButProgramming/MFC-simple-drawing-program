@@ -60,6 +60,7 @@ BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentView, CView)
 	ON_COMMAND(ID_BUTTON_PROPERTIES, &CEgoSecureTestAssignmentView::OnButtonProperties)
 	ON_COMMAND(ID_EDIT_NORMALIZE, &CEgoSecureTestAssignmentView::OnEditNormalize)
 	ON_WM_HSCROLL()
+	ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 // CEgoSecureTestAssignmentView construction/destruction
@@ -100,7 +101,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	rectForScrollBar = rect;
+	//rectForScrollBar = rect;
 
 	
 	
@@ -859,27 +860,27 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetCursorPos(&point);
 	GetClientRect(&rect);
 	cout << point.x << " "<< point.y << endl;
-	//CPoint scrollBarPos = CPoint(rect.TopLeft().x, rect.BottomRight().y);
-	//cout << scrollBarPos.x << " " << scrollBarPos.y << endl;
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
 	int x = ::GetSystemMetrics(SM_CXSCREEN);
 	int y = ::GetSystemMetrics(SM_CXSCREEN);
+	cout << y << endl;
 	m_dc.CreateCompatibleDC(&dc);
 	m_bmt.CreateCompatibleBitmap(&dc, x, y);
-
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	m_sb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD |
-		WS_VISIBLE,
-		CRect(0, y/2, x*0.96, 300), this, IDC_SB1);
-	m_sb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
 
-	
-	//m_sb.ShowWindow(SW_SHOW);
-	
-	
+	// create horizontal scroll bar and set range
+	m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+		CRect(0, y/DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR, x* MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+	m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+	// create vertical scroll bar and set range
+	m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+		CRect(0, 0, 0, y/ DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR), this, IDC_SB_VERT);
+	m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+
 	return 0;
 }
 
@@ -888,43 +889,97 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-	// TODO: Add your message handler code here and/or call default
+	// get document to have an access to shapes vector
 	auto pDoc = GetDocument();
 	
-	//cout <<"maxX: "<< maxX << "minX: " <<minX << endl;
+	// set position of scroll in horizontal scrollbar
 	switch (nSBCode)
 	{
 	case SB_THUMBTRACK:
 		horizontalScrollBarValue = nPos;
 	}
-	m_sb.SetScrollPos(horizontalScrollBarValue);
-	cout << m_sb.GetScrollPos() << endl;
-	if (m_sb.GetScrollPos() == valueOfHorizontalScrollBar.min && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	m_hsb.SetScrollPos(horizontalScrollBarValue);
+	
+	// update range of horizontal scrollbar
+	if (m_hsb.GetScrollPos() == valueOfHorizontalScrollBar.min && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
 		valueOfHorizontalScrollBar.min -= HORIZONTAL_SCROLLBAR_DX;
-		m_sb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
-		m_sb.SetScrollPos(valueOfHorizontalScrollBar.min + HORIZONTAL_SCROLLBAR_DX); 
+		m_hsb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
+		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.min + HORIZONTAL_SCROLLBAR_DX);
 	}
-	else if (m_sb.GetScrollPos() == valueOfHorizontalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	else if (m_hsb.GetScrollPos() == valueOfHorizontalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
 		cout << "in else if" << endl;
 		valueOfHorizontalScrollBar.max += HORIZONTAL_SCROLLBAR_DX;
-		m_sb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
-		m_sb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX); 
+		m_hsb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
+		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX); 
 	}
 
-	IShape::dx = prevCoordinate.x - 2*m_sb.GetScrollPos();
+	// move the shapes
+	IShape::dx = prevCoordinate.x - 2* m_hsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
 		pDoc->shapes[shapeNum]->centerOfShape.x += IShape::dx;
 	}
-	
+
+	// reset dx
 	IShape::dx = 0;
+
+	// update draw
 	Invalidate();
-	prevCoordinate.x = 2 * m_sb.GetScrollPos();
+
+	// safe currently coordinate in previous coordinate to calculate dx for moving shapes in the next time
+	prevCoordinate.x = 2 * m_hsb.GetScrollPos();
+
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
+void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// get document to have an access to shapes vector
+	auto pDoc = GetDocument();
+
+	// set position of scroll in horizontal scrollbar
+	switch (nSBCode)
+	{
+	case SB_THUMBTRACK:
+		verticalScrollBarValue = nPos;
+	}
+	m_vsb.SetScrollPos(verticalScrollBarValue);
+
+	// update range of vertical scrollbar
+	if (m_vsb.GetScrollPos() == valueOfVerticalScrollBar.min && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	{
+		valueOfVerticalScrollBar.min -= VERTICAL_SCROLLBAR_DX;
+		m_vsb.SetScrollRange(valueOfVerticalScrollBar.min, valueOfVerticalScrollBar.max);
+		m_vsb.SetScrollPos(valueOfVerticalScrollBar.min + VERTICAL_SCROLLBAR_DX);
+	}
+	else if (m_vsb.GetScrollPos() == valueOfVerticalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	{
+		cout << "in else if" << endl;
+		valueOfVerticalScrollBar.max += VERTICAL_SCROLLBAR_DX;
+		m_vsb.SetScrollRange(valueOfVerticalScrollBar.min, valueOfVerticalScrollBar.max);
+		m_vsb.SetScrollPos(valueOfVerticalScrollBar.max - VERTICAL_SCROLLBAR_DX);
+	}
+
+	// move the shapes
+	IShape::dy = prevCoordinate.y - 2 * m_vsb.GetScrollPos();
+	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+	{
+		pDoc->shapes[shapeNum]->centerOfShape.y += IShape::dy;
+	}
+
+	// reset dx
+	IShape::dy = 0;
+
+	// update draw
+	Invalidate();
+
+	// safe currently coordinate in previous coordinate to calculate dx for moving shapes in the next time
+	prevCoordinate.y = 2 * m_vsb.GetScrollPos();
+
+	CView::OnVScroll(nSBCode, nPos, pScrollBar);
+}
 
 
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
@@ -1972,3 +2027,6 @@ void CEgoSecureTestAssignmentView::OnEditNormalize()
 	}
 	// TODO: Add your command handler code here
 }
+
+
+

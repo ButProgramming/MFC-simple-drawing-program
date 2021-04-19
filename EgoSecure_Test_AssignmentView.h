@@ -6,9 +6,15 @@
 #define START_HORIZONTAL_SCROLL_RANGE_MIN -500
 #define START_HORIZONTAL_SCROLL_RANGE_MAX 500
 #define HORIZONTAL_SCROLLBAR_DX 300
+#define START_VERTICAL_SCROLL_RANGE_MIN -250
+#define START_VERTICAL_SCROLL_RANGE_MAX 250
+#define VERTICAL_SCROLLBAR_DX 150
+#define DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR 2
+#define MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR 0.96
 
 constexpr UINT IDC_BUTTON1{ 101 };
-constexpr UINT IDC_SB1{ 102 };
+constexpr UINT IDC_SB_HOR{ 102 };
+constexpr UINT IDC_SB_VERT{ 103 };
 
 class CEgoSecureTestAssignmentView : public CView
 {
@@ -18,9 +24,7 @@ public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
 	CDC m_dc;
 	CBitmap m_bmt;
-	CButton m_button;
-	CScrollBar m_sb;
-	CRect rectForScrollBar;
+	
 
 
 
@@ -83,11 +87,21 @@ public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 
 private:
-	int horizontalScrollBarValue = 0; 
+	// horizontal and vertical scrollbar common variables
 	CPoint prevCoordinate{ 0, 0 }; // previous coordinate, that is needed to calculate a difference between currently position of horizontal scrollbar
-								   // and prewious. This CPoint is used for movement all shapes
+								   // and previous. This CPoint is used for movement all shapes
+
+	// horizontal scrollbar
+	CScrollBar m_hsb; // horizontal scrollbar
+	int horizontalScrollBarValue = 0; 
 	struct valueOfHorizontalScrollBar { int min = START_HORIZONTAL_SCROLL_RANGE_MIN; int max = START_HORIZONTAL_SCROLL_RANGE_MAX; } valueOfHorizontalScrollBar; // currently min and max coordinates of horizontal scrollbar
 
+	//vertical scrollbar
+	CScrollBar m_vsb; // vertical scrollbar
+	int verticalScrollBarValue = 0; 
+	struct valueOfVerticalScrollBar { int min = START_VERTICAL_SCROLL_RANGE_MIN; int max = START_VERTICAL_SCROLL_RANGE_MAX; } valueOfVerticalScrollBar; // currently min and max coordinates of vertical scrollbar
+public:
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp
