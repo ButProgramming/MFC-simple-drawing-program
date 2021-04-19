@@ -42,25 +42,24 @@ C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assi
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(756,75): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(757,75): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(770,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(877,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(898,34): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(924,34): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1032,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1107,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1176,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1245,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1317,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1340,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1377,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1383,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1384,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1425,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1482,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1501,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1520,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1747,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1763,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1813,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1933,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(878,18): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(922,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1030,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1105,28): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1174,28): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1243,28): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1315,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1338,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1375,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1381,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1382,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1423,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1480,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1499,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1518,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1745,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1761,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1811,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1931,20): warning C4018: '<': signed/unsigned mismatch
 EgoSecure_Test_AssignmentView.obj : warning LNK4258: directive '/entry:WinMainCRTStartup' not compatible with switch '/ENTRY:wWinMainCRTStartup'; ignored
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\Debug\EgoSecure_Test_Assignment.exe

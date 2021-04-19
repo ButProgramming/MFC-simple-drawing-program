@@ -849,7 +849,6 @@ BOOL CEgoSecureTestAssignmentView::OnEraseBkgnd(CDC* pDC)
 	return true;
 }
 
-
 int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
@@ -875,7 +874,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_sb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD |
 		WS_VISIBLE,
 		CRect(0, y/2, x*0.96, 300), this, IDC_SB1);
-	m_sb.SetScrollRange(-500, 500);
+	m_sb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
 
 	
 	//m_sb.ShowWindow(SW_SHOW);
@@ -885,42 +884,36 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 
 
-int value = 0;
-int prevX = 0;
-int minX = 100000000;
-int maxX = 0;
+
 
 void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
 	
-	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
-	{
-		if (pDoc->shapes[shapeNum]->centerOfShape.x > maxX)
-		{
-			maxX = pDoc->shapes[shapeNum]->centerOfShape.x;
-		}
-		else if (pDoc->shapes[shapeNum]->centerOfShape.x < minX)
-		{
-			minX = pDoc->shapes[shapeNum]->centerOfShape.x;
-		}
-	}
 	//cout <<"maxX: "<< maxX << "minX: " <<minX << endl;
 	switch (nSBCode)
 	{
 	case SB_THUMBTRACK:
-		value = nPos;
+		horizontalScrollBarValue = nPos;
 	}
-	m_sb.SetScrollPos(value);
+	m_sb.SetScrollPos(horizontalScrollBarValue);
 	cout << m_sb.GetScrollPos() << endl;
-	if (m_sb.GetScrollPos() == -500 && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	if (m_sb.GetScrollPos() == valueOfHorizontalScrollBar.min && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
-		m_sb.SetScrollRange(-1000, 500);
-		m_sb.SetScrollPos(-500); //-501
+		valueOfHorizontalScrollBar.min -= HORIZONTAL_SCROLLBAR_DX;
+		m_sb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
+		m_sb.SetScrollPos(valueOfHorizontalScrollBar.min + HORIZONTAL_SCROLLBAR_DX); 
+	}
+	else if (m_sb.GetScrollPos() == valueOfHorizontalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
+	{
+		cout << "in else if" << endl;
+		valueOfHorizontalScrollBar.max += HORIZONTAL_SCROLLBAR_DX;
+		m_sb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
+		m_sb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX); 
 	}
 
-	IShape::dx = prevX - 2*m_sb.GetScrollPos();
+	IShape::dx = prevCoordinate.x - 2*m_sb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
 		pDoc->shapes[shapeNum]->centerOfShape.x += IShape::dx;
@@ -928,7 +921,7 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	
 	IShape::dx = 0;
 	Invalidate();
-	prevX = 2 * m_sb.GetScrollPos();
+	prevCoordinate.x = 2 * m_sb.GetScrollPos();
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 

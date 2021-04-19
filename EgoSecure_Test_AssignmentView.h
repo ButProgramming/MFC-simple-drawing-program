@@ -3,12 +3,16 @@
 //
 
 #pragma once
+#define START_HORIZONTAL_SCROLL_RANGE_MIN -500
+#define START_HORIZONTAL_SCROLL_RANGE_MAX 500
+#define HORIZONTAL_SCROLLBAR_DX 300
 
 constexpr UINT IDC_BUTTON1{ 101 };
 constexpr UINT IDC_SB1{ 102 };
 
 class CEgoSecureTestAssignmentView : public CView
 {
+
 // Attributes
 public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
@@ -17,6 +21,8 @@ public:
 	CButton m_button;
 	CScrollBar m_sb;
 	CRect rectForScrollBar;
+
+
 
 protected: // create from serialization only
 	CEgoSecureTestAssignmentView() noexcept;
@@ -75,6 +81,13 @@ public:
 	afx_msg void OnButtonProperties();
 	afx_msg void OnEditNormalize();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+
+private:
+	int horizontalScrollBarValue = 0; 
+	CPoint prevCoordinate{ 0, 0 }; // previous coordinate, that is needed to calculate a difference between currently position of horizontal scrollbar
+								   // and prewious. This CPoint is used for movement all shapes
+	struct valueOfHorizontalScrollBar { int min = START_HORIZONTAL_SCROLL_RANGE_MIN; int max = START_HORIZONTAL_SCROLL_RANGE_MAX; } valueOfHorizontalScrollBar; // currently min and max coordinates of horizontal scrollbar
+
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp
