@@ -623,10 +623,10 @@ void RectangleShape::draw(CDC* dc)
 
 }
 
-CPoint RectangleShape::getPointForRotateTool()
-{
-	return CPoint();
-}
+//CPoint RectangleShape::getPointForRotateTool()
+//{
+//	return CPoint();
+//}
 
 void TriangleShape::draw(CDC* dc)
 {
@@ -765,11 +765,11 @@ void TriangleShape::draw(CDC* dc)
 	triangleBrush->DeleteObject();
 	triangleNewRgn->DeleteObject();
 }
-
-CPoint TriangleShape::getPointForRotateTool()
-{
-	return CPoint();
-}
+//
+//CPoint TriangleShape::getPointForRotateTool()
+//{
+//	return CPoint();
+//}
 
 
 bool IShape::IsClickedOnPointForLines(CPoint point)
@@ -791,4 +791,19 @@ IShape::~IShape()
 	IShape::names.erase(name);
 }
 
+Line::Line(CPoint firstPointOfShape, LineType type, COLORREF lineColor, int lineSize, int lineType)
+{
+	this->firstPointOfLine = firstPointOfShape;
+	this->secondPointOfLine = this->firstPointOfLine; // invisible line, bevor we change line secondPoint
+	
+}
 
+void Line::draw(CDC* dc)
+{
+
+	// draw line
+	dc->MoveTo(firstPointOfLine);
+	dc->LineTo(secondPointOfLine);
+	//AfxMessageBox(_T("here"));
+
+}

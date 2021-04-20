@@ -105,11 +105,11 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 
 	
 	
-	// draw all lines
-	for (int lineNum = 0; lineNum < pDoc->lines.size(); lineNum++)
-	{
-		pDoc->lines[lineNum]->draw(&m_dc);
-	}
+	//// draw all lines
+	//for (int lineNum = 0; lineNum < pDoc->lines.size(); lineNum++)
+	//{
+	//	pDoc->lines[lineNum]->draw(&m_dc);
+	//}
 
 	//draw all shapes
 	for (IShape* s : pDoc->shapes)
@@ -606,14 +606,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		{
 			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point))
 			{
-				Lines* line = new Lines(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
-				pDoc->lines.push_back(line);
+				IShape* line = new Line(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
+				pDoc->shapes.push_back(line);
 				break;
 			}
 			cout << "here" << endl;
 		}
-		Lines* line = new Lines(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
-		pDoc->lines.push_back(line);
+		IShape* line = new Line(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
+		pDoc->shapes.push_back(line);
 		break;
 	}
 	case Tools::move:
@@ -862,9 +862,9 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::basicLine)
 	{
-		if (!pDoc->lines.empty())
+		if (!pDoc->shapes.empty())
 		{
-			pDoc->lines[pDoc->lines.size() - 1]->secondPoint = point;
+			pDoc->shapes[pDoc->shapes.size() - 1]->secondPointOfLine = point;
 		}
 	}
 	Invalidate();

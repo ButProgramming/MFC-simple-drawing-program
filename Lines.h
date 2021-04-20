@@ -16,8 +16,7 @@ public:
     static set<CString> names;
     static int countOfLines;
 
-    CPoint firstPoint { 0, 0 }; // first point of line
-    CPoint secondPoint{ 0, 0 }; // second point of line
+
     COLORREF lineColor;
     int lR, lG, lB;
     int lineType;

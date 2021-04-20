@@ -8,16 +8,15 @@ int Lines::countOfLines = 0;
 void Lines::draw(CDC* dc)
 {
 	// draw line
-	dc->MoveTo(firstPoint);
-	dc->LineTo(secondPoint);
+	//dc->MoveTo(firstPoint);
+	//dc->LineTo(secondPoint);
 	//AfxMessageBox(_T("here"));
 
 }
 
 Lines::Lines(CPoint firstPoint, LineType type, COLORREF lineColor, int lineSize, int lineType)
 {
-	this->firstPoint = firstPoint;
-	this->secondPoint = this->firstPoint; // invisible line, bevor we change line secondPoint
+	
 	
 	//this -> lineSize = lineSize;
 	//this->lineColor = lineColor;
