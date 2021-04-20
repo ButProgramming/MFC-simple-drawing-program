@@ -606,13 +606,13 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		{
 			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point))
 			{
-				IShape* line = new Line(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
+				IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 				pDoc->shapes.push_back(line);
 				break;
 			}
 			cout << "here" << endl;
 		}
-		IShape* line = new Line(point, LineType::Basic, RGB(0, 0, 0), 1, 1);
+		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->shapes.push_back(line);
 		break;
 	}
@@ -948,6 +948,18 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	IShape::dx = prevCoordinate.x - 2* m_hsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
+		if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
+		{
+			// move x coordinates of all lines
+			//x
+			pDoc->shapes[shapeNum]->firstPointOfLine.x += IShape::dx;
+			pDoc->shapes[shapeNum]->secondPointOfLine.x += IShape::dx;
+
+			
+			cout << "move shapes in HSCROLL" << endl;
+			//AfxMessageBox(_T("0"));
+
+		}
 		pDoc->shapes[shapeNum]->centerOfShape.x += IShape::dx;
 	}
 
@@ -995,6 +1007,12 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	IShape::dy = prevCoordinate.y - 2 * m_vsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
+		if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
+		{
+			//move y
+			pDoc->shapes[shapeNum]->firstPointOfLine.y += IShape::dy;
+			pDoc->shapes[shapeNum]->secondPointOfLine.y += IShape::dy;
+		}
 		pDoc->shapes[shapeNum]->centerOfShape.y += IShape::dy;
 	}
 

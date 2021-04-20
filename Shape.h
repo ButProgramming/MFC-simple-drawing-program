@@ -15,7 +15,7 @@ using namespace std;
 #define SIZE_OF_ELLIPSE_FOR_LINES 5
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
-enum class ShapeType { ellipse, rectangle, triangle };
+enum class ShapeType { ellipse, rectangle, triangle, basicLine };
 
 class IShape
 {
@@ -122,7 +122,7 @@ public:
 class Line :public IShape
 {
 public:
-	Line(CPoint firstPointOfShape, LineType type, COLORREF lineColor, int lineSize, int lineType);
+	Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType);
 	void draw(CDC* dc);
 	
 };

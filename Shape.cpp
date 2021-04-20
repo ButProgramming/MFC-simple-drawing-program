@@ -791,8 +791,9 @@ IShape::~IShape()
 	IShape::names.erase(name);
 }
 
-Line::Line(CPoint firstPointOfShape, LineType type, COLORREF lineColor, int lineSize, int lineType)
+Line::Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
 {
+	this->type = type;
 	this->firstPointOfLine = firstPointOfShape;
 	this->secondPointOfLine = this->firstPointOfLine; // invisible line, bevor we change line secondPoint
 	
@@ -802,6 +803,7 @@ void Line::draw(CDC* dc)
 {
 
 	// draw line
+	//firstPointOfLine.x += dx;
 	dc->MoveTo(firstPointOfLine);
 	dc->LineTo(secondPointOfLine);
 	//AfxMessageBox(_T("here"));
