@@ -249,11 +249,16 @@ void EllipseShape::draw(CDC* dc)
 	points[2] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
 	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
+	// calculate coordinates for points, that are needed to draw links (lines)
+	pointsForLines[0] = CPoint((points[1].x - points[0].x) / 2 + points[0].x, points[0].y);
+	pointsForLines[1] = CPoint(points[1].x, (points[1].y + points[2].y) / 2);
+	pointsForLines[2] = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
+	pointsForLines[3] = CPoint(points[3].x, (points[0].y + points[3].y) / 2);
+
 	// points that needed for drawing rotate tool
 	centerPoint23Bottom = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
 	centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
 	firstPoint = centerPoint23Top;
-	//if(size>100)
 	
 
 	int a = abs((points[1].x - points[0].x) / 2);
@@ -366,6 +371,16 @@ void EllipseShape::draw(CDC* dc)
 	firstPoint.x += centerOfShape.x + dx;
 	firstPoint.y += centerOfShape.y + dy;
 	
+	// move and rotate points for lines
+	for (int numPoint = 0; numPoint < pointsForLines.size(); numPoint++)
+	{
+		int tempX = pointsForLines[numPoint].x;
+		int tempY = pointsForLines[numPoint].y;
+		pointsForLines[numPoint].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		pointsForLines[numPoint].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		pointsForLines[numPoint].x += centerOfShape.x + dx;
+		pointsForLines[numPoint].y += centerOfShape.y + dy;
+	}
 
 	// create smaller ellipse to fill region
 	a = a - 1;
@@ -455,12 +470,19 @@ void EllipseShape::draw(CDC* dc)
 		dc->SelectObject(tempPen);
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
+
+		//draw points for lines
+		for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
+		{
+			dc->Ellipse(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		}
+
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
 		for (int i = 0; i < 4; i++)
 			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
 		
 		
-		// draw rectangle that demonstrate selecting shape
+		// draw rectangle that demonstrates selecting shape
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
@@ -749,6 +771,19 @@ CPoint TriangleShape::getPointForRotateTool()
 	return CPoint();
 }
 
+
+bool IShape::IsClickedOnPointForLines(CPoint point)
+{
+	for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
+	{
+		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		if(PtInRegion(pointForLinesRgn, point.x, point.y))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 IShape::~IShape()
 {

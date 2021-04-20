@@ -5,7 +5,6 @@ set<int> Lines::IDs;
 set<CString> Lines::names;
 int Lines::countOfLines = 0;
 
-
 void Lines::draw(CDC* dc)
 {
 	// draw line
@@ -19,6 +18,7 @@ Lines::Lines(CPoint firstPoint, LineType type, COLORREF lineColor, int lineSize,
 {
 	this->firstPoint = firstPoint;
 	this->secondPoint = this->firstPoint; // invisible line, bevor we change line secondPoint
+	
 	//this -> lineSize = lineSize;
 	//this->lineColor = lineColor;
 	//lR = GetRValue(lineColor);

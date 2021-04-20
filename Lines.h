@@ -5,7 +5,6 @@ using namespace std;
 
 enum class LineType { Basic, Left, Right, Double };
 
-
 class Lines :
     public CObject
 {

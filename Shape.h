@@ -11,6 +11,7 @@ using namespace std;
 
 
 #define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
+#define SIZE_OF_ELLIPSE_FOR_LINES 5
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle };
@@ -24,6 +25,7 @@ public:
 	virtual CPoint getPointForRotateTool() = 0;
 	virtual void setFirstClickedPoint(CPoint point) {}; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return CPoint(0, 0); }; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	bool IsClickedOnPointForLines(CPoint point);
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -78,9 +80,10 @@ public:
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 	
 protected:
-	CPoint centerPoint23Bottom;			// center of rectangle topside. Needed to select shape
-	CPoint centerPoint23Top;			// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
+	CPoint centerPoint23Bottom{ NULL, NULL};			// center of rectangle topside. Needed to select shape
+	CPoint centerPoint23Top{ NULL, NULL };			// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
 	CPoint firstClickedPoint{ NULL, NULL }; // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
+	array <CPoint, 4> pointsForLines; // needed for linking of shapes
 	
 };
 
