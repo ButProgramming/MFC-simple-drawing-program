@@ -299,25 +299,25 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				if (LT == 0)
 				{
 					lineType = LineType::Basic;
-					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR,lG,lB), line_Size, line_Type);
+					//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR,lG,lB), line_Size, line_Type);
 					//lineTemp->isSelected = isSelected;
 				}
 				else if (LT == 1)
 				{
 					lineType = LineType::Right;
-					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
 					//lineTemp->isSelected = isSelected;
 				}
 				else if (LT == 2)
 				{
 					lineType = LineType::Left;
-					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
 					//lineTemp->isSelected = isSelected;
 				}
 				else
 				{
 					lineType = LineType::Double;
-					lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
+					//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
 					//lineTemp->isSelected = isSelected;
 				}
 				lines.push_back(lineTemp);

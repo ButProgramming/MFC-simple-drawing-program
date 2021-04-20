@@ -10,10 +10,15 @@ class Lines :
     public CObject
 {
 public:
+    Lines(CPoint firstPoint, LineType, COLORREF, int, int);
+    void draw(CDC *dc);
+    ~Lines();
     static set<int> IDs;
     static set<CString> names;
     static int countOfLines;
 
+    CPoint firstPoint { 0, 0 }; // first point of line
+    CPoint secondPoint{ 0, 0 }; // second point of line
     COLORREF lineColor;
     int lR, lG, lB;
     int lineType;
@@ -27,8 +32,7 @@ public:
     int SecondShapeConstID;
     LineType type;
     //void draw(int, int, LineType);
-    Lines(int, int, LineType, COLORREF, int, int);
-    ~Lines();
+    
 };
 
 
