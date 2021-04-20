@@ -24,8 +24,8 @@ public:
 public:
 	virtual void draw(CDC* dc) = 0;
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };
-	virtual void setFirstClickedPoint(CPoint point) {}; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	virtual CPoint getFirstClickedPoint() { return CPoint(0, 0); }; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; }; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; }; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	bool IsClickedOnPointForLines(CPoint point);
 	virtual ~IShape();
 
@@ -98,8 +98,8 @@ public:
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
 	//CPoint getPointForRotateTool() {  };
-	void setFirstClickedPoint(CPoint point)  { firstClickedPoint = point; };
-	CPoint getFirstClickedPoint() { return firstClickedPoint; };
+	/*void setFirstClickedPoint(CPoint point)  {  };
+	CPoint getFirstClickedPoint() {  };*/
 	
 };
 

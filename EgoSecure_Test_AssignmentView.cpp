@@ -604,14 +604,16 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum>=0; shapeNum--)
 		{
+			//if(pDoc->shapes[shapeNum].type)
 			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point))
 			{
 				IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 				pDoc->shapes.push_back(line);
 				break;
 			}
-			cout << "here" << endl;
+			
 		}
+		cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->shapes.push_back(line);
 		break;

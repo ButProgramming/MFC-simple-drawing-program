@@ -774,14 +774,19 @@ void TriangleShape::draw(CDC* dc)
 
 bool IShape::IsClickedOnPointForLines(CPoint point)
 {
+	
 	for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
 	{
+		
 		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
 		if(PtInRegion(pointForLinesRgn, point.x, point.y))
 		{
+			//delete pointForLinesRgn;
 			return true;
 		}
+		DeleteObject(pointForLinesRgn);
 	}
+	//delete pointForLinesRgn;
 	return false;
 }
 
@@ -791,10 +796,10 @@ IShape::~IShape()
 	IShape::names.erase(name);
 }
 
-Line::Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
+Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
 {
 	this->type = type;
-	this->firstPointOfLine = firstPointOfShape;
+	this->firstPointOfLine = firstPointOfLine;
 	this->secondPointOfLine = this->firstPointOfLine; // invisible line, bevor we change line secondPoint
 	
 }
