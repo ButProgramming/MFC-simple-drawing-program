@@ -504,7 +504,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eSP[0]), pDoc->shapes[shapeNum]->eSP.size(), ALTERNATE);
 
 
-				if (pDoc->shapes[shapeNum]->isSelected == true)
+				if (pDoc->shapes[shapeNum]->getSelected() == true)
 				{
 					CPoint ellipseCenter = pDoc->shapes[shapeNum]->getPointForRotateTool();
 					HRGN ellipseForRotateTool = CreateEllipticRgn(ellipseCenter.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
@@ -516,7 +516,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 						breakLoop = true; // if point is founded than break the loop
 					}
 				}
-				if (pDoc->shapes[shapeNum]->isSelected == true)
+				if (pDoc->shapes[shapeNum]->getSelected() == true)
 				{
 					HRGN angleRgn = NULL;
 					for (int angleNum = 0; angleNum < 4; angleNum++)
@@ -532,6 +532,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 
 						}
 					}
+					DeleteObject(angleRgn);
 				}
 				if (ifSearchInRgn && (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y)))
 				{
@@ -540,15 +541,15 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					//unselecting others shapes
 					for (int shapesNumUnselect = pDoc->shapes.size()-1; shapesNumUnselect >= 0; shapesNumUnselect--)
 					{
-						if (pDoc->shapes[shapesNumUnselect]->isSelected == true)
+						if (pDoc->shapes[shapesNumUnselect]->getSelected() == true)
 						{
 							pDoc->shapes[shapesNumUnselect]->pen->DeleteObject();
-							pDoc->shapes[shapesNumUnselect]->isSelected = false;
+							pDoc->shapes[shapesNumUnselect]->setSelected(false);
 							break;
 						};
 					}
 					
-					pDoc->shapes[shapeNum]->isSelected = true;
+					pDoc->shapes[shapeNum]->setSelected(true);
 
 					//swap
 					IShape* shape = NULL;
@@ -570,7 +571,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				
 				if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected) || (pDoc->toolIsUsed == Tools::rotate))
 				{
-					pDoc->shapes[shapeNum]->isSelected = false;
+					pDoc->shapes[shapeNum]->setSelected(false);
 				}
 			}
 		}
@@ -616,6 +617,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->shapes.push_back(line);
+
 		break;
 	}
 	case Tools::move:
@@ -1407,6 +1409,10 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		pDoc->shapes[pDoc->shapes.size() - 1]->isSelected = true;
 		pDoc->toolIsUsed = Tools::shapeMove;
 	}
+	else if (pDoc->toolIsUsed == Tools::basicLine)
+	{
+		pDoc->shapes[pDoc->shapes.size() - 1]->isSelected = true;
+	}
 	
 	if (pDoc->toolIsUsed == Tools::move)
 	{
@@ -1663,6 +1669,12 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::basicLine;
+	
+	//unselect all others shapes and lines
+	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+	{
+		pDoc->shapes[shapeNum]->setSelected(false);
+	}
 	
 	/*if (pDoc->selectedShapesIDs.size() > 1)
 	{

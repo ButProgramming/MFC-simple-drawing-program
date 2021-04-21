@@ -809,6 +809,15 @@ void Line::draw(CDC* dc)
 
 	// draw line
 	//firstPointOfLine.x += dx;
+	if (isSelected)
+	{
+		//pen, linetype...
+		dc->Ellipse(firstPointOfLine.x - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, firstPointOfLine.y - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, 
+			firstPointOfLine.x + SIZE_OF_ELLIPSE_OF_SELECTED_LINE, firstPointOfLine.y + SIZE_OF_ELLIPSE_OF_SELECTED_LINE);
+		dc->Ellipse(secondPointOfLine.x - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, secondPointOfLine.y - SIZE_OF_ELLIPSE_OF_SELECTED_LINE,
+			secondPointOfLine.x + SIZE_OF_ELLIPSE_OF_SELECTED_LINE, secondPointOfLine.y + SIZE_OF_ELLIPSE_OF_SELECTED_LINE);
+
+	}
 	dc->MoveTo(firstPointOfLine);
 	dc->LineTo(secondPointOfLine);
 	//AfxMessageBox(_T("here"));

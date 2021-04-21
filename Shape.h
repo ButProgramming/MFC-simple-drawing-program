@@ -13,6 +13,7 @@ using namespace std;
 
 #define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
 #define SIZE_OF_ELLIPSE_FOR_LINES 5
+#define SIZE_OF_ELLIPSE_OF_SELECTED_LINE 3
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };
@@ -26,7 +27,9 @@ public:
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };
 	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; }; // set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; }; // get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	bool IsClickedOnPointForLines(CPoint point);
+	bool IsClickedOnPointForLines(CPoint point); // check if is click point in one of the 4 points for lines 
+	void setSelected(bool isSelected) { this->isSelected = isSelected; }; // set if is shape or line selected or not
+	bool getSelected() { return isSelected; }
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -60,7 +63,7 @@ public:
 	vector<CPoint> ellipseSecondPart;
 	double ellipseAngleDegree = 0;
 	double rectEllipseDegree = 0;
-	
+	bool isSelected = false;
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
 	double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
 	CRect boxRect;
@@ -72,7 +75,7 @@ public:
 	CPoint points[4]; // the same array of points for triangle and rectangle shape
 	
 	static CPoint pointsOfTriangle[3];
-	bool isSelected = false;
+	
 	CPen* pen;
 	ShapeType type;
 	int size; // length of inscribed circle in shape
