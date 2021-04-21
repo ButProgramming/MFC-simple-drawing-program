@@ -878,8 +878,15 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				//cout << "deg: " << centerAngleDegree << endl;
 				int temp = point.y - pDoc->shapes[s]->lastY;
 
-
-				pDoc->shapes[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
+				//check if is shape reversed
+				if (pDoc->shapes[s]->isReversed())
+				{
+					pDoc->shapes[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
+				}
+				else
+				{
+					pDoc->shapes[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
+				}
 				Invalidate();
 			}
 			pDoc->shapes[s]->lastY = point.y;

@@ -249,6 +249,8 @@ void EllipseShape::draw(CDC* dc)
 	points[2] = CPoint(dSM.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
 	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
+	
+	cout << points[0].y << " " << points[3].y << endl;
 	// calculate coordinates for points, that are needed to draw links (lines)
 	pointsForLines[0] = CPoint((points[1].x - points[0].x) / 2 + points[0].x, points[0].y);
 	pointsForLines[1] = CPoint(points[1].x, (points[1].y + points[2].y) / 2);
@@ -257,7 +259,16 @@ void EllipseShape::draw(CDC* dc)
 
 	// points that needed for drawing rotate tool
 	centerPoint23Bottom = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
-	centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+	if (points[0].y >= points[3].y)
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+		isReversedVar = false;
+	}
+	else
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + 40);
+		isReversedVar = true;
+	}
 	firstPoint = centerPoint23Top;
 	
 

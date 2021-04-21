@@ -34,6 +34,7 @@ public:
 	virtual bool isClickedOnShapeRgn(CPoint point) { return false; };
 	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  }; // pointer for HRGN function
 	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; }; // size of array, that includes all points of shape
+	virtual bool isReversed() { return isReversedVar; }; // is needed for rotate shape. Angle for rotate will be -, when return is true
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -44,6 +45,7 @@ public:
 	static int countOfShape;
 	static CPoint firstPoint;
 
+	
 	
 	int fillType;
 	int outlineType;
@@ -93,11 +95,11 @@ public:
 
 protected:
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
-	CPoint centerPoint23Top{ NULL, NULL };			// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
-	CPoint firstClickedPoint{ NULL, NULL }; // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
-	array <CPoint, 4> pointsForLines; // needed for linking of shapes
-	array <CPoint, 2> pointsOfLine; // first and second point of any line [0] - first, [1] - second
-	
+	CPoint centerPoint23Top{ NULL, NULL };				// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
+	CPoint firstClickedPoint{ NULL, NULL };			    // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
+	array <CPoint, 4> pointsForLines;					// needed for linking of shapes
+	array <CPoint, 2> pointsOfLine;						// first and second point of any line [0] - first, [1] - second
+	bool isReversedVar = false;							// value that demonstrate if shape is reversed or not
 	
 };
 
@@ -109,6 +111,7 @@ public:
 	bool isClickedOnShapeRgn(CPoint point);
 	CPoint* getConstPointerForRgn(bool firstSemicircle)  { return (firstSemicircle) ? &eFP[0] : &eSP[0]; };
 	int getSizeOfShapeArray(bool isFirstSemicircle)		 { return (isFirstSemicircle) ? eFP.size() : eSP.size(); };
+	bool isReversed() { return isReversedVar; }
 	//CPoint getPointForRotateTool() {  };
 	/*void setFirstClickedPoint(CPoint point)  {  };
 	CPoint getFirstClickedPoint() {  };*/
