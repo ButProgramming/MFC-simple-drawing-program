@@ -67,7 +67,7 @@ END_MESSAGE_MAP()
 
 CEgoSecureTestAssignmentView::CEgoSecureTestAssignmentView() noexcept
 {
-	
+
 	// TODO: add construction code here
 
 }
@@ -103,8 +103,8 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	//rectForScrollBar = rect;
 
-	
-	
+
+
 	//// draw all lines
 	//for (int lineNum = 0; lineNum < pDoc->lines.size(); lineNum++)
 	//{
@@ -116,8 +116,8 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	{
 		s->draw(&m_dc);
 	}
-	
-	
+
+
 
 	//draw all lines
 	//for (int i=0; i<pDoc->lines.size(); i++)
@@ -415,7 +415,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	//	linePen->DeleteObject();
  //}
 	//}
-	
+
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 
@@ -488,22 +488,24 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
-	bool canBeUnselected = true;
+	//bool canBeUnselected = true;
+	bool breakLoop = false; // if shape is founded, break loop
+	// check all shapes
 	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
 	{
-		for (int shapeNum = pDoc->shapes.size()-1; shapeNum >= 0 ; shapeNum--)
+		// start from the end because we click on shapes, that are located on the surface
+		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum >= 0; shapeNum--)
 		{
-			
 			if (pDoc->shapes[shapeNum]->type == ShapeType::ellipse)
 			{
-				bool breakLoop = false;
-				bool ifSearchInRgn = true;
-				CPoint cp = NULL;
-				CString str = NULL;
-				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eFP[0]), pDoc->shapes[shapeNum]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
-				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[shapeNum]->eSP[0]), pDoc->shapes[shapeNum]->eSP.size(), ALTERNATE);
+				
+				//bool ifSearchInRgn = true; // if clicked on space -> unselecting all shapes. That variable controls it
+				bool firstSemicirle = true;
+				bool secondSemicirle = false;
+				/*HRGN ellipseRgn1 = CreatePolygonRgn(pDoc->shapes[shapeNum]->getConstPointerForRgn(firstSemicirle), pDoc->shapes[shapeNum]->getSizeOfShapeArray(firstSemicirle), ALTERNATE);
+				HRGN ellipseRgn2 = CreatePolygonRgn(pDoc->shapes[shapeNum]->getConstPointerForRgn(secondSemicirle), pDoc->shapes[shapeNum]->getSizeOfShapeArray(secondSemicirle), ALTERNATE);*/
 
-
+				// check if is clicked on rotate ellipse
 				if (pDoc->shapes[shapeNum]->getSelected() == true)
 				{
 					CPoint ellipseCenter = pDoc->shapes[shapeNum]->getPointForRotateTool();
@@ -511,68 +513,89 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					if (PtInRegion(ellipseForRotateTool, point.x, point.y))
 					{
 						pDoc->toolIsUsed = Tools::rotate;
-						canBeUnselected = false;
-						ifSearchInRgn = false;
+						//canBeUnselected = false;
+						//ifSearchInRgn = false;
 						breakLoop = true; // if point is founded than break the loop
 					}
-				}
-				if (pDoc->shapes[shapeNum]->getSelected() == true)
-				{
-					HRGN angleRgn = NULL;
+					DeleteObject(ellipseForRotateTool);
+
+					// check if clicked on points that changing the size of shape
 					for (int angleNum = 0; angleNum < 4; angleNum++)
 					{
-						angleRgn = CreateEllipticRgn(pDoc->shapes[shapeNum]->points[angleNum].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y + IShape::sizeOfPointToMoveAndChange * 4);
+						HRGN angleRgn = angleRgn = CreateEllipticRgn(pDoc->shapes[shapeNum]->points[angleNum].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[shapeNum]->points[angleNum].y + IShape::sizeOfPointToMoveAndChange * 4);
 						if (PtInRegion(angleRgn, point.x, point.y))
 						{
 
 							pDoc->toolIsUsed = Tools::change;
-							canBeUnselected = false;
-							ifSearchInRgn = false;
+							//canBeUnselected = false;
+							//ifSearchInRgn = false;
 							breakLoop = true; // if point is founded than break the loop
-
 						}
+						DeleteObject(angleRgn);
 					}
-					DeleteObject(angleRgn);
 				}
-				if (ifSearchInRgn && (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y)))
+
+				//check if clicked on shape
+				if (/*ifSearchInRgn && */pDoc->shapes[shapeNum]->isClickedOnShapeRgn(point))
 				{
 					breakLoop = true; // is shape is found than break the loop
 
-					//unselecting others shapes
-					for (int shapesNumUnselect = pDoc->shapes.size()-1; shapesNumUnselect >= 0; shapesNumUnselect--)
+					// unselecting others shapes
+					for (int shapeNumForUnselecting = pDoc->shapes.size() - 1; shapeNumForUnselecting >= 0; shapeNumForUnselecting--) // because shapeNumForUnselecting and shapeNum names must be different
 					{
-						if (pDoc->shapes[shapesNumUnselect]->getSelected() == true)
+						if (pDoc->shapes[shapeNumForUnselecting]->getSelected() == true)
 						{
-							pDoc->shapes[shapesNumUnselect]->pen->DeleteObject();
-							pDoc->shapes[shapesNumUnselect]->setSelected(false);
-							break;
+							//pDoc->shapes[shapeNum]->pen->DeleteObject();
+							pDoc->shapes[shapeNumForUnselecting]->setSelected(false);
+							//break;
 						};
 					}
-					
+
 					pDoc->shapes[shapeNum]->setSelected(true);
 
 					//swap
-					IShape* shape = NULL;
+					IShape* shape = nullptr;
 					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + shapeNum, pDoc->shapes.end() - 1);
 					pDoc->shapes.erase(pDoc->shapes.begin() + shapeNum);
 
-					//using shape
+					//using shape move tool
 					pDoc->toolIsUsed = Tools::shapeMove;
-					//AfxMessageBox(_T("I'm here"));
 				}
-				if(breakLoop) break;
-
-			
+				//DeleteObject(ellipseRgn1);
+				//DeleteObject(ellipseRgn2);
+				if (breakLoop) break;
 				//check for selected shape if is point in region of "changePoint" 
-				
-				
-				
-				
-				if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected) || (pDoc->toolIsUsed == Tools::rotate))
+
+			}
+			else if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
+			{
+				//bool breakLoop = false; // bool variable that is need for loop control
+
+				//check if clicked in line region
+				if (pDoc->shapes[shapeNum]->isClickedOnShapeRgn(point))
+				{
+					//unselectint all shapes
+					for (int shapeNumUnselecting = 0; shapeNumUnselecting < pDoc->shapes.size(); shapeNumUnselecting++)
+					{
+						pDoc->shapes[shapeNumUnselecting]->setSelected(false);
+					}
+					//selecting clicked shape
+					pDoc->shapes[shapeNum]->setSelected(true);
+					breakLoop = true; // break "all shapes" loop
+					//canBeUnselected = false;
+				}
+				if (breakLoop) break;				
+			}
+
+			// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes
+			if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change /*&& canBeUnselected*/) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
+			{
+				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
 					pDoc->shapes[shapeNum]->setSelected(false);
 				}
+				//pDoc->shapes[shapeNum]->setSelected(false);
 			}
 		}
 		//
@@ -603,7 +626,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::basicLine:
 	{
-		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum>=0; shapeNum--)
+		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum >= 0; shapeNum--)
 		{
 			//if(pDoc->shapes[shapeNum].type)
 			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point))
@@ -612,7 +635,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				pDoc->shapes.push_back(line);
 				break;
 			}
-			
+
 		}
 		cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
@@ -674,6 +697,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 						CString str;
 						str.Format(_T("%d"), a);
 					}
+					DeleteObject(angle);
 
 				}
 			}
@@ -803,12 +827,12 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			firstPoint.y = round(tempXFirstPoint * sin(-pDoc->shapes[s]->ellipseAngleRad) + tempYFirstPoint * cos(-pDoc->shapes[s]->ellipseAngleRad));
 			firstPoint.x += pDoc->shapes[s]->centerOfShape.x + dx;
 			firstPoint.y += pDoc->shapes[s]->centerOfShape.y + dy;*/
-			
-			
+
+
 			if (pDoc->shapes[s]->isSelected)
 			{
-				
-				enum circleQuarter{first, second, third, fourth};
+
+				enum circleQuarter { first, second, third, fourth };
 				circleQuarter tempEnum = first;
 				if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y < pDoc->shapes[s]->centerOfShape.x)
 				{
@@ -839,28 +863,28 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				sides[1] = sqrt(pow(IShape::firstPoint.x - point.x, 2) + pow(IShape::firstPoint.y - point.y, 2));
 				sides[2] = sqrt(pow(pDoc->shapes[s]->centerOfShape.x - point.x, 2) + pow(pDoc->shapes[s]->centerOfShape.y - point.y, 2));
 				//cout << "sides[2]: " << sides[2] << endl;
-				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2))/((2*sides[0]*sides[2]));//using law of cosines
+				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
 				//cout << "cos: " << cosOfCenterAngle << endl;
 				double centerAngleRad = acos(cosOfCenterAngle);
 				//cout << "rad: " << centerAngleRad << endl;
-				
+
 				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
 				if (tempEnum == third || tempEnum == fourth)
 				{
-					
+
 					centerAngleDegree = 360 - centerAngleDegree;
 				}
 				//cout << "ellipseAngleRad: " << pDoc->shapes[s]->ellipseAngleRad * 180.0 / 3.14 << endl;
 				//cout << "deg: " << centerAngleDegree << endl;
 				int temp = point.y - pDoc->shapes[s]->lastY;
-				
-				
+
+
 				pDoc->shapes[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
 				Invalidate();
 			}
 			pDoc->shapes[s]->lastY = point.y;
 			//pDoc->shapes[s]->setFirstClickedPoint(point);
-			
+
 		}
 
 	}
@@ -892,7 +916,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rect;
 	GetCursorPos(&point);
 	GetClientRect(&rect);
-	cout << point.x << " "<< point.y << endl;
+	cout << point.x << " " << point.y << endl;
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
@@ -906,12 +930,12 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// create horizontal scroll bar and set range
 	m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
-		CRect(0, y/DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR, x* MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		CRect(0, y / DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
 	m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
 
 	// create vertical scroll bar and set range
 	m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
-		CRect(0, 0, 0, y/ DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR), this, IDC_SB_VERT);
+		CRect(0, 0, 0, y / DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR), this, IDC_SB_VERT);
 	m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
 
 	return 0;
@@ -924,7 +948,7 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 {
 	// get document to have an access to shapes vector
 	auto pDoc = GetDocument();
-	
+
 	// set position of scroll in horizontal scrollbar
 	switch (nSBCode)
 	{
@@ -932,7 +956,7 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 		horizontalScrollBarValue = nPos;
 	}
 	m_hsb.SetScrollPos(horizontalScrollBarValue);
-	
+
 	// update range of horizontal scrollbar
 	if (m_hsb.GetScrollPos() == valueOfHorizontalScrollBar.min && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
@@ -945,11 +969,11 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 		cout << "in else if" << endl;
 		valueOfHorizontalScrollBar.max += HORIZONTAL_SCROLLBAR_DX;
 		m_hsb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
-		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX); 
+		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX);
 	}
 
 	// move the shapes
-	IShape::dx = prevCoordinate.x - 2* m_hsb.GetScrollPos();
+	IShape::dx = prevCoordinate.x - 2 * m_hsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
 		if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
@@ -959,7 +983,7 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 			pDoc->shapes[shapeNum]->firstPointOfLine.x += IShape::dx;
 			pDoc->shapes[shapeNum]->secondPointOfLine.x += IShape::dx;
 
-			
+
 			cout << "move shapes in HSCROLL" << endl;
 			//AfxMessageBox(_T("0"));
 
@@ -1092,6 +1116,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
 					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 				}
+				DeleteObject(ellipseRgn1);
+				DeleteObject(ellipseRgn2);
 				break;
 			}
 			case ShapeType::rectangle:
@@ -1120,6 +1146,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					pDoc->shapes.erase(pDoc->shapes.begin() + i);
 					Invalidate();
 				}
+				DeleteObject(rectangleRgn);
 
 				break;
 			}
@@ -1153,6 +1180,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					Invalidate();
 
 				}
+
 				break;
 			}
 			}
@@ -1166,225 +1194,225 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
 	{
-	bool shapeIsFound = false;
+		bool shapeIsFound = false;
 		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 		{
 			switch (pDoc->shapes[i]->type)
 			{
-				case ShapeType::ellipse:
+			case ShapeType::ellipse:
+			{
+
+				CPoint cp;
+				CString str;
+				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
 				{
-
-					CPoint cp;
-					CString str;
-					HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->shapes[i]->eFP[0]), pDoc->shapes[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
-					HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
-
-					if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+					if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
 					{
-						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						i = -1;
+						break;
+					}
+					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+					{
+						continue;
+					}
+					else
+					{
+						if (pDoc->selectedShapesIDs.size() < 2)
 						{
-							i = -1;
-							break;
-						}
-						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
-						{
-							continue;
+
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
 						}
 						else
 						{
-							if (pDoc->selectedShapesIDs.size() < 2)
+							pDoc->selectedShapesIDs.pop();
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+						}
+						//unselected all shapes
+						for (int it = 0; it < pDoc->shapes.size(); it++)
+						{
+							/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+								continue;
+							else*/
+							pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+						}
+						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+						{
+							for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
 							{
-
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							else
-							{
-								pDoc->selectedShapesIDs.pop();
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							//unselected all shapes
-							for (int it = 0; it < pDoc->shapes.size(); it++)
-							{
-								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
-									continue;
-								else*/
-									pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
-							}
-							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-							{
-								for (int s = pDoc->shapes.size() - 1; s >= 0 ; s--)
+								if (pDoc->shapes[s]->constID == constIDit)
 								{
-									if (pDoc->shapes[s]->constID == constIDit)
+									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
 									{
-										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-										{
-											//int contsID = pDoc->shapes[it]->constID;
-											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
-											shapeIsFound = true;
-											IShape* shape;
-											pDoc->shapes.push_back(shape);
-											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
-											pDoc->shapes.erase(pDoc->shapes.begin() + s);
-											//Invalidate();
-										}
+										//int contsID = pDoc->shapes[it]->constID;
+										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+										shapeIsFound = true;
+										IShape* shape;
+										pDoc->shapes.push_back(shape);
+										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+										pDoc->shapes.erase(pDoc->shapes.begin() + s);
+										//Invalidate();
 									}
-									else
-									{
-										continue;
-									}
+								}
+								else
+								{
+									continue;
 								}
 							}
 						}
-
 					}
-					break;
+
 				}
+				break;
+			}
 
-				case ShapeType::rectangle:
+			case ShapeType::rectangle:
+			{
+
+				CPoint cp;
+				CString str;
+				HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);// = CreatePolygonRgn(;
+				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+				if (PtInRegion(rectangleRgn, point.x, point.y))
 				{
-
-					CPoint cp;
-					CString str;
-					HRGN rectangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 4, ALTERNATE);// = CreatePolygonRgn(;
-					//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
-
-					if (PtInRegion(rectangleRgn, point.x, point.y))
+					if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
 					{
-						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						i = -1;
+						break;
+					}
+					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+					{
+						continue;
+					}
+					else
+					{
+						if (pDoc->selectedShapesIDs.size() < 2)
 						{
-							i = -1;
-							break;
-						}
-						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
-						{
-							continue;
+
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
 						}
 						else
 						{
-							if (pDoc->selectedShapesIDs.size() < 2)
+							pDoc->selectedShapesIDs.pop();
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+						}
+						//unselected all shapes
+						for (int it = 0; it < pDoc->shapes.size(); it++)
+						{
+							/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+								continue;
+							else*/
+							pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+						}
+						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+						{
+							for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
 							{
-
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							else
-							{
-								pDoc->selectedShapesIDs.pop();
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							//unselected all shapes
-							for (int it = 0; it < pDoc->shapes.size(); it++)
-							{
-								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
-									continue;
-								else*/
-								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
-							}
-							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-							{
-								for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
+								if (pDoc->shapes[s]->constID == constIDit)
 								{
-									if (pDoc->shapes[s]->constID == constIDit)
+									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
 									{
-										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-										{
-											//int contsID = pDoc->shapes[it]->constID;
-											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
-											shapeIsFound = true;
-											IShape* shape;
-											pDoc->shapes.push_back(shape);
-											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
-											pDoc->shapes.erase(pDoc->shapes.begin() + s);
-											//Invalidate();
-										}
+										//int contsID = pDoc->shapes[it]->constID;
+										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+										shapeIsFound = true;
+										IShape* shape;
+										pDoc->shapes.push_back(shape);
+										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+										pDoc->shapes.erase(pDoc->shapes.begin() + s);
+										//Invalidate();
 									}
-									else
-									{
-										continue;
-									}
+								}
+								else
+								{
+									continue;
 								}
 							}
 						}
-
 					}
-					break;
+
 				}
+				break;
+			}
 
-				case ShapeType::triangle:
+			case ShapeType::triangle:
+			{
+
+				CPoint cp;
+				CString str;
+				HRGN triangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 3, ALTERNATE);// = CreatePolygonRgn(;
+				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
+
+				if (PtInRegion(triangleRgn, point.x, point.y))
 				{
-
-					CPoint cp;
-					CString str;
-					HRGN triangleRgn = CreatePolygonRgn(pDoc->shapes[i]->points, 3, ALTERNATE);// = CreatePolygonRgn(;
-					//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->shapes[i]->eSP[0]), pDoc->shapes[i]->eSP.size(), ALTERNATE);
-
-					if (PtInRegion(triangleRgn, point.x, point.y))
+					if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
 					{
-						if (pDoc->shapes[i]->isSelectedFromDoubleSelectingTool)
+						i = -1;
+						break;
+					}
+					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
+					{
+						continue;
+					}
+					else
+					{
+						if (pDoc->selectedShapesIDs.size() < 2)
 						{
-							i = -1;
-							break;
-						}
-						if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->shapes[i]->constID == pDoc->selectedShapesIDs.back()))
-						{
-							continue;
+
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
 						}
 						else
 						{
-							if (pDoc->selectedShapesIDs.size() < 2)
+							pDoc->selectedShapesIDs.pop();
+							pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
+						}
+						//unselected all shapes
+						for (int it = 0; it < pDoc->shapes.size(); it++)
+						{
+							/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
+								continue;
+							else*/
+							pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
+						}
+						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+						{
+							for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
 							{
-
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							else
-							{
-								pDoc->selectedShapesIDs.pop();
-								pDoc->selectedShapesIDs.push(pDoc->shapes[i]->constID);
-							}
-							//unselected all shapes
-							for (int it = 0; it < pDoc->shapes.size(); it++)
-							{
-								/*if (pDoc->shapes[it]->constID == pDoc->selectedShapesIDs.back())
-									continue;
-								else*/
-								pDoc->shapes[it]->isSelectedFromDoubleSelectingTool = false;
-							}
-							for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-							{
-								for (int s = pDoc->shapes.size() - 1; s >= 0; s--)
+								if (pDoc->shapes[s]->constID == constIDit)
 								{
-									if (pDoc->shapes[s]->constID == constIDit)
+									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
 									{
-										if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-										{
-											//int contsID = pDoc->shapes[it]->constID;
-											pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
-											shapeIsFound = true;
-											IShape* shape;
-											pDoc->shapes.push_back(shape);
-											iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
-											pDoc->shapes.erase(pDoc->shapes.begin() + s);
-											//Invalidate();
-										}
+										//int contsID = pDoc->shapes[it]->constID;
+										pDoc->shapes[s]->isSelectedFromDoubleSelectingTool = true;
+										shapeIsFound = true;
+										IShape* shape;
+										pDoc->shapes.push_back(shape);
+										iter_swap(pDoc->shapes.begin() + s, pDoc->shapes.end() - 1);
+										pDoc->shapes.erase(pDoc->shapes.begin() + s);
+										//Invalidate();
 									}
-									else
-									{
-										continue;
-									}
+								}
+								else
+								{
+									continue;
 								}
 							}
 						}
-
 					}
-					break;
+
 				}
-			
+				break;
+			}
+
 			}
 			if (shapeIsFound)
 			{
 				break;
 			}
 		}
-		
+
 	}
 	CView::OnLButtonDblClk(nFlags, point);
 }
@@ -1412,8 +1440,11 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	else if (pDoc->toolIsUsed == Tools::basicLine)
 	{
 		pDoc->shapes[pDoc->shapes.size() - 1]->isSelected = true;
+
+		// make basicLine unactive
+		pDoc->toolIsUsed = Tools::change;
 	}
-	
+
 	if (pDoc->toolIsUsed == Tools::move)
 	{
 		// move all shapes
@@ -1599,28 +1630,28 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 void CEgoSecureTestAssignmentView::OnButtonDelete()
 {
 	auto pDoc = GetDocument();
-	
-		//AfxMessageBox(_T("del"));
-		for (int i = 0; i < pDoc->shapes.size(); i++)
+
+	//AfxMessageBox(_T("del"));
+	for (int i = 0; i < pDoc->shapes.size(); i++)
+	{
+		if (pDoc->shapes[i]->isSelected)
 		{
-			if (pDoc->shapes[i]->isSelected)
-			{
-				//IShape::IDs.erase(pDoc->shapes[i]->ID); // erase ID because ID won't exist
-				//IShape::names.erase(pDoc->shapes[i]->name);
-				/*IShape* shape;
-				pDoc->shapes.push_back(shape);
-				iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
-				delete pDoc->shapes[i]; // memory clear
-				pDoc->shapes.erase(pDoc->shapes.begin() + i); //erase from vector
-				Invalidate();
-			}
+			//IShape::IDs.erase(pDoc->shapes[i]->ID); // erase ID because ID won't exist
+			//IShape::names.erase(pDoc->shapes[i]->name);
+			/*IShape* shape;
+			pDoc->shapes.push_back(shape);
+			iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);*/
+			delete pDoc->shapes[i]; // memory clear
+			pDoc->shapes.erase(pDoc->shapes.begin() + i); //erase from vector
+			Invalidate();
 		}
-		
+	}
+
 	if (pDoc->toolIsUsed == Tools::doubleSelectTool)
 	{
 		int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
 		int ID2_is_selected = pDoc->selectedShapesIDs.back();
-		for (int i=0; i<pDoc->lines.size(); i++)
+		for (int i = 0; i < pDoc->lines.size(); i++)
 		{
 			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
 			{
@@ -1629,7 +1660,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 				Lines::names.erase(pDoc->lines[i]->name);*/
 				delete pDoc->lines[i];
 				pDoc->lines.erase(pDoc->lines.begin() + i);
-				
+
 			}
 		}
 	}
@@ -1669,13 +1700,19 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
 	pDoc->toolIsUsed = Tools::basicLine;
-	
+
 	//unselect all others shapes and lines
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
 		pDoc->shapes[shapeNum]->setSelected(false);
 	}
-	
+
+	// update window
+	Invalidate();
+
+	// set tool change (neutral tool for us)
+
+
 	/*if (pDoc->selectedShapesIDs.size() > 1)
 	{
 
@@ -1726,7 +1763,7 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 		{
 			if (pDoc->selectedShapesIDs.size() > 1)
 			{
-				Lines* line = new Lines(CPoint(0,0), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				Lines* line = new Lines(CPoint(0, 0), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 				pDoc->lines.push_back(line);
 				Invalidate();
 			}
@@ -1753,7 +1790,7 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 		{
 			if (pDoc->selectedShapesIDs.size() > 1)
 			{
-				Lines* line = new Lines(CPoint(0,0), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				Lines* line = new Lines(CPoint(0, 0), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 				pDoc->lines.push_back(line);
 				Invalidate();
 			}
@@ -1781,13 +1818,13 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 		{
 			if (pDoc->selectedShapesIDs.size() > 1)
 			{
-				Lines* line = new Lines(CPoint(0,0), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
+				Lines* line = new Lines(CPoint(0, 0), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
 				pDoc->lines.push_back(line);
 				Invalidate();
 			}
 		}
 	}
-	
+
 }
 
 
@@ -1805,8 +1842,8 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 		dlg.lines.push_back(l);
 	}
 	dlg.DoModal();
-	
-	
+
+
 
 	// TODO: Add your command handler code here
 }
@@ -1967,12 +2004,12 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				dlg.value_link_id = pDoc->lines[l]->ID;
 				dlg.name = pDoc->lines[l]->name;
 
-					
+
 				CString str;
 				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
 				dlg.DoModal();
 				pDoc->lines[l]->lineColor = RGB(dlg.value_link_color_R, dlg.value_link_color_G, dlg.value_link_color_B);
-				if ((dlg.value_link_shape_first_id!= dlg.value_link_shape_second_id)) // can be swaped
+				if ((dlg.value_link_shape_first_id != dlg.value_link_shape_second_id)) // can be swaped
 				{
 					set<int> tempConstIDs;
 					for (auto s : pDoc->shapes)
@@ -1990,26 +2027,26 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 				pDoc->lines[l]->lineType = dlg.value_link_type;
 				switch (dlg.value_link_type_link)
 				{
-					case 0:
-					{
-						pDoc->lines[l]->type = LineType::Basic;
-						break;
-					}
-					case 1:
-					{
-						pDoc->lines[l]->type = LineType::Right;
-						break;
-					}
-					case 2:
-					{
-						pDoc->lines[l]->type = LineType::Left;
-						break;
-					}
-					case 3:
-					{
-						pDoc->lines[l]->type = LineType::Double;
-						break;
-					}
+				case 0:
+				{
+					pDoc->lines[l]->type = LineType::Basic;
+					break;
+				}
+				case 1:
+				{
+					pDoc->lines[l]->type = LineType::Right;
+					break;
+				}
+				case 2:
+				{
+					pDoc->lines[l]->type = LineType::Left;
+					break;
+				}
+				case 3:
+				{
+					pDoc->lines[l]->type = LineType::Double;
+					break;
+				}
 				}
 				if (dlg.value_link_id >= 0)
 				{
@@ -2021,7 +2058,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 						//IShape::IDs.erase(dlg.value_id);
 					}
 				}
-				
+
 				// name
 				if (Lines::names.find(dlg.name) == Lines::names.end())
 				{
@@ -2029,7 +2066,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 					pDoc->lines[l]->name = dlg.name;
 					Lines::names.insert(dlg.name);
 				}
-				
+
 			}
 
 		}

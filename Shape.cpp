@@ -505,6 +505,21 @@ void EllipseShape::draw(CDC* dc)
 	ellipseBrush->DeleteObject();
 }
 
+bool EllipseShape::isClickedOnShapeRgn(CPoint point)
+{
+	HRGN ellipseRgn1 = CreatePolygonRgn(&eFP[0], eFP.size(), ALTERNATE);
+	HRGN ellipseRgn2 = CreatePolygonRgn(&eSP[0], eSP.size(), ALTERNATE);
+	if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+	{
+		DeleteObject(ellipseRgn1);
+		DeleteObject(ellipseRgn2);
+		return true;
+	}
+	DeleteObject(ellipseRgn1);
+	DeleteObject(ellipseRgn2);
+	return false;
+}
+
 
 
 
@@ -801,7 +816,6 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	this->firstPointOfLine = firstPointOfLine;
 	this->secondPointOfLine = this->firstPointOfLine; // invisible line, bevor we change line secondPoint
-	
 }
 
 void Line::draw(CDC* dc)
@@ -822,4 +836,22 @@ void Line::draw(CDC* dc)
 	dc->LineTo(secondPointOfLine);
 	//AfxMessageBox(_T("here"));
 
+}
+
+bool Line::isClickedOnShapeRgn(CPoint point)
+{
+	array <CPoint, 4> tempLineRectRgn;
+	tempLineRectRgn[0] = CPoint(firstPointOfLine.x - SIZE_OF_LINE_RGN, firstPointOfLine.y + SIZE_OF_LINE_RGN); // leftbottom
+	tempLineRectRgn[1] = CPoint(secondPointOfLine.x + SIZE_OF_LINE_RGN, secondPointOfLine.y + SIZE_OF_LINE_RGN); // rightbottom
+	tempLineRectRgn[2] = CPoint(secondPointOfLine.x + SIZE_OF_LINE_RGN, secondPointOfLine.y - SIZE_OF_LINE_RGN); //righttop
+	tempLineRectRgn[3] = CPoint(firstPointOfLine.x - SIZE_OF_LINE_RGN, firstPointOfLine.y - SIZE_OF_LINE_RGN); //lefttop
+	HRGN lineRgn = CreatePolygonRgn(&tempLineRectRgn[0], 4, ALTERNATE);
+	if (PtInRegion(lineRgn, point.x, point.y))
+	{
+		::DeleteObject(lineRgn);
+		return true;
+	}
+	
+	::DeleteObject(lineRgn);
+	return false;
 }
