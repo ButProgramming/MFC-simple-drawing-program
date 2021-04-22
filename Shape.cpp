@@ -490,7 +490,7 @@ void EllipseShape::draw(CDC* dc)
 
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
 		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+			dc->Ellipse(points[i].x - SIZE_OF_POINT_FOR_CHANGE, points[i].y - SIZE_OF_POINT_FOR_CHANGE, points[i].x + SIZE_OF_POINT_FOR_CHANGE, points[i].y + SIZE_OF_POINT_FOR_CHANGE);
 		
 		
 		// draw rectangle that demonstrates selecting shape
@@ -528,6 +528,25 @@ bool EllipseShape::isClickedOnShapeRgn(CPoint point)
 	}
 	DeleteObject(ellipseRgn1);
 	DeleteObject(ellipseRgn2);
+	return false;
+}
+
+bool EllipseShape::isClickedPointForChange(CPoint point)
+{
+	for (int pointNum = 0; pointNum < points.size(); pointNum++)
+	{
+		HRGN pointRgn = CreateEllipticRgn(points[pointNum].x - SIZE_OF_POINT_FOR_CHANGE, points[pointNum].y - SIZE_OF_POINT_FOR_CHANGE,
+			points[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, points[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+		if (PtInRegion(pointRgn, point.x, point.y))
+		{
+			numberOfPoint = pointNum;
+			DeleteObject(pointRgn);
+			return true;
+		}
+		DeleteObject(pointRgn);
+	}
+
+	numberOfPoint = -1;
 	return false;
 }
 
@@ -637,7 +656,7 @@ void RectangleShape::draw(CDC* dc)
 
 	CRgn* rectangleReg = new CRgn;
 	rectangleReg->CreatePolygonRgn(pointsReg, 4, ALTERNATE);
-	dc->Polygon(points, 4);
+	dc->Polygon(&points[0], 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
 	//dc->FillRgn(triangleReg, brush);
 	/*delete pen;
@@ -700,7 +719,7 @@ void TriangleShape::draw(CDC* dc)
 	trianglePointsRgn[2].y = triangle[2].y - 1;
 
 	CRgn* triangleRgn = new CRgn;
-	triangleRgn->CreatePolygonRgn(points, 4, ALTERNATE);
+	triangleRgn->CreatePolygonRgn(&points[0], 4, ALTERNATE);
 	GetRgnBox(*triangleRgn, boxRect);
 
 	recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
@@ -836,17 +855,29 @@ void Line::draw(CDC* dc)
 
 	// draw line
 	//firstPointOfLine.x += dx;
+	cout << "dx_dy[0].x" << dx_dy[0].x << " " << "dxDy[0].x" << dxDy[0].x << endl;
 	if (isSelected)
 	{
-		//pen, linetype...
-		dc->Ellipse(pointsOfLine[0].x - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[0].y - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE,
-			pointsOfLine[0].x + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[0].y + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE);
-		dc->Ellipse(pointsOfLine[1].x - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[1].y - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE,
-			pointsOfLine[1].x + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[1].y + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE);
-
+		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
+		{
+			dc->Ellipse(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE + temporaryDxDy[pointNum].x + dxDy[pointNum].x, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + dxDy[pointNum].y + - SIZE_OF_POINT_FOR_CHANGE,
+				pointsOfLine[pointNum].x + temporaryDxDy[pointNum].x + dxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + dxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+		}
 	}
-	dc->MoveTo(pointsOfLine[0]);
-	dc->LineTo(pointsOfLine[1]);
+	dc->MoveTo(CPoint(pointsOfLine[0].x + temporaryDxDy[0].x + dxDy[0].x, pointsOfLine[0].y + temporaryDxDy[0].y + dxDy[0].y));
+	dc->LineTo(CPoint(pointsOfLine[1].x + temporaryDxDy[1].x + dxDy[1].x, pointsOfLine[1].y + temporaryDxDy[1].y + dxDy[1].y));
+
+	/*if (isSelected)
+	{
+		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
+		{
+			dc->Ellipse(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE + dx_dy_temp[pointNum].x + dx_dy[pointNum].x, pointsOfLine[pointNum].y + dx_dy_temp[pointNum].y + dx_dy[pointNum].y + - SIZE_OF_POINT_FOR_CHANGE,
+				pointsOfLine[pointNum].x + dx_dy_temp[pointNum].x + dx_dy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + dx_dy_temp[pointNum].y + dx_dy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+		}
+	}
+	dc->MoveTo(CPoint(pointsOfLine[0].x + dx_dy_temp[0].x + dx_dy[0].x, pointsOfLine[0].y + dx_dy_temp[0].y + dx_dy[0].y));
+	dc->LineTo(CPoint(pointsOfLine[1].x + dx_dy_temp[1].x + dx_dy[1].x, pointsOfLine[1].y + dx_dy_temp[1].y + dx_dy[1].y));*/
+
 	//AfxMessageBox(_T("here"));
 
 }
@@ -854,10 +885,10 @@ void Line::draw(CDC* dc)
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
 	array <CPoint, 4> tempLineRectRgn;
-	tempLineRectRgn[0] = CPoint(firstPointOfLine.x - SIZE_OF_LINE_RGN, firstPointOfLine.y + SIZE_OF_LINE_RGN); // leftbottom
-	tempLineRectRgn[1] = CPoint(secondPointOfLine.x + SIZE_OF_LINE_RGN, secondPointOfLine.y + SIZE_OF_LINE_RGN); // rightbottom
-	tempLineRectRgn[2] = CPoint(secondPointOfLine.x + SIZE_OF_LINE_RGN, secondPointOfLine.y - SIZE_OF_LINE_RGN); //righttop
-	tempLineRectRgn[3] = CPoint(firstPointOfLine.x - SIZE_OF_LINE_RGN, firstPointOfLine.y - SIZE_OF_LINE_RGN); //lefttop
+	tempLineRectRgn[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
+	tempLineRectRgn[1] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // rightbottom
+	tempLineRectRgn[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); //righttop
+	tempLineRectRgn[3] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); //lefttop
 	HRGN lineRgn = CreatePolygonRgn(&tempLineRectRgn[0], 4, ALTERNATE);
 	if (PtInRegion(lineRgn, point.x, point.y))
 	{
@@ -866,5 +897,24 @@ bool Line::isClickedOnShapeRgn(CPoint point)
 	}
 	
 	::DeleteObject(lineRgn);
+	return false;
+}
+
+bool Line::isClickedPointForChange(CPoint point)
+{
+	for (int pointNum = 0; pointNum<pointsOfLine.size(); pointNum++)
+	{
+		HRGN pointRgn = CreateEllipticRgn(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE,
+			pointsOfLine[pointNum].x + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE);
+		if (PtInRegion(pointRgn, point.x, point.y))
+		{
+			numberOfPoint = pointNum;
+			DeleteObject(pointRgn);
+			return true;
+		}
+		DeleteObject(pointRgn);
+	}
+
+	numberOfPoint = -1;
 	return false;
 }
