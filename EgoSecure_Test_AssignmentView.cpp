@@ -1507,15 +1507,15 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				{
 					pDoc->shapes[s]->dx_dy[a].x += pDoc->shapes[s]->dx_dy_temp[a].x;
 					pDoc->shapes[s]->dx_dy[a].y += pDoc->shapes[s]->dx_dy_temp[a].y;
-					cout << "dx_dy_temp -> x: " << pDoc->shapes[s]->dx_dy_temp[a].x << " y:  "<< pDoc->shapes[s]->dx_dy_temp[a].y<< endl;
-					cout << "dx_dy -> x: " << pDoc->shapes[s]->dx_dy[a].x << " y:  " << pDoc->shapes[s]->dx_dy[a].y << endl;
+					//cout << "dx_dy_temp -> x: " << pDoc->shapes[s]->dx_dy_temp[a].x << " y:  "<< pDoc->shapes[s]->dx_dy_temp[a].y<< endl;
+					//cout << "dx_dy -> x: " << pDoc->shapes[s]->dx_dy[a].x << " y:  " << pDoc->shapes[s]->dx_dy[a].y << endl;
 
 					pDoc->shapes[s]->dx_dy_temp[a].x = 0;
 					pDoc->shapes[s]->dx_dy_temp[a].y = 0;
 
 					//pDoc->shapes[s]->setDxDy(a, pDoc->shapes[s]->getDxDy(a) + pDoc->shapes[s]->getTemporaryDxDy(a));
-					cout << "getTemporaryDxDy -> x: " << pDoc->shapes[s]->getTemporaryDxDy(a).x << " y:  " << pDoc->shapes[s]->getTemporaryDxDy(a).y << endl;
-					cout << "getDxDy -> x: " << pDoc->shapes[s]->getDxDy(a).x << " y:  " << pDoc->shapes[s]->getDxDy(a).y << endl;
+					//cout << "getTemporaryDxDy -> x: " << pDoc->shapes[s]->getTemporaryDxDy(a).x << " y:  " << pDoc->shapes[s]->getTemporaryDxDy(a).y << endl;
+					//cout << "getDxDy -> x: " << pDoc->shapes[s]->getDxDy(a).x << " y:  " << pDoc->shapes[s]->getDxDy(a).y << endl;
 					if (pDoc->shapes[s]->type == ShapeType::basicLine)
 					{
 						pDoc->shapes[s]->setCoordinateForChange(a, pDoc->shapes[s]->getCoordinateForChange(a) + pDoc->shapes[s]->getTemporaryDxDy(a));

@@ -853,19 +853,21 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 void Line::draw(CDC* dc)
 {
 
-	// draw line
-	//firstPointOfLine.x += dx;
+	
+	//dc->Polygon(&tempLineRectRgn1[0], tempLineRectRgn1.size());
+	//dc->Polygon(&tempLineRectRgn2[0], tempLineRectRgn2.size());
+
 	cout << "dx_dy[0].x" << dx_dy[0].x << " " << "dxDy[0].x" << dxDy[0].x << endl;
 	if (isSelected)
 	{
 		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
 		{
-			dc->Ellipse(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE + temporaryDxDy[pointNum].x + dxDy[pointNum].x, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + dxDy[pointNum].y + - SIZE_OF_POINT_FOR_CHANGE,
-				pointsOfLine[pointNum].x + temporaryDxDy[pointNum].x + dxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + dxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+			dc->Ellipse(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE + temporaryDxDy[pointNum].x, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + - SIZE_OF_POINT_FOR_CHANGE,
+				pointsOfLine[pointNum].x + temporaryDxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + temporaryDxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
 		}
 	}
-	dc->MoveTo(CPoint(pointsOfLine[0].x + temporaryDxDy[0].x + dxDy[0].x, pointsOfLine[0].y + temporaryDxDy[0].y + dxDy[0].y));
-	dc->LineTo(CPoint(pointsOfLine[1].x + temporaryDxDy[1].x + dxDy[1].x, pointsOfLine[1].y + temporaryDxDy[1].y + dxDy[1].y));
+	dc->MoveTo(CPoint(pointsOfLine[0].x + temporaryDxDy[0].x, pointsOfLine[0].y + temporaryDxDy[0].y));
+	dc->LineTo(CPoint(pointsOfLine[1].x + temporaryDxDy[1].x, pointsOfLine[1].y + temporaryDxDy[1].y));
 
 	/*if (isSelected)
 	{
@@ -884,19 +886,50 @@ void Line::draw(CDC* dc)
 
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
-	array <CPoint, 4> tempLineRectRgn;
-	tempLineRectRgn[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
-	tempLineRectRgn[1] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // rightbottom
-	tempLineRectRgn[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); //righttop
-	tempLineRectRgn[3] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); //lefttop
-	HRGN lineRgn = CreatePolygonRgn(&tempLineRectRgn[0], 4, ALTERNATE);
-	if (PtInRegion(lineRgn, point.x, point.y))
+	array <CPoint, 4> tempLineRectRgnHorizontal;
+	array <CPoint, 4> tempLineRectRgnVertical;
+	if (pointsOfLine[0].x < pointsOfLine[1].x)
 	{
-		::DeleteObject(lineRgn);
+		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // lefttop
+	}
+	else
+	{
+		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // lefttop
+	}
+	if (pointsOfLine[0].y < pointsOfLine[1].y)
+	{
+		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // lefttop
+	}
+	else
+	{
+		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // lefttop
+	}
+	
+
+	
+	HRGN lineRgnHor = CreatePolygonRgn(&tempLineRectRgnHorizontal[0], 4, ALTERNATE);
+	HRGN lineRgnVert = CreatePolygonRgn(&tempLineRectRgnVertical[0], 4, ALTERNATE);
+	if (PtInRegion(lineRgnHor, point.x, point.y) || PtInRegion(lineRgnVert, point.x, point.y))
+	{
+		::DeleteObject(lineRgnHor);
+		DeleteObject(lineRgnVert);
 		return true;
 	}
 	
-	::DeleteObject(lineRgn);
+	::DeleteObject(lineRgnHor);
+	DeleteObject(lineRgnVert);
 	return false;
 }
 

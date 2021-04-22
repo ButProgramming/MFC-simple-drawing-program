@@ -105,6 +105,7 @@ public:
 	CPoint firstPointOfLine{ 0, 0 };  // first point of line
 	CPoint secondPointOfLine{ 0, 0 }; // second point of line
 	
+	
 
 protected:
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
