@@ -825,6 +825,8 @@ IShape::~IShape()
 Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
 {
 	this->type = type;
+	pointsOfLine[0] = firstPointOfLine;
+	pointsOfLine[1] = firstPointOfLine;
 	this->firstPointOfLine = firstPointOfLine;
 	this->secondPointOfLine = this->firstPointOfLine; // invisible line, bevor we change line secondPoint
 }
@@ -837,14 +839,14 @@ void Line::draw(CDC* dc)
 	if (isSelected)
 	{
 		//pen, linetype...
-		dc->Ellipse(firstPointOfLine.x - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, firstPointOfLine.y - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, 
-			firstPointOfLine.x + SIZE_OF_ELLIPSE_OF_SELECTED_LINE, firstPointOfLine.y + SIZE_OF_ELLIPSE_OF_SELECTED_LINE);
-		dc->Ellipse(secondPointOfLine.x - SIZE_OF_ELLIPSE_OF_SELECTED_LINE, secondPointOfLine.y - SIZE_OF_ELLIPSE_OF_SELECTED_LINE,
-			secondPointOfLine.x + SIZE_OF_ELLIPSE_OF_SELECTED_LINE, secondPointOfLine.y + SIZE_OF_ELLIPSE_OF_SELECTED_LINE);
+		dc->Ellipse(pointsOfLine[0].x - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[0].y - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE,
+			pointsOfLine[0].x + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[0].y + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE);
+		dc->Ellipse(pointsOfLine[1].x - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[1].y - SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE,
+			pointsOfLine[1].x + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE, pointsOfLine[1].y + SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE);
 
 	}
-	dc->MoveTo(firstPointOfLine);
-	dc->LineTo(secondPointOfLine);
+	dc->MoveTo(pointsOfLine[0]);
+	dc->LineTo(pointsOfLine[1]);
 	//AfxMessageBox(_T("here"));
 
 }

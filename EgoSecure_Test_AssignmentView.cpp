@@ -679,25 +679,51 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				{
 					numberOfAngels = 3;
 				}
-				else //if (pDoc->shapes[s]->type == ::ShapeType::rectangle)
+				else if (pDoc->shapes[s]->type == ::ShapeType::rectangle)
 				{
 					numberOfAngels = 4;
+				}
+				else
+				{
+					numberOfAngels = 2; //for basicline
 				}
 				selected = true;
 				pDoc->shapes[s]->numberOfAngle = -1;
 				for (int a = 0; a < numberOfAngels; a++)
 				{
-
-					HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].y + IShape::sizeOfPointToMoveAndChange * 4);
-					if (PtInRegion(angle, point.x, point.y))
+					if (pDoc->shapes[s]->type != ShapeType::basicLine)
 					{
-
-						pDoc->shapes[s]->numberOfAngle = a;
-						Invalidate();
-						CString str;
-						str.Format(_T("%d"), a);
+						HRGN angle = CreateEllipticRgn(pDoc->shapes[s]->points[a].x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].y - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->points[a].y + IShape::sizeOfPointToMoveAndChange * 4);
+						if (PtInRegion(angle, point.x, point.y))
+						{
+							AfxMessageBox(_T("0"));
+							pDoc->shapes[s]->numberOfAngle = a;
+							Invalidate();
+							CString str;
+							str.Format(_T("%d"), a);
+						}
+						DeleteObject(angle);
 					}
-					DeleteObject(angle);
+					else
+					{
+						HRGN angle1 = CreateEllipticRgn(pDoc->shapes[s]->firstPointOfLine.x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->firstPointOfLine.y - IShape::sizeOfPointToMoveAndChange * 4,
+							pDoc->shapes[s]->firstPointOfLine.x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->firstPointOfLine.y + IShape::sizeOfPointToMoveAndChange * 4);
+						HRGN angle2 = CreateEllipticRgn(pDoc->shapes[s]->secondPointOfLine.x - IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->secondPointOfLine.y - IShape::sizeOfPointToMoveAndChange * 4,
+							pDoc->shapes[s]->secondPointOfLine.x + IShape::sizeOfPointToMoveAndChange * 4, pDoc->shapes[s]->secondPointOfLine.y + IShape::sizeOfPointToMoveAndChange * 4);
+						if (PtInRegion(angle1, point.x, point.y))
+						{
+							AfxMessageBox(_T("0"));
+						}
+						else if (PtInRegion(angle2, point.x, point.y))
+						{
+							AfxMessageBox(_T("1"));
+						}
+						else
+						{
+							AfxMessageBox(_T("-1"));
+						}
+						
+					}
 
 				}
 			}
@@ -899,7 +925,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		if (!pDoc->shapes.empty())
 		{
-			pDoc->shapes[pDoc->shapes.size() - 1]->secondPointOfLine = point;
+			//pDoc->shapes[pDoc->shapes.size() - 1]->secondPointOfLine = point;
+			pDoc->shapes[pDoc->shapes.size() - 1]->setCoordinateForChange(2, point);
 		}
 	}
 	Invalidate();
@@ -987,11 +1014,15 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 		{
 			// move x coordinates of all lines
 			//x
-			pDoc->shapes[shapeNum]->firstPointOfLine.x += IShape::dx;
-			pDoc->shapes[shapeNum]->secondPointOfLine.x += IShape::dx;
+			//pDoc->shapes[shapeNum]->firstPointOfLine.x += IShape::dx;
+			//pDoc->shapes[shapeNum]->secondPointOfLine.x += IShape::dx;
+			//CPoint testFirst = 
+			//CPoint testSecond =
+			//cout << "test "<< testFirst.x << " " << testFirst.y << endl;
+			pDoc->shapes[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->shapes[shapeNum]->getCoordinateForChange(1).x + IShape::dx, pDoc->shapes[shapeNum]->getCoordinateForChange(1).y));
+			pDoc->shapes[shapeNum]->setCoordinateForChange(2, CPoint(pDoc->shapes[shapeNum]->getCoordinateForChange(2).x + IShape::dx, pDoc->shapes[shapeNum]->getCoordinateForChange(2).y));
 
-
-			cout << "move shapes in HSCROLL" << endl;
+			//cout << "move shapes in HSCROLL" << endl;
 			//AfxMessageBox(_T("0"));
 
 		}
@@ -1045,8 +1076,12 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 		if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
 		{
 			//move y
-			pDoc->shapes[shapeNum]->firstPointOfLine.y += IShape::dy;
-			pDoc->shapes[shapeNum]->secondPointOfLine.y += IShape::dy;
+			//pDoc->shapes[shapeNum]->firstPointOfLine.y += IShape::dy;
+			//pDoc->shapes[shapeNum]->secondPointOfLine.y += IShape::dy;
+
+			pDoc->shapes[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->shapes[shapeNum]->getCoordinateForChange(1).x, pDoc->shapes[shapeNum]->getCoordinateForChange(1).y + IShape::dy));
+			pDoc->shapes[shapeNum]->setCoordinateForChange(2, CPoint(pDoc->shapes[shapeNum]->getCoordinateForChange(2).x, pDoc->shapes[shapeNum]->getCoordinateForChange(2).y + IShape::dy));
+
 		}
 		pDoc->shapes[shapeNum]->centerOfShape.y += IShape::dy;
 	}

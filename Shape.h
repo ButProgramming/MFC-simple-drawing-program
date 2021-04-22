@@ -13,7 +13,7 @@ using namespace std;
 
 #define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
 #define SIZE_OF_ELLIPSE_FOR_LINES 5
-#define SIZE_OF_ELLIPSE_OF_SELECTED_LINE 3
+#define SIZE_OF_ELLIPSE_OF_SELECTED_SHAPE 3
 #define SIZE_OF_LINE_RGN 5
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
@@ -35,6 +35,8 @@ public:
 	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  }; // pointer for HRGN function
 	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; }; // size of array, that includes all points of shape
 	virtual bool isReversed() { return isReversedVar; }; // is needed for rotate shape. Angle for rotate will be -, when return is true
+	virtual CPoint getCoordinateForChange(int num) { return CPoint{ NULL, NULL }; }; // get coordinate of points that is used for change of shapes properites. Num -> number of point
+	virtual void setCoordinateForChange(int num, CPoint point) {}; // set coordinate of points that is used for change of shapes properites. Num -> number of point
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -140,6 +142,8 @@ public:
 	Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType);
 	void draw(CDC* dc);
 	bool isClickedOnShapeRgn(CPoint point);
+	CPoint getCoordinateForChange(int num) { if (num > 0 && num < 3) return pointsOfLine[num - 1]; };
+	void setCoordinateForChange(int num, CPoint point) { if (num > 0 && num < 3) pointsOfLine[num - 1] = point; };
 	
 };
 
