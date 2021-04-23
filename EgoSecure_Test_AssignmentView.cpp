@@ -774,6 +774,25 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				pDoc->shapes[s]->dSM.y = round(tempX * sin(-(pDoc->shapes[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->shapes[s]->ellipseAngleRad)));
 			}
 		}
+		for (int lineNum = 0; lineNum < pDoc->shapes.size(); lineNum++)
+		{
+			if (pDoc->shapes[lineNum]->isConnected)
+			{
+				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+				{
+					if (pDoc->shapes[shapeNum]->constID == pDoc->shapes[lineNum]->shapeConstIDConnect)
+					{
+						pDoc->shapes[lineNum]->setCoordinateForChange(0, pDoc->shapes[shapeNum]->getPointForLine(pDoc->shapes[lineNum]->numberOfShapePointForLines));
+						//AfxMessageBox(_T("000"));
+					}
+				}
+			}
+			
+			/*pDoc->shapes[s]->isConnected = true;
+			pDoc->shapes[s]->shapeConstIDConnect = pDoc->shapes[shapeNum]->constID;
+			pDoc->shapes[s]->numberOfShapePointForLines = toDelete0;*/
+		}
+
 
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
@@ -1541,9 +1560,13 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 							pDoc->shapes[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete0));
 						if(toDelete1!=-1)
 							pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete1));
-						CString str = NULL;
+						//pDoc->shapes[s]->lineConnect()
+						pDoc->shapes[s]->isConnected = true;
+						pDoc->shapes[s]->shapeConstIDConnect = pDoc->shapes[shapeNum]->constID;
+						pDoc->shapes[s]->numberOfShapePointForLines = toDelete0;
+						/*CString str = NULL;
 						str.Format(_T("%d, %d"), toDelete0, toDelete1);
-						AfxMessageBox(str);
+						AfxMessageBox(str);*/
 					}
 				}
 			}

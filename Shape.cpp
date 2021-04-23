@@ -841,6 +841,11 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
+void IShape::lineConnect()
+{
+
+}
+
 IShape::~IShape()
 {
 	IShape::IDs.erase(ID); // erase ID because ID won't exist
