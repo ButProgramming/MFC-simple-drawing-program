@@ -58,7 +58,8 @@ public:
 	{
 		return (numberOfPoint >= 0 && numberOfPoint < 4) ? pointsForLines[numberOfPoint] : CPoint{ NULL, NULL }; //getter for pointsForLines
 	}
-	void lineConnect();
+	void createLineConnection(int shapeConstID, int numberOfPointForLines);
+	void updateLineConnection(const vector<IShape*>& shapes);
 
 	virtual ~IShape();
 
@@ -120,9 +121,9 @@ public:
 	CPoint secondPointOfLine{ 0, 0 }; // second point of line
 	
 	//
-	bool isConnected = false;
-	int shapeConstIDConnect = -1;
-	int numberOfShapePointForLines = -1;
+	bool isConnected = false;			// when line is connected - > true
+	int connectedShapeConstID = -1;	//const id of shape, with which is line connected
+	int numberOfShapesPointForLines = -1; // number of point of pointOfLine array. Need for linking 
 
 	
 protected:

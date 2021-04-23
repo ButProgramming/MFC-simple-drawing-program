@@ -841,9 +841,26 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
-void IShape::lineConnect()
+void IShape::createLineConnection(int shapeConstID, int numberOfPointForLines)
 {
+	isConnected = true;
+	connectedShapeConstID = shapeConstID;
+	numberOfShapesPointForLines = numberOfPointForLines;
+}
 
+void IShape::updateLineConnection(const vector<IShape*>& shapes)
+{
+	if (isConnected)
+	{
+		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
+		{
+			if (shapes[shapeNum]->constID == connectedShapeConstID)
+			{
+				setCoordinateForChange(0, shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines));
+				//AfxMessageBox(_T("000"));
+			}
+		}
+	}
 }
 
 IShape::~IShape()
