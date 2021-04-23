@@ -17,6 +17,9 @@ using namespace std;
 #define SIZE_OF_LINE_RGN 7
 #define RATE_VALUE_FOR_POINT_FOR_CHANGE 1.5
 #define MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN 4 // make easer connecting lines with shapes (rgn size * multiplikator)
+// define for lines
+#define FIRST_POINT_OF_LINE 0
+#define SECOND_POINT_OF_LINE 1
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };
@@ -49,6 +52,13 @@ public:
 	void setDxDy(int num, CPoint point) { dxDy[num] = point; }								// setter for dxDy
 	void setCanDrawPointsForLines(bool active) { drawPointsForLines = active; };			// setter for drawPointsForLines
 	bool getCanDrawPointsForLines() { return drawPointsForLines; };							// getter for drawPointsForLines
+
+	//pointsForLines
+	CPoint getPointForLine(int numberOfPoint)
+	{
+		return (numberOfPoint >= 0 && numberOfPoint < 4) ? pointsForLines[numberOfPoint] : CPoint{ NULL, NULL }; //getter for pointsForLines
+	}
+
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -108,13 +118,13 @@ public:
 	CPoint firstPointOfLine{ 0, 0 };  // first point of line
 	CPoint secondPointOfLine{ 0, 0 }; // second point of line
 	
-	
+	array <CPoint, 4> pointsForLines;					// needed for linking of shapes
 
 protected:
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
 	CPoint centerPoint23Top{ NULL, NULL };				// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
 	CPoint firstClickedPoint{ NULL, NULL };			    // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
-	array <CPoint, 4> pointsForLines;					// needed for linking of shapes
+	
 	array <CPoint, 2> pointsOfLine;						// first and second point of any line [0] - first, [1] - second
 	bool isReversedVar = false;							// value that demonstrate if shape is reversed or not
 	int numberOfPoint = NULL;							// number of clicked point for change the shape

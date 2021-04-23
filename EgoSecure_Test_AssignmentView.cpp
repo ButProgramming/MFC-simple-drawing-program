@@ -1537,6 +1537,10 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 					int toDelete1 = -1;
 					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0), toDelete0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(1), toDelete1))
 					{
+						if(toDelete0!=-1)
+							pDoc->shapes[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete0));
+						if(toDelete1!=-1)
+							pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete1));
 						CString str = NULL;
 						str.Format(_T("%d, %d"), toDelete0, toDelete1);
 						AfxMessageBox(str);
