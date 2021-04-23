@@ -29,7 +29,7 @@ public:
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
 	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	bool IsClickedOnPointForLines(CPoint point);											// check if is click point in one of the 4 points for lines 
+	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };					// set if is shape or line selected or not
 	bool getSelected() { return isSelected; }												// get if is shape or line selected or not
 	virtual bool isClickedOnShapeRgn(CPoint point) { return false; };						// ckecked if clickpoint is in shape region
@@ -44,8 +44,10 @@ public:
 		temporaryDxDy[num] : CPoint{ NULL, NULL }; };										// getter for temporaryDxDy
 	void setTemporaryDxDy(int num, CPoint point) { temporaryDxDy[num] = point; };			// setter for temporaryDxDy
 	CPoint getDxDy(int num) { return (num < dxDy.size()) ?
-			dxDy[num] : CPoint{ NULL, NULL }; };									// getter for dxDy
+			dxDy[num] : CPoint{ NULL, NULL }; };											// getter for dxDy
 	void setDxDy(int num, CPoint point) { dxDy[num] = point; }								// setter for dxDy
+	void setCanDrawPointsForLines(bool active) { drawPointsForLines = active; };			// setter for drawPointsForLines
+	bool getCanDrawPointsForLines() { return drawPointsForLines; };							// getter for drawPointsForLines
 	virtual ~IShape();
 
 	static set<int> IDs;
@@ -117,6 +119,7 @@ protected:
 	int numberOfPoint = NULL;							// number of clicked point for change the shape
 	array <CPoint, 4> temporaryDxDy;					// array for temporary difference values for dx and dy, when shape is moved. 
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
+	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
 
 };
 

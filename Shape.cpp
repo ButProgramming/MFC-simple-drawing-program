@@ -482,11 +482,7 @@ void EllipseShape::draw(CDC* dc)
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
 
-		//draw points for lines
-		for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
-		{
-			dc->Ellipse(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
-		}
+		
 
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
 		for (int i = 0; i < 4; i++)
@@ -508,6 +504,15 @@ void EllipseShape::draw(CDC* dc)
 		}
 
 		tempPen->DeleteObject();
+	}
+
+	if (drawPointsForLines)
+	{
+		//draw points for lines
+		for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
+		{
+			dc->Ellipse(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		}
 	}
 
 	ellipseRgn1->DeleteObject();
@@ -817,7 +822,7 @@ void TriangleShape::draw(CDC* dc)
 //}
 
 
-bool IShape::IsClickedOnPointForLines(CPoint point)
+bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 {
 	
 	for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
@@ -826,7 +831,8 @@ bool IShape::IsClickedOnPointForLines(CPoint point)
 		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
 		if(PtInRegion(pointForLinesRgn, point.x, point.y))
 		{
-			//delete pointForLinesRgn;
+			numberOfPoint = pointNum;
+			DeleteObject(pointForLinesRgn);
 			return true;
 		}
 		DeleteObject(pointForLinesRgn);

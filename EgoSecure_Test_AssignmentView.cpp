@@ -574,25 +574,29 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 				//check if clicked in line region
 				if (pDoc->shapes[shapeNum]->isClickedOnShapeRgn(point))
 				{
-					//unselectint all shapes
+					//unselectint all shapes and make true canDrawPointsForLines
 					for (int shapeNumUnselecting = 0; shapeNumUnselecting < pDoc->shapes.size(); shapeNumUnselecting++)
 					{
 						pDoc->shapes[shapeNumUnselecting]->setSelected(false);
+						pDoc->shapes[shapeNumUnselecting]->setCanDrawPointsForLines(true);
 					}
 					//selecting clicked shape
 					pDoc->shapes[shapeNum]->setSelected(true);
+
 					breakLoop = true; // break "all shapes" loop
 					//canBeUnselected = false;
 				}
 				if (breakLoop) break;				
 			}
 
-			// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes
+			// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes + set drawPointsForLine as false
 			if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change /*&& canBeUnselected*/) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
 			{
 				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
 					pDoc->shapes[shapeNum]->setSelected(false);
+					pDoc->shapes[shapeNum]->setCanDrawPointsForLines(false);
+
 				}
 				//pDoc->shapes[shapeNum]->setSelected(false);
 			}
@@ -625,10 +629,11 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::basicLine:
 	{
+		int toDelete = NULL;
 		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum >= 0; shapeNum--)
 		{
 			//if(pDoc->shapes[shapeNum].type)
-			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point))
+			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point, toDelete))
 			{
 				IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 				pDoc->shapes.push_back(line);
@@ -699,6 +704,7 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 	for (auto s : pDoc->shapes)
 	{
 		s->isSelected = false;
+		s->setCanDrawPointsForLines(false);
 	}
 	pDoc->toolIsUsed = Tools::ellipse;
 	Invalidate();
@@ -1524,11 +1530,14 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 					//AfxMessageBox(_T("1"));
 
 				}
+				int toDelete = NULL;
 				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
-					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0)))
+					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0), toDelete))
 					{
-						AfxMessageBox(_T("0"));
+						CString str = NULL;
+						str.Format(_T("%d"), toDelete);
+						AfxMessageBox(str);
 					}
 				}
 			}
@@ -1741,6 +1750,7 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
 		pDoc->shapes[shapeNum]->setSelected(false);
+		pDoc->shapes[shapeNum]->setCanDrawPointsForLines(true);
 	}
 
 	// update window
