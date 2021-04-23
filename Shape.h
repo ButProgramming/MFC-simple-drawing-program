@@ -160,6 +160,7 @@ public:
 	Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType);
 	void draw(CDC* dc);
 	bool isClickedOnShapeRgn(CPoint point);
+	//CPoint getLineCoordinate();
 	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 2) return pointsOfLine[num]; };
 	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 2) pointsOfLine[num] = point; };
 	bool isClickedPointForChange(CPoint point);

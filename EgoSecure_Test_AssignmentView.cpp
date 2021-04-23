@@ -1516,13 +1516,20 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 					//pDoc->shapes[s]->setDxDy(a, pDoc->shapes[s]->getDxDy(a) + pDoc->shapes[s]->getTemporaryDxDy(a));
 					//cout << "getTemporaryDxDy -> x: " << pDoc->shapes[s]->getTemporaryDxDy(a).x << " y:  " << pDoc->shapes[s]->getTemporaryDxDy(a).y << endl;
 					//cout << "getDxDy -> x: " << pDoc->shapes[s]->getDxDy(a).x << " y:  " << pDoc->shapes[s]->getDxDy(a).y << endl;
-					if (pDoc->shapes[s]->type == ShapeType::basicLine)
+					//if (pDoc->shapes[s]->type == ShapeType::basicLine)
 					{
 						pDoc->shapes[s]->setCoordinateForChange(a, pDoc->shapes[s]->getCoordinateForChange(a) + pDoc->shapes[s]->getTemporaryDxDy(a));
 					}
 					pDoc->shapes[s]->setTemporaryDxDy(a, CPoint(NULL, NULL));
 					//AfxMessageBox(_T("1"));
 
+				}
+				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+				{
+					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0)))
+					{
+						AfxMessageBox(_T("0"));
+					}
 				}
 			}
 		}
@@ -1554,7 +1561,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		//IShape::diffShapeMove.y = 0;
 	}
-	// when shape is drawed then screen updates automatically
+	// when shape is drawed then screen updates matically
 	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }
