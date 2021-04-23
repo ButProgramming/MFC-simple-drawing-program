@@ -740,11 +740,18 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 
 void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	
 	int dx = 0;
 	int dy = 0;
 
 	// change size of shape
 	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+	// update all connections
+	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+	{
+		pDoc->shapes[shapeNum]->updateLineConnection(pDoc->shapes);
+	}
+	
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed == Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
 	{
 		pDoc->shapes[pDoc->shapes.size() - 1]->size = sqrt(pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->shapes[pDoc->shapes.size() - 1])->centerOfShape.y - point.y, 2));
@@ -777,21 +784,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		for (int lineNum = 0; lineNum < pDoc->shapes.size(); lineNum++)
 		{
 			pDoc->shapes[lineNum]->updateLineConnection(pDoc->shapes);
-			//if (pDoc->shapes[lineNum]->isConnected)
-			//{
-			//	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
-			//	{
-			//		if (pDoc->shapes[shapeNum]->constID == pDoc->shapes[lineNum]->connectedShapeConstID)
-			//		{
-			//			pDoc->shapes[lineNum]->setCoordinateForChange(0, pDoc->shapes[shapeNum]->getPointForLine(pDoc->shapes[lineNum]->numberOfShapesPointForLines));
-			//			//AfxMessageBox(_T("000"));
-			//		}
-			//	}
-			//}
-			
-			/*pDoc->shapes[s]->isConnected = true;
-			pDoc->shapes[s]->shapeConstIDConnect = pDoc->shapes[shapeNum]->constID;
-			pDoc->shapes[s]->numberOfShapePointForLines = toDelete0;*/
 		}
 
 
@@ -883,23 +875,29 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				//sides[0] = sqrt(pow(pDoc->shapes[s]->getFirstClickedPoint().x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(pDoc->shapes[s]->getFirstClickedPoint().y - pDoc->shapes[s]->centerOfShape.y, 2));
 				//cout << "firstPoint x: " << firstPoint.x << " firstPoint y:" << firstPoint.y << endl;
 				sides[0] = sqrt(pow(IShape::firstPoint.x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(IShape::firstPoint.y - pDoc->shapes[s]->centerOfShape.y, 2));
+				//cout << IShape::firstPoint.x << " " << IShape::firstPoint.y<< endl;
 				sides[1] = sqrt(pow(IShape::firstPoint.x - point.x, 2) + pow(IShape::firstPoint.y - point.y, 2));
 				sides[2] = sqrt(pow(pDoc->shapes[s]->centerOfShape.x - point.x, 2) + pow(pDoc->shapes[s]->centerOfShape.y - point.y, 2));
+				/*sides[0] /= 100;
+				sides[1] /= 100;
+				sides[2] /= 100;*/
 				//cout << "sides[2]: " << sides[2] << endl;
 				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
+				cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
 				//cout << "cos: " << cosOfCenterAngle << endl;
 				double centerAngleRad = acos(cosOfCenterAngle);
-				//cout << "rad: " << centerAngleRad << endl;
+				cout << "rad: " << centerAngleRad << endl;
 
 				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
+				cout << "deg: " << centerAngleDegree << endl;
 				if (tempEnum == third || tempEnum == fourth)
 				{
-
+					//pDoc->shapes[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
 					centerAngleDegree = 360 - centerAngleDegree;
 				}
 				//cout << "ellipseAngleRad: " << pDoc->shapes[s]->ellipseAngleRad * 180.0 / 3.14 << endl;
 				//cout << "deg: " << centerAngleDegree << endl;
-				int temp = point.y - pDoc->shapes[s]->lastY;
+				//int temp = point.y - pDoc->shapes[s]->lastY;
 
 				//check if is shape reversed
 				if (pDoc->shapes[s]->isReversed())
@@ -910,9 +908,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				{
 					pDoc->shapes[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
 				}
-				Invalidate();
+				//Invalidate();
 			}
 			pDoc->shapes[s]->lastY = point.y;
+			Invalidate();
+			//pDoc->shapes[s]->updateLineConnection(pDoc->shapes);
 			//pDoc->shapes[s]->setFirstClickedPoint(point);
 
 		}
@@ -1553,21 +1553,16 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				
 				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
-					int toDelete0 = -1;
-					int toDelete1 = -1;
-					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0), toDelete0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(1), toDelete1))
+					int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINEO
+					int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
+					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(SECOND_POINT_OF_LINE), numberOfPointForLines1))
 					{
-						if(toDelete0!=-1)
-							pDoc->shapes[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete0));
-						if(toDelete1!=-1)
-							pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(toDelete1));
-						pDoc->shapes[s]->createLineConnection(pDoc->shapes[shapeNum]->constID, toDelete0);
-						/*pDoc->shapes[s]->isConnected = true;
-						pDoc->shapes[s]->connectedShapeConstID = pDoc->shapes[shapeNum]->constID;
-						pDoc->shapes[s]->numberOfShapesPointForLines = toDelete0;*/
-						/*CString str = NULL;
-						str.Format(_T("%d, %d"), toDelete0, toDelete1);
-						AfxMessageBox(str);*/
+						if(numberOfPointForLines0 !=-1)
+							pDoc->shapes[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines0));
+						if(numberOfPointForLines1 !=-1)
+							pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines1));
+						pDoc->shapes[s]->createLineConnection(pDoc->shapes[shapeNum]->constID, numberOfPointForLines0);
+						
 					}
 				}
 			}
