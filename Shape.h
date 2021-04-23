@@ -85,7 +85,7 @@ public:
 	int ID;
 	CString name;
 	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
-	CPoint recFromRgn[4];
+	CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
 	int lastY;
@@ -101,10 +101,10 @@ public:
 	CRect boxRect;
 	
 	//int numberOfAngle; //
-	CPoint dx_dy_temp[4];
-	CPoint dx_dy[4];
-	CPoint rectangle_dx_dy_temp[3];
-	CPoint rectangle_dx_dy[3];
+	CPoint dx_dy_temp[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
+	CPoint dx_dy[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
+	CPoint rectangle_dx_dy_temp[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
+	CPoint rectangle_dx_dy[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
 	//CPoint points[4]; // the same array of points for triangle and rectangle shape
 	array <CPoint, 4> points;
 	
@@ -114,7 +114,7 @@ public:
 	ShapeType type;
 	int size; // length of inscribed circle in shape
 	bool isNormalized;
-	CPoint centerOfShape;
+	CPoint centerOfShape {NULL, NULL};
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 
 	CPoint firstPointOfLine{ 0, 0 };  // first point of line

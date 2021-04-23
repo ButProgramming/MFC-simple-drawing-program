@@ -219,6 +219,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 
 void EllipseShape::draw(CDC* dc)
 {
+
 	
 	//size = 100;
 	oR = GetRValue(outlineColor);

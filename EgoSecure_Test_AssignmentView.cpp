@@ -849,24 +849,24 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 
 				enum circleQuarter { first, second, third, fourth };
 				circleQuarter tempEnum = first;
-				if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y < pDoc->shapes[s]->centerOfShape.x)
+				if (point.x >= pDoc->shapes[s]->centerOfShape.x && point.y <= pDoc->shapes[s]->centerOfShape.x)
 				{
-					//cout << "1" << endl;
+					cout << "1" << endl;
 					tempEnum = first;
 				}
 				else if (point.x > pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.x)
 				{
-					//cout << "2" << endl;
+					cout << "2" << endl;
 					tempEnum = second;
 				}
-				else if (point.x < pDoc->shapes[s]->centerOfShape.x && point.y > pDoc->shapes[s]->centerOfShape.x)
+				else if (point.x <= pDoc->shapes[s]->centerOfShape.x && point.y >= pDoc->shapes[s]->centerOfShape.x)
 				{
-					//cout << "3" << endl;
+					cout << "3" << endl;
 					tempEnum = third;
 				}
 				else
 				{
-					//cout << "4" << endl;
+					cout << "4" << endl;
 					tempEnum = fourth;
 				}
 				pDoc->shapes[s]->getFirstClickedPoint().y;
@@ -883,13 +883,13 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				sides[2] /= 100;*/
 				//cout << "sides[2]: " << sides[2] << endl;
 				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
-				cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
+				//cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
 				//cout << "cos: " << cosOfCenterAngle << endl;
 				double centerAngleRad = acos(cosOfCenterAngle);
-				cout << "rad: " << centerAngleRad << endl;
+				//cout << "rad: " << centerAngleRad << endl;
 
 				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
-				cout << "deg: " << centerAngleDegree << endl;
+				//cout << "deg: " << centerAngleDegree << endl;
 				if (tempEnum == third || tempEnum == fourth)
 				{
 					//pDoc->shapes[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
@@ -907,6 +907,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				else
 				{
 					pDoc->shapes[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
+					//cout << pDoc->shapes[s]->ellipseAngleRad << endl;
+					cout << centerAngleDegree * 3.14 / 180.0 <<endl;
 				}
 				//Invalidate();
 			}
