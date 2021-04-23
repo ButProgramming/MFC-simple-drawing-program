@@ -250,7 +250,7 @@ void EllipseShape::draw(CDC* dc)
 	points[3] = CPoint(dSM.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), dSM.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
 	
-	cout << points[0].y << " " << points[3].y << endl;
+	//cout << points[0].y << " " << points[3].y << endl;
 	// calculate coordinates for points, that are needed to draw links (lines)
 	pointsForLines[0] = CPoint((points[1].x - points[0].x) / 2 + points[0].x, points[0].y);
 	pointsForLines[1] = CPoint(points[1].x, (points[1].y + points[2].y) / 2);
@@ -828,7 +828,7 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
 	{
 		
-		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN);
 		if(PtInRegion(pointForLinesRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
@@ -863,7 +863,7 @@ void Line::draw(CDC* dc)
 	//dc->Polygon(&tempLineRectRgn1[0], tempLineRectRgn1.size());
 	//dc->Polygon(&tempLineRectRgn2[0], tempLineRectRgn2.size());
 
-	cout << "dx_dy[0].x" << dx_dy[0].x << " " << "dxDy[0].x" << dxDy[0].x << endl;
+	//cout << "dx_dy[0].x" << dx_dy[0].x << " " << "dxDy[0].x" << dxDy[0].x << endl;
 	if (isSelected)
 	{
 		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)

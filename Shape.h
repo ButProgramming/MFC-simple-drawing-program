@@ -16,6 +16,7 @@ using namespace std;
 #define SIZE_OF_POINT_FOR_CHANGE 7
 #define SIZE_OF_LINE_RGN 7
 #define RATE_VALUE_FOR_POINT_FOR_CHANGE 1.5
+#define MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN 4 // make easer connecting lines with shapes (rgn size * multiplikator)
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };

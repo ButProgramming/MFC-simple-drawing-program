@@ -641,7 +641,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			}
 
 		}
-		cout << "here" << endl;
+		//cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->shapes.push_back(line);
 
@@ -823,7 +823,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
-			cout << IShape::firstPoint.x << " " << IShape::firstPoint.y << endl;
+			//cout << IShape::firstPoint.x << " " << IShape::firstPoint.y << endl;
 			/*int tempXFirstPoint = firstPoint.x;
 			int tempYFirstPoint = firstPoint.y;
 			firstPoint.x = round(tempXFirstPoint * cos(-pDoc->shapes[s]->ellipseAngleRad) - tempYFirstPoint * sin(-pDoc->shapes[s]->ellipseAngleRad));
@@ -922,18 +922,18 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	cout << "cx: " << lpCreateStruct->cx << "cy: " << lpCreateStruct->cy << "x: " << lpCreateStruct->x << "y: " << lpCreateStruct->y << endl;
+	//cout << "cx: " << lpCreateStruct->cx << "cy: " << lpCreateStruct->cy << "x: " << lpCreateStruct->x << "y: " << lpCreateStruct->y << endl;
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
 	GetClientRect(&rect);
-	cout << point.x << " " << point.y << endl;
+	//cout << point.x << " " << point.y << endl;
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
 	int x = ::GetSystemMetrics(SM_CXSCREEN);
 	int y = ::GetSystemMetrics(SM_CXSCREEN);
-	cout << y << endl;
+	//cout << y << endl;
 	m_dc.CreateCompatibleDC(&dc);
 	m_bmt.CreateCompatibleBitmap(&dc, x, y);
 	m_dc.SelectObject(&m_bmt);
@@ -977,7 +977,7 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 	else if (m_hsb.GetScrollPos() == valueOfHorizontalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
-		cout << "in else if" << endl;
+		//cout << "in else if" << endl;
 		valueOfHorizontalScrollBar.max += HORIZONTAL_SCROLLBAR_DX;
 		m_hsb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
 		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX);
@@ -1040,7 +1040,7 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 	else if (m_vsb.GetScrollPos() == valueOfVerticalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
-		cout << "in else if" << endl;
+		//cout << "in else if" << endl;
 		valueOfVerticalScrollBar.max += VERTICAL_SCROLLBAR_DX;
 		m_vsb.SetScrollRange(valueOfVerticalScrollBar.min, valueOfVerticalScrollBar.max);
 		m_vsb.SetScrollPos(valueOfVerticalScrollBar.max - VERTICAL_SCROLLBAR_DX);
@@ -1530,13 +1530,15 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 					//AfxMessageBox(_T("1"));
 
 				}
-				int toDelete = NULL;
+				
 				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
-					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0), toDelete))
+					int toDelete0 = -1;
+					int toDelete1 = -1;
+					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(0), toDelete0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(1), toDelete1))
 					{
 						CString str = NULL;
-						str.Format(_T("%d"), toDelete);
+						str.Format(_T("%d, %d"), toDelete0, toDelete1);
 						AfxMessageBox(str);
 					}
 				}
