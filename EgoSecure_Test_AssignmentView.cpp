@@ -1560,13 +1560,14 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				
 				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 				{
+					cout << "next" << endl;
 					if (pDoc->shapes[shapeNum]->type != ShapeType::basicLine)
 					{
 						int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINEO
 						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
-						if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(SECOND_POINT_OF_LINE), numberOfPointForLines1))
+						if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0))
 						{
-							cout << "numberOfPointForLines0==" << numberOfPointForLines0 << " " << "numberOfPointForLines1==" << numberOfPointForLines1 << endl;
+							//cout << "numberOfPointForLines0==" << numberOfPointForLines0 << " " << "numberOfPointForLines1==" << numberOfPointForLines1 << endl;
 							if (numberOfPointForLines0 != -1)
 							{
 								//cout << "IsClickedOnPointForLines" << endl;
@@ -1578,29 +1579,44 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 							}
 
 
+							//if (numberOfPointForLines1 != -1)
+							//{
+							//	//cout << "IsClickedOnPointForLines" << endl;
+							//	pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines1));
+							//	pDoc->shapes[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID, numberOfPointForLines1);
+							//}
+							//else
+							//{
+							//	//pDoc->shapes[s]->lineDisconnecting(SECOND_POINT_OF_LINE);
+							//}
+							////cout << "before " << numberOfPointForLines0 << endl;
+
+						}
+						
+
+						if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(SECOND_POINT_OF_LINE), numberOfPointForLines1))
+						{
 							if (numberOfPointForLines1 != -1)
 							{
 								//cout << "IsClickedOnPointForLines" << endl;
 								pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines1));
 								pDoc->shapes[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID, numberOfPointForLines1);
+								CString str = NULL;
+								str.Format(_T("%d"), numberOfPointForLines1);
+								//AfxMessageBox(str);
 							}
-							else
-							{
-								//pDoc->shapes[s]->lineDisconnecting(SECOND_POINT_OF_LINE);
-							}
-							//cout << "before " << numberOfPointForLines0 << endl;
-
 						}
+						cout << numberOfPointForLines0 << " " << numberOfPointForLines1 << endl;
 						
 						if (numberOfPointForLines0 == -1)
 						{
 							//cout << "!IsClickedOnPointForLines: " << numberOfPointForLines0 << endl;
-							pDoc->shapes[s]->lineDisconnecting(FIRST_POINT_OF_LINE);
+							pDoc->shapes[s]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID);
 						}
 						if (numberOfPointForLines1 == -1)
 						{
 							//cout << "!IsClickedOnPointForLines: " << numberOfPointForLines1 << endl;
-							pDoc->shapes[s]->lineDisconnecting(SECOND_POINT_OF_LINE);
+							pDoc->shapes[s]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID);
 						}
 					
 						

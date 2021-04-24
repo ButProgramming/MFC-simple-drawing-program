@@ -60,7 +60,7 @@ public:
 	}
 	void createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines);
 	void updateLineConnection(const vector<IShape*>& shapes);
-	void lineDisconnecting(int numberOfPointOfLine);
+	void lineDisconnecting(int numberOfPointOfLine, int shapeConstID);
 
 	virtual ~IShape();
 

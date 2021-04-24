@@ -844,10 +844,10 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 
 void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)
 {
-	cout << "here" << endl;
+	//cout << "here" << endl;
 	if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
 	{
-		cout << "here2" << endl;
+		//cout << "here2" << endl;
 		connecting.isConnected.firstPointOfLine = true;
 		connecting.connectedShapeConstID.firstPointOfLine = shapeConstID;
 		connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfPointForLines;
@@ -857,7 +857,7 @@ void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int
 	}
 	else if (numberOfPointOfLine == SECOND_POINT_OF_LINE)
 	{
-		cout << "here3" << endl;
+		//cout << "here3" << endl;
 		connecting.isConnected.secondPointOfLine = true;
 		connecting.connectedShapeConstID.secondPointOfLine = shapeConstID;
 		connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfPointForLines;
@@ -909,23 +909,30 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 	}
 }
 
-void IShape::lineDisconnecting(int numberOfPointOfLine)
+void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 {
 	if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
 	{
-		cout << "here2" << endl;
-		connecting.isConnected.firstPointOfLine = false;
-		connecting.connectedShapeConstID.firstPointOfLine = -1;
-		connecting.numberOfShapesPointForLines.firstPointOfLine = -1;
+		if (connecting.connectedShapeConstID.firstPointOfLine == shapeConstID) // disconnect not always (if id of connected Shape == shape constID to disconnect)
+		{
+			//cout << "here2" << endl;
+			connecting.isConnected.firstPointOfLine = false;
+			connecting.connectedShapeConstID.firstPointOfLine = -1;
+			connecting.numberOfShapesPointForLines.firstPointOfLine = -1;
+		}
 
 		//cout << "isConnected.firstPointOfLine: " << connecting.isConnected.firstPointOfLine << " connectedShapeConstID.firstPointOfLine: " << connecting.connectedShapeConstID.firstPointOfLine
 			//<< " numberOfShapesPointForLines.firstPointOfLine: " << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
 	}
 	else if (numberOfPointOfLine == SECOND_POINT_OF_LINE)
 	{
-		connecting.isConnected.secondPointOfLine = false;
-		connecting.connectedShapeConstID.secondPointOfLine = -1;
-		connecting.numberOfShapesPointForLines.secondPointOfLine = -1;
+		if (connecting.connectedShapeConstID.secondPointOfLine == shapeConstID) // disconnect not always (if id of connected Shape == shape constID to disconnect)
+		{
+			connecting.isConnected.secondPointOfLine = false;
+			connecting.connectedShapeConstID.secondPointOfLine = -1;
+			connecting.numberOfShapesPointForLines.secondPointOfLine = -1;
+		}
+		
 
 		//cout << "isConnected.secondPointOfLine: " << connecting.isConnected.secondPointOfLine << " connectedShapeConstID.secondPointOfLine: " << connecting.connectedShapeConstID.secondPointOfLine
 			//<< " numberOfShapesPointForLines.secondPointOfLine: " << connecting.numberOfShapesPointForLines.secondPointOfLine << endl;
