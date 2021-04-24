@@ -630,17 +630,17 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	case Tools::basicLine:
 	{
 		int toDelete = NULL;
-		for (int shapeNum = pDoc->shapes.size() - 1; shapeNum >= 0; shapeNum--)
-		{
-			//if(pDoc->shapes[shapeNum].type)
-			if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point, toDelete))
-			{
-				IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
-				pDoc->shapes.push_back(line);
-				break;
-			}
+		//for (int shapeNum = pDoc->shapes.size() - 1; shapeNum >= 0; shapeNum--)
+		//{
+		//	//if(pDoc->shapes[shapeNum].type)
+		//	if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(point, toDelete))
+		//	{
+		//		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
+		//		pDoc->shapes.push_back(line);
+		//		break;
+		//	}
 
-		}
+		//}
 		//cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->shapes.push_back(line);
@@ -749,7 +749,12 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	// update all connections
 	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
 	{
-		pDoc->shapes[shapeNum]->updateLineConnection(pDoc->shapes);
+		pDoc->shapes[shapeNum]->type;
+		if (pDoc->shapes[shapeNum]->type == ShapeType::basicLine)
+		{
+			pDoc->shapes[shapeNum]->updateLineConnection(pDoc->shapes);
+		}
+		
 	}
 	
 	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed == Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
@@ -1559,11 +1564,18 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 					int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
 					if (pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0) | pDoc->shapes[shapeNum]->IsClickedOnPointForLines(pDoc->shapes[s]->getCoordinateForChange(SECOND_POINT_OF_LINE), numberOfPointForLines1))
 					{
-						if(numberOfPointForLines0 !=-1)
+						if (numberOfPointForLines0 != -1)
+						{
 							pDoc->shapes[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines0));
-						if(numberOfPointForLines1 !=-1)
+							pDoc->shapes[s]->createLineConnection(FIRST_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID, numberOfPointForLines0);
+						}
+							
+						if (numberOfPointForLines1 != -1)
+						{
 							pDoc->shapes[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->getPointForLine(numberOfPointForLines1));
-						pDoc->shapes[s]->createLineConnection(pDoc->shapes[shapeNum]->constID, numberOfPointForLines0);
+							pDoc->shapes[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->shapes[shapeNum]->constID, numberOfPointForLines1);
+						}
+						
 						
 					}
 				}

@@ -58,7 +58,7 @@ public:
 	{
 		return (numberOfPoint >= 0 && numberOfPoint < 4) ? pointsForLines[numberOfPoint] : CPoint{ NULL, NULL }; //getter for pointsForLines
 	}
-	void createLineConnection(int shapeConstID, int numberOfPointForLines);
+	void createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines);
 	void updateLineConnection(const vector<IShape*>& shapes);
 
 	virtual ~IShape();
@@ -121,9 +121,7 @@ public:
 	CPoint secondPointOfLine{ 0, 0 }; // second point of line
 	
 	//
-	bool isConnected = false;			// when line is connected - > true
-	int connectedShapeConstID = -1;	//const id of shape, with which is line connected
-	int numberOfShapesPointForLines = -1; // number of point of pointOfLine array. Need for linking 
+	struct connecting;
 
 	
 protected:
@@ -137,7 +135,11 @@ protected:
 	array <CPoint, 4> temporaryDxDy;					// array for temporary difference values for dx and dy, when shape is moved. 
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
 	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
+	struct isConnected { bool firstPointOfLine = false;
+	bool secondPointOfLine = false; } isConnected;		// when first or second point of line are connected - > true
 
+	int connectedShapeConstID = -1;	//const id of shape, with which is line connected
+	int numberOfShapesPointForLines = -1; // number of point of pointOfLine array. Need for linking 
 };
 
 class EllipseShape :public IShape

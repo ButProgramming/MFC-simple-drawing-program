@@ -842,23 +842,31 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
-void IShape::createLineConnection(int shapeConstID, int numberOfPointForLines)
+void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)
 {
-	isConnected = true;
-	connectedShapeConstID = shapeConstID;
-	numberOfShapesPointForLines = numberOfPointForLines;
+	if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
+	{
+		isConnected.firstPointOfLine = true;
+		connectedShapeConstID = shapeConstID;
+		numberOfShapesPointForLines = numberOfPointForLines;
+	}
 }
 
 void IShape::updateLineConnection(const vector<IShape*>& shapes)
 {
-	if (isConnected)
+	if (isConnected.firstPointOfLine)
 	{
 		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
 		{
-			if (shapes[shapeNum]->constID == connectedShapeConstID)
+			if (shapes[shapeNum]->type != ShapeType::basicLine)
 			{
-				setCoordinateForChange(0, shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines));
-				//AfxMessageBox(_T("000"));
+				if (shapes[shapeNum]->constID == connectedShapeConstID)
+				{
+					setCoordinateForChange(0, shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines));
+					
+					//cout << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).x << " " << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).y << endl;
+					//AfxMessageBox(_T("000"));
+				}
 			}
 		}
 	}
@@ -980,3 +988,11 @@ bool Line::isClickedPointForChange(CPoint point)
 	numberOfPoint = -1;
 	return false;
 }
+
+
+struct IShape::connecting
+{
+	struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
+	struct connectedShapeConstID { int firstPointOfLine = -1; int secondPoinOfLine = -1; }connectedShapeConstID;
+	struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
+} connecting;
