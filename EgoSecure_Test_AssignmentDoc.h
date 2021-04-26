@@ -14,8 +14,12 @@ protected: // create from serialization only
 	DECLARE_DYNCREATE(CEgoSecureTestAssignmentDoc)
 
 // Attributes
+
+public: //methods
+	vector<IShape*>& getShapesVector() { return shapes; };
 public:
-	vector<IShape*> shapes;
+
+	
 	vector<Lines*> lines;
 	Tools toolIsUsed;
 	queue<int> selectedShapesIDs;
@@ -35,7 +39,8 @@ public:
 	int num_cb_link_type = 0;
 	int num_cb_line_size = 1;
 
-
+private:
+	vector<IShape*> shapes;
 
 // Operations
 public:

@@ -74,22 +74,22 @@ public:
 
 	
 	
-	int fillType;
-	int outlineType;
-	int outlineSize;
-	COLORREF fillColor;
-	int fR; int fG; int fB; // for safe convinience
-	COLORREF outlineColor;
-	int oR; int oG; int oB; // for safe convinience
+	int fillType = NULL;
+	int outlineType = NULL;
+	int outlineSize = NULL;
+	COLORREF fillColor = NULL;
+	int fR = NULL; int fG = NULL; int fB = NULL; // for safe convinience
+	COLORREF outlineColor = NULL;
+	int oR = NULL; int oG = NULL; int oB = NULL; // for safe convinience
 	bool isSelectedFromDoubleSelectingTool = false;
-	int constID;
-	int ID;
-	CString name;
+	int constID = NULL;
+	int ID = NULL;
+	CString name = NULL;
 	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 	CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
-	int lastY;
+	int lastY = NULL;
 	vector<CPoint> eFP;
 	vector<CPoint> eSP;
 	vector<CPoint> ellipseFirstPart;
@@ -99,7 +99,7 @@ public:
 	bool isSelected = false;
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
 	double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
-	CRect boxRect;
+	CRect boxRect = NULL;
 	
 	//int numberOfAngle; //
 	CPoint dx_dy_temp[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
@@ -114,7 +114,7 @@ public:
 	CPen* pen = nullptr;
 	ShapeType type;
 	int size; // length of inscribed circle in shape
-	bool isNormalized;
+	//bool isNormalized = false;
 	CPoint centerOfShape {NULL, NULL};
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 

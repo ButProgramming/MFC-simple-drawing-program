@@ -79,7 +79,7 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	boxRect.CenterPoint() = centerOfShape;
-	this->isNormalized = isNormalized;
+	//this->isNormalized = isNormalized;
 	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
@@ -147,7 +147,7 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	this->isNormalized = isNormalized;
+	//this->isNormalized = isNormalized;
 	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
@@ -212,7 +212,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	this->isNormalized = isNormalized;
+	//this->isNormalized = isNormalized;
 	countOfShape++;
 	//this->typeOfShape = typeOfShape;
 }
