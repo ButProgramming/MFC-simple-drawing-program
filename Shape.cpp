@@ -7,7 +7,7 @@ int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 set<CString> IShape::names;
-CPoint IShape::firstPoint{ 0, 0 };
+//CPoint IShape::firstPoint{ 0, 0 };
 
 
 

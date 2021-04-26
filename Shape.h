@@ -70,7 +70,7 @@ public:
 	static int dy;
 	static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
-	static CPoint firstPoint;
+	CPoint firstPoint{0,0};
 
 	
 	

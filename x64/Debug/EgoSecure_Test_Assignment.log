@@ -1,4 +1,43 @@
-﻿  Shape.cpp
+﻿  EgoSecure_Test_Assignment.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(159,52): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  EgoSecure_Test_AssignmentDoc.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(159,52): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(84,38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(85,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentDoc.cpp(83,7): warning C4101: 'size': unreferenced local variable
+  EgoSecure_Test_AssignmentView.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(159,52): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(497,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(540,6): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(798,53): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(821,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(822,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(857,89): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(858,89): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1009,58): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1167,46): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1179,107): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1180,107): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1242,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1291,107): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1292,107): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1327,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1396,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1465,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1538,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1683,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1684,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1843,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(2079,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  List_Control.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(159,52): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
+  Shape.cpp
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(159,52): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(285,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(302,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
@@ -48,6 +87,7 @@ C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assi
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1045,29): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1044,149): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1044,62): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(161): warning C4715: 'EllipseShape::getCoordinateForChange': not all control paths return a value
 C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(193): warning C4715: 'Line::getCoordinateForChange': not all control paths return a value
 EgoSecure_Test_AssignmentView.obj : warning LNK4258: directive '/entry:WinMainCRTStartup' not compatible with switch '/ENTRY:wWinMainCRTStartup'; ignored

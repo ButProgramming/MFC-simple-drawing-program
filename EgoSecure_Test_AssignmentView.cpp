@@ -488,7 +488,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
-	//bool canBeUnselected = true;
+	bool canBeUnselected = true;
 	bool breakLoop = false; // if shape is founded, break loop
 	// check all shapes
 	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
@@ -499,6 +499,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			if (pDoc->shapes[shapeNum]->type == ShapeType::ellipse)
 			{
 				
+				//cout <<"1: "<< pDoc->shapes[0]->getSelected() << endl;
 				//bool ifSearchInRgn = true; // if clicked on space -> unselecting all shapes. That variable controls it
 				bool firstSemicirle = true;
 				bool secondSemicirle = false;
@@ -513,7 +514,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					if (PtInRegion(ellipseForRotateTool, point.x, point.y))
 					{
 						pDoc->toolIsUsed = Tools::rotate;
-						//canBeUnselected = false;
+						canBeUnselected = false;
+						//cout << "herehere" << endl;
 						//ifSearchInRgn = false;
 						breakLoop = true; // if point is founded than break the loop
 					}
@@ -523,6 +525,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					if (pDoc->shapes[shapeNum]->isClickedPointForChange(point)) 
 					{
 						breakLoop = true;
+						canBeUnselected = false;
 						pDoc->toolIsUsed = Tools::change;
 					}
 					
@@ -538,25 +541,28 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					{
 						if (pDoc->shapes[shapeNumForUnselecting]->getSelected() == true)
 						{
+							
 							//pDoc->shapes[shapeNum]->pen->DeleteObject();
 							pDoc->shapes[shapeNumForUnselecting]->setSelected(false);
 							//break;
 						};
 					}
-
+					canBeUnselected = false;
 					pDoc->shapes[shapeNum]->setSelected(true);
 
 					//swap
-					IShape* shape = nullptr;
+					/*IShape* shape = nullptr;
 					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + shapeNum, pDoc->shapes.end() - 1);
-					pDoc->shapes.erase(pDoc->shapes.begin() + shapeNum);
+					pDoc->shapes.erase(pDoc->shapes.begin() + shapeNum);*/
 
 					//using shape move tool
 					pDoc->toolIsUsed = Tools::shapeMove;
 				}
+
 				//DeleteObject(ellipseRgn1);
 				//DeleteObject(ellipseRgn2);
+				//cout <<"2: "<< pDoc->shapes[0]->getSelected() << endl;
 				if (breakLoop) break;
 				//check for selected shape if is point in region of "changePoint" 
 
@@ -565,6 +571,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			{
 				//bool breakLoop = false; // bool variable that is need for loop control
 				// check if clicked on points that changing the size of shape
+				//cout <<"3: "<< pDoc->shapes[0]->getSelected() << endl;
+				//cout << "breakLoop " << breakLoop << endl;
 				if (pDoc->shapes[shapeNum]->isClickedPointForChange(point)) 
 				{
 					breakLoop = true;
@@ -584,24 +592,52 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 					pDoc->shapes[shapeNum]->setSelected(true);
 
 					breakLoop = true; // break "all shapes" loop
-					//canBeUnselected = false;
+					canBeUnselected = false;
 				}
+				//cout << "4: " << pDoc->shapes[0]->getSelected() << endl;
 				if (breakLoop) break;				
 			}
 
-			// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes + set drawPointsForLine as false
-			if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change /*&& canBeUnselected*/) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
-			{
-				for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
-				{
-					pDoc->shapes[shapeNum]->setSelected(false);
-					pDoc->shapes[shapeNum]->setCanDrawPointsForLines(false);
+			//// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes + set drawPointsForLine as false
+			//
+			//if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
+			//{
+			//	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+			//	{
 
-				}
+			//		pDoc->shapes[shapeNum]->setSelected(false);
+			//		pDoc->shapes[shapeNum]->setCanDrawPointsForLines(false);
+
+			//	}
+			//}
+			//cout << "5: " << pDoc->shapes[0]->getSelected() << endl;
 				//pDoc->shapes[shapeNum]->setSelected(false);
+			
+		}
+		////if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change /*&& canBeUnselected*/) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
+		//cout << "canbeun" << canBeUnselected << endl;
+		////if(canBeUnselected)
+		//{
+		//	for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+		//	{
+		//		pDoc->shapes[shapeNum]->setSelected(false);
+		//		pDoc->shapes[shapeNum]->setCanDrawPointsForLines(false);
+
+		//	}
+		//	cout << "5: " << pDoc->shapes[0]->getSelected() << endl;
+		//	//pDoc->shapes[shapeNum]->setSelected(false);
+		//}
+		//
+		//cout << "canBeUnselected: " << canBeUnselected << endl;
+		if (canBeUnselected)
+		{
+			for (int shapeNum = 0; shapeNum < pDoc->shapes.size(); shapeNum++)
+			{
+				pDoc->shapes[shapeNum]->setSelected(false);
+				pDoc->shapes[shapeNum]->setCanDrawPointsForLines(false);
+
 			}
 		}
-		//
 	}
 
 	// when is clicked on the shape then it is selected
@@ -796,6 +832,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
 	{
 		bool selected = false; // control of the next loop
+	
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
 			//
@@ -840,6 +877,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		for (int s = 0; s < pDoc->shapes.size(); s++)
 		{
+			//cout << "here" << endl;
 			//cout << IShape::firstPoint.x << " " << IShape::firstPoint.y << endl;
 			/*int tempXFirstPoint = firstPoint.x;
 			int tempYFirstPoint = firstPoint.y;
@@ -851,7 +889,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 
 			if (pDoc->shapes[s]->isSelected)
 			{
-
+				//cout << s << endl;
 				enum circleQuarter { first, second, third, fourth };
 				circleQuarter tempEnum = first;
 				if (point.x >= pDoc->shapes[s]->centerOfShape.x && point.y <= pDoc->shapes[s]->centerOfShape.x)
@@ -879,9 +917,9 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
 				//sides[0] = sqrt(pow(pDoc->shapes[s]->getFirstClickedPoint().x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(pDoc->shapes[s]->getFirstClickedPoint().y - pDoc->shapes[s]->centerOfShape.y, 2));
 				//cout << "firstPoint x: " << firstPoint.x << " firstPoint y:" << firstPoint.y << endl;
-				sides[0] = sqrt(pow(IShape::firstPoint.x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(IShape::firstPoint.y - pDoc->shapes[s]->centerOfShape.y, 2));
-				//cout << IShape::firstPoint.x << " " << IShape::firstPoint.y<< endl;
-				sides[1] = sqrt(pow(IShape::firstPoint.x - point.x, 2) + pow(IShape::firstPoint.y - point.y, 2));
+				sides[0] = sqrt(pow(pDoc->shapes[s]->firstPoint.x - pDoc->shapes[s]->centerOfShape.x, 2) + pow(pDoc->shapes[s]->firstPoint.y - pDoc->shapes[s]->centerOfShape.y, 2));
+				cout << pDoc->shapes[s]->firstPoint.x << " " << pDoc->shapes[s]->firstPoint.y<< endl;
+				sides[1] = sqrt(pow(pDoc->shapes[s]->firstPoint.x - point.x, 2) + pow(pDoc->shapes[s]->firstPoint.y - point.y, 2));
 				sides[2] = sqrt(pow(pDoc->shapes[s]->centerOfShape.x - point.x, 2) + pow(pDoc->shapes[s]->centerOfShape.y - point.y, 2));
 				/*sides[0] /= 100;
 				sides[1] /= 100;
@@ -1156,11 +1194,11 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 					}
 					//swap
 					pDoc->shapes[i]->isSelected = true;
-					pDoc->shapes[i]->isSelected = true;
+					/*pDoc->shapes[i]->isSelected = true;
 					IShape* shape;
 					pDoc->shapes.push_back(shape);
 					iter_swap(pDoc->shapes.begin() + i, pDoc->shapes.end() - 1);
-					pDoc->shapes.erase(pDoc->shapes.begin() + i);
+					pDoc->shapes.erase(pDoc->shapes.begin() + i);*/
 				}
 				DeleteObject(ellipseRgn1);
 				DeleteObject(ellipseRgn2);
@@ -1498,14 +1536,14 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			CString str;
 			int size = pDoc->shapes.size();
-			str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+			str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
 			//AfxMessageBox(str);
 			str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
 			//AfxMessageBox(str);
 			Invalidate();
 			pDoc->shapes[i]->centerOfShape.x += IShape::dx;
 			pDoc->shapes[i]->centerOfShape.y += IShape::dy;
-			str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+			str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->shapes[i]->centerOfShape.x, pDoc->shapes[i]->centerOfShape.y);
 			//AfxMessageBox(str);
 		}
 		IShape::dx = 0;
@@ -1629,9 +1667,9 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	CString str;
 	if (pDoc->toolIsUsed == Tools::move)
 	{
-		str.Format(_T("centerOfShape: x: %d, y: %d"), pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
+		//Format(_T("centerOfShape: x: %d, y: %d"), pDoc->shapes[0]->centerOfShape.x, pDoc->shapes[0]->centerOfShape.y);
 		//AfxMessageBox(str);
-		str.Format(_T("boxRect: x: %d, y: %d"), pDoc->shapes[0]->boxRect.CenterPoint().x, pDoc->shapes[0]->boxRect.CenterPoint().y);
+		//str.Format(_T("boxRect: x: %d, y: %d"), pDoc->shapes[0]->boxRect.CenterPoint().x, pDoc->shapes[0]->boxRect.CenterPoint().y);
 		//AfxMessageBox(str);
 	}
 	if (pDoc->toolIsUsed == Tools::shapeMove)
