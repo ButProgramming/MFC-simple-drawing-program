@@ -850,14 +850,12 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
-void IShape::rotateCoordinate()
+void IShape::rotateAndMoveCoordinate()
 {
 	int tempX = getShapeMoveTempDxDy().x;
 	int tempY = getShapeMoveTempDxDy().y;
-	shapeMove.tempDxDy.x = round(tempX * cos((ellipseAngleRad)) - tempY * sin((ellipseAngleRad)));
-	shapeMove.tempDxDy.y = round(tempX * sin((ellipseAngleRad)) + tempY * cos((ellipseAngleRad)));
-	centerOfShape.x += shapeMove.tempDxDy.x;
-	centerOfShape.y += shapeMove.tempDxDy.y;
+	setShapeMoveTempDxDy(round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad))),
+		round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad))));
 }
 
 void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)

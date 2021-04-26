@@ -775,12 +775,14 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = pDoc->second.x - pDoc->first.x;
 				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = pDoc->second.y - pDoc->first.y;
 
-				//pDoc->getShapesVector()[s]->rotateCoordinate();
-				int tempX = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().x;
-				//int tempY = pDoc->getShapesVector()[s]->setShapeMoveTempDxDy().y;
-				int tempY = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().y;
-				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad))),
-					round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad))));
+				pDoc->getShapesVector()[s]->rotateAndMoveCoordinate();
+				//int tempX = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().x;
+				////int tempY = pDoc->getShapesVector()[s]->setShapeMoveTempDxDy().y;
+				//int tempY = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().y;
+				//pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad))),
+				//	round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad))));
+
+
 				/*int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
 				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
 				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
