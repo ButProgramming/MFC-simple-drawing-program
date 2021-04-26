@@ -486,163 +486,112 @@ CEgoSecureTestAssignmentDoc* CEgoSecureTestAssignmentView::GetDocument() const /
 
 void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
-	bool canBeUnselected = true;
-	bool breakLoop = false; // if shape is founded, break loop
+	bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
+	bool isShapeFound = false; // if shape is found, then break loop
+
 	// check all shapes
-	if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
-	{
+	//if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
+	//{
 		// start from the end because we click on shapes, that are located on the surface
-		//for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
-		for(int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum>=0; shapeNum--)
+	for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
+	{
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::ellipse)
 		{
-			if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::ellipse)
+			// check if is clicked on "rotate ellipse"
+			if (pDoc->getShapesVector()[shapeNum]->getSelected() == true)
 			{
-				
-				//cout <<"1: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
-				//bool ifSearchInRgn = true; // if clicked on space -> unselecting all shapes. That variable controls it
-				//bool firstSemicirle = true;
-				//bool secondSemicirle = false;
-				/*HRGN ellipseRgn1 = CreatePolygonRgn(pDoc->getShapesVector()[shapeNum]->getConstPointerForRgn(firstSemicirle), pDoc->getShapesVector()[shapeNum]->getSizeOfShapeArray(firstSemicirle), ALTERNATE);
-				HRGN ellipseRgn2 = CreatePolygonRgn(pDoc->getShapesVector()[shapeNum]->getConstPointerForRgn(secondSemicirle), pDoc->getShapesVector()[shapeNum]->getSizeOfShapeArray(secondSemicirle), ALTERNATE);*/
-
-				// check if is clicked on rotate ellipse
-				if (pDoc->getShapesVector()[shapeNum]->getSelected() == true)
+				CPoint ellipseCenter = pDoc->getShapesVector()[shapeNum]->getPointForRotateTool(); // for convinience
+				HRGN ellipseForRotateTool = CreateEllipticRgn(ellipseCenter.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, 
+					ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL); // create region for "rotate tool ellipse"
+				if (PtInRegion(ellipseForRotateTool, point.x, point.y))
 				{
-					CPoint ellipseCenter = pDoc->getShapesVector()[shapeNum]->getPointForRotateTool();
-					HRGN ellipseForRotateTool = CreateEllipticRgn(ellipseCenter.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
-					if (PtInRegion(ellipseForRotateTool, point.x, point.y))
-					{
-						pDoc->toolIsUsed = Tools::rotate;
-						canBeUnselected = false;
-						//cout << "herehere" << endl;
-						//ifSearchInRgn = false;
-						breakLoop = true; // if point is founded than break the loop
-					}
-					DeleteObject(ellipseForRotateTool);
-
-					// check if clicked on points that changing the size of shape
-					if (pDoc->getShapesVector()[shapeNum]->isClickedPointForChange(point))
-					{
-						breakLoop = true;
-						canBeUnselected = false;
-						pDoc->toolIsUsed = Tools::change;
-					}
-					
-				}
-
-				//check if clicked on shape
-				if (/*ifSearchInRgn && */pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
-				{
-					breakLoop = true; // is shape is found than break the loop
-
-					// unselecting others shapes
-					for (int shapeNumForUnselecting = pDoc->getShapesVector().size() - 1; shapeNumForUnselecting >= 0; shapeNumForUnselecting--) // because shapeNumForUnselecting and shapeNum names must be different
-					{
-						if (pDoc->getShapesVector()[shapeNumForUnselecting]->getSelected() == true)
-						{
-							
-							//pDoc->getShapesVector()[shapeNum]->pen->DeleteObject();
-							pDoc->getShapesVector()[shapeNumForUnselecting]->setSelected(false);
-							//break;
-						};
-					}
+					pDoc->toolIsUsed = Tools::rotate;
 					canBeUnselected = false;
-					pDoc->getShapesVector()[shapeNum]->setSelected(true);
-
-					//swap
-					/*IShape* shape = nullptr;
-					pDoc->getShapesVector().push_back(shape);
-					iter_swap(pDoc->getShapesVector().begin() + shapeNum, pDoc->getShapesVector().end() - 1);
-					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + shapeNum);*/
-
-					//using shape move tool
-					pDoc->toolIsUsed = Tools::shapeMove;
+					isShapeFound = true;
 				}
+				DeleteObject(ellipseForRotateTool);
 
-				//DeleteObject(ellipseRgn1);
-				//DeleteObject(ellipseRgn2);
-				//cout <<"2: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
-				if (breakLoop) break;
-				//check for selected shape if is point in region of "changePoint" 
-
-			}
-			else if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
-			{
-				//bool breakLoop = false; // bool variable that is need for loop control
 				// check if clicked on points that changing the size of shape
-				//cout <<"3: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
-				//cout << "breakLoop " << breakLoop << endl;
 				if (pDoc->getShapesVector()[shapeNum]->isClickedPointForChange(point))
 				{
-					breakLoop = true;
+					isShapeFound = true;
+					canBeUnselected = false;
 					pDoc->toolIsUsed = Tools::change;
 				}
 
-				//check if clicked in line region
-				if (pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
-				{
-					//unselectint all shapes and make true canDrawPointsForLines
-					for (int shapeNumUnselecting = 0; shapeNumUnselecting < pDoc->getShapesVector().size(); shapeNumUnselecting++)
-					{
-						pDoc->getShapesVector()[shapeNumUnselecting]->setSelected(false);
-						pDoc->getShapesVector()[shapeNumUnselecting]->setCanDrawPointsForLines(true);
-					}
-					//selecting clicked shape
-					pDoc->getShapesVector()[shapeNum]->setSelected(true);
-
-					breakLoop = true; // break "all shapes" loop
-					canBeUnselected = false;
-				}
-				//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
-				if (breakLoop) break;				
 			}
 
-			//// if the loop is not breaked then it means that we have clicked on a empty place. => unselecting all shapes + set drawPointsForLine as false
-			//
-			//if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change && canBeUnselected) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
-			//{
-			//	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
-			//	{
-
-			//		pDoc->getShapesVector()[shapeNum]->setSelected(false);
-			//		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
-
-			//	}
-			//}
-			//cout << "5: " << pDoc->getShapesVector()[0]->getSelected() << endl;
-				//pDoc->getShapesVector()[shapeNum]->setSelected(false);
-			
-		}
-		////if (pDoc->toolIsUsed == Tools::shapeMove || (pDoc->toolIsUsed == Tools::change /*&& canBeUnselected*/) || (pDoc->toolIsUsed == Tools::rotate)) // if is clicked on empty place -> unselecting
-		//cout << "canbeun" << canBeUnselected << endl;
-		////if(canBeUnselected)
-		//{
-		//	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
-		//	{
-		//		pDoc->getShapesVector()[shapeNum]->setSelected(false);
-		//		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
-
-		//	}
-		//	cout << "5: " << pDoc->getShapesVector()[0]->getSelected() << endl;
-		//	//pDoc->getShapesVector()[shapeNum]->setSelected(false);
-		//}
-		//
-		//cout << "canBeUnselected: " << canBeUnselected << endl;
-		if (canBeUnselected)
-		{
-			for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+			//check if clicked on shape
+			if (pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
 			{
-				pDoc->getShapesVector()[shapeNum]->setSelected(false);
-				pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
+				isShapeFound = true; // is shape is found than break the loop
 
+				// unselecting others shapes
+				for (int shapeNumForUnselecting = pDoc->getShapesVector().size() - 1; shapeNumForUnselecting >= 0; shapeNumForUnselecting--) // because shapeNumForUnselecting and shapeNum names must be different
+				{
+					if (pDoc->getShapesVector()[shapeNumForUnselecting]->getSelected() == true)
+					{
+						pDoc->getShapesVector()[shapeNumForUnselecting]->setSelected(false);
+					};
+				}
+				canBeUnselected = false;
+				pDoc->getShapesVector()[shapeNum]->setSelected(true);
+
+				//using shape move tool
+				pDoc->toolIsUsed = Tools::shapeMove;
 			}
+
+			if (isShapeFound) break;
+
+		}
+		else if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
+		{
+			//bool breakLoop = false; // bool variable that is need for loop control
+			// check if clicked on points that changing the size of shape
+			//cout <<"3: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
+			//cout << "breakLoop " << breakLoop << endl;
+			if (pDoc->getShapesVector()[shapeNum]->isClickedPointForChange(point))
+			{
+				isShapeFound = true;
+				pDoc->toolIsUsed = Tools::change;
+			}
+
+			//check if clicked in line region
+			if (pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
+			{
+				//unselectint all shapes and make true canDrawPointsForLines
+				for (int shapeNumForChangeProperties = 0; shapeNumForChangeProperties < pDoc->getShapesVector().size(); shapeNumForChangeProperties++)
+				{
+					pDoc->getShapesVector()[shapeNumForChangeProperties]->setSelected(false);
+					pDoc->getShapesVector()[shapeNumForChangeProperties]->setCanDrawPointsForLines(true);
+				}
+				//selecting clicked shape
+				pDoc->getShapesVector()[shapeNum]->setSelected(true);
+
+				isShapeFound = true;
+				canBeUnselected = false;
+			}
+			//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
+			if (isShapeFound) break;
 		}
 	}
 
-	// when is clicked on the shape then it is selected
+	//check if can be all shapes unselected
+	if (canBeUnselected)
+	{
+		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+		{
+			pDoc->getShapesVector()[shapeNum]->setSelected(false);
+			pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
+
+		}
+	}
+
+
+	// update drawing
 	Invalidate();
+
 	// create shape or choose an other tool
 	switch (pDoc->toolIsUsed)
 	{
@@ -650,14 +599,12 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->getShapesVector().push_back(shape);
-		//pDoc->getShapesVector().push_back(shape);
 		break;
 	}
 	case Tools::rectangle:
 	{
 		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
 		pDoc->getShapesVector().push_back(shape);
-		//pDoc->getShapesVector().push_back(shape);
 		break;
 	}
 	case Tools::triangle:
@@ -668,23 +615,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	case Tools::basicLine:
 	{
-		int toDelete = NULL;
-		//for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
-		//{
-		//	//if(pDoc->getShapesVector()[shapeNum].type)
-		//	if (pDoc->getShapesVector()[shapeNum]->IsClickedOnPointForLines(point, toDelete))
-		//	{
-		//		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
-		//		pDoc->getShapesVector().push_back(line);
-		//		break;
-		//	}
-
-		//}
-		//cout << "here" << endl;
 		IShape* line = new Line(point, ShapeType::basicLine, RGB(0, 0, 0), 1, 1);
 		pDoc->getShapesVector().push_back(line);
-		//pDoc->getShapesVector().push_back(line);
-
 		break;
 	}
 	case Tools::move:
@@ -692,8 +624,15 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		pDoc->first.y = point.y;
 		break;
 	case Tools::shapeMove:
-		pDoc->first.x = point.x;
-		pDoc->first.y = point.y;
+		/*pDoc->first.x = point.x;
+		pDoc->first.y = point.y;*/
+		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+		{
+			if (pDoc->getShapesVector()[shapeNum]->getSelected())
+			{
+				pDoc->getShapesVector()[shapeNum]->setShapeMoveStartClickedCoordinate(point);
+			}
+		}
 		break;
 	case Tools::rotate:
 	{
@@ -832,13 +771,20 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
-				pDoc->getShapesVector()[s]->dSM.x = pDoc->second.x - pDoc->first.x;
-				pDoc->getShapesVector()[s]->dSM.y = pDoc->second.y - pDoc->first.y;
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y);
+				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = pDoc->second.x - pDoc->first.x;
+				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = pDoc->second.y - pDoc->first.y;
 
-				int tempX = pDoc->getShapesVector()[s]->dSM.x;
-				int tempY = pDoc->getShapesVector()[s]->dSM.y;
-				pDoc->getShapesVector()[s]->dSM.x = round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->dSM.y = round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
+				//pDoc->getShapesVector()[s]->rotateCoordinate();
+				int tempX = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().x;
+				//int tempY = pDoc->getShapesVector()[s]->setShapeMoveTempDxDy().y;
+				int tempY = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().y;
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad))),
+					round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad))));
+				/*int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
+				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
+				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
+				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));*/
 			}
 		}
 		for (int lineNum = 0; lineNum < pDoc->getShapesVector().size(); lineNum++)
@@ -1697,15 +1643,16 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
-				int tempX = pDoc->getShapesVector()[s]->dSM.x;
-				int tempY = pDoc->getShapesVector()[s]->dSM.y;
-				pDoc->getShapesVector()[s]->dSM.x = round(tempX * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->dSM.y = round(tempX * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->centerOfShape.x += pDoc->getShapesVector()[s]->dSM.x;
-				pDoc->getShapesVector()[s]->centerOfShape.y += pDoc->getShapesVector()[s]->dSM.y;
+				//pDoc->getShapesVector()[s]->rotateCoordinate(getShapeMoveTempDxDy())
+				int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
+				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
+				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)));
+				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = round(tempX * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)));
+				pDoc->getShapesVector()[s]->centerOfShape.x += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
+				pDoc->getShapesVector()[s]->centerOfShape.y += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
 			}
-			pDoc->getShapesVector()[s]->dSM.x = 0;
-			pDoc->getShapesVector()[s]->dSM.y = 0;
+			pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
+			pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;
 		}
 
 		//IShape::diffShapeMove.y = 0;
@@ -1800,8 +1747,9 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
-		pDoc->getShapesVector()[s]->dSM.x = 0;
-		pDoc->getShapesVector()[s]->dSM.y = 0;
+		pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(0, 0 );
+		/*pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
+		pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;*/
 	}
 	//pDoc->getShapesVector()[s]->diffShapeMove.x = 0;
 	//IShape::diffShapeMove.y = 0;

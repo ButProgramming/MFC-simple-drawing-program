@@ -30,6 +30,8 @@ public:
 	
 public:
 	virtual void draw(CDC* dc) = 0;
+	//void rotationOfAxes(int numberOfShapeInVector);
+
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
 	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
@@ -52,6 +54,15 @@ public:
 	void setDxDy(int num, CPoint point) { dxDy[num] = point; }								// setter for dxDy
 	void setCanDrawPointsForLines(bool active) { drawPointsForLines = active; };			// setter for drawPointsForLines
 	bool getCanDrawPointsForLines() { return drawPointsForLines; };							// getter for drawPointsForLines
+
+	void setShapeMoveTempDxDy(int x, int y) { shapeMove.tempDxDy.x = x; shapeMove.tempDxDy.y = y; };
+	CPoint getShapeMoveTempDxDy() { return shapeMove.tempDxDy; };
+	void setShapeMoveStartClickedCoordinate(CPoint point) { shapeMove.startClickedCoordinate = point; };
+	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
+
+	void rotateCoordinate();
+	
+	//void setTempDxDy()
 
 	//pointsForLines
 	CPoint getPointForLine(int numberOfPoint)
@@ -85,7 +96,7 @@ public:
 	int constID = NULL;
 	int ID = NULL;
 	CString name = NULL;
-	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
+	
 	CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
@@ -118,17 +129,17 @@ public:
 	CPoint centerOfShape {NULL, NULL};
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 
-	CPoint firstPointOfLine{ 0, 0 };  // first point of line
-	CPoint secondPointOfLine{ 0, 0 }; // second point of line
-	
-	//
+	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 
-	struct connecting
+	
+	
+	struct shapeMove
 	{
-		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
-		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
-		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
-	} connecting;
+		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
+		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
+		CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
+	} shapeMove;
+	
 
 	
 protected:
@@ -142,6 +153,17 @@ protected:
 	array <CPoint, 4> temporaryDxDy;					// array for temporary difference values for dx and dy, when shape is moved. 
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
 	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
+
+	struct connecting
+	{
+		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
+		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
+		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
+	} connecting;
+
+	
+
+
 	//struct isConnected { bool firstPointOfLine = false;
 	//bool secondPointOfLine = false; } isConnected;		// when first or second point of line are connected - > true
 
