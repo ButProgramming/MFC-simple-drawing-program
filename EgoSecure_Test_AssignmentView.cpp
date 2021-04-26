@@ -101,15 +101,6 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-	//rectForScrollBar = rect;
-
-
-
-	//// draw all lines
-	//for (int lineNum = 0; lineNum < pDoc->lines.size(); lineNum++)
-	//{
-	//	pDoc->lines[lineNum]->draw(&m_dc);
-	//}
 
 	//draw all shapes
 	for (int shapeNum = 0; shapeNum<pDoc->getShapesVector().size(); shapeNum++)
@@ -487,8 +478,7 @@ CEgoSecureTestAssignmentDoc* CEgoSecureTestAssignmentView::GetDocument() const /
 void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	auto pDoc = GetDocument();
-	bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
-	bool isShapeFound = false; // if shape is found, then break loop
+	bool canBeUnselected = true;
 
 	// check all shapes
 	//if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
@@ -496,85 +486,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		// start from the end because we click on shapes, that are located on the surface
 	for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::ellipse)
-		{
-			// check if is clicked on "rotate ellipse"
-			if (pDoc->getShapesVector()[shapeNum]->getSelected() == true)
-			{
-				CPoint ellipseCenter = pDoc->getShapesVector()[shapeNum]->getPointForRotateTool(); // for convinience
-				HRGN ellipseForRotateTool = CreateEllipticRgn(ellipseCenter.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, 
-					ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL); // create region for "rotate tool ellipse"
-				if (PtInRegion(ellipseForRotateTool, point.x, point.y))
-				{
-					pDoc->toolIsUsed = Tools::rotate;
-					canBeUnselected = false;
-					isShapeFound = true;
-				}
-				DeleteObject(ellipseForRotateTool);
-
-				// check if clicked on points that changing the size of shape
-				if (pDoc->getShapesVector()[shapeNum]->isClickedPointForChange(point))
-				{
-					isShapeFound = true;
-					canBeUnselected = false;
-					pDoc->toolIsUsed = Tools::change;
-				}
-
-			}
-
-			//check if clicked on shape
-			if (pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
-			{
-				isShapeFound = true; // is shape is found than break the loop
-
-				// unselecting others shapes
-				for (int shapeNumForUnselecting = pDoc->getShapesVector().size() - 1; shapeNumForUnselecting >= 0; shapeNumForUnselecting--) // because shapeNumForUnselecting and shapeNum names must be different
-				{
-					if (pDoc->getShapesVector()[shapeNumForUnselecting]->getSelected() == true)
-					{
-						pDoc->getShapesVector()[shapeNumForUnselecting]->setSelected(false);
-					};
-				}
-				canBeUnselected = false;
-				pDoc->getShapesVector()[shapeNum]->setSelected(true);
-
-				//using shape move tool
-				pDoc->toolIsUsed = Tools::shapeMove;
-			}
-
-			if (isShapeFound) break;
-
-		}
-		else if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
-		{
-			//bool breakLoop = false; // bool variable that is need for loop control
-			// check if clicked on points that changing the size of shape
-			//cout <<"3: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
-			//cout << "breakLoop " << breakLoop << endl;
-			if (pDoc->getShapesVector()[shapeNum]->isClickedPointForChange(point))
-			{
-				isShapeFound = true;
-				pDoc->toolIsUsed = Tools::change;
-			}
-
-			//check if clicked in line region
-			if (pDoc->getShapesVector()[shapeNum]->isClickedOnShapeRgn(point))
-			{
-				//unselectint all shapes and make true canDrawPointsForLines
-				for (int shapeNumForChangeProperties = 0; shapeNumForChangeProperties < pDoc->getShapesVector().size(); shapeNumForChangeProperties++)
-				{
-					pDoc->getShapesVector()[shapeNumForChangeProperties]->setSelected(false);
-					pDoc->getShapesVector()[shapeNumForChangeProperties]->setCanDrawPointsForLines(true);
-				}
-				//selecting clicked shape
-				pDoc->getShapesVector()[shapeNum]->setSelected(true);
-
-				isShapeFound = true;
-				canBeUnselected = false;
-			}
-			//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
-			if (isShapeFound) break;
-		}
+		canBeUnselected = pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->toolIsUsed, point);
 	}
 
 	//check if can be all shapes unselected
