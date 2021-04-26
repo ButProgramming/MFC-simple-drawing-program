@@ -55,12 +55,12 @@ public:
 	void setCanDrawPointsForLines(bool active) { drawPointsForLines = active; };			// setter for drawPointsForLines
 	bool getCanDrawPointsForLines() { return drawPointsForLines; };							// getter for drawPointsForLines
 
-	void setShapeMoveTempDxDy(int x, int y) { shapeMove.tempDxDy.x = x; shapeMove.tempDxDy.y = y; };
+	void setShapeMoveTempDxDy(CPoint point) { shapeMove.tempDxDy.x = point.x; shapeMove.tempDxDy.y = point.y; };
 	CPoint getShapeMoveTempDxDy() { return shapeMove.tempDxDy; };
 	void setShapeMoveStartClickedCoordinate(CPoint point) { shapeMove.startClickedCoordinate = point; };
 	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
 
-	void rotateCoordinate();
+	CPoint rotateAndMoveCoordinate(CPoint &point);
 	
 	//void setTempDxDy()
 

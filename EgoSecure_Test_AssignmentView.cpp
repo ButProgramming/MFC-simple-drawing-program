@@ -771,11 +771,12 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
-				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y);
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y });
 				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = pDoc->second.x - pDoc->first.x;
 				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = pDoc->second.y - pDoc->first.y;
 
-				pDoc->getShapesVector()[s]->rotateAndMoveCoordinate();
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy()));
+				//pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->shapeMove.tempDxDy);
 				//int tempX = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().x;
 				////int tempY = pDoc->getShapesVector()[s]->setShapeMoveTempDxDy().y;
 				//int tempY = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().y;
@@ -1749,7 +1750,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
-		pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(0, 0 );
+		pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
 		/*pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
 		pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;*/
 	}
