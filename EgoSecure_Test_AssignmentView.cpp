@@ -642,7 +642,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			if (pDoc->getShapesVector()[i]->isSelected)
 			{
 				pDoc->getShapesVector()[i]->setFirstClickedPoint(point);
-				pDoc->getShapesVector()[i]->lastY = point.y;
+				//pDoc->getShapesVector()[i]->lastY = point.y;
 				selected = true;
 			}
 			if (selected) break;
@@ -771,23 +771,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
+				// set temp dx dy to move shape
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y });
-				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = pDoc->second.x - pDoc->first.x;
-				//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = pDoc->second.y - pDoc->first.y;
-
+				
+				// rotate and move coordinate and set to temp dx dy
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy()));
-				//pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->shapeMove.tempDxDy);
-				//int tempX = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().x;
-				////int tempY = pDoc->getShapesVector()[s]->setShapeMoveTempDxDy().y;
-				//int tempY = pDoc->getShapesVector()[s]->getShapeMoveTempDxDy().y;
-				//pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad))),
-				//	round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad))));
-
-
-				/*int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
-				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
-				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));*/
 			}
 		}
 		for (int lineNum = 0; lineNum < pDoc->getShapesVector().size(); lineNum++)
@@ -845,89 +833,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			//cout << "here" << endl;
-			//cout << IShape::firstPoint.x << " " << IShape::firstPoint.y << endl;
-			/*int tempXFirstPoint = firstPoint.x;
-			int tempYFirstPoint = firstPoint.y;
-			firstPoint.x = round(tempXFirstPoint * cos(-pDoc->getShapesVector()[s]->ellipseAngleRad) - tempYFirstPoint * sin(-pDoc->getShapesVector()[s]->ellipseAngleRad));
-			firstPoint.y = round(tempXFirstPoint * sin(-pDoc->getShapesVector()[s]->ellipseAngleRad) + tempYFirstPoint * cos(-pDoc->getShapesVector()[s]->ellipseAngleRad));
-			firstPoint.x += pDoc->getShapesVector()[s]->centerOfShape.x + dx;
-			firstPoint.y += pDoc->getShapesVector()[s]->centerOfShape.y + dy;*/
-
-
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
-				//cout << s << endl;
-				enum circleQuarter { first, second, third, fourth };
-				circleQuarter tempEnum = first;
-				if (point.x >= pDoc->getShapesVector()[s]->centerOfShape.x && point.y <= pDoc->getShapesVector()[s]->centerOfShape.x)
-				{
-					//cout << "1" << endl;
-					tempEnum = first;
-				}
-				else if (point.x > pDoc->getShapesVector()[s]->centerOfShape.x && point.y > pDoc->getShapesVector()[s]->centerOfShape.x)
-				{
-					//cout << "2" << endl;
-					tempEnum = second;
-				}
-				else if (point.x <= pDoc->getShapesVector()[s]->centerOfShape.x && point.y >= pDoc->getShapesVector()[s]->centerOfShape.x)
-				{
-					//cout << "3" << endl;
-					tempEnum = third;
-				}
-				else
-				{
-					//cout << "4" << endl;
-					tempEnum = fourth;
-				}
-				pDoc->getShapesVector()[s]->getFirstClickedPoint().y;
-				//int temp2 = point.y - pDoc->getShapesVector()[s]->getFirstClickedPoint().y;
-				array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
-				//sides[0] = sqrt(pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-				//cout << "firstPoint x: " << firstPoint.x << " firstPoint y:" << firstPoint.y << endl;
-				sides[0] = sqrt(pow(pDoc->getShapesVector()[s]->firstPoint.x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(pDoc->getShapesVector()[s]->firstPoint.y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-				cout << pDoc->getShapesVector()[s]->firstPoint.x << " " << pDoc->getShapesVector()[s]->firstPoint.y<< endl;
-				sides[1] = sqrt(pow(pDoc->getShapesVector()[s]->firstPoint.x - point.x, 2) + pow(pDoc->getShapesVector()[s]->firstPoint.y - point.y, 2));
-				sides[2] = sqrt(pow(pDoc->getShapesVector()[s]->centerOfShape.x - point.x, 2) + pow(pDoc->getShapesVector()[s]->centerOfShape.y - point.y, 2));
-				/*sides[0] /= 100;
-				sides[1] /= 100;
-				sides[2] /= 100;*/
-				//cout << "sides[2]: " << sides[2] << endl;
-				double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
-				//cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
-				//cout << "cos: " << cosOfCenterAngle << endl;
-				double centerAngleRad = acos(cosOfCenterAngle);
-				//cout << "rad: " << centerAngleRad << endl;
-
-				double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
-				//cout << "deg: " << centerAngleDegree << endl;
-				if (tempEnum == third || tempEnum == fourth)
-				{
-					//pDoc->getShapesVector()[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
-					centerAngleDegree = 360 - centerAngleDegree;
-				}
-				//cout << "ellipseAngleRad: " << pDoc->getShapesVector()[s]->ellipseAngleRad * 180.0 / 3.14 << endl;
-				//cout << "deg: " << centerAngleDegree << endl;
-				//int temp = point.y - pDoc->getShapesVector()[s]->lastY;
-
-				//check if is shape reversed
-				if (pDoc->getShapesVector()[s]->isReversed())
-				{
-					pDoc->getShapesVector()[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
-				}
-				else
-				{
-					pDoc->getShapesVector()[s]->ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
-					//cout << pDoc->getShapesVector()[s]->ellipseAngleRad << endl;
-					//cout << centerAngleDegree * 3.14 / 180.0 <<endl;
-				}
-				//Invalidate();
+				pDoc->getShapesVector()[s]->rotateShape(point);
 			}
-			pDoc->getShapesVector()[s]->lastY = point.y;
 			Invalidate();
-			//pDoc->getShapesVector()[s]->updateLineConnection(pDoc->getShapesVector());
-			//pDoc->getShapesVector()[s]->setFirstClickedPoint(point);
-
 		}
 
 	}

@@ -859,6 +859,73 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point)
 	return point;
 }
 
+void IShape::rotateShape(CPoint point)
+{
+	enum circleQuarter { first, second, third, fourth };
+	circleQuarter tempEnum = first;
+	if (point.x >= centerOfShape.x && point.y <= centerOfShape.x)
+	{
+		//cout << "1" << endl;
+		tempEnum = first;
+	}
+	else if (point.x > centerOfShape.x && point.y > centerOfShape.x)
+	{
+		//cout << "2" << endl;
+		tempEnum = second;
+	}
+	else if (point.x <= centerOfShape.x && point.y >= centerOfShape.x)
+	{
+		//cout << "3" << endl;
+		tempEnum = third;
+	}
+	else
+	{
+		//cout << "4" << endl;
+		tempEnum = fourth;
+	}
+	getFirstClickedPoint().y;
+	//int temp2 = point.y - pDoc->getShapesVector()[s]->getFirstClickedPoint().y;
+	array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
+	//sides[0] = sqrt(pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
+	//cout << "firstPoint x: " << firstPoint.x << " firstPoint y:" << firstPoint.y << endl;
+	sides[0] = sqrt(pow(firstPoint.x - centerOfShape.x, 2) + pow(firstPoint.y - centerOfShape.y, 2));
+	//cout << pDoc->getShapesVector()[s]->firstPoint.x << " " << pDoc->getShapesVector()[s]->firstPoint.y << endl;
+	sides[1] = sqrt(pow(firstPoint.x - point.x, 2) + pow(firstPoint.y - point.y, 2));
+	sides[2] = sqrt(pow(centerOfShape.x - point.x, 2) + pow(centerOfShape.y - point.y, 2));
+	/*sides[0] /= 100;
+	sides[1] /= 100;
+	sides[2] /= 100;*/
+	//cout << "sides[2]: " << sides[2] << endl;
+	double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
+	//cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
+	//cout << "cos: " << cosOfCenterAngle << endl;
+	double centerAngleRad = acos(cosOfCenterAngle);
+	//cout << "rad: " << centerAngleRad << endl;
+
+	double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
+	//cout << "deg: " << centerAngleDegree << endl;
+	if (tempEnum == third || tempEnum == fourth)
+	{
+		//pDoc->getShapesVector()[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
+		centerAngleDegree = 360 - centerAngleDegree;
+	}
+	//cout << "ellipseAngleRad: " << pDoc->getShapesVector()[s]->ellipseAngleRad * 180.0 / 3.14 << endl;
+	//cout << "deg: " << centerAngleDegree << endl;
+	//int temp = point.y - pDoc->getShapesVector()[s]->lastY;
+
+	//check if is shape reversed
+	if (isReversed())
+	{
+		ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
+	}
+	else
+	{
+		ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
+		//cout << pDoc->getShapesVector()[s]->ellipseAngleRad << endl;
+		//cout << centerAngleDegree * 3.14 / 180.0 <<endl;
+	}
+}
+
 void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)
 {
 	//cout << "here" << endl;

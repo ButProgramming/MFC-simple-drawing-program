@@ -61,6 +61,7 @@ public:
 	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
 
 	CPoint rotateAndMoveCoordinate(CPoint &point);
+	void rotateShape(CPoint point);
 	
 	//void setTempDxDy()
 
@@ -139,6 +140,11 @@ public:
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
 		CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
 	} shapeMove;
+
+	struct rotate
+	{
+		int lastY = 0; // is used for saving of last y 
+	};
 	
 
 	
