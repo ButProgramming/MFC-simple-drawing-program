@@ -62,7 +62,7 @@ public:
 
 	CPoint rotateAndMoveCoordinate(CPoint &point);
 	void rotateShape(CPoint point);
-	bool moveChangeRotate(vector<IShape*> shapes, Tools& toolIsUsed, CPoint point);
+	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound);
 	
 	//void setTempDxDy()
 

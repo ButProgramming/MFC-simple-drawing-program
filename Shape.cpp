@@ -926,12 +926,14 @@ void IShape::rotateShape(CPoint point)
 	}
 }
 
-bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint point)
+void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool& canBeUnselected, bool& shapeIsFound)
 {
-	bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
-	bool isShapeFound = false; // if shape is found, then break loop
+	//bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
+
+	//bool isShapeFound = false; // if shape is found, then break loop
 	if (type == ShapeType::ellipse)
 	{
+		
 		// check if is clicked on "rotate ellipse"
 		if (getSelected() == true)
 		{
@@ -940,16 +942,17 @@ bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint
 				ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL); // create region for "rotate tool ellipse"
 			if (PtInRegion(ellipseForRotateTool, point.x, point.y))
 			{
+				cout << "here" << endl;
 				toolIsUsed = Tools::rotate;
 				canBeUnselected = false;
-				isShapeFound = true;
+				shapeIsFound = true;
 			}
 			DeleteObject(ellipseForRotateTool);
 
 			// check if clicked on points that changing the size of shape
 			if (isClickedPointForChange(point))
 			{
-				isShapeFound = true;
+				shapeIsFound = true;
 				canBeUnselected = false;
 				toolIsUsed = Tools::change;
 			}
@@ -959,14 +962,14 @@ bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint
 		//check if clicked on shape
 		if (isClickedOnShapeRgn(point))
 		{
-			isShapeFound = true; // is shape is found than break the loop
+			shapeIsFound = true; // is shape is found than break the loop
 
 			// unselecting others shapes
 			for (int shapeNumForUnselecting = shapes.size() - 1; shapeNumForUnselecting >= 0; shapeNumForUnselecting--) // because shapeNumForUnselecting and shapeNum names must be different
 			{
-				if (getSelected() == true)
+				if (shapes[shapeNumForUnselecting]->getSelected() == true)
 				{
-					setSelected(false);
+					shapes[shapeNumForUnselecting]->setSelected(false);
 				};
 			}
 			canBeUnselected = false;
@@ -976,7 +979,7 @@ bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint
 			toolIsUsed = Tools::shapeMove;
 		}
 
-		if (isShapeFound) return false;
+		if (shapeIsFound) return;
 
 	}
 	else if (type == ShapeType::basicLine)
@@ -987,7 +990,7 @@ bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint
 		//cout << "breakLoop " << breakLoop << endl;
 		if (isClickedPointForChange(point))
 		{
-			isShapeFound = true;
+			shapeIsFound = true;
 			toolIsUsed = Tools::change;
 		}
 
@@ -997,19 +1000,19 @@ bool IShape::moveChangeRotate(vector <IShape*> shapes, Tools& toolIsUsed, CPoint
 			//unselectint all shapes and make true canDrawPointsForLines
 			for (int shapeNumForChangeProperties = 0; shapeNumForChangeProperties < shapes.size(); shapeNumForChangeProperties++)
 			{
-				setSelected(false);
-				setCanDrawPointsForLines(true);
+				shapes[shapeNumForChangeProperties]->setSelected(false);
+				shapes[shapeNumForChangeProperties]->setCanDrawPointsForLines(true);
 			}
 			//selecting clicked shape
 			setSelected(true);
 
-			isShapeFound = true;
+			shapeIsFound = true;
 			canBeUnselected = false;
 		}
 		//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
-		if (isShapeFound) return false;
+		if (shapeIsFound) return;
 	}
-	return true;
+	//return true;
 }
 
 void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)

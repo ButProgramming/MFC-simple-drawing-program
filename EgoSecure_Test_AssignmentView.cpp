@@ -479,16 +479,17 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	auto pDoc = GetDocument();
 	bool canBeUnselected = true;
+	bool shapeIsFound = false;
 
-	// check all shapes
-	//if (pDoc->getToolIsUsed() == Tools::change || pDoc->getToolIsUsed() == Tools::shapeMove || pDoc->getToolIsUsed() == Tools::rotate) // shape unselect if click on empty place
-	//{
-		// start from the end because we click on shapes, that are located on the surface
+	// start from the end because we click on shapes, that are located on the surface
 	for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
 	{
-		canBeUnselected = pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->getToolIsUsed(), point); // return true if can be unselected
-	}
+		pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->getToolIsUsed(), point, canBeUnselected, shapeIsFound); // return true if can be unselected
 
+		//break loop if shape is found
+		if (shapeIsFound) break;		
+	}
+	
 	//check if can be all shapes unselected
 	if (canBeUnselected)
 	{
@@ -498,7 +499,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 		}
 	}
-
+	
 	// update drawing
 	Invalidate();
 
