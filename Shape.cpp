@@ -254,10 +254,10 @@ void EllipseShape::draw(CDC* dc)
 	
 	//cout << points[0].y << " " << points[3].y << endl;
 	// calculate coordinates for points, that are needed to draw links (lines)
-	pointsForLines[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, selectedAreaPoints[0].y);
-	pointsForLines[1] = CPoint(selectedAreaPoints[1].x, (selectedAreaPoints[1].y + selectedAreaPoints[2].y) / 2);
-	pointsForLines[2] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
-	pointsForLines[3] = CPoint(selectedAreaPoints[3].x, (selectedAreaPoints[0].y + selectedAreaPoints[3].y) / 2);
+	linkingPoints[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, selectedAreaPoints[0].y);
+	linkingPoints[1] = CPoint(selectedAreaPoints[1].x, (selectedAreaPoints[1].y + selectedAreaPoints[2].y) / 2);
+	linkingPoints[2] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
+	linkingPoints[3] = CPoint(selectedAreaPoints[3].x, (selectedAreaPoints[0].y + selectedAreaPoints[3].y) / 2);
 
 	// points that needed for drawing rotate tool
 	centerPoint23Bottom = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
@@ -385,14 +385,14 @@ void EllipseShape::draw(CDC* dc)
 	firstPoint.y += centerOfShape.y + dy;
 	
 	// move and rotate points for lines
-	for (int numPoint = 0; numPoint < pointsForLines.size(); numPoint++)
+	for (int numPoint = 0; numPoint < linkingPoints.size(); numPoint++)
 	{
-		int tempX = pointsForLines[numPoint].x;
-		int tempY = pointsForLines[numPoint].y;
-		pointsForLines[numPoint].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		pointsForLines[numPoint].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		pointsForLines[numPoint].x += centerOfShape.x + dx;
-		pointsForLines[numPoint].y += centerOfShape.y + dy;
+		int tempX = linkingPoints[numPoint].x;
+		int tempY = linkingPoints[numPoint].y;
+		linkingPoints[numPoint].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		linkingPoints[numPoint].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		linkingPoints[numPoint].x += centerOfShape.x + dx;
+		linkingPoints[numPoint].y += centerOfShape.y + dy;
 	}
 
 	// create smaller ellipse to fill region
@@ -511,9 +511,9 @@ void EllipseShape::draw(CDC* dc)
 	if (drawPointsForLines)
 	{
 		//draw points for lines
-		for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
+		for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
 		{
-			dc->Ellipse(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+			dc->Ellipse(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
 		}
 	}
 
@@ -835,10 +835,10 @@ void TriangleShape::draw(CDC* dc)
 bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 {
 	
-	for (int pointNum = 0; pointNum < pointsForLines.size(); pointNum++)
+	for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
 	{
 		
-		HRGN pointForLinesRgn = CreateEllipticRgn(pointsForLines[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, pointsForLines[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN);
+		HRGN pointForLinesRgn = CreateEllipticRgn(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN);
 		if(PtInRegion(pointForLinesRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
