@@ -850,13 +850,31 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
-CPoint IShape::rotateAndMoveCoordinate(CPoint &point)
+CPoint IShape::rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int from)
 {
-	int tempX = point.x;
-	int tempY = point.y;
-	point.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
-	point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
-	return point;
+	if (toolIsUsed == Tools::shapeMove)
+	{
+		
+		if (from == MOUSE_MOVE)
+		{
+			int tempX = point.x;
+			int tempY = point.y;
+			point.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
+			point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
+			return point;
+		}
+		else if (from == LBUTTON_UP)
+		{
+			int tempX = point.x;
+			int tempY = point.y;
+
+			point.x = round(tempX * cos((ellipseAngleRad)) - tempY * sin((ellipseAngleRad)));
+			point.y = round(tempX * sin((ellipseAngleRad)) + tempY * cos((ellipseAngleRad)));
+			centerOfShape.x += point.x;
+			centerOfShape.y += point.y;
+			return point;
+		}
+	}
 }
 
 void IShape::rotateShape(CPoint point)

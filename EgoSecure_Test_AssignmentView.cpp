@@ -502,7 +502,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	
 	// update drawing
 	Invalidate();
-
+	
 	// create shape or choose an other tool
 	switch (pDoc->getToolIsUsed())
 	{
@@ -563,22 +563,22 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	case Tools::change:
 		pDoc->first.x = point.x;
 		pDoc->first.y = point.y;
-		bool selected = false; // control of the next loop
+		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
 				
-				selected = true;
+				//selected = true;
 				//pDoc->getShapesVector()[s]->numberOfAngle = -1;
 
-				pDoc->getShapesVector()[s]->isClickedPointForChange(point); // this method set also number of clicked point in variable numberOfPoint
+				pDoc->getShapesVector()[s]->isClickedPointForChange(point); // this method set also number of clicked point for variable numberOfPoint
 				
 
 		
 
 			}
-			if (selected)
+			if (pDoc->getShapesVector()[s]->isSelected)
 				break;
 		}
 		break;
@@ -671,8 +671,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
-		pDoc->second.x = point.x;
-		pDoc->second.y = point.y;
+		/*pDoc->second.x = point.x;
+		pDoc->second.y = point.y;*/
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
@@ -681,7 +681,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y });
 				
 				// rotate and move coordinate and set to temp dx dy
-				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy()));
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy(), pDoc->getToolIsUsed(), MOUSE_MOVE));
 			}
 		}
 		for (int lineNum = 0; lineNum < pDoc->getShapesVector().size(); lineNum++)
@@ -1463,15 +1463,18 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
 				//pDoc->getShapesVector()[s]->rotateCoordinate(getShapeMoveTempDxDy())
-				int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
+				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy(), pDoc->getToolIsUsed(), LBUTTON_UP));
+				/*int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
 				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
+				
 				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)));
 				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = round(tempX * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)));
 				pDoc->getShapesVector()[s]->centerOfShape.x += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
-				pDoc->getShapesVector()[s]->centerOfShape.y += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
+				pDoc->getShapesVector()[s]->centerOfShape.y += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;*/
 			}
-			pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
-			pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;
+			//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
+			//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;
+			pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
 		}
 
 		//IShape::diffShapeMove.y = 0;

@@ -20,6 +20,9 @@ using namespace std;
 // define for lines
 #define FIRST_POINT_OF_LINE 0
 #define SECOND_POINT_OF_LINE 1
+// laws for rotate and move
+#define MOUSE_MOVE 0
+#define LBUTTON_UP 1
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };
@@ -60,7 +63,7 @@ public:
 	void setShapeMoveStartClickedCoordinate(CPoint point) { shapeMove.startClickedCoordinate = point; };
 	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
 
-	CPoint rotateAndMoveCoordinate(CPoint &point);
+	CPoint rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int from);
 	void rotateShape(CPoint point);
 	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound);
 	
@@ -134,13 +137,13 @@ public:
 	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 
 	
-	
 	struct shapeMove
 	{
 		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
 		CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
 	} shapeMove;
+	
 
 	struct rotate
 	{
