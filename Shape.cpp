@@ -242,7 +242,8 @@ void EllipseShape::draw(CDC* dc)
 	CPoint diffAr[4];
 	for (int i = 0; i < 4; i++)
 	{
-		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
+		//diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
+		diffAr[i] = change.dxDy[i] + change.tempDxDy[i];
 	}
 
 	points[0] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom

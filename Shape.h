@@ -71,6 +71,8 @@ public:
 	CPoint getChangeStartClickedCoordinate() { return change.startClickedCoordinate; };
 	void setChangeTempDxDy(int num, CPoint point) { change.tempDxDy[num] = point; };
 	CPoint getChangeTempDxDy(int num) { return change.tempDxDy[num]; };
+	void setChangeDxDy(int num, CPoint point) { change.dxDy[num] = point; };
+	CPoint getChangeDxDy(int num) { return change.dxDy[num]; };
 	
 	//void setTempDxDy()
 
