@@ -17,6 +17,7 @@ protected: // create from serialization only
 
 public: //methods
 	vector<IShape*>& getShapesVector() { return shapes; };
+	Tools& getToolIsUsed() { return toolIsUsed; };
 public:
 
 	

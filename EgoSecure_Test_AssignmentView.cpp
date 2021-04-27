@@ -481,12 +481,12 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	bool canBeUnselected = true;
 
 	// check all shapes
-	//if (pDoc->toolIsUsed == Tools::change || pDoc->toolIsUsed == Tools::shapeMove || pDoc->toolIsUsed == Tools::rotate) // shape unselect if click on empty place
+	//if (pDoc->getToolIsUsed() == Tools::change || pDoc->getToolIsUsed() == Tools::shapeMove || pDoc->getToolIsUsed() == Tools::rotate) // shape unselect if click on empty place
 	//{
 		// start from the end because we click on shapes, that are located on the surface
 	for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
 	{
-		canBeUnselected = pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->toolIsUsed, point);
+		canBeUnselected = pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->getToolIsUsed(), point); // return true if can be unselected
 	}
 
 	//check if can be all shapes unselected
@@ -496,16 +496,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		{
 			pDoc->getShapesVector()[shapeNum]->setSelected(false);
 			pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
-
 		}
 	}
-
 
 	// update drawing
 	Invalidate();
 
 	// create shape or choose an other tool
-	switch (pDoc->toolIsUsed)
+	switch (pDoc->getToolIsUsed())
 	{
 	case Tools::ellipse:
 	{
@@ -597,12 +595,7 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 		pDoc->getShapesVector()[shapeNum]->isSelected = false;
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
-	/*for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelected = false;
-		s->setCanDrawPointsForLines(false);
-	}*/
-	pDoc->toolIsUsed = Tools::ellipse;
+	pDoc->getToolIsUsed() = Tools::ellipse;
 	Invalidate();
 
 }
@@ -621,7 +614,7 @@ void CEgoSecureTestAssignmentView::OnButtonRectangle()
 	{
 		s->isSelected = false;
 	}*/
-	pDoc->toolIsUsed = Tools::rectangle;
+	pDoc->getToolIsUsed() = Tools::rectangle;
 	Invalidate();
 }
 
@@ -639,7 +632,7 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 	{
 		s->isSelected = false;
 	}*/
-	pDoc->toolIsUsed = Tools::triangle;
+	pDoc->getToolIsUsed() = Tools::triangle;
 	Invalidate();
 }
 
@@ -663,11 +656,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		
 	}
 	
-	if (nFlags == MK_LBUTTON && (pDoc->toolIsUsed == Tools::ellipse || pDoc->toolIsUsed == Tools::rectangle || pDoc->toolIsUsed == Tools::triangle))
+	if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle))
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->size = sqrt(pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->centerOfShape.y - point.y, 2));
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::move)
+	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::move)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
@@ -675,7 +668,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		IShape::dy = pDoc->second.y - pDoc->first.y;
 
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::shapeMove)
+	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
@@ -697,7 +690,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 
 
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::change)
+	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::change)
 	{
 		bool selected = false; // control of the next loop
 	
@@ -741,7 +734,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				break;
 		}
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::rotate) // rotate shape
+	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::rotate) // rotate shape
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
@@ -753,7 +746,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->toolIsUsed == Tools::basicLine)
+	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::basicLine)
 	{
 		if (!pDoc->getShapesVector().empty())
 		{
@@ -944,7 +937,7 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 	{
 		s->isSelectedFromDoubleSelectingTool = false;
 	}
-	pDoc->toolIsUsed = Tools::select_tool;
+	pDoc->getToolIsUsed() = Tools::select_tool;
 	Invalidate();
 	// TODO: Add your command handler code here
 }
@@ -956,7 +949,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	auto pDoc = GetDocument();
 	int sizeOfShapesVector = pDoc->getShapesVector().size();
 	bool shapeIsFound = false; //exit from for loop if = true
-	if (pDoc->toolIsUsed == Tools::select_tool)
+	if (pDoc->getToolIsUsed() == Tools::select_tool)
 	{
 		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
 		{
@@ -1066,7 +1059,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			}
 		}
 	}
-	else if (pDoc->toolIsUsed == Tools::doubleSelectTool)
+	else if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
 	{
 		bool shapeIsFound = false;
 		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
@@ -1295,7 +1288,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CEgoSecureTestAssignmentView::OnButtonMove()
 {
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::move;
+	pDoc->getToolIsUsed() = Tools::move;
 	CString str;
 	str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
 
@@ -1306,20 +1299,20 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	auto pDoc = GetDocument();
-	if (pDoc->toolIsUsed == Tools::ellipse)
+	if (pDoc->getToolIsUsed() == Tools::ellipse)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
-		pDoc->toolIsUsed = Tools::shapeMove;
+		pDoc->getToolIsUsed() = Tools::shapeMove;
 	}
-	else if (pDoc->toolIsUsed == Tools::basicLine)
+	else if (pDoc->getToolIsUsed() == Tools::basicLine)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
 
 		// make basicLine unactive
-		pDoc->toolIsUsed = Tools::change;
+		pDoc->getToolIsUsed() = Tools::change;
 	}
 
-	if (pDoc->toolIsUsed == Tools::move)
+	if (pDoc->getToolIsUsed() == Tools::move)
 	{
 		// move all shapes
 		for (int i = 0; i < pDoc->getShapesVector().size(); i++)
@@ -1342,7 +1335,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 
 	}
-	else if (pDoc->toolIsUsed == Tools::change)
+	else if (pDoc->getToolIsUsed() == Tools::change)
 	{
 		bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
@@ -1455,14 +1448,14 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 	}
 	CString str;
-	if (pDoc->toolIsUsed == Tools::move)
+	if (pDoc->getToolIsUsed() == Tools::move)
 	{
 		//Format(_T("centerOfShape: x: %d, y: %d"), pDoc->getShapesVector()[0]->centerOfShape.x, pDoc->getShapesVector()[0]->centerOfShape.y);
 		//AfxMessageBox(str);
 		//str.Format(_T("boxRect: x: %d, y: %d"), pDoc->getShapesVector()[0]->boxRect.CenterPoint().x, pDoc->getShapesVector()[0]->boxRect.CenterPoint().y);
 		//AfxMessageBox(str);
 	}
-	if (pDoc->toolIsUsed == Tools::shapeMove)
+	if (pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
@@ -1492,7 +1485,7 @@ void CEgoSecureTestAssignmentView::OnButtonChange()
 {
 	//AfxMessageBox(_T("Change"));
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::change;
+	pDoc->getToolIsUsed() = Tools::change;
 	// TODO: Add your command handler code here
 }
 
@@ -1500,7 +1493,7 @@ void CEgoSecureTestAssignmentView::OnButtonChange()
 void CEgoSecureTestAssignmentView::OnButtonRotate()
 {
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::rotate;
+	pDoc->getToolIsUsed() = Tools::rotate;
 
 	//AfxMessageBox(_T("123"));
 	//SetWorldTransform()
@@ -1512,7 +1505,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 {
 	//AfxMessageBox(_T("1234567"));
 	auto pDoc = GetDocument();
-	//pDoc->toolIsUsed = Tools::shapeNormalize; //don't need
+	//pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
 		if (pDoc->getShapesVector()[s]->isSelected)
@@ -1568,7 +1561,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 {
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::shapeMove;
+	pDoc->getToolIsUsed() = Tools::shapeMove;
 
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
@@ -1605,7 +1598,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 		}
 	}
 
-	if (pDoc->toolIsUsed == Tools::doubleSelectTool)
+	if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
 	{
 		int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
 		int ID2_is_selected = pDoc->selectedShapesIDs.back();
@@ -1631,7 +1624,7 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 {
 	//AfxMessageBox(_T("DoubleSelect"));
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::doubleSelectTool;
+	pDoc->getToolIsUsed() = Tools::doubleSelectTool;
 	int s = pDoc->lines.size();
 	CString str;
 	str.Format(_T("Size lines vector: %d"), s);
@@ -1657,7 +1650,7 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
 	auto pDoc = GetDocument();
-	pDoc->toolIsUsed = Tools::basicLine;
+	pDoc->getToolIsUsed() = Tools::basicLine;
 
 	//unselect all others shapes and lines
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
@@ -2037,7 +2030,7 @@ void CEgoSecureTestAssignmentView::OnEditNormalize()
 {
 	//AfxMessageBox(_T("1234567"));
 	auto pDoc = GetDocument();
-	//pDoc->toolIsUsed = Tools::shapeNormalize; //don't need
+	//pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
 		if (pDoc->getShapesVector()[s]->isSelected)
