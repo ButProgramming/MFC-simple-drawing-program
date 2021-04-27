@@ -491,16 +491,17 @@ void EllipseShape::draw(CDC* dc)
 
 bool EllipseShape::isClickedOnShapeRgn(CPoint point)
 {
-	HRGN ellipseRgn1 = CreatePolygonRgn(&eFP[0], eFP.size(), ALTERNATE);
-	HRGN ellipseRgn2 = CreatePolygonRgn(&eSP[0], eSP.size(), ALTERNATE);
-	if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+	//HRGN ellipseRgn1 = CreatePolygonRgn(&eFP[0], eFP.size(), ALTERNATE);
+	//HRGN ellipseRgn2 = CreatePolygonRgn(&eSP[0], eSP.size(), ALTERNATE);
+	HRGN ellipseRgn = CreatePolygonRgn(&shapePoints[0], shapePoints.size(), ALTERNATE);
+	if (PtInRegion(ellipseRgn, point.x, point.y))
 	{
-		DeleteObject(ellipseRgn1);
-		DeleteObject(ellipseRgn2);
+		DeleteObject(ellipseRgn);
+		//DeleteObject(ellipseRgn2);
 		return true;
 	}
-	DeleteObject(ellipseRgn1);
-	DeleteObject(ellipseRgn2);
+	DeleteObject(ellipseRgn);
+	//DeleteObject(ellipseRgn2);
 	return false;
 }
 
