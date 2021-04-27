@@ -238,7 +238,7 @@ void EllipseShape::draw(CDC* dc)
 	// setect pen
 	dc->SelectObject(pen);
 
-	CPoint circleCenter{ 0, 0 };
+	
 
 	array<CPoint, 4> dxDyPlusTempDxDy;
 	for (int i = 0; i < 4; i++)
@@ -246,10 +246,10 @@ void EllipseShape::draw(CDC* dc)
 		dxDyPlusTempDxDy[i] = change.dxDy[i] + change.tempDxDy[i];
 	}
 
-	selectedAreaPoints[0] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + circleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
-	selectedAreaPoints[1] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + circleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
-	selectedAreaPoints[2] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + circleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
-	selectedAreaPoints[3] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + circleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
+	selectedAreaPoints[0] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
+	selectedAreaPoints[1] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
+	selectedAreaPoints[2] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
+	selectedAreaPoints[3] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
 
 	
 	//cout << points[0].y << " " << points[3].y << endl;
@@ -277,41 +277,35 @@ void EllipseShape::draw(CDC* dc)
 	int a = abs((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2);
 	int b = abs((selectedAreaPoints[2].y - selectedAreaPoints[1].y) / 2);
 
-	//vector<CPoint> eFP;
-	eFP.clear();
-	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	vector<CPoint> eFP;
+	dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
-		CPoint temp1{ shapeMove.tempDxDy.x + circleCenter.x - x,shapeMove.tempDxDy.y + circleCenter.y + y };
+		CPoint temp1{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		eFP.push_back(temp1);
-		dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x - x, shapeMove.tempDxDy.y + circleCenter.y + y);
+		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
 	}
-	CPoint temp1{ shapeMove.tempDxDy.x + circleCenter.x, shapeMove.tempDxDy.y + circleCenter.y + b };
+	CPoint temp1{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	eFP.push_back(temp1);
 	//
 
-	//vector<CPoint> eSP;
-	eSP.clear();
-	//vector<CPoint> eSP;
-	dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x, shapeMove.tempDxDy.y + circleCenter.y + b);
+	vector<CPoint> eSP;
+	dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
-		CPoint temp2{ shapeMove.tempDxDy.x + circleCenter.x + x, shapeMove.tempDxDy.y + circleCenter.y + y };
+		CPoint temp2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		eSP.push_back(temp2);
-		dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x + x, shapeMove.tempDxDy.y + circleCenter.y + y);
+		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
 	}
-	CPoint temp2{ shapeMove.tempDxDy.x + circleCenter.x,shapeMove.tempDxDy.y + circleCenter.y + b };
+	CPoint temp2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	eSP.push_back(temp2);
 
-	dc->MoveTo(circleCenter.x, circleCenter.y + b);
-
-	//ellipseFirstPart.clear();
-	//ellipseSecondPart.clear();
+	dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
 
 	shapePoints.clear();
 	for (CPoint v1 : eFP)
@@ -372,37 +366,37 @@ void EllipseShape::draw(CDC* dc)
 	b = b - 1;
 	///
 	vector<CPoint> smallerRgn1;
-	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
-		CPoint temp1{ shapeMove.tempDxDy.x + circleCenter.x - x,shapeMove.tempDxDy.y + circleCenter.y + y };
+		CPoint temp1{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		smallerRgn1.push_back(temp1);
-		dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x - x, shapeMove.tempDxDy.y + circleCenter.y + y);
+		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
 	}
-	CPoint temp1_2{ shapeMove.tempDxDy.x + circleCenter.x, shapeMove.tempDxDy.y + circleCenter.y + b };
+	CPoint temp1_2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	smallerRgn1.push_back(temp1);
 	//
 
 	//
 	vector<CPoint> smallerRgn2;
 	//vector<CPoint> eSP;
-	dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x, shapeMove.tempDxDy.y + circleCenter.y + b);
+	dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b);
 	for (int y = b - 1; y >= -b; y--)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
 		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
-		CPoint temp2{ shapeMove.tempDxDy.x + circleCenter.x + x, shapeMove.tempDxDy.y + circleCenter.y + y };
+		CPoint temp2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		smallerRgn2.push_back(temp2);
-		dc->MoveTo(shapeMove.tempDxDy.x + circleCenter.x + x, shapeMove.tempDxDy.y + circleCenter.y + y);
+		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
 	}
-	CPoint temp2_2{ shapeMove.tempDxDy.x + circleCenter.x,shapeMove.tempDxDy.y + circleCenter.y + b };
+	CPoint temp2_2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	smallerRgn2.push_back(temp2);
 
-	dc->MoveTo(circleCenter.x, circleCenter.y + b);
+	dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
 
 	//ellipseFirstPart.clear();
 	//ellipseSecondPart.clear();
@@ -423,22 +417,12 @@ void EllipseShape::draw(CDC* dc)
 		rotateAndMoveCoordinate(fillAreaPoints[fillPointNum], DRAW_METHOD);
 	}
 
-	CRgn* ellipseRgn1 = new CRgn;
-	ellipseRgn1->CreatePolygonRgn(&smallerRgn1[0], smallerRgn1.size(), ALTERNATE);
-	CRgn* ellipseRgn2 = new CRgn;
-	ellipseRgn2->CreatePolygonRgn(&smallerRgn2[0], smallerRgn2.size(), ALTERNATE);
-
 	CRgn* fillAreaRgn = new CRgn;
 	fillAreaRgn->CreatePolygonRgn(&fillAreaPoints[0], fillAreaPoints.size(), ALTERNATE);
 
 	
 	dc->SelectObject(pen);
-	//dc->Ellipse(centerPoint23Bottom.x - 10, centerPoint23Bottom.y - 10, centerPoint23Bottom.x + 10, centerPoint23Bottom.y + 10);
-	//dc->Polygon(&eFP[0], eFP.size());
-	//dc->Polygon(&eSP[0], eSP.size());
 	dc->Polygon(&shapePoints[0], shapePoints.size());
-	//dc->FillRgn(ellipseRgn1, ellipseBrush);
-	//dc->FillRgn(ellipseRgn2, ellipseBrush);
 	dc->FillRgn(fillAreaRgn, ellipseBrush);
 
 
@@ -448,8 +432,6 @@ void EllipseShape::draw(CDC* dc)
 		dc->SelectObject(tempPen);
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
-
-		
 
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
 		for (int i = 0; i < 4; i++)
@@ -482,26 +464,20 @@ void EllipseShape::draw(CDC* dc)
 		}
 	}
 
-	ellipseRgn1->DeleteObject();
-	ellipseRgn2->DeleteObject();
 	pen->DeleteObject();
 	ellipseBrush->DeleteObject();
 	fillAreaRgn->DeleteObject();
 }
 
-bool EllipseShape::isClickedOnShapeRgn(CPoint point)
+bool IShape::isClickedOnShapeRgn(CPoint point)
 {
-	//HRGN ellipseRgn1 = CreatePolygonRgn(&eFP[0], eFP.size(), ALTERNATE);
-	//HRGN ellipseRgn2 = CreatePolygonRgn(&eSP[0], eSP.size(), ALTERNATE);
 	HRGN ellipseRgn = CreatePolygonRgn(&shapePoints[0], shapePoints.size(), ALTERNATE);
 	if (PtInRegion(ellipseRgn, point.x, point.y))
 	{
 		DeleteObject(ellipseRgn);
-		//DeleteObject(ellipseRgn2);
 		return true;
 	}
 	DeleteObject(ellipseRgn);
-	//DeleteObject(ellipseRgn2);
 	return false;
 }
 

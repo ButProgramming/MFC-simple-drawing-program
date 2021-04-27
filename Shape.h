@@ -42,7 +42,7 @@ public:
 	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };					// set if is shape or line selected or not
 	bool getSelected() { return isSelected; }												// get if is shape or line selected or not
-	virtual bool isClickedOnShapeRgn(CPoint point) { return false; };						// ckecked if clickpoint is in shape region
+	virtual bool isClickedOnShapeRgn(CPoint point);						// ckecked if clickpoint is in shape region
 	virtual bool isClickedPointForChange(CPoint point) { return false; };					// checked if clickpoint is in a point for change region
 	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
 	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  };		// pointer for HRGN function
@@ -115,15 +115,15 @@ public:
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
 	int lastY = NULL;
-	vector<CPoint> eFP;
-	vector<CPoint> eSP;
-	vector<CPoint> ellipseFirstPart;
-	vector<CPoint> ellipseSecondPart;
+	//vector<CPoint> eFP;
+	//vector<CPoint> eSP;
+	//vector<CPoint> ellipseFirstPart;
+	//vector<CPoint> ellipseSecondPart;
 	double ellipseAngleDegree = 0;
-	double rectEllipseDegree = 0;
+	//double rectEllipseDegree = 0;
 	bool isSelected = false;
 	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
-	double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
+	//double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
 	CRect boxRect = NULL;
 	
 	//int numberOfAngle; //
@@ -154,6 +154,8 @@ public:
 
 	
 protected:
+	const CPoint shapeCenterBeforRotate{ 0, 0 };
+
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
 	CPoint centerPoint23Top{ NULL, NULL };				// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
 	CPoint firstClickedPoint{ NULL, NULL };			    // array for x and y coordinates. It is using for save last X and Y before mouse get OnMouseMove and LButton is pressed down
@@ -205,7 +207,7 @@ class EllipseShape :public IShape
 public:
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	bool isClickedOnShapeRgn(CPoint point);
+	//bool isClickedOnShapeRgn(CPoint point);
 	//CPoint* getConstPointerForRgn(bool firstSemicircle)  { return (firstSemicircle) ? &eFP[0] : &eSP[0]; };
 	//int getSizeOfShapeArray(bool isFirstSemicircle)		 { return (isFirstSemicircle) ? eFP.size() : eSP.size(); };
 	bool isReversed() { return isReversedVar; }
