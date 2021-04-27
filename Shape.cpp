@@ -1217,7 +1217,6 @@ void Line::draw(CDC* dc)
 				pointsOfLine[pointNum].x + change.tempDxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE+change.dxDy[pointNum].x, pointsOfLine[pointNum].y + change.tempDxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE+ change.dxDy[pointNum].y);
 		}
 	}
-	
 	dc->MoveTo(CPoint(pointsOfLine[0].x + change.tempDxDy[0].x + change.dxDy[0].x, pointsOfLine[0].y + change.tempDxDy[0].y+ change.dxDy[0].y));
 	dc->LineTo(CPoint(pointsOfLine[1].x + change.tempDxDy[1].x + change.dxDy[1].x, pointsOfLine[1].y + change.tempDxDy[1].y+ change.dxDy[1].y));
 
@@ -1235,37 +1234,38 @@ void Line::draw(CDC* dc)
 	//AfxMessageBox(_T("here"));
 
 }
+
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
 	array <CPoint, 4> tempLineRectRgnHorizontal;
 	array <CPoint, 4> tempLineRectRgnVertical;
-	if (pointsOfLine[0].x + change.dxDy[0].x < pointsOfLine[1].x + change.dxDy[1].x)
+	if (pointsOfLine[0].x < pointsOfLine[1].x)
 	{
-		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y + SIZE_OF_LINE_RGN + change.dxDy[0].y); // leftbottom
-		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y + SIZE_OF_LINE_RGN + change.dxDy[1].y); // rightbottom
-		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y - SIZE_OF_LINE_RGN + change.dxDy[1].y); // righttop
-		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y - SIZE_OF_LINE_RGN + change.dxDy[0].y); // lefttop
+		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // lefttop
 	}
 	else
 	{
-		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y - SIZE_OF_LINE_RGN + change.dxDy[0].y); // leftbottom
-		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y - SIZE_OF_LINE_RGN + change.dxDy[1].y); // rightbottom
-		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y + SIZE_OF_LINE_RGN + change.dxDy[1].y); // righttop
-		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y + SIZE_OF_LINE_RGN + change.dxDy[0].y); // lefttop
+		tempLineRectRgnHorizontal[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnHorizontal[1] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnHorizontal[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnHorizontal[3] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // lefttop
 	}
-	if (pointsOfLine[0].y + change.dxDy[0].y < pointsOfLine[1].y + change.dxDy[1].y)
+	if (pointsOfLine[0].y < pointsOfLine[1].y)
 	{
-		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y - SIZE_OF_LINE_RGN + change.dxDy[0].y); // leftbottom
-		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y - SIZE_OF_LINE_RGN + change.dxDy[0].y); // rightbottom
-		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y + SIZE_OF_LINE_RGN + change.dxDy[1].y); // righttop
-		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y + SIZE_OF_LINE_RGN + change.dxDy[1].y); // lefttop
+		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y - SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y + SIZE_OF_LINE_RGN); // lefttop
 	}
 	else
 	{
-		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y + SIZE_OF_LINE_RGN + change.dxDy[0].y); // leftbottom
-		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN + change.dxDy[0].x, pointsOfLine[0].y + SIZE_OF_LINE_RGN + change.dxDy[0].y); // rightbottom
-		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y - SIZE_OF_LINE_RGN + change.dxDy[1].y); // righttop
-		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN + change.dxDy[1].x, pointsOfLine[1].y - SIZE_OF_LINE_RGN + change.dxDy[1].y); // lefttop
+		tempLineRectRgnVertical[0] = CPoint(pointsOfLine[0].x - SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // leftbottom
+		tempLineRectRgnVertical[1] = CPoint(pointsOfLine[0].x + SIZE_OF_LINE_RGN, pointsOfLine[0].y + SIZE_OF_LINE_RGN); // rightbottom
+		tempLineRectRgnVertical[2] = CPoint(pointsOfLine[1].x + SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // righttop
+		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // lefttop
 	}
 	
 
@@ -1286,15 +1286,12 @@ bool Line::isClickedOnShapeRgn(CPoint point)
 
 bool Line::isClickedPointForChange(CPoint point)
 {
-	
 	for (int pointNum = 0; pointNum<pointsOfLine.size(); pointNum++)
 	{
-		HRGN pointRgn = CreateEllipticRgn(pointsOfLine[pointNum].x + change.dxDy[pointNum].x - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + change.dxDy[pointNum].y - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE,
-			pointsOfLine[pointNum].x + change.dxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + change.dxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE);
-		
+		HRGN pointRgn = CreateEllipticRgn(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE,
+			pointsOfLine[pointNum].x + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE);
 		if (PtInRegion(pointRgn, point.x, point.y))
 		{
-			cout << "shape.cpp" << endl;
 			numberOfPoint = pointNum;
 			DeleteObject(pointRgn);
 			return true;

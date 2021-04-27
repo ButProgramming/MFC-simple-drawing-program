@@ -1344,7 +1344,18 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				selected = true;
 				for (int a = 0; a < numberOfAngels; a++)
 				{
-					pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a)+pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
+					if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine)
+					{
+						pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a) + pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
+						pDoc->getShapesVector()[s]->setCoordinateForChange(a, pDoc->getShapesVector()[s]->getCoordinateForChange(a) + pDoc->getShapesVector()[s]->getChangeDxDy(a));
+						pDoc->getShapesVector()[s]->setChangeDxDy(a, CPoint{ 0,0 });
+					}
+					else
+					{
+						pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a) + pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
+					}
+					
+					
 					pDoc->getShapesVector()[s]->setChangeTempDxDy(a, CPoint{ NULL, NULL });
 				}
 				
@@ -1396,7 +1407,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 								//AfxMessageBox(str);
 							}
 						}
-						cout << numberOfPointForLines0 << "---" << numberOfPointForLines1 << endl;
+						cout << numberOfPointForLines0 << "  --  " << numberOfPointForLines1 << endl;
 						
 						if (numberOfPointForLines0 == -1)
 						{
