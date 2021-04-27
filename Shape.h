@@ -43,13 +43,13 @@ public:
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };					// set if is shape or line selected or not
 	bool getSelected() { return isSelected; }												// get if is shape or line selected or not
 	virtual bool isClickedOnShapeRgn(CPoint point);						// ckecked if clickpoint is in shape region
-	virtual bool isClickedPointForChange(CPoint point) { return false; };					// checked if clickpoint is in a point for change region
+	virtual bool isClickedPointForChange(CPoint point);					// checked if clickpoint is in a point for change region
 	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
 	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  };		// pointer for HRGN function
 	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
 	virtual bool isReversed() { return isReversedVar; };									// is needed for rotate shape. Angle for rotate will be -, when return is true
-	virtual CPoint getCoordinateForChange(int num) { return CPoint{ NULL, NULL }; };		// get coordinate of points that is used for change of shapes properites. Num -> number of point
-	virtual void setCoordinateForChange(int num, CPoint point) {};							// set coordinate of points that is used for change of shapes properites. Num -> number of point
+	virtual CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };		// get coordinate of points that is used for change of shapes properites. Num -> number of point
+	virtual void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };							// set coordinate of points that is used for change of shapes properites. Num -> number of point
 	CPoint getTemporaryDxDy(int num) { return (num < temporaryDxDy.size()) ? 
 		temporaryDxDy[num] : CPoint{ NULL, NULL }; };										// getter for temporaryDxDy
 	void setTemporaryDxDy(int num, CPoint point) { temporaryDxDy[num] = point; };			// setter for temporaryDxDy
@@ -210,10 +210,10 @@ public:
 	//bool isClickedOnShapeRgn(CPoint point);
 	//CPoint* getConstPointerForRgn(bool firstSemicircle)  { return (firstSemicircle) ? &eFP[0] : &eSP[0]; };
 	//int getSizeOfShapeArray(bool isFirstSemicircle)		 { return (isFirstSemicircle) ? eFP.size() : eSP.size(); };
-	bool isReversed() { return isReversedVar; }
-	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };
-	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };
-	bool isClickedPointForChange(CPoint point);
+	//bool isReversed() { return isReversedVar; }
+	//CPoint getCoordinateForChange(int num) {  };
+	//void setCoordinateForChange(int num, CPoint point) {  };
+	//bool isClickedPointForChange(CPoint point);
 	//CPoint getPointForRotateTool() {  };
 	/*void setFirstClickedPoint(CPoint point)  {  };
 	CPoint getFirstClickedPoint() {  };*/

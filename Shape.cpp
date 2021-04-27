@@ -481,7 +481,7 @@ bool IShape::isClickedOnShapeRgn(CPoint point)
 	return false;
 }
 
-bool EllipseShape::isClickedPointForChange(CPoint point)
+bool IShape::isClickedPointForChange(CPoint point)
 {
 	for (int pointNum = 0; pointNum < points.size(); pointNum++)
 	{
