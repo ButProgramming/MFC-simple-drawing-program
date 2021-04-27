@@ -337,75 +337,80 @@ void EllipseShape::draw(CDC* dc)
 
 	for (int i = 0; i < eFP.size(); i++)
 	{
-		int tempX = eFP[i].x;
+		rotateAndMoveCoordinate(eFP[i], DRAW_METHOD);
+		//eFP[i] = returnedPoint;
+	/*	int tempX = eFP[i].x;
 		int tempY = eFP[i].y;
 		eFP[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		eFP[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		eFP[i].x += centerOfShape.x + dx;
-		eFP[i].y += centerOfShape.y + dy;
+		eFP[i].y += centerOfShape.y + dy;*/
 	}
 
 	for (int i = 0; i < eSP.size(); i++)
 	{
-		int tempX = eSP[i].x;
+		rotateAndMoveCoordinate(eSP[i], DRAW_METHOD);
+		//eSP[i] = returnedPoint;
+		//eSP[i] = rotateAndMoveCoordinate(eSP[i], DRAW_METHOD);
+		/*int tempX = eSP[i].x;
 		int tempY = eSP[i].y;
 		eSP[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		eSP[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		eSP[i].x += centerOfShape.x + dx;
-		eSP[i].y += centerOfShape.y + dy;
+		eSP[i].y += centerOfShape.y + dy;*/
 	}
 
 	for (int i = 0; i < shapePoints.size(); i++)
 	{
-		int tempX = shapePoints[i].x;
+		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
+		/*int tempX = shapePoints[i].x;
 		int tempY = shapePoints[i].y;
 		shapePoints[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		shapePoints[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		shapePoints[i].x += centerOfShape.x + dx;
-		shapePoints[i].y += centerOfShape.y + dy;
+		shapePoints[i].y += centerOfShape.y + dy;*/
 	}
 
 
 	for (int i = 0; i < 4; i++)
 	{
-		int tempX = selectedAreaPoints[i].x;
+		rotateAndMoveCoordinate(selectedAreaPoints[i], DRAW_METHOD);
+		/*int tempX = selectedAreaPoints[i].x;
 		int tempY = selectedAreaPoints[i].y;
 		selectedAreaPoints[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		selectedAreaPoints[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		selectedAreaPoints[i].x += centerOfShape.x + dx;
-		selectedAreaPoints[i].y += centerOfShape.y + dy;
+		selectedAreaPoints[i].y += centerOfShape.y + dy;*/
 	}
 
-	int tempXBottom = centerPoint23Bottom.x;
+	rotateAndMoveCoordinate(centerPoint23Bottom, DRAW_METHOD);
+	/*int tempXBottom = centerPoint23Bottom.x;
 	int tempYBottom = centerPoint23Bottom.y;
 	centerPoint23Bottom.x = round(tempXBottom * cos(ellipseAngleRad) - tempYBottom * sin(ellipseAngleRad));
 	centerPoint23Bottom.y = round(tempXBottom * sin(ellipseAngleRad) + tempYBottom * cos(ellipseAngleRad));
 	centerPoint23Bottom.x += centerOfShape.x + dx;
-	centerPoint23Bottom.y += centerOfShape.y + dy;
+	centerPoint23Bottom.y += centerOfShape.y + dy;*/
 
-	int tempXTop = centerPoint23Top.x;
+	rotateAndMoveCoordinate(centerPoint23Top, DRAW_METHOD);
+	/*int tempXTop = centerPoint23Top.x;
 	int tempYTop = centerPoint23Top.y;
 	centerPoint23Top.x = round(tempXTop * cos(ellipseAngleRad) - tempYTop * sin(ellipseAngleRad));
 	centerPoint23Top.y = round(tempXTop * sin(ellipseAngleRad) + tempYTop * cos(ellipseAngleRad));
 	centerPoint23Top.x += centerOfShape.x + dx;
-	centerPoint23Top.y += centerOfShape.y + dy;
+	centerPoint23Top.y += centerOfShape.y + dy;*/
+	
 
 	int tempXFP = firstPoint.x;
 	int tempYFP = firstPoint.y;
-	firstPoint.x = round(tempXTop * 1 - tempYTop * 0);
-	firstPoint.y = round(tempXTop * 0 + tempYTop * 1);
+	firstPoint.x = round(tempXFP * 1 - tempYFP * 0);
+	firstPoint.y = round(tempXFP * 0 + tempYFP * 1);
 	firstPoint.x += centerOfShape.x + dx;
 	firstPoint.y += centerOfShape.y + dy;
 	
 	// move and rotate points for lines
 	for (int numPoint = 0; numPoint < linkingPoints.size(); numPoint++)
 	{
-		int tempX = linkingPoints[numPoint].x;
-		int tempY = linkingPoints[numPoint].y;
-		linkingPoints[numPoint].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		linkingPoints[numPoint].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		linkingPoints[numPoint].x += centerOfShape.x + dx;
-		linkingPoints[numPoint].y += centerOfShape.y + dy;
+		rotateAndMoveCoordinate(linkingPoints[numPoint], DRAW_METHOD);
 	}
 
 	// create smaller ellipse to fill region
@@ -865,9 +870,9 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	return false;
 }
 
-CPoint IShape::rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int from)
+CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int from)
 {
-	if (toolIsUsed == Tools::shapeMove)
+	//if (toolIsUsed == Tools::shapeMove)
 	{
 		
 		if (from == MOUSE_MOVE)
@@ -889,9 +894,18 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int fro
 			centerOfShape.y += point.y;
 			return point;
 		}
+		else if (from == DRAW_METHOD)
+		{
+			int tempX = point.x;
+			int tempY = point.y;
+			point.x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+			point.y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+			point.x += centerOfShape.x + dx;
+			point.y += centerOfShape.y + dy;
+		}
 	}
-	else if (toolIsUsed == Tools::change)
-	{
+	//else if (toolIsUsed == Tools::change)
+	/*{
 		if (from == MOUSE_MOVE)
 		{
 			int tempX = point.x;
@@ -900,7 +914,7 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int fro
 			point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
 			return point;
 		}
-	}
+	}*/
 }
 
 void IShape::rotateShape(CPoint point)

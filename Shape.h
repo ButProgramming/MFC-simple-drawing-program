@@ -23,6 +23,7 @@ using namespace std;
 // laws for rotate and move
 #define MOUSE_MOVE 0
 #define LBUTTON_UP 1
+#define DRAW_METHOD 2
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };
@@ -63,7 +64,7 @@ public:
 	void setShapeMoveStartClickedCoordinate(CPoint point) { shapeMove.startClickedCoordinate = point; };
 	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
 
-	CPoint rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int from);
+	CPoint rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int from);
 	void rotateShape(CPoint point);
 	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound);
 
