@@ -712,9 +712,11 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			//
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
-				selected = true;
+				
+				//selected = true;
 				if (pDoc->getShapesVector()[s]->getNumberOfPointForChange() != -1)
 				{
+					cout << "here" << endl;
 					// set change of mouse movement 
 					pDoc->getShapesVector()[s]->setChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange(), CPoint{ point - pDoc->getShapesVector()[s]->getChangeStartClickedCoordinate() });
 					
@@ -831,19 +833,8 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	{
 		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
 		{
-			// move x coordinates of all lines
-			//x
-			//pDoc->getShapesVector()[shapeNum]->firstPointOfLine.x += IShape::dx;
-			//pDoc->getShapesVector()[shapeNum]->secondPointOfLine.x += IShape::dx;
-			//CPoint testFirst = 
-			//CPoint testSecond =
-			//cout << "test "<< testFirst.x << " " << testFirst.y << endl;
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y));
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y));
-
-			//cout << "move shapes in HSCROLL" << endl;
-			//AfxMessageBox(_T("0"));
-
 		}
 		pDoc->getShapesVector()[shapeNum]->centerOfShape.x += IShape::dx;
 	}
@@ -939,343 +930,343 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 
 void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	//AfxMessageBox(_T("123"));
-	auto pDoc = GetDocument();
-	int sizeOfShapesVector = pDoc->getShapesVector().size();
-	bool shapeIsFound = false; //exit from for loop if = true
-	if (pDoc->getToolIsUsed() == Tools::select_tool)
-	{
-		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-		{
-			switch (pDoc->getShapesVector()[i]->type)
-			{
-			case ShapeType::ellipse:
-			{
-				CPoint cp;
-				CString str;
-				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eFP[0]), pDoc->getShapesVector()[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
-				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
-
-				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
-				{
-					shapeIsFound = true;
-					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-					{
-						//unselecting others shapes
-						if (pDoc->getShapesVector()[i]->isSelected == true)
-						{
-							pDoc->getShapesVector()[i]->pen->DeleteObject();
-							pDoc->getShapesVector()[i]->isSelected = false;
-							break;
-						};
-					}
-					//swap
-					pDoc->getShapesVector()[i]->isSelected = true;
-					/*pDoc->getShapesVector()[i]->isSelected = true;
-					IShape* shape;
-					pDoc->getShapesVector().push_back(shape);
-					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
-					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);*/
-				}
-				DeleteObject(ellipseRgn1);
-				DeleteObject(ellipseRgn2);
-				break;
-			}
-			case ShapeType::rectangle:
-			{
-				CPoint rectangleCenter = pDoc->getShapesVector()[i]->centerOfShape; //convinient
-				int rectangleSize = pDoc->getShapesVector()[i]->size; //convinient
-				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 4, ALTERNATE);
-				if (PtInRegion(rectangleRgn, point.x, point.y))
-				{
-					//AfxMessageBox(_T("Rectangle"));
-					shapeIsFound = true;
-					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-					{
-						//unselecting others shapes
-						if (pDoc->getShapesVector()[i]->isSelected == true)
-						{
-							pDoc->getShapesVector()[i]->pen->DeleteObject();
-							pDoc->getShapesVector()[i]->isSelected = false;
-							break;
-						};
-					}
-					pDoc->getShapesVector()[i]->isSelected = true;
-					IShape* shape;
-					pDoc->getShapesVector().push_back(shape);
-					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
-					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);
-					Invalidate();
-				}
-				DeleteObject(rectangleRgn);
-
-				break;
-			}
-			case ShapeType::triangle:
-			{
-				CPoint rectangleCenter = pDoc->getShapesVector()[i]->centerOfShape; //convinient
-				int rectangleSize = pDoc->getShapesVector()[i]->size; //convinient
-				int h = 3 * rectangleSize;
-				int side = 2 * h / sqrt(3);
-
-				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 3, ALTERNATE);
-				//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
-				if (PtInRegion(rectangleRgn, point.x, point.y))
-				{
-					shapeIsFound = true;
-					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-					{
-						//unselecting others shapes
-						if (pDoc->getShapesVector()[i]->isSelected == true)
-						{
-							pDoc->getShapesVector()[i]->pen->DeleteObject();
-							pDoc->getShapesVector()[i]->isSelected = false;
-							break;
-						};
-					}
-					pDoc->getShapesVector()[i]->isSelected = true;
-					IShape* shape;
-					pDoc->getShapesVector().push_back(shape);
-					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
-					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);
-					Invalidate();
-
-				}
-
-				break;
-			}
-			}
-
-
-			if (shapeIsFound)
-			{
-				break;
-			}
-		}
-	}
-	else if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
-	{
-		bool shapeIsFound = false;
-		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
-		{
-			switch (pDoc->getShapesVector()[i]->type)
-			{
-			case ShapeType::ellipse:
-			{
-
-				CPoint cp;
-				CString str;
-				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eFP[0]), pDoc->getShapesVector()[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
-				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
-
-				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
-				{
-					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
-					{
-						i = -1;
-						break;
-					}
-					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
-					{
-						continue;
-					}
-					else
-					{
-						if (pDoc->selectedShapesIDs.size() < 2)
-						{
-
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						else
-						{
-							pDoc->selectedShapesIDs.pop();
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						//unselected all shapes
-						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
-						{
-							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
-								continue;
-							else*/
-							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
-						}
-						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-						{
-							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
-							{
-								if (pDoc->getShapesVector()[s]->constID == constIDit)
-								{
-									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-									{
-										//int contsID = pDoc->getShapesVector()[it]->constID;
-										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
-										shapeIsFound = true;
-										IShape* shape;
-										pDoc->getShapesVector().push_back(shape);
-										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
-										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
-										//Invalidate();
-									}
-								}
-								else
-								{
-									continue;
-								}
-							}
-						}
-					}
-
-				}
-				break;
-			}
-
-			case ShapeType::rectangle:
-			{
-
-				CPoint cp;
-				CString str;
-				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 4, ALTERNATE);// = CreatePolygonRgn(;
-				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
-
-				if (PtInRegion(rectangleRgn, point.x, point.y))
-				{
-					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
-					{
-						i = -1;
-						break;
-					}
-					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
-					{
-						continue;
-					}
-					else
-					{
-						if (pDoc->selectedShapesIDs.size() < 2)
-						{
-
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						else
-						{
-							pDoc->selectedShapesIDs.pop();
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						//unselected all shapes
-						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
-						{
-							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
-								continue;
-							else*/
-							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
-						}
-						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-						{
-							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
-							{
-								if (pDoc->getShapesVector()[s]->constID == constIDit)
-								{
-									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-									{
-										//int contsID = pDoc->getShapesVector()[it]->constID;
-										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
-										shapeIsFound = true;
-										IShape* shape;
-										pDoc->getShapesVector().push_back(shape);
-										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
-										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
-										//Invalidate();
-									}
-								}
-								else
-								{
-									continue;
-								}
-							}
-						}
-					}
-
-				}
-				break;
-			}
-
-			case ShapeType::triangle:
-			{
-
-				CPoint cp;
-				CString str;
-				HRGN triangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 3, ALTERNATE);// = CreatePolygonRgn(;
-				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
-
-				if (PtInRegion(triangleRgn, point.x, point.y))
-				{
-					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
-					{
-						i = -1;
-						break;
-					}
-					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
-					{
-						continue;
-					}
-					else
-					{
-						if (pDoc->selectedShapesIDs.size() < 2)
-						{
-
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						else
-						{
-							pDoc->selectedShapesIDs.pop();
-							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
-						}
-						//unselected all shapes
-						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
-						{
-							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
-								continue;
-							else*/
-							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
-						}
-						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
-						{
-							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
-							{
-								if (pDoc->getShapesVector()[s]->constID == constIDit)
-								{
-									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
-									{
-										//int contsID = pDoc->getShapesVector()[it]->constID;
-										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
-										shapeIsFound = true;
-										IShape* shape;
-										pDoc->getShapesVector().push_back(shape);
-										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
-										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
-										//Invalidate();
-									}
-								}
-								else
-								{
-									continue;
-								}
-							}
-						}
-					}
-
-				}
-				break;
-			}
-
-			}
-			if (shapeIsFound)
-			{
-				break;
-			}
-		}
-
-	}
-	CView::OnLButtonDblClk(nFlags, point);
+//	//AfxMessageBox(_T("123"));
+//	auto pDoc = GetDocument();
+//	int sizeOfShapesVector = pDoc->getShapesVector().size();
+//	bool shapeIsFound = false; //exit from for loop if = true
+//	if (pDoc->getToolIsUsed() == Tools::select_tool)
+//	{
+//		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+//		{
+//			switch (pDoc->getShapesVector()[i]->type)
+//			{
+//			case ShapeType::ellipse:
+//			{
+//				CPoint cp;
+//				CString str;
+//				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eFP[0]), pDoc->getShapesVector()[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+//				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
+//
+//				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+//				{
+//					shapeIsFound = true;
+//					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+//					{
+//						//unselecting others shapes
+//						if (pDoc->getShapesVector()[i]->isSelected == true)
+//						{
+//							pDoc->getShapesVector()[i]->pen->DeleteObject();
+//							pDoc->getShapesVector()[i]->isSelected = false;
+//							break;
+//						};
+//					}
+//					//swap
+//					pDoc->getShapesVector()[i]->isSelected = true;
+//					/*pDoc->getShapesVector()[i]->isSelected = true;
+//					IShape* shape;
+//					pDoc->getShapesVector().push_back(shape);
+//					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
+//					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);*/
+//				}
+//				DeleteObject(ellipseRgn1);
+//				DeleteObject(ellipseRgn2);
+//				break;
+//			}
+//			case ShapeType::rectangle:
+//			{
+//				CPoint rectangleCenter = pDoc->getShapesVector()[i]->centerOfShape; //convinient
+//				int rectangleSize = pDoc->getShapesVector()[i]->size; //convinient
+//				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 4, ALTERNATE);
+//				if (PtInRegion(rectangleRgn, point.x, point.y))
+//				{
+//					//AfxMessageBox(_T("Rectangle"));
+//					shapeIsFound = true;
+//					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+//					{
+//						//unselecting others shapes
+//						if (pDoc->getShapesVector()[i]->isSelected == true)
+//						{
+//							pDoc->getShapesVector()[i]->pen->DeleteObject();
+//							pDoc->getShapesVector()[i]->isSelected = false;
+//							break;
+//						};
+//					}
+//					pDoc->getShapesVector()[i]->isSelected = true;
+//					IShape* shape;
+//					pDoc->getShapesVector().push_back(shape);
+//					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
+//					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);
+//					Invalidate();
+//				}
+//				DeleteObject(rectangleRgn);
+//
+//				break;
+//			}
+//			case ShapeType::triangle:
+//			{
+//				CPoint rectangleCenter = pDoc->getShapesVector()[i]->centerOfShape; //convinient
+//				int rectangleSize = pDoc->getShapesVector()[i]->size; //convinient
+//				int h = 3 * rectangleSize;
+//				int side = 2 * h / sqrt(3);
+//
+//				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 3, ALTERNATE);
+//				//CreateEllipticRgn(rectangleCenter.x - rectangleSize, rectangleCenter.y - rectangleSize, rectangleCenter.x + rectangleSize, rectangleCenter.y + rectangleSize);
+//				if (PtInRegion(rectangleRgn, point.x, point.y))
+//				{
+//					shapeIsFound = true;
+//					for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+//					{
+//						//unselecting others shapes
+//						if (pDoc->getShapesVector()[i]->isSelected == true)
+//						{
+//							pDoc->getShapesVector()[i]->pen->DeleteObject();
+//							pDoc->getShapesVector()[i]->isSelected = false;
+//							break;
+//						};
+//					}
+//					pDoc->getShapesVector()[i]->isSelected = true;
+//					IShape* shape;
+//					pDoc->getShapesVector().push_back(shape);
+//					iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);
+//					pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i);
+//					Invalidate();
+//
+//				}
+//
+//				break;
+//			}
+//			}
+//
+//
+//			if (shapeIsFound)
+//			{
+//				break;
+//			}
+//		}
+//	}
+//	else if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
+//	{
+//		bool shapeIsFound = false;
+//		for (int i = sizeOfShapesVector - 1; i >= 0; i--)
+//		{
+//			switch (pDoc->getShapesVector()[i]->type)
+//			{
+//			case ShapeType::ellipse:
+//			{
+//
+//				CPoint cp;
+//				CString str;
+//				HRGN ellipseRgn1 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eFP[0]), pDoc->getShapesVector()[i]->eFP.size(), ALTERNATE);// = CreatePolygonRgn(;
+//				HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
+//
+//				if (PtInRegion(ellipseRgn1, point.x, point.y) || PtInRegion(ellipseRgn2, point.x, point.y))
+//				{
+//					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
+//					{
+//						i = -1;
+//						break;
+//					}
+//					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
+//					{
+//						continue;
+//					}
+//					else
+//					{
+//						if (pDoc->selectedShapesIDs.size() < 2)
+//						{
+//
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						else
+//						{
+//							pDoc->selectedShapesIDs.pop();
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						//unselected all shapes
+//						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
+//						{
+//							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
+//								continue;
+//							else*/
+//							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
+//						}
+//						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+//						{
+//							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
+//							{
+//								if (pDoc->getShapesVector()[s]->constID == constIDit)
+//								{
+//									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+//									{
+//										//int contsID = pDoc->getShapesVector()[it]->constID;
+//										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
+//										shapeIsFound = true;
+//										IShape* shape;
+//										pDoc->getShapesVector().push_back(shape);
+//										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
+//										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
+//										//Invalidate();
+//									}
+//								}
+//								else
+//								{
+//									continue;
+//								}
+//							}
+//						}
+//					}
+//
+//				}
+//				break;
+//			}
+//
+//			case ShapeType::rectangle:
+//			{
+//
+//				CPoint cp;
+//				CString str;
+//				HRGN rectangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 4, ALTERNATE);// = CreatePolygonRgn(;
+//				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
+//
+//				if (PtInRegion(rectangleRgn, point.x, point.y))
+//				{
+//					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
+//					{
+//						i = -1;
+//						break;
+//					}
+//					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
+//					{
+//						continue;
+//					}
+//					else
+//					{
+//						if (pDoc->selectedShapesIDs.size() < 2)
+//						{
+//
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						else
+//						{
+//							pDoc->selectedShapesIDs.pop();
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						//unselected all shapes
+//						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
+//						{
+//							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
+//								continue;
+//							else*/
+//							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
+//						}
+//						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+//						{
+//							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
+//							{
+//								if (pDoc->getShapesVector()[s]->constID == constIDit)
+//								{
+//									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+//									{
+//										//int contsID = pDoc->getShapesVector()[it]->constID;
+//										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
+//										shapeIsFound = true;
+//										IShape* shape;
+//										pDoc->getShapesVector().push_back(shape);
+//										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
+//										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
+//										//Invalidate();
+//									}
+//								}
+//								else
+//								{
+//									continue;
+//								}
+//							}
+//						}
+//					}
+//
+//				}
+//				break;
+//			}
+//
+//			case ShapeType::triangle:
+//			{
+//
+//				CPoint cp;
+//				CString str;
+//				HRGN triangleRgn = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->points[0]), 3, ALTERNATE);// = CreatePolygonRgn(;
+//				//HRGN ellipseRgn2 = CreatePolygonRgn(&(pDoc->getShapesVector()[i]->eSP[0]), pDoc->getShapesVector()[i]->eSP.size(), ALTERNATE);
+//
+//				if (PtInRegion(triangleRgn, point.x, point.y))
+//				{
+//					if (pDoc->getShapesVector()[i]->isSelectedFromDoubleSelectingTool)
+//					{
+//						i = -1;
+//						break;
+//					}
+//					if (pDoc->selectedShapesIDs.size() > 0 && (pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.front() || pDoc->getShapesVector()[i]->constID == pDoc->selectedShapesIDs.back()))
+//					{
+//						continue;
+//					}
+//					else
+//					{
+//						if (pDoc->selectedShapesIDs.size() < 2)
+//						{
+//
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						else
+//						{
+//							pDoc->selectedShapesIDs.pop();
+//							pDoc->selectedShapesIDs.push(pDoc->getShapesVector()[i]->constID);
+//						}
+//						//unselected all shapes
+//						for (int it = 0; it < pDoc->getShapesVector().size(); it++)
+//						{
+//							/*if (pDoc->getShapesVector()[it]->constID == pDoc->selectedShapesIDs.back())
+//								continue;
+//							else*/
+//							pDoc->getShapesVector()[it]->isSelectedFromDoubleSelectingTool = false;
+//						}
+//						for (int constIDit = 0; constIDit < IShape::countOfShape; constIDit++)
+//						{
+//							for (int s = pDoc->getShapesVector().size() - 1; s >= 0; s--)
+//							{
+//								if (pDoc->getShapesVector()[s]->constID == constIDit)
+//								{
+//									if (constIDit == pDoc->selectedShapesIDs.front() || constIDit == pDoc->selectedShapesIDs.back())
+//									{
+//										//int contsID = pDoc->getShapesVector()[it]->constID;
+//										pDoc->getShapesVector()[s]->isSelectedFromDoubleSelectingTool = true;
+//										shapeIsFound = true;
+//										IShape* shape;
+//										pDoc->getShapesVector().push_back(shape);
+//										iter_swap(pDoc->getShapesVector().begin() + s, pDoc->getShapesVector().end() - 1);
+//										pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + s);
+//										//Invalidate();
+//									}
+//								}
+//								else
+//								{
+//									continue;
+//								}
+//							}
+//						}
+//					}
+//
+//				}
+//				break;
+//			}
+//
+//			}
+//			if (shapeIsFound)
+//			{
+//				break;
+//			}
+//		}
+//
+//	}
+//	CView::OnLButtonDblClk(nFlags, point);
 }
 
 
@@ -1405,7 +1396,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 								//AfxMessageBox(str);
 							}
 						}
-						cout << numberOfPointForLines0 << " " << numberOfPointForLines1 << endl;
+						cout << numberOfPointForLines0 << "---" << numberOfPointForLines1 << endl;
 						
 						if (numberOfPointForLines0 == -1)
 						{
@@ -1592,28 +1583,28 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 {
-	//AfxMessageBox(_T("DoubleSelect"));
-	auto pDoc = GetDocument();
-	pDoc->getToolIsUsed() = Tools::doubleSelectTool;
-	int s = pDoc->lines.size();
-	CString str;
-	str.Format(_T("Size lines vector: %d"), s);
-	//AfxMessageBox(str);
-	//for (Lines* l : pDoc->lines)
-	//{
-	//	//l->draw();
-	//}
-	for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelected = false;
-	}
-	for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelectedFromDoubleSelectingTool = false;
-	}
-	queue<int> clear;
-	swap(clear, pDoc->selectedShapesIDs);
-	Invalidate();
+//	//AfxMessageBox(_T("DoubleSelect"));
+//	auto pDoc = GetDocument();
+//	pDoc->getToolIsUsed() = Tools::doubleSelectTool;
+//	int s = pDoc->lines.size();
+//	CString str;
+//	str.Format(_T("Size lines vector: %d"), s);
+//	//AfxMessageBox(str);
+//	//for (Lines* l : pDoc->lines)
+//	//{
+//	//	//l->draw();
+//	//}
+//	for (auto s : pDoc->getShapesVector())
+//	{
+//		s->isSelected = false;
+//	}
+//	for (auto s : pDoc->getShapesVector())
+//	{
+//		s->isSelectedFromDoubleSelectingTool = false;
+//	}
+//	queue<int> clear;
+//	swap(clear, pDoc->selectedShapesIDs);
+//	Invalidate();
 }
 
 
@@ -1631,39 +1622,6 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 
 	// update window
 	Invalidate();
-
-	// set tool change (neutral tool for us)
-
-
-	/*if (pDoc->selectedShapesIDs.size() > 1)
-	{
-
-		if (pDoc->selectedShapesIDs.size() > 1)
-		{
-			bool LineExists = false;
-			for (auto l : pDoc->lines)
-			{
-				if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-				{
-					LineExists = true;
-					break;
-				}
-			}
-			if (!LineExists)
-			{
-				Lines* line = new Lines(pDoc->selectedShapesIDs.front(), pDoc->selectedShapesIDs.back(), LineType::Basic, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-				pDoc->lines.push_back(line);
-				Invalidate();
-			}
-		}
-	}
-	CString db;
-	db.Format(_T("lines.size() = %d"), pDoc->lines.size()); */
-	//AfxMessageBox(db);
-	//AfxMessageBox(_T("BasicLine"));
-
-	// TODO: Add your command handler code here
-
 }
 
 
@@ -2003,51 +1961,54 @@ void CEgoSecureTestAssignmentView::OnEditNormalize()
 	//pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
-		if (pDoc->getShapesVector()[s]->isSelected)
-		{
+		pDoc->getShapesVector()[s]->normalizeShape();
+		//if (pDoc->getShapesVector()[s]->isSelected)
+		//{
 
 
-			//pDoc->getShapesVector()[s]->isNormalized = true;
-			pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
-			CPoint tmp[4];
-			if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					tmp[i] = pDoc->getShapesVector()[s]->recFromRgn[i];
-				}
+		//	//pDoc->getShapesVector()[s]->isNormalized = true;
+		//	pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
+		//	CPoint tmp[4];
+		//	if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
+		//	{
+		//		for (int i = 0; i < 4; i++)
+		//		{
+		//			tmp[i] = pDoc->getShapesVector()[s]->recFromRgn[i];
+		//		}
 
-			}
-			else
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					tmp[i] = pDoc->getShapesVector()[s]->points[i];
-				}
+		//	}
+		//	else
+		//	{
+		//		for (int i = 0; i < 4; i++)
+		//		{
+		//			tmp[i] = pDoc->getShapesVector()[s]->points[i];
+		//		}
 
-			}
+		//	}
 
-			CPoint centerSidesPoints[2];
-			centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
-			centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
-			int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-			int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-			int min;
-			min = (l1 < l2) ? l1 : l2;
-			CString dbug;
-			dbug.Format(_T("%d, %d"), l1, l2);
-			//AfxMessageBox(dbug);
-			for (int i = 0; i < 4; i++)
-			{
-				pDoc->getShapesVector()[s]->dx_dy[i].x = 0;
-				pDoc->getShapesVector()[s]->dx_dy[i].y = 0;
-				pDoc->getShapesVector()[s]->dx_dy_temp[i].x = 0;
-				pDoc->getShapesVector()[s]->dx_dy_temp[i].y = 0;
-			}
-			pDoc->getShapesVector()[s]->size = min;
-			Invalidate();
-		}
+		//	CPoint centerSidesPoints[2];
+		//	centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
+		//	centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
+		//	int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
+		//	int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
+		//	int min;
+		//	min = (l1 < l2) ? l1 : l2;
+		//	CString dbug;
+		//	dbug.Format(_T("%d, %d"), l1, l2);
+		//	//AfxMessageBox(dbug);
+		//	for (int i = 0; i < 4; i++)
+		//	{
+		//		pDoc->getShapesVector()[s]->dx_dy[i].x = 0;
+		//		pDoc->getShapesVector()[s]->dx_dy[i].y = 0;
+		//		pDoc->getShapesVector()[s]->dx_dy_temp[i].x = 0;
+		//		pDoc->getShapesVector()[s]->dx_dy_temp[i].y = 0;
+		//	}
+		//	pDoc->getShapesVector()[s]->size = min;
+		//	Invalidate();
+		//}
+
 	}
+	Invalidate();
 	// TODO: Add your command handler code here
 }
 

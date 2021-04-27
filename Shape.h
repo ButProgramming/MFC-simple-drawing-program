@@ -73,6 +73,7 @@ public:
 	CPoint getChangeTempDxDy(int num) { return change.tempDxDy[num]; };
 	void setChangeDxDy(int num, CPoint point) { change.dxDy[num] = point; };
 	CPoint getChangeDxDy(int num) { return change.dxDy[num]; };
+	void normalizeShape();
 	
 	//void setTempDxDy()
 
