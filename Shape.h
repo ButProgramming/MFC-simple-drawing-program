@@ -186,6 +186,11 @@ protected:
 
 	} change;
 
+	//for shape
+	array<CPoint, 4> selectedAreaPoints;
+	array<CPoint, 4> linkingPoints;
+	vector<CPoint> fillAreaPoints;
+	vector<CPoint> shapePoints;
 
 	//struct isConnected { bool firstPointOfLine = false;
 	//bool secondPointOfLine = false; } isConnected;		// when first or second point of line are connected - > true
@@ -203,8 +208,8 @@ public:
 	CPoint* getConstPointerForRgn(bool firstSemicircle)  { return (firstSemicircle) ? &eFP[0] : &eSP[0]; };
 	int getSizeOfShapeArray(bool isFirstSemicircle)		 { return (isFirstSemicircle) ? eFP.size() : eSP.size(); };
 	bool isReversed() { return isReversedVar; }
-	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return points[num]; };
-	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) points[num] = point; };
+	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };
+	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };
 	bool isClickedPointForChange(CPoint point);
 	//CPoint getPointForRotateTool() {  };
 	/*void setFirstClickedPoint(CPoint point)  {  };

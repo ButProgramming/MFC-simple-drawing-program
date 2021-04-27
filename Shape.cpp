@@ -239,29 +239,29 @@ void EllipseShape::draw(CDC* dc)
 	dc->SelectObject(pen);
 	CPoint circleCenter{ 0, 0 };
 
-	CPoint diffAr[4];
+	array<CPoint, 4> diffAr;
 	for (int i = 0; i < 4; i++)
 	{
 		//diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
 		diffAr[i] = change.dxDy[i] + change.tempDxDy[i];
 	}
 
-	points[0] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-	points[1] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-	points[2] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-	points[3] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
+	selectedAreaPoints[0] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
+	selectedAreaPoints[1] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + circleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
+	selectedAreaPoints[2] = CPoint(shapeMove.tempDxDy.x + circleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
+	selectedAreaPoints[3] = CPoint(shapeMove.tempDxDy.x + circleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + circleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
 
 	
 	//cout << points[0].y << " " << points[3].y << endl;
 	// calculate coordinates for points, that are needed to draw links (lines)
-	pointsForLines[0] = CPoint((points[1].x - points[0].x) / 2 + points[0].x, points[0].y);
-	pointsForLines[1] = CPoint(points[1].x, (points[1].y + points[2].y) / 2);
-	pointsForLines[2] = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
-	pointsForLines[3] = CPoint(points[3].x, (points[0].y + points[3].y) / 2);
+	pointsForLines[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, selectedAreaPoints[0].y);
+	pointsForLines[1] = CPoint(selectedAreaPoints[1].x, (selectedAreaPoints[1].y + selectedAreaPoints[2].y) / 2);
+	pointsForLines[2] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
+	pointsForLines[3] = CPoint(selectedAreaPoints[3].x, (selectedAreaPoints[0].y + selectedAreaPoints[3].y) / 2);
 
 	// points that needed for drawing rotate tool
-	centerPoint23Bottom = CPoint((points[2].x - points[3].x) / 2 + points[3].x, points[2].y);
-	if (points[0].y >= points[3].y)
+	centerPoint23Bottom = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
+	if (selectedAreaPoints[0].y >= selectedAreaPoints[3].y)
 	{
 		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
 		isReversedVar = false;
@@ -274,8 +274,8 @@ void EllipseShape::draw(CDC* dc)
 	firstPoint = centerPoint23Top;
 	
 
-	int a = abs((points[1].x - points[0].x) / 2);
-	int b = abs((points[2].y - points[1].y) / 2);
+	int a = abs((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2);
+	int b = abs((selectedAreaPoints[2].y - selectedAreaPoints[1].y) / 2);
 
 	//vector<CPoint> eFP;
 	eFP.clear();
@@ -355,12 +355,12 @@ void EllipseShape::draw(CDC* dc)
 
 	for (int i = 0; i < 4; i++)
 	{
-		int tempX = points[i].x;
-		int tempY = points[i].y;
-		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		points[i].x += centerOfShape.x + dx;
-		points[i].y += centerOfShape.y + dy;
+		int tempX = selectedAreaPoints[i].x;
+		int tempY = selectedAreaPoints[i].y;
+		selectedAreaPoints[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		selectedAreaPoints[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		selectedAreaPoints[i].x += centerOfShape.x + dx;
+		selectedAreaPoints[i].y += centerOfShape.y + dy;
 	}
 
 	int tempXBottom = centerPoint23Bottom.x;
@@ -488,7 +488,7 @@ void EllipseShape::draw(CDC* dc)
 
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
 		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - SIZE_OF_POINT_FOR_CHANGE, points[i].y - SIZE_OF_POINT_FOR_CHANGE, points[i].x + SIZE_OF_POINT_FOR_CHANGE, points[i].y + SIZE_OF_POINT_FOR_CHANGE);
+			dc->Ellipse(selectedAreaPoints[i].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y + SIZE_OF_POINT_FOR_CHANGE);
 		
 		
 		// draw rectangle that demonstrates selecting shape
@@ -496,12 +496,12 @@ void EllipseShape::draw(CDC* dc)
 		{
 			if (pointNum == 3)
 			{
-				dc->MoveTo(points[3]);
-				dc->LineTo(points[0]);
+				dc->MoveTo(selectedAreaPoints[3]);
+				dc->LineTo(selectedAreaPoints[0]);
 				break;
 			}
-			dc->MoveTo(points[pointNum]);
-			dc->LineTo(points[pointNum + 1]);
+			dc->MoveTo(selectedAreaPoints[pointNum]);
+			dc->LineTo(selectedAreaPoints[pointNum + 1]);
 
 		}
 
@@ -542,8 +542,8 @@ bool EllipseShape::isClickedPointForChange(CPoint point)
 {
 	for (int pointNum = 0; pointNum < points.size(); pointNum++)
 	{
-		HRGN pointRgn = CreateEllipticRgn(points[pointNum].x - SIZE_OF_POINT_FOR_CHANGE, points[pointNum].y - SIZE_OF_POINT_FOR_CHANGE,
-			points[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, points[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+		HRGN pointRgn = CreateEllipticRgn(selectedAreaPoints[pointNum].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y - SIZE_OF_POINT_FOR_CHANGE,
+			selectedAreaPoints[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
 		if (PtInRegion(pointRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
@@ -1066,7 +1066,7 @@ void IShape::normalizeShape()
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				tmp[i] = points[i];
+				tmp[i] = selectedAreaPoints[i];
 			}
 
 		}
