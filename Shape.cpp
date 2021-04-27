@@ -219,8 +219,6 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 
 void EllipseShape::draw(CDC* dc)
 {
-
-	
 	//size = 100;
 	oR = GetRValue(outlineColor);
 	oG = GetGValue(outlineColor);
@@ -313,13 +311,17 @@ void EllipseShape::draw(CDC* dc)
 
 	ellipseFirstPart.clear();
 	ellipseSecondPart.clear();
+
+	shapePoints.clear();
 	for (CPoint v1 : eFP)
 	{
 		ellipseFirstPart.push_back(v1);
+		shapePoints.push_back(v1);
 	}
 	for (CPoint v2 : eSP)
 	{
 		ellipseSecondPart.push_back(v2);
+		shapePoints.push_back(v2);
 	}
 
 	CBrush* ellipseBrush = NULL;
@@ -352,6 +354,17 @@ void EllipseShape::draw(CDC* dc)
 		eSP[i].x += centerOfShape.x + dx;
 		eSP[i].y += centerOfShape.y + dy;
 	}
+
+	for (int i = 0; i < shapePoints.size(); i++)
+	{
+		int tempX = shapePoints[i].x;
+		int tempY = shapePoints[i].y;
+		shapePoints[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
+		shapePoints[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		shapePoints[i].x += centerOfShape.x + dx;
+		shapePoints[i].y += centerOfShape.y + dy;
+	}
+
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -471,8 +484,9 @@ void EllipseShape::draw(CDC* dc)
 	
 	dc->SelectObject(pen);
 	//dc->Ellipse(centerPoint23Bottom.x - 10, centerPoint23Bottom.y - 10, centerPoint23Bottom.x + 10, centerPoint23Bottom.y + 10);
-	dc->Polygon(&eFP[0], eFP.size());
-	dc->Polygon(&eSP[0], eSP.size());
+	//dc->Polygon(&eFP[0], eFP.size());
+	//dc->Polygon(&eSP[0], eSP.size());
+	dc->Polygon(&shapePoints[0], shapePoints.size());
 	dc->FillRgn(ellipseRgn1, ellipseBrush);
 	dc->FillRgn(ellipseRgn2, ellipseBrush);
 
