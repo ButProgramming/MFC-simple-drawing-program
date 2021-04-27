@@ -1476,55 +1476,55 @@ void CEgoSecureTestAssignmentView::OnButtonRotate()
 void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 {
 	//AfxMessageBox(_T("1234567"));
-	auto pDoc = GetDocument();
-	//pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
-	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
-	{
-		if (pDoc->getShapesVector()[s]->isSelected)
-		{
+	//auto pDoc = GetDocument();
+	////pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
+	//for (int s = 0; s < pDoc->getShapesVector().size(); s++)
+	//{
+	//	if (pDoc->getShapesVector()[s]->isSelected)
+	//	{
 
 
-			//pDoc->getShapesVector()[s]->isNormalized = true;
-			pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
-			CPoint tmp[4];
-			if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					tmp[i] = pDoc->getShapesVector()[s]->recFromRgn[i];
-				}
+	//		//pDoc->getShapesVector()[s]->isNormalized = true;
+	//		pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
+	//		CPoint tmp[4];
+	//		if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
+	//		{
+	//			for (int i = 0; i < 4; i++)
+	//			{
+	//				tmp[i] = pDoc->getShapesVector()[s]->recFromRgn[i];
+	//			}
 
-			}
-			else
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					tmp[i] = pDoc->getShapesVector()[s]->points[i];
-				}
+	//		}
+	//		else
+	//		{
+	//			for (int i = 0; i < 4; i++)
+	//			{
+	//				tmp[i] = pDoc->getShapesVector()[s]->points[i];
+	//			}
 
-			}
+	//		}
 
-			CPoint centerSidesPoints[2];
-			centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
-			centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
-			int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-			int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-			int min;
-			min = (l1 < l2) ? l1 : l2;
-			CString dbug;
-			dbug.Format(_T("%d, %d"), l1, l2);
-			//AfxMessageBox(dbug);
-			for (int i = 0; i < 4; i++)
-			{
-				pDoc->getShapesVector()[s]->dx_dy[i].x = 0;
-				pDoc->getShapesVector()[s]->dx_dy[i].y = 0;
-				pDoc->getShapesVector()[s]->dx_dy_temp[i].x = 0;
-				pDoc->getShapesVector()[s]->dx_dy_temp[i].y = 0;
-			}
-			pDoc->getShapesVector()[s]->size = min;
-			Invalidate();
-		}
-	}
+	//		CPoint centerSidesPoints[2];
+	//		centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
+	//		centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
+	//		int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
+	//		int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
+	//		int min;
+	//		min = (l1 < l2) ? l1 : l2;
+	//		CString dbug;
+	//		dbug.Format(_T("%d, %d"), l1, l2);
+	//		//AfxMessageBox(dbug);
+	//		for (int i = 0; i < 4; i++)
+	//		{
+	//			pDoc->getShapesVector()[s]->dx_dy[i].x = 0;
+	//			pDoc->getShapesVector()[s]->dx_dy[i].y = 0;
+	//			pDoc->getShapesVector()[s]->dx_dy_temp[i].x = 0;
+	//			pDoc->getShapesVector()[s]->dx_dy_temp[i].y = 0;
+	//		}
+	//		pDoc->getShapesVector()[s]->size = min;
+	//		Invalidate();
+	//	}
+	//}
 
 	// TODO: Add your command handler code here
 }

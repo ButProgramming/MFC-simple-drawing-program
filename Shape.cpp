@@ -483,7 +483,7 @@ bool IShape::isClickedOnShapeRgn(CPoint point)
 
 bool IShape::isClickedPointForChange(CPoint point)
 {
-	for (int pointNum = 0; pointNum < points.size(); pointNum++)
+	for (int pointNum = 0; pointNum < selectedAreaPoints.size(); pointNum++)
 	{
 		HRGN pointRgn = CreateEllipticRgn(selectedAreaPoints[pointNum].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y - SIZE_OF_POINT_FOR_CHANGE,
 			selectedAreaPoints[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);

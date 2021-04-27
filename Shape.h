@@ -114,7 +114,7 @@ public:
 	CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
-	int lastY = NULL;
+	//int lastY = NULL;
 	//vector<CPoint> eFP;
 	//vector<CPoint> eSP;
 	//vector<CPoint> ellipseFirstPart;
