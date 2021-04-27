@@ -481,15 +481,20 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	bool canBeUnselected = true;
 	bool shapeIsFound = false;
 
-	// start from the end because we click on shapes, that are located on the surface
-	for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
+	// check if tool is not line to draw on shape and don't select it
+	if (pDoc->getToolIsUsed() != Tools::basicLine)
 	{
-		pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->getToolIsUsed(), point, canBeUnselected, shapeIsFound); // return true if can be unselected
+		// start from the end because we click on shapes, that are located on the surface
+		for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
+		{
+			// move, change, or rotate shape
+			pDoc->getShapesVector()[shapeNum]->moveChangeRotate(pDoc->getShapesVector(), pDoc->getToolIsUsed(), point, canBeUnselected, shapeIsFound); // return true if can be unselected
 
-		//break loop if shape is found
-		if (shapeIsFound) break;		
+			//break loop if shape is found
+			if (shapeIsFound) break;
+		}
 	}
-	
+
 	//check if can be all shapes unselected
 	if (canBeUnselected)
 	{
@@ -561,8 +566,18 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		break;
 	}
 	case Tools::change:
+		//old
 		pDoc->first.x = point.x;
 		pDoc->first.y = point.y;
+
+		//new
+		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+		{
+			if (pDoc->getShapesVector()[shapeNum]->getSelected())
+			{
+				pDoc->getShapesVector()[shapeNum]->setChangeStartClickedCoordinate(point);
+			}
+		}
 		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
@@ -706,10 +721,16 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 					//old
 					pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].x = point.x - pDoc->first.x;
 					pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].y = point.y - pDoc->first.y;
+					cout << "1: " << pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].x << endl;
 
-					//new
+					//new old
 					pDoc->getShapesVector()[s]->setTemporaryDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange(), CPoint(point.x - pDoc->first.x, point.y - pDoc->first.y));
-				
+					
+					
+					
+					//new 
+					pDoc->getShapesVector()[s]->setChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange(), CPoint{ point - pDoc->getShapesVector()[s]->getChangeStartClickedCoordinate() });
+					cout << "2: " << pDoc->getShapesVector()[s]->getChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange()).x << endl;
 					//cout << pDoc->getShapesVector()[s]->getTemporaryDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange()).x << endl;
 					//cout << pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].x << endl;
 					
@@ -718,6 +739,10 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 					int tempY = pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].y;
 					pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].x = round(tempX * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
 					pDoc->getShapesVector()[s]->dx_dy_temp[pDoc->getShapesVector()[s]->getNumberOfPointForChange()].y = round(tempX * sin(-(pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos(-(pDoc->getShapesVector()[s]->ellipseAngleRad)));
+
+					//new
+					pDoc->getShapesVector()[s]->setChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange(), pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange()), pDoc->getToolIsUsed(), MOUSE_MOVE));
+					cout << "4: " << pDoc->getShapesVector()[s]->getChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange()).x << endl;
 
 					//new 
 					//tempX = pDoc->getShapesVector()[s]->getTemporaryDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange()).x;
@@ -1360,13 +1385,18 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				selected = true;
 				for (int a = 0; a < numberOfAngels; a++)
 				{
+					//old
 					pDoc->getShapesVector()[s]->dx_dy[a].x += pDoc->getShapesVector()[s]->dx_dy_temp[a].x;
 					pDoc->getShapesVector()[s]->dx_dy[a].y += pDoc->getShapesVector()[s]->dx_dy_temp[a].y;
+					cout << "dx_dy_temp: " << pDoc->getShapesVector()[s]->dx_dy_temp[a].x << " " << pDoc->getShapesVector()[s]->dx_dy_temp[a].y << endl;
+					cout << "getChangeDxDy: " << pDoc->getShapesVector()[s]->getChangeTempDxDy(a).x << " " << pDoc->getShapesVector()[s]->getChangeTempDxDy(a).y << endl;
 					//cout << "dx_dy_temp -> x: " << pDoc->getShapesVector()[s]->dx_dy_temp[a].x << " y:  "<< pDoc->getShapesVector()[s]->dx_dy_temp[a].y<< endl;
 					//cout << "dx_dy -> x: " << pDoc->getShapesVector()[s]->dx_dy[a].x << " y:  " << pDoc->getShapesVector()[s]->dx_dy[a].y << endl;
 
 					pDoc->getShapesVector()[s]->dx_dy_temp[a].x = 0;
 					pDoc->getShapesVector()[s]->dx_dy_temp[a].y = 0;
+
+					pDoc->getShapesVector()[s]->setChangeTempDxDy(a, CPoint{ NULL, NULL });
 
 					//pDoc->getShapesVector()[s]->setDxDy(a, pDoc->getShapesVector()[s]->getDxDy(a) + pDoc->getShapesVector()[s]->getTemporaryDxDy(a));
 					//cout << "getTemporaryDxDy -> x: " << pDoc->getShapesVector()[s]->getTemporaryDxDy(a).x << " y:  " << pDoc->getShapesVector()[s]->getTemporaryDxDy(a).y << endl;
@@ -1462,24 +1492,13 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			if (pDoc->getShapesVector()[s]->isSelected)
 			{
-				//pDoc->getShapesVector()[s]->rotateCoordinate(getShapeMoveTempDxDy())
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy(), pDoc->getToolIsUsed(), LBUTTON_UP));
-				/*int tempX = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
-				int tempY = pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;
-				
-				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = round(tempX * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)) - tempY * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = round(tempX * sin((pDoc->getShapesVector()[s]->ellipseAngleRad)) + tempY * cos((pDoc->getShapesVector()[s]->ellipseAngleRad)));
-				pDoc->getShapesVector()[s]->centerOfShape.x += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x;
-				pDoc->getShapesVector()[s]->centerOfShape.y += pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y;*/
 			}
-			//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
-			//pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;
 			pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
 		}
-
-		//IShape::diffShapeMove.y = 0;
 	}
-	// when shape is drawed then screen updates matically
+
+	// shape is drawed then screen update
 	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }

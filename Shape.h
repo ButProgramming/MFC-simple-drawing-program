@@ -66,6 +66,11 @@ public:
 	CPoint rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int from);
 	void rotateShape(CPoint point);
 	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound);
+
+	void setChangeStartClickedCoordinate(CPoint point) { change.startClickedCoordinate = point; };
+	CPoint getChangeStartClickedCoordinate() { return change.startClickedCoordinate; };
+	void setChangeTempDxDy(int num, CPoint point) { change.tempDxDy[num] = point; };
+	CPoint getChangeTempDxDy(int num) { return change.tempDxDy[num]; };
 	
 	//void setTempDxDy()
 
@@ -134,22 +139,14 @@ public:
 	CPoint centerOfShape {NULL, NULL};
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 
-	struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
+	//struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
 
-	
-	struct shapeMove
-	{
-		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
-		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
-		CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
-	} shapeMove;
+	//struct rotate
+	//{
+	//	int lastY = 0; // is used for saving of last y 
+	//};
 	
 
-	struct rotate
-	{
-		int lastY = 0; // is used for saving of last y 
-	};
-	
 
 	
 protected:
@@ -171,7 +168,20 @@ protected:
 		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
 	} connecting;
 
-	
+	struct shapeMove
+	{
+		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
+		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
+		//CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
+	} shapeMove;
+
+	struct change
+	{
+		array <CPoint, 4> dxDy;
+		array <CPoint, 4> tempDxDy;
+		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
+
+	} change;
 
 
 	//struct isConnected { bool firstPointOfLine = false;

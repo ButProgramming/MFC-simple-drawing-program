@@ -875,6 +875,17 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point, Tools& toolIsUsed, int fro
 			return point;
 		}
 	}
+	else if (toolIsUsed == Tools::change)
+	{
+		if (from == MOUSE_MOVE)
+		{
+			int tempX = point.x;
+			int tempY = point.y;
+			point.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
+			point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
+			return point;
+		}
+	}
 }
 
 void IShape::rotateShape(CPoint point)
