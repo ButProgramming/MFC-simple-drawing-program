@@ -1,7 +1,6 @@
 #pragma once
 #include <afx.h>
 #include "Shape.h"
-#include "Lines.h"
 
 // List_Control dialog
 

@@ -5,7 +5,6 @@
 
 #pragma once
 #include "Shape.h"
-#include "Lines.h"
 
 class CEgoSecureTestAssignmentDoc : public CDocument
 {

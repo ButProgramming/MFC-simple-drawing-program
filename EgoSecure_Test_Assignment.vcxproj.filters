@@ -42,9 +42,6 @@
     <ClInclude Include="Shape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="List_Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,9 +72,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="List_Control.cpp">
