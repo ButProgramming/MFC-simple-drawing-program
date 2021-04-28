@@ -10,7 +10,7 @@
 #include "Lines.h"
 using namespace std;
 
-
+#define LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL 40
 #define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
 #define SIZE_OF_ELLIPSE_FOR_LINES 5
 #define SIZE_OF_POINT_FOR_CHANGE 7

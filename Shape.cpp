@@ -263,12 +263,12 @@ void EllipseShape::draw(CDC* dc)
 	centerPoint23Bottom = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
 	if (selectedAreaPoints[0].y >= selectedAreaPoints[3].y)
 	{
-		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
 		isReversedVar = false;
 	}
 	else
 	{
-		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + 40);
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
 		isReversedVar = true;
 	}
 	firstPoint = centerPoint23Top;
@@ -535,12 +535,12 @@ void RectangleShape::draw(CDC* dc)
 	centerPoint23Bottom = CPoint((shapePoints[2].x - shapePoints[3].x) / 2 + shapePoints[3].x, shapePoints[2].y);
 	if (shapePoints[0].y >= shapePoints[3].y)
 	{
-		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
 		isReversedVar = false;
 	}
 	else
 	{
-		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + 40);
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
 		isReversedVar = true;
 	}
 	firstPoint = centerPoint23Top;
@@ -725,105 +725,153 @@ void TriangleShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
-	if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
-	else if (isSelected)
+	/*if (!isSelected && !isSelectedFromDoubleSelectingTool)
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));*/
+	if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
 		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
-	CPoint rectangleCenter{ 0, 0 };
-	CPoint diffAr[4];
+	//CPoint rectangleCenter{ 0, 0 };
+	CPoint dxDyPlusTempDxDy[4];
 	for (int i = 0; i < 4; i++)
 	{
-		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
+		dxDyPlusTempDxDy[i] = CPoint(change.dxDy[i].x + change.tempDxDy[i].x, change.dxDy[i].y + change.tempDxDy[i].y);
 	}
-	points[0] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-	points[1] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-	points[2] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + 2 * sqrt(3) / 3 * size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-	points[3] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - 2 * sqrt(3) / 3 * size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
+	selectedAreaPoints[0] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - 2 * sqrt(3) / 3 * size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
+	selectedAreaPoints[1] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + 2 * sqrt(3) / 3 * size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
+	selectedAreaPoints[2] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + 2 * sqrt(3) / 3 * size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
+	selectedAreaPoints[3] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - 2 * sqrt(3) / 3 * size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
 
-	CPoint triangle[4];
-	triangle[0] = CPoint(points[3].x + (points[2].x - points[3].x) / 2, points[3].y + (points[2].y - points[3].y) / 2); //top
-	triangle[1] = points[0]; // left
-	triangle[2] = points[1]; // right
+
+	centerPoint23Bottom = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
+	if (selectedAreaPoints[0].y >= selectedAreaPoints[3].y)
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
+		isReversedVar = false;
+	}
+	else
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL);
+		isReversedVar = true;
+	}
+	firstPoint = centerPoint23Top;
+	//CPoint triangle[4];
+	shapePoints.resize(3);
+	shapePoints[0] = CPoint(selectedAreaPoints[3].x + (selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2, selectedAreaPoints[3].y + (selectedAreaPoints[2].y - selectedAreaPoints[3].y) / 2); //top
+	shapePoints[1] = selectedAreaPoints[0]; // left
+	shapePoints[2] = selectedAreaPoints[1]; // right
+
+	linkingPoints[0] = CPoint{ (shapePoints[2].x - shapePoints[1].x) / 2 + shapePoints[1].x, shapePoints[1].y };  //bottom
+	linkingPoints[1] = CPoint{ (shapePoints[0].x - shapePoints[1].x) / 2 + shapePoints[1].x,  (shapePoints[0].y - shapePoints[1].y) / 2 + shapePoints[1].y }; // left
+	linkingPoints[2] = CPoint{ (shapePoints[0].x - shapePoints[2].x) / 2 + shapePoints[2].x,  (shapePoints[0].y - shapePoints[2].y) / 2 + shapePoints[2].y }; // right
+	linkingPoints[3] = shapePoints[0]; // top
 
 	// create smaller triangle for smaller region
-	CPoint trianglePointsRgn[3];
-	trianglePointsRgn[0].x = triangle[0].x;
-	trianglePointsRgn[0].y = triangle[0].y + 1;
+	//CPoint trianglePointsRgn[3];
+	fillAreaPoints.resize(3);
+	/*fillAreaPoints[0].x = shapePoints[0].x;
+	fillAreaPoints[0].y = shapePoints[0].y + 1;
 
-	trianglePointsRgn[1].x = triangle[1].x + 1;
-	trianglePointsRgn[1].y = triangle[1].y - 1;
+	fillAreaPoints[1].x = shapePoints[1].x + 1;
+	fillAreaPoints[1].y = shapePoints[1].y - 1;
 
-	trianglePointsRgn[2].x = triangle[2].x - 1;
-	trianglePointsRgn[2].y = triangle[2].y - 1;
+	fillAreaPoints[2].x = shapePoints[2].x - 1;
+	fillAreaPoints[2].y = shapePoints[2].y - 1;*/
+
+	if ((selectedAreaPoints[3].x < selectedAreaPoints[1].x) && (selectedAreaPoints[3].y < selectedAreaPoints[1].y))
+	{
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x, shapePoints[0].y + 1 };
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y - 1 };
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y - 1 };
+	}
+	else if ((selectedAreaPoints[3].x > selectedAreaPoints[1].x) && (selectedAreaPoints[3].y < selectedAreaPoints[1].y))
+	{
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x, shapePoints[0].y + 1 };
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y - 1 };
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y - 1 };
+	}
+	else if ((selectedAreaPoints[3].x > selectedAreaPoints[1].x) && (selectedAreaPoints[3].y > selectedAreaPoints[1].y))
+	{
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x, shapePoints[0].y + 1 };
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y + 1 };
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y + 1 };
+	}
+	else
+	{
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x, shapePoints[0].y + 1 };
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y + 1 };
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y + 1 };
+	}
+	
+
 
 	CRgn* triangleRgn = new CRgn;
 	triangleRgn->CreatePolygonRgn(&points[0], 4, ALTERNATE);
 	GetRgnBox(*triangleRgn, boxRect);
 
-	recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
+	/*recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
 	recFromRgn[1] = CPoint(boxRect.BottomRight());
 	recFromRgn[2] = CPoint(boxRect.BottomRight().x, boxRect.TopLeft().y);
-	recFromRgn[3] = CPoint(boxRect.TopLeft());
+	recFromRgn[3] = CPoint(boxRect.TopLeft());*/
 
 
 
 	for (int i = 0; i < 4; i++)
 	{
-		int tempX = points[i].x;
-		int tempY = points[i].y;
-		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		points[i].x += centerOfShape.x + dx;
-		points[i].y += centerOfShape.y + dy;
+		rotateAndMoveCoordinate(selectedAreaPoints[i], DRAW_METHOD);
+		
 
 
-		tempX = recFromRgn[i].x;
+		/*tempX = recFromRgn[i].x;
 		tempY = recFromRgn[i].y;
 		recFromRgn[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		recFromRgn[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		recFromRgn[i].x += centerOfShape.x + dx;
-		recFromRgn[i].y += centerOfShape.y + dy;
+		recFromRgn[i].y += centerOfShape.y + dy;*/
 	}
 
 
 	for (int i = 0; i < 3; i++)
 	{
-		int tempX = triangle[i].x;
-		int tempY = triangle[i].y;
-		triangle[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		triangle[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		triangle[i].x += centerOfShape.x + dx;
-		triangle[i].y += centerOfShape.y + dy;
+		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
 	}
 
 	for (int i = 0; i < 3; i++)
 	{
-		int tempX = trianglePointsRgn[i].x;
-		int tempY = trianglePointsRgn[i].y;
-		trianglePointsRgn[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		trianglePointsRgn[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
-		trianglePointsRgn[i].x += centerOfShape.x + dx;
-		trianglePointsRgn[i].y += centerOfShape.y + dy;
+		rotateAndMoveCoordinate(fillAreaPoints[i], DRAW_METHOD);
+		
 	}
+
+	for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
+	{
+		rotateAndMoveCoordinate(linkingPoints[pointNum], DRAW_METHOD);
+	}
+	rotateAndMoveCoordinate(centerPoint23Bottom, DRAW_METHOD);
+	rotateAndMoveCoordinate(centerPoint23Top, DRAW_METHOD);
+
+	int tempXFP = firstPoint.x;
+	int tempYFP = firstPoint.y;
+	firstPoint.x = round(tempXFP * 1 - tempYFP * 0);
+	firstPoint.y = round(tempXFP * 0 + tempYFP * 1);
+	firstPoint.x += centerOfShape.x + dx;
+	firstPoint.y += centerOfShape.y + dy;
 
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	//GetRgnBox(*rectangleReg, boxRect);
 	//dc->Rectangle(boxRect);
 
-	points[0] = triangle[1];
+	/*points[0] = triangle[1];
 	points[1] = triangle[2];
-	points[2] = triangle[0];
-	if (isSelected)
-	{
-		//dc->Ellipse(0, 0, 200, 200);
-		for (int i = 0; i < 3; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
-	}
+	points[2] = triangle[0];*/
+	//if (isSelected)
+	//{
+	//	//dc->Ellipse(0, 0, 200, 200);
+	//	for (int i = 0; i < 3; i++)
+	//		dc->Ellipse(shapePoints[i].x - sizeOfPointToMoveAndChange, shapePoints[i].y - sizeOfPointToMoveAndChange, shapePoints[i].x + sizeOfPointToMoveAndChange, shapePoints[i].y + sizeOfPointToMoveAndChange);
+	//}
 	CRgn* triangleNewRgn = new CRgn;
-	triangleNewRgn->CreatePolygonRgn(trianglePointsRgn, 3, ALTERNATE);
+	triangleNewRgn->CreatePolygonRgn(&fillAreaPoints[0], 3, ALTERNATE);
 	CBrush* triangleBrush;
 	if (fillType == -1)
 	{
@@ -838,10 +886,48 @@ void TriangleShape::draw(CDC* dc)
 	//triangleBrush->CreateSolidBrush(RGB(fR, fG, fB)); // Microsoft C++ exception: CResourceException at memory location 0x0098F310
 	//triangleBrush->CreateSolidBrush(HS_DIAGCROSS);
 	//dc->Polygon(recFromRgn, 4);
+	dc->Polygon(&shapePoints[0], 3);
+	dc->FillRgn(triangleNewRgn, triangleBrush);
+	if (isSelected)
+	{
+		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
+		dc->SelectObject(tempPen);
+		dc->MoveTo(centerPoint23Bottom);
+		dc->LineTo(centerPoint23Top);
+
+		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(selectedAreaPoints[i].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y + SIZE_OF_POINT_FOR_CHANGE);
+
+
+		// draw rectangle that demonstrates selecting shape
+		for (int pointNum = 0; pointNum < 4; pointNum++)
+		{
+			if (pointNum == 3)
+			{
+				dc->MoveTo(selectedAreaPoints[3]);
+				dc->LineTo(selectedAreaPoints[0]);
+				break;
+			}
+			dc->MoveTo(selectedAreaPoints[pointNum]);
+			dc->LineTo(selectedAreaPoints[pointNum + 1]);
+
+		}
+
+		tempPen->DeleteObject();
+	}
+	
+	if (drawPointsForLines)
+	{
+		//draw points for lines
+		for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
+		{
+			dc->Ellipse(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		}
+	}
 
 	//dc->Polygon(points, 4);
-	dc->Polygon(triangle, 3);
-	dc->FillRgn(triangleNewRgn, triangleBrush);
+	
 	/*delete triangleNewRgn;
 	delete triangleBrush;
 	delete triangleRgn;
@@ -1004,7 +1090,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 	//bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
 
 	//bool isShapeFound = false; // if shape is found, then break loop
-	if (type == ShapeType::ellipse || type == ShapeType::rectangle)
+	if (type == ShapeType::ellipse || type == ShapeType::rectangle || type == ShapeType::triangle)
 	{
 		
 		// check if is clicked on "rotate ellipse"
