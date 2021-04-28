@@ -24,6 +24,7 @@ using namespace std;
 #define MOUSE_MOVE 0
 #define LBUTTON_UP 1
 #define DRAW_METHOD 2
+#define DIFFERENCE_FOR_FILL_RGN 1
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine };
