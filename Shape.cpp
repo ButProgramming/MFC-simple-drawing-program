@@ -1259,6 +1259,8 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.firstPointOfLine)
 				{
 					setCoordinateForChange(FIRST_POINT_OF_LINE, shapes[shapeNum]->getPointForLine(connecting.numberOfShapesPointForLines.firstPointOfLine));
+					cout << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
+					cout << getCoordinateForChange(0).x << " " << getCoordinateForChange(0).y << endl;
 					
 				}
 			}
@@ -1326,7 +1328,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 void Line::draw(CDC* dc)
 {
 
-	
+	//updateLineConnection(getShapesVector());
 	//dc->Polygon(&tempLineRectRgn1[0], tempLineRectRgn1.size());
 	//dc->Polygon(&tempLineRectRgn2[0], tempLineRectRgn2.size());
 

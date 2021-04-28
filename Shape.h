@@ -163,7 +163,7 @@ public:
 		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
 		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
 	} connecting;
-	
+	array<CPoint, 4> linkingPoints;
 protected:
 	const CPoint shapeCenterBeforRotate{ 0, 0 };
 
@@ -196,7 +196,7 @@ protected:
 
 	//for shape
 	array<CPoint, 4> selectedAreaPoints;
-	array<CPoint, 4> linkingPoints;
+	
 	vector<CPoint> fillAreaPoints;
 	vector<CPoint> shapePoints;
 

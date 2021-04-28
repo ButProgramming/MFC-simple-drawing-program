@@ -102,10 +102,16 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	point.y -= rect.top;
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 
+
 	//draw all shapes
 	for (int shapeNum = 0; shapeNum<pDoc->getShapesVector().size(); shapeNum++)
 	{
 		pDoc->getShapesVector()[shapeNum]->draw(&m_dc);
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
+		{
+			cout << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x << " " << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y << endl;
+			cout << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x << " " << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y << endl;
+		}
 	}
 
 	//pen->DeleteObject();
@@ -382,6 +388,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 
 	// change size of shape
 	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
 	// update all connections
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
@@ -391,7 +398,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			pDoc->getShapesVector()[shapeNum]->updateLineConnection(pDoc->getShapesVector());
 		}
-		
 	}
 	
 	if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle))
@@ -490,6 +496,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
+	auto pDoc = GetDocument();
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
@@ -513,6 +520,8 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
 		CRect(0, 0, 0, y / DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR), this, IDC_SB_VERT);
 	m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+
+	
 
 	return 0;
 }
