@@ -186,7 +186,6 @@ protected:
 		array <CPoint, 4> dxDy;
 		array <CPoint, 4> tempDxDy;
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
-
 	} change;
 
 	//for shape

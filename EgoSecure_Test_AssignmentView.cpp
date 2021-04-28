@@ -498,10 +498,14 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	//check if can be all shapes unselected
 	if (canBeUnselected)
 	{
-		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+		if (pDoc->getToolIsUsed() != Tools::basicLine)
 		{
-			pDoc->getShapesVector()[shapeNum]->setSelected(false);
-			pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
+			for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
+			{
+				cout << "canBeUnselected1" << endl;
+				pDoc->getShapesVector()[shapeNum]->setSelected(false);
+				pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
+			}
 		}
 	}
 	
@@ -746,7 +750,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		if (!pDoc->getShapesVector().empty())
 		{
-			//pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->secondPointOfLine = point;
 			pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setCoordinateForChange(1, point);
 		}
 	}
@@ -1287,7 +1290,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	if (pDoc->getToolIsUsed() == Tools::ellipse)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
-		pDoc->getToolIsUsed() = Tools::shapeMove;
+		
 	}
 	else if (pDoc->getToolIsUsed() == Tools::basicLine)
 	{
@@ -1295,6 +1298,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// make basicLine unactive
 		pDoc->getToolIsUsed() = Tools::change;
+
 	}
 
 	if (pDoc->getToolIsUsed() == Tools::move)
@@ -1967,57 +1971,10 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 
 void CEgoSecureTestAssignmentView::OnEditNormalize()
 {
-	//AfxMessageBox(_T("1234567"));
 	auto pDoc = GetDocument();
-	//pDoc->getToolIsUsed() = Tools::shapeNormalize; //don't need
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
 		pDoc->getShapesVector()[s]->normalizeShape();
-		//if (pDoc->getShapesVector()[s]->isSelected)
-		//{
-
-
-		//	//pDoc->getShapesVector()[s]->isNormalized = true;
-		//	pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
-		//	CPoint tmp[4];
-		//	if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
-		//	{
-		//		for (int i = 0; i < 4; i++)
-		//		{
-		//			tmp[i] = pDoc->getShapesVector()[s]->recFromRgn[i];
-		//		}
-
-		//	}
-		//	else
-		//	{
-		//		for (int i = 0; i < 4; i++)
-		//		{
-		//			tmp[i] = pDoc->getShapesVector()[s]->points[i];
-		//		}
-
-		//	}
-
-		//	CPoint centerSidesPoints[2];
-		//	centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
-		//	centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
-		//	int l1 = (int)sqrt(pow(centerSidesPoints[0].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[0].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-		//	int l2 = (int)sqrt(pow(centerSidesPoints[1].x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(centerSidesPoints[1].y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-		//	int min;
-		//	min = (l1 < l2) ? l1 : l2;
-		//	CString dbug;
-		//	dbug.Format(_T("%d, %d"), l1, l2);
-		//	//AfxMessageBox(dbug);
-		//	for (int i = 0; i < 4; i++)
-		//	{
-		//		pDoc->getShapesVector()[s]->dx_dy[i].x = 0;
-		//		pDoc->getShapesVector()[s]->dx_dy[i].y = 0;
-		//		pDoc->getShapesVector()[s]->dx_dy_temp[i].x = 0;
-		//		pDoc->getShapesVector()[s]->dx_dy_temp[i].y = 0;
-		//	}
-		//	pDoc->getShapesVector()[s]->size = min;
-		//	Invalidate();
-		//}
-
 	}
 	Invalidate();
 	// TODO: Add your command handler code here

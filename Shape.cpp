@@ -513,10 +513,8 @@ void RectangleShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
-	if (!isSelected && !isSelectedFromDoubleSelectingTool)
+	if (isSelected)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
-	else if (isSelected)
-		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
 		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
@@ -966,14 +964,17 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 	}
 	else if (type == ShapeType::basicLine)
 	{
+
 		//bool breakLoop = false; // bool variable that is need for loop control
 		// check if clicked on points that changing the size of shape
 		//cout <<"3: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
 		//cout << "breakLoop " << breakLoop << endl;
+		//canBeUnselected = false;
 		if (isClickedPointForChange(point))
 		{
 			shapeIsFound = true;
 			toolIsUsed = Tools::change;
+			//canBeUnselected = true;
 		}
 
 		//check if clicked in line region
@@ -992,6 +993,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 			canBeUnselected = false;
 		}
 		//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
+		
 		if (shapeIsFound) return;
 	}
 	//return true;
