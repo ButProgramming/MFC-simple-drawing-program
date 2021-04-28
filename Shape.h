@@ -10,6 +10,8 @@
 #include "Lines.h"
 using namespace std;
 
+#define PI 3.141592653
+#define ANGLE_OF_ARROW_DEG 10
 #define LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL 40
 #define SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL 10
 #define SIZE_OF_ELLIPSE_FOR_LINES 5
@@ -76,6 +78,8 @@ public:
 	void setChangeDxDy(int num, CPoint point) { change.dxDy[num] = point; };
 	CPoint getChangeDxDy(int num) { return change.dxDy[num]; };
 	void normalizeShape();
+	double degToRad(double degree) { return degree * PI / 180.0; };
+	double radToDeg(double radian) { return radian * 180.0 / PI; };
 	
 	//void setTempDxDy()
 
