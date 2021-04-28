@@ -7,7 +7,6 @@
 #include <queue>
 #include <set>
 #include <array>
-#include "Lines.h"
 using namespace std;
 
 #define RIGHT_LINE 0

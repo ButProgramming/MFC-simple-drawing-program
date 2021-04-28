@@ -160,126 +160,126 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	}
 
 	// filling line listview
-	for (auto l : lines)
-	{
-		str.Format(_T("%d"), l->ID);
-		nItem = m_listControl_lines.InsertItem(0, str);
-		if (l->type == LineType::Basic)
-		{
-			m_listControl_lines.SetItemText(nItem, 1, _T("Basic line"));
-		}
-		else if (l->type == LineType::Right)
-		{
-			m_listControl_lines.SetItemText(nItem, 1, _T("Right line"));
-		}
-		else if (l->type == LineType::Left)
-		{
-			m_listControl_lines.SetItemText(nItem, 1, _T("Left line"));
-		}
-		else
-		{
-			m_listControl_lines.SetItemText(nItem, 1, _T("Double line"));
-		}
-		m_listControl_lines.SetItemText(nItem, 2, l->name);
-		// find ID from constID
-		int tempFoundedID1;
-		int tempFoundedID2;
-		CString type1; // type of shapes that will be founded
-		CString type2; // ---
-		for (auto s : shapes)
-		{
-			if (s->constID == l->FirstShapeConstID)
-			{
-				tempFoundedID1 = s->ID;
-				switch (s->type)
-				{
-					case ShapeType::ellipse:
-					{
-						type1 = _T("Ellipse");
-						break;
-					}
-					case ShapeType::rectangle:
-					{
-						type1 = _T("Rectangle");
-						break;
-					}
-					case ShapeType::triangle:
-					{
-						type1 = _T("Triangle");
-						break;
-					}
-					
-				}
-				//break; don't need because constID's are unique
-				
-			}
-			else if (s->constID == l->SecondShapeConstID)
-			{
-				tempFoundedID2 = s->ID;
-				switch (s->type)
-				{
-				case ShapeType::ellipse:
-				{
-					type2 = _T("Ellipse");
-					break;
-				}
-				case ShapeType::rectangle:
-				{
-					type2 = _T("Rectangle");
-					break;
-				}
-				case ShapeType::triangle:
-				{
-					type2 = _T("Triangle");
-					break;
-				}
-				}
-				//break; don't need because constID's are unique
-			}
-		}
+	//for (auto l : lines)
+	//{
+	//	str.Format(_T("%d"), l->ID);
+	//	nItem = m_listControl_lines.InsertItem(0, str);
+	//	if (l->type == LineType::Basic)
+	//	{
+	//		m_listControl_lines.SetItemText(nItem, 1, _T("Basic line"));
+	//	}
+	//	else if (l->type == LineType::Right)
+	//	{
+	//		m_listControl_lines.SetItemText(nItem, 1, _T("Right line"));
+	//	}
+	//	else if (l->type == LineType::Left)
+	//	{
+	//		m_listControl_lines.SetItemText(nItem, 1, _T("Left line"));
+	//	}
+	//	else
+	//	{
+	//		m_listControl_lines.SetItemText(nItem, 1, _T("Double line"));
+	//	}
+	//	m_listControl_lines.SetItemText(nItem, 2, l->name);
+	//	// find ID from constID
+	//	int tempFoundedID1;
+	//	int tempFoundedID2;
+	//	CString type1; // type of shapes that will be founded
+	//	CString type2; // ---
+	//	for (auto s : shapes)
+	//	{
+	//		if (s->constID == l->FirstShapeConstID)
+	//		{
+	//			tempFoundedID1 = s->ID;
+	//			switch (s->type)
+	//			{
+	//				case ShapeType::ellipse:
+	//				{
+	//					type1 = _T("Ellipse");
+	//					break;
+	//				}
+	//				case ShapeType::rectangle:
+	//				{
+	//					type1 = _T("Rectangle");
+	//					break;
+	//				}
+	//				case ShapeType::triangle:
+	//				{
+	//					type1 = _T("Triangle");
+	//					break;
+	//				}
+	//				
+	//			}
+	//			//break; don't need because constID's are unique
+	//			
+	//		}
+	//		else if (s->constID == l->SecondShapeConstID)
+	//		{
+	//			tempFoundedID2 = s->ID;
+	//			switch (s->type)
+	//			{
+	//			case ShapeType::ellipse:
+	//			{
+	//				type2 = _T("Ellipse");
+	//				break;
+	//			}
+	//			case ShapeType::rectangle:
+	//			{
+	//				type2 = _T("Rectangle");
+	//				break;
+	//			}
+	//			case ShapeType::triangle:
+	//			{
+	//				type2 = _T("Triangle");
+	//				break;
+	//			}
+	//			}
+	//			//break; don't need because constID's are unique
+	//		}
+	//	}
 
-		str.Format(_T("%d"), tempFoundedID1);
-		m_listControl_lines.SetItemText(nItem, 3, str);
-		m_listControl_lines.SetItemText(nItem, 4, type1);
-		str.Format(_T("%d"), tempFoundedID2);
-		m_listControl_lines.SetItemText(nItem, 5, str);
-		m_listControl_lines.SetItemText(nItem, 6, type2);
-		str.Format(_T("R: %d, G: %d, B: %d"), l->lR, l->lG, l->lB);
-		m_listControl_lines.SetItemText(nItem, 7, str);
-		str.Format(_T("%d"), l->lineSize);
-		m_listControl_lines.SetItemText(nItem, 8, str);
-		// ____ ;_ _ _;.....;_._;_.._;
-		switch (l->lineType)
-		{
-			case 0:
-			{
-				str.Format(_T("____"));
-				break;
-			}
-			case 1:
-			{
-				str.Format(_T("_ _ _"));
-				break;
-			}
-			case 2:
-			{
-				str.Format(_T("....."));
-				break;
-			}
-			case 3:
-			{
-				str.Format(_T("_._"));
-				break;
-			}
-			case 4:
-			{
-				str.Format(_T("_.._"));
-				break;
-			}
-		}
-		//str.Format(_T("%d"), l->lineSize);
-		m_listControl_lines.SetItemText(nItem, 9, str);
-	}
+	//	str.Format(_T("%d"), tempFoundedID1);
+	//	m_listControl_lines.SetItemText(nItem, 3, str);
+	//	m_listControl_lines.SetItemText(nItem, 4, type1);
+	//	str.Format(_T("%d"), tempFoundedID2);
+	//	m_listControl_lines.SetItemText(nItem, 5, str);
+	//	m_listControl_lines.SetItemText(nItem, 6, type2);
+	//	str.Format(_T("R: %d, G: %d, B: %d"), l->lR, l->lG, l->lB);
+	//	m_listControl_lines.SetItemText(nItem, 7, str);
+	//	str.Format(_T("%d"), l->lineSize);
+	//	m_listControl_lines.SetItemText(nItem, 8, str);
+	//	// ____ ;_ _ _;.....;_._;_.._;
+	//	switch (l->lineType)
+	//	{
+	//		case 0:
+	//		{
+	//			str.Format(_T("____"));
+	//			break;
+	//		}
+	//		case 1:
+	//		{
+	//			str.Format(_T("_ _ _"));
+	//			break;
+	//		}
+	//		case 2:
+	//		{
+	//			str.Format(_T("....."));
+	//			break;
+	//		}
+	//		case 3:
+	//		{
+	//			str.Format(_T("_._"));
+	//			break;
+	//		}
+	//		case 4:
+	//		{
+	//			str.Format(_T("_.._"));
+	//			break;
+	//		}
+	//	}
+	//	//str.Format(_T("%d"), l->lineSize);
+	//	m_listControl_lines.SetItemText(nItem, 9, str);
+	//}
 
 	
 }

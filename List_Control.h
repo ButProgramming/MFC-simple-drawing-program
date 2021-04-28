@@ -25,7 +25,7 @@ protected:
 public:
 	CListCtrl m_listControl_shapes;
 	vector<IShape*> shapes;
-	vector<Lines*> lines;
+	//vector<Lines*> lines;
 	afx_msg void OnItemchangedListcontrolShapes(NMHDR* pNMHDR, LRESULT* pResult);
 	CListCtrl m_listControl_lines;
 };

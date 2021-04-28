@@ -21,7 +21,7 @@ public: //methods
 public:
 
 	
-	vector<Lines*> lines;
+	//vector<Lines*> lines;
 	Tools toolIsUsed;
 	queue<int> selectedShapesIDs;
 	//screen move dx and dy

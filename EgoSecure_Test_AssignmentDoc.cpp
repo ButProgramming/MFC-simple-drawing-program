@@ -52,17 +52,17 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 		delete s;
 	}
 	shapes.clear();
-	for (auto l : lines)
+	/*for (auto l : lines)
 	{
 		delete l;
-	}
-	lines.clear();
+	}*/
+	//lines.clear();
 	IShape::countOfShape = 0;
-	Lines::countOfLines = 0;
+	//Lines::countOfLines = 0;
 	IShape::IDs.clear();
-	Lines::IDs.clear();
+	//Lines::IDs.clear();
 	IShape::names.clear();
-	Lines::names.clear();
+	//Lines::names.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
@@ -82,7 +82,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int LT; //line type
 		int size; 
 		int vectorShapeSize = shapes.size();
-		int vectorLinesSize = lines.size();
+		int vectorLinesSize = 0;//lines.size();
 		ar << vectorShapeSize;
 		ar << vectorLinesSize;
 		
@@ -136,52 +136,12 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 			
 		}
-		//for (auto l : lines)
-		//{
-		//	ar << l->FirstShapeConstID;
-		//	ar << l->SecondShapeConstID;
-		//	ar << l->ID;
-		//	ar << l->constID;
-
-		//	ar << l->lR;
-		//	ar << l->lG;
-		//	ar << l->lB;
-
-		//	ar << l->lineSize;
-		//	ar << l->lineType;
-
-
-		//	if (l->type == LineType::Basic)
-		//	{
-		//		//ST = static_cast<ShapeType::ellipse>();
-		//		LT = 0;
-		//		ar << LT;
-		//	}
-		//	else if (l->type == LineType::Right)
-		//	{
-		//		LT = 1;
-		//		ar << LT;
-		//	}
-		//	else if(l->type == LineType::Left)
-		//	{
-		//		LT = 2;
-		//		ar << LT;
-		//	}
-		//	else
-		//	{
-		//		LT = 3;
-		//		ar << LT;
-		//	}
-		//}
-
-		
-		// TODO: add storing code here
 	}
 	else
 	{
 		IShape* shapeTemp;
 		ShapeType shapeType;
-		LineType lineType;
+		//LineType lineType;
 		int ST;
 		int LT;
 		int size;
@@ -210,7 +170,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int shapeID;
 		int lineConstID;
 		int lineID;
-		Lines* lineTemp;
+		//Lines* lineTemp;
 		ar >> vectorShapeSize;
 		ar >> vectorLinesSize;
 		CString str;
@@ -284,57 +244,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 
 			}
-		//	for (int i = 0; i < vectorLinesSize; i++)
-		//	{
-		//		ar >> FirstShapeConstID;
-		//		ar >> SecondShapeConstID;
-		//		ar >> lineID;
-		//		ar >> lineConstID;
-
-		//		ar >> lR;
-		//		ar >> lG;
-		//		ar >> lB;
-
-		//		ar >> line_Size;
-		//		ar >> line_Type;
-		//		//ar >> lineType;
-
-		//		ar >> LT;
-		//		if (LT == 0)
-		//		{
-		//			lineType = LineType::Basic;
-		//			//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR,lG,lB), line_Size, line_Type);
-		//			//lineTemp->isSelected = isSelected;
-		//		}
-		//		else if (LT == 1)
-		//		{
-		//			lineType = LineType::Right;
-		//			//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
-		//			//lineTemp->isSelected = isSelected;
-		//		}
-		//		else if (LT == 2)
-		//		{
-		//			lineType = LineType::Left;
-		//			//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
-		//			//lineTemp->isSelected = isSelected;
-		//		}
-		//		else
-		//		{
-		//			lineType = LineType::Double;
-		//			//lineTemp = new Lines(FirstShapeConstID, SecondShapeConstID, lineType, RGB(lR, lG, lB), line_Size, line_Type);
-		//			//lineTemp->isSelected = isSelected;
-		//		}
-		//		lines.push_back(lineTemp);
-		//		lines[lines.size() - 1]->ID = lineID;
-		//		lines[lines.size() - 1]->constID = lineConstID;
-		//}
-		
-		//CString str;
-		str.Format(_T("Shapes: %d, lines: %d"), shapes.size(), lines.size());
-		//AfxMessageBox(str);
+		//str.Format(_T("Shapes: %d, lines: %d"), shapes.size(), lines.size());
 
 		toolIsUsed = Tools::select_tool;
-		// TODO: add loading code here
 	}
 }
 

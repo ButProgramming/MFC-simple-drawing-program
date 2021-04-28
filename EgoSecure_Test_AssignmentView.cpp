@@ -1302,20 +1302,20 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 
 	if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
 	{
-		int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
-		int ID2_is_selected = pDoc->selectedShapesIDs.back();
-		for (int i = 0; i < pDoc->lines.size(); i++)
-		{
-			if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
-			{
-				//int deleteID = pDoc->lines[i]->ID;
-				/*Lines::IDs.erase(deleteID);
-				Lines::names.erase(pDoc->lines[i]->name);*/
-				delete pDoc->lines[i];
-				pDoc->lines.erase(pDoc->lines.begin() + i);
+		//int ID1_is_selected = pDoc->selectedShapesIDs.front(); //for convenience
+		//int ID2_is_selected = pDoc->selectedShapesIDs.back();
+		//for (int i = 0; i < pDoc->lines.size(); i++)
+		//{
+		//	if ((pDoc->lines[i]->FirstShapeConstID == ID1_is_selected && pDoc->lines[i]->SecondShapeConstID == ID2_is_selected) || (pDoc->lines[i]->SecondShapeConstID == ID1_is_selected && pDoc->lines[i]->FirstShapeConstID == ID2_is_selected))
+		//	{
+		//		//int deleteID = pDoc->lines[i]->ID;
+		//		/*Lines::IDs.erase(deleteID);
+		//		Lines::names.erase(pDoc->lines[i]->name);*/
+		//		delete pDoc->lines[i];
+		//		pDoc->lines.erase(pDoc->lines.begin() + i);
 
-			}
-		}
+		//	}
+		//}
 	}
 	Invalidate();
 	// TODO: Add your command handler code here
@@ -1429,10 +1429,10 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 	{
 		dlg.shapes.push_back(s);
 	}
-	for (auto l : pDoc->lines)
+	/*for (auto l : pDoc->lines)
 	{
 		dlg.lines.push_back(l);
-	}
+	}*/
 	dlg.DoModal();
 
 
@@ -1527,118 +1527,117 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 	}
 	if (pDoc->selectedShapesIDs.size() > 1) // check if min 2 selected shapes exist
 	{
-		for (int l = 0; l < pDoc->lines.size(); l++)
-		{
-			if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-			{
-				int foundedFirstID;
-				int foundedSecondID;
-				Dialog_Link_Properties dlg;
-				dlg.value_link_color_R = GetRValue(pDoc->lines[l]->lineColor);
-				dlg.value_link_color_G = pDoc->lines[l]->lG;
-				dlg.value_link_color_B = pDoc->lines[l]->lB;
-				for (auto s : pDoc->getShapesVector())
-				{
-					if (s->constID == pDoc->lines[l]->FirstShapeConstID)
-					{
-						foundedFirstID = s->ID;
-					}
-					else if (s->constID == pDoc->lines[l]->SecondShapeConstID)
-					{
-						foundedSecondID = s->ID;
-					}
+		//	for (int l = 0; l < pDoc->lines.size(); l++)
+		//	{
+		//		if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
+		//		{
+		//			int foundedFirstID;
+		//			int foundedSecondID;
+		//			Dialog_Link_Properties dlg;
+		//			dlg.value_link_color_R = GetRValue(pDoc->lines[l]->lineColor);
+		//			dlg.value_link_color_G = pDoc->lines[l]->lG;
+		//			dlg.value_link_color_B = pDoc->lines[l]->lB;
+		//			for (auto s : pDoc->getShapesVector())
+		//			{
+		//				if (s->constID == pDoc->lines[l]->FirstShapeConstID)
+		//				{
+		//					foundedFirstID = s->ID;
+		//				}
+		//				else if (s->constID == pDoc->lines[l]->SecondShapeConstID)
+		//				{
+		//					foundedSecondID = s->ID;
+		//				}
 
-				}
-				dlg.value_link_shape_first_id = foundedFirstID;
-				dlg.value_link_shape_second_id = foundedSecondID;
-				dlg.value_link_size = pDoc->lines[l]->lineSize;
-				dlg.value_link_type = pDoc->lines[l]->lineType;
-				if (pDoc->lines[l]->type == LineType::Basic)
-				{
-					dlg.value_link_type_link = 0;
-				}
-				else if (pDoc->lines[l]->type == LineType::Right)
-				{
-					dlg.value_link_type_link = 1;
-				}
-				else if (pDoc->lines[l]->type == LineType::Left)
-				{
-					dlg.value_link_type_link = 2;
-				}
-				else if (pDoc->lines[l]->type == LineType::Double)
-				{
-					dlg.value_link_type_link = 3;
-				}
-				dlg.value_link_id = pDoc->lines[l]->ID;
-				dlg.name = pDoc->lines[l]->name;
+		//			}
+		//			dlg.value_link_shape_first_id = foundedFirstID;
+		//			dlg.value_link_shape_second_id = foundedSecondID;
+		//			dlg.value_link_size = pDoc->lines[l]->lineSize;
+		//			dlg.value_link_type = pDoc->lines[l]->lineType;
+		//			if (pDoc->lines[l]->type == LineType::Basic)
+		//			{
+		//				dlg.value_link_type_link = 0;
+		//			}
+		//			else if (pDoc->lines[l]->type == LineType::Right)
+		//			{
+		//				dlg.value_link_type_link = 1;
+		//			}
+		//			else if (pDoc->lines[l]->type == LineType::Left)
+		//			{
+		//				dlg.value_link_type_link = 2;
+		//			}
+		//			else if (pDoc->lines[l]->type == LineType::Double)
+		//			{
+		//				dlg.value_link_type_link = 3;
+		//			}
+		//			dlg.value_link_id = pDoc->lines[l]->ID;
+		//			dlg.name = pDoc->lines[l]->name;
 
 
-				CString str;
-				str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
-				dlg.DoModal();
-				pDoc->lines[l]->lineColor = RGB(dlg.value_link_color_R, dlg.value_link_color_G, dlg.value_link_color_B);
-				if ((dlg.value_link_shape_first_id != dlg.value_link_shape_second_id)) // can be swaped
-				{
-					set<int> tempConstIDs;
-					for (auto s : pDoc->getShapesVector())
-					{
-						tempConstIDs.insert(s->constID);
-					}
-					if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
-					{
-						pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
-						pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
-					}
+		//			CString str;
+		//			str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
+		//			dlg.DoModal();
+		//			pDoc->lines[l]->lineColor = RGB(dlg.value_link_color_R, dlg.value_link_color_G, dlg.value_link_color_B);
+		//			if ((dlg.value_link_shape_first_id != dlg.value_link_shape_second_id)) // can be swaped
+		//			{
+		//				set<int> tempConstIDs;
+		//				for (auto s : pDoc->getShapesVector())
+		//				{
+		//					tempConstIDs.insert(s->constID);
+		//				}
+		//				if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
+		//				{
+		//					pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
+		//					pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
+		//				}
 
-				}
-				pDoc->lines[l]->lineSize = dlg.value_link_size;
-				pDoc->lines[l]->lineType = dlg.value_link_type;
-				switch (dlg.value_link_type_link)
-				{
-				case 0:
-				{
-					pDoc->lines[l]->type = LineType::Basic;
-					break;
-				}
-				case 1:
-				{
-					pDoc->lines[l]->type = LineType::Right;
-					break;
-				}
-				case 2:
-				{
-					pDoc->lines[l]->type = LineType::Left;
-					break;
-				}
-				case 3:
-				{
-					pDoc->lines[l]->type = LineType::Double;
-					break;
-				}
-				}
-				if (dlg.value_link_id >= 0)
-				{
-					if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
-					{
-						Lines::IDs.erase(pDoc->lines[l]->ID);
-						pDoc->lines[l]->ID = dlg.value_link_id;
-						Lines::IDs.insert(dlg.value_link_id);
-						//IShape::IDs.erase(dlg.value_id);
-					}
-				}
+		//			}
+		//			pDoc->lines[l]->lineSize = dlg.value_link_size;
+		//			pDoc->lines[l]->lineType = dlg.value_link_type;
+		//			switch (dlg.value_link_type_link)
+		//			{
+		//			case 0:
+		//			{
+		//				pDoc->lines[l]->type = LineType::Basic;
+		//				break;
+		//			}
+		//			case 1:
+		//			{
+		//				pDoc->lines[l]->type = LineType::Right;
+		//				break;
+		//			}
+		//			case 2:
+		//			{
+		//				pDoc->lines[l]->type = LineType::Left;
+		//				break;
+		//			}
+		//			case 3:
+		//			{
+		//				pDoc->lines[l]->type = LineType::Double;
+		//				break;
+		//			}
+		//			}
+		//			if (dlg.value_link_id >= 0)
+		//			{
+		//				if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
+		//				{
+		//					Lines::IDs.erase(pDoc->lines[l]->ID);
+		//					pDoc->lines[l]->ID = dlg.value_link_id;
+		//					Lines::IDs.insert(dlg.value_link_id);
+		//					//IShape::IDs.erase(dlg.value_id);
+		//				}
+		//			}
 
-				// name
-				if (Lines::names.find(dlg.name) == Lines::names.end())
-				{
-					Lines::names.erase(pDoc->lines[l]->name);
-					pDoc->lines[l]->name = dlg.name;
-					Lines::names.insert(dlg.name);
-				}
+		//			// name
+		//			if (Lines::names.find(dlg.name) == Lines::names.end())
+		//			{
+		//				Lines::names.erase(pDoc->lines[l]->name);
+		//				pDoc->lines[l]->name = dlg.name;
+		//				Lines::names.insert(dlg.name);
+		//			}
 
-			}
+		//		}
 
-		}
-
+		//	}
 	}
 }
 
