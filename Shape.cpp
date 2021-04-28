@@ -518,9 +518,6 @@ void RectangleShape::draw(CDC* dc)
 	else
 		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
 	dc->SelectObject(pen);
-	// synchronized moving
-	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
-	//CPoint rectangleCenter{ 0, 0 };
 
 	CPoint dxDyPlusTempDxDy[4];
 	for (int i = 0; i < 4; i++)
@@ -528,37 +525,28 @@ void RectangleShape::draw(CDC* dc)
 		dxDyPlusTempDxDy[i] = CPoint(change.dxDy[i].x + change.tempDxDy[i].x, change.dxDy[i].y + change.tempDxDy[i].y);
 	}
 
-
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (diffAr[i] != CPoint(0, 0) || ellipseAngleRad!=0)
-	//	{
-	//		isNormalized = false;
-
-	//	}
-	//}
-
 	shapePoints.resize(4);
 	shapePoints[0] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
 	shapePoints[1] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
 	shapePoints[2] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
 	shapePoints[3] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
-	//CRgn* rectangleReg = new CRgn;
+	
 
-	//create new smaller region
-	//CPoint pointsReg[4];
-	//pointsReg[0].x = points[0].x + 1; //bl
-	//pointsReg[0].y = points[0].y - 1;
+	centerPoint23Bottom = CPoint((shapePoints[2].x - shapePoints[3].x) / 2 + shapePoints[3].x, shapePoints[2].y);
+	if (shapePoints[0].y >= shapePoints[3].y)
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y - 40);
+		isReversedVar = false;
+	}
+	else
+	{
+		centerPoint23Top = CPoint(centerPoint23Bottom.x, centerPoint23Bottom.y + 40);
+		isReversedVar = true;
+	}
+	firstPoint = centerPoint23Top;
 
-	//pointsReg[1].x = points[1].x - 1; //br
-	//pointsReg[1].y = points[1].y - 1;
 
-	//pointsReg[2].x = points[2].x - 1; //tr
-	//pointsReg[2].y = points[2].y + 1;
-
-	//pointsReg[3].x = points[3].x + 1; //tl
-	//pointsReg[3].y = points[3].y + 1;
-	fillAreaPoints.clear();
+	//fillAreaPoints.clear();
 	fillAreaPoints.resize(4);
 	
 	//cout << "fillAreaPoints" << endl;
@@ -595,6 +583,10 @@ void RectangleShape::draw(CDC* dc)
 
 	}
 	
+	linkingPoints[0] = CPoint((shapePoints[1].x - shapePoints[0].x) / 2 + shapePoints[0].x, shapePoints[0].y);
+	linkingPoints[1] = CPoint(shapePoints[1].x, (shapePoints[1].y + shapePoints[2].y) / 2);
+	linkingPoints[2] = CPoint((shapePoints[2].x - shapePoints[3].x) / 2 + shapePoints[3].x, shapePoints[2].y);
+	linkingPoints[3] = CPoint(shapePoints[3].x, (shapePoints[0].y + shapePoints[3].y) / 2);
 
 
 	// rotate shape
@@ -620,16 +612,27 @@ void RectangleShape::draw(CDC* dc)
 		pointsReg[i].x += centerOfShape.x + dx;
 		pointsReg[i].y += centerOfShape.y + dy;*/
 	}
+	rotateAndMoveCoordinate(centerPoint23Bottom, DRAW_METHOD);
+	rotateAndMoveCoordinate(centerPoint23Top, DRAW_METHOD);
+
+	// move and rotate points for lines
+	for (int numPoint = 0; numPoint < linkingPoints.size(); numPoint++)
+	{
+		rotateAndMoveCoordinate(linkingPoints[numPoint], DRAW_METHOD);
+	}
+	int tempXFP = firstPoint.x;
+	int tempYFP = firstPoint.y;
+	firstPoint.x = round(tempXFP * 1 - tempYFP * 0);
+	firstPoint.y = round(tempXFP * 0 + tempYFP * 1);
+	firstPoint.x += centerOfShape.x + dx;
+	firstPoint.y += centerOfShape.y + dy;
 
 	for (int pointNum = 0; pointNum < shapePoints.size(); pointNum++)
 	{
 		selectedAreaPoints[pointNum] = shapePoints[pointNum];
 	}
 
-	linkingPoints[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, selectedAreaPoints[0].y);
-	linkingPoints[1] = CPoint(selectedAreaPoints[1].x, (selectedAreaPoints[1].y + selectedAreaPoints[2].y) / 2);
-	linkingPoints[2] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
-	linkingPoints[3] = CPoint(selectedAreaPoints[3].x, (selectedAreaPoints[0].y + selectedAreaPoints[3].y) / 2);
+
 
 
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
@@ -658,6 +661,35 @@ void RectangleShape::draw(CDC* dc)
 	rectangleReg->CreatePolygonRgn(&fillAreaPoints[0], 4, ALTERNATE);
 	dc->Polygon(&shapePoints[0], 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
+
+	if (isSelected)
+	{
+		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
+		dc->SelectObject(tempPen);
+		dc->MoveTo(centerPoint23Bottom);
+		dc->LineTo(centerPoint23Top);
+
+		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
+		for (int i = 0; i < 4; i++)
+			dc->Ellipse(selectedAreaPoints[i].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y + SIZE_OF_POINT_FOR_CHANGE);
+
+
+		// draw rectangle that demonstrates selecting shape
+		for (int pointNum = 0; pointNum < 4; pointNum++)
+		{
+			if (pointNum == 3)
+			{
+				dc->MoveTo(selectedAreaPoints[3]);
+				dc->LineTo(selectedAreaPoints[0]);
+				break;
+			}
+			dc->MoveTo(selectedAreaPoints[pointNum]);
+			dc->LineTo(selectedAreaPoints[pointNum + 1]);
+
+		}
+
+		tempPen->DeleteObject();
+	}
 
 	if (drawPointsForLines)
 	{
