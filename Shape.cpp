@@ -1102,7 +1102,7 @@ void IShape::rotateShape(CPoint point)
 void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool& canBeUnselected, bool& shapeIsFound)
 {
 	//bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
-
+	
 	//bool isShapeFound = false; // if shape is found, then break loop
 	if (type == ShapeType::ellipse || type == ShapeType::rectangle || type == ShapeType::triangle)
 	{
@@ -1155,7 +1155,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 		if (shapeIsFound) return;
 
 	}
-	else if (type == ShapeType::basicLine)
+	else if (type == ShapeType::basicLine || type == ShapeType::rightLine)
 	{
 
 		//bool breakLoop = false; // bool variable that is need for loop control
@@ -1275,7 +1275,7 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 	{
 		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
 		{
-			if (shapes[shapeNum]->type != ShapeType::basicLine)
+			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine)
 			{
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.firstPointOfLine)
 				{
@@ -1291,7 +1291,7 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 	{
 		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
 		{
-			if (shapes[shapeNum]->type != ShapeType::basicLine)
+			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine)
 			{
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.secondPointOfLine)
 				{
@@ -1361,7 +1361,7 @@ void Line::draw(CDC* dc)
 		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
 		{
 			dc->Ellipse(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE + change.tempDxDy[pointNum].x + change.dxDy[pointNum].x, pointsOfLine[pointNum].y + change.tempDxDy[pointNum].y + - SIZE_OF_POINT_FOR_CHANGE + change.dxDy[pointNum].y,
-				pointsOfLine[pointNum].x + change.tempDxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE+change.dxDy[pointNum].x, pointsOfLine[pointNum].y + change.tempDxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE+ change.dxDy[pointNum].y);
+				pointsOfLine[pointNum].x + change.tempDxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE + change.dxDy[pointNum].x, pointsOfLine[pointNum].y + change.tempDxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE+ change.dxDy[pointNum].y);
 		}
 	}
 	dc->MoveTo(CPoint(pointsOfLine[0].x + change.tempDxDy[0].x + change.dxDy[0].x, pointsOfLine[0].y + change.tempDxDy[0].y+ change.dxDy[0].y));
@@ -1384,6 +1384,7 @@ void Line::draw(CDC* dc)
 
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
+	cout << "123" << endl;
 	array <CPoint, 4> tempLineRectRgnHorizontal;
 	array <CPoint, 4> tempLineRectRgnVertical;
 	if (pointsOfLine[0].x < pointsOfLine[1].x)
@@ -1421,7 +1422,7 @@ bool Line::isClickedOnShapeRgn(CPoint point)
 	HRGN lineRgnVert = CreatePolygonRgn(&tempLineRectRgnVertical[0], 4, ALTERNATE);
 	if (PtInRegion(lineRgnHor, point.x, point.y) || PtInRegion(lineRgnVert, point.x, point.y))
 	{
-		::DeleteObject(lineRgnHor);
+		DeleteObject(lineRgnHor);
 		DeleteObject(lineRgnVert);
 		return true;
 	}
