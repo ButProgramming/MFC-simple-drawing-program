@@ -1021,7 +1021,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
 
-		pDoc->getToolIsUsed() == Tools::select_tool;
+		pDoc->getToolIsUsed() = Tools::change;
 		cout << "gere" << endl;
 		
 	}
