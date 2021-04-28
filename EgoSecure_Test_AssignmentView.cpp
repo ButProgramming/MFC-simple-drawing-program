@@ -539,6 +539,12 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		pDoc->getShapesVector().push_back(line);
 		break;
 	}
+	case Tools::rightLine:
+	{
+		IShape* line = new Line(point, ShapeType::rightLine, RGB(0, 0, 0), 1, 1);
+		pDoc->getShapesVector().push_back(line);
+		break;
+	}
 	case Tools::move:
 		pDoc->first.x = point.x;
 		pDoc->first.y = point.y;
@@ -665,8 +671,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	// update all connections
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		pDoc->getShapesVector()[shapeNum]->type;
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
+		//pDoc->getShapesVector()[shapeNum]->type;
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine /*|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine*/)
 		{
 			pDoc->getShapesVector()[shapeNum]->updateLineConnection(pDoc->getShapesVector());
 		}
@@ -746,8 +752,9 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 
 	}
-	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::basicLine)
+	else if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine))
 	{
+		cout << "herehere" << endl;
 		if (!pDoc->getShapesVector().empty())
 		{
 			pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setCoordinateForChange(1, point);
@@ -1290,6 +1297,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	if (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
+
+		pDoc->getToolIsUsed() == Tools::change;
 		
 	}
 	else if (pDoc->getToolIsUsed() == Tools::basicLine)
@@ -1643,27 +1652,18 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
 	auto pDoc = GetDocument();
-	bool LineExists = false;
-	if (pDoc->selectedShapesIDs.size() > 1)
+	pDoc->getToolIsUsed() = Tools::rightLine;
+
+	//unselect all others shapes and lines
+	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		for (auto l : pDoc->lines)
-		{
-			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-			{
-				LineExists = true;
-				break;
-			}
-		}
-		if (!LineExists)
-		{
-			if (pDoc->selectedShapesIDs.size() > 1)
-			{
-				Lines* line = new Lines(CPoint(0, 0), LineType::Right, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-				pDoc->lines.push_back(line);
-				Invalidate();
-			}
-		}
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
+		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(true);
 	}
+
+	// update window
+	Invalidate();
+	
 }
 
 
