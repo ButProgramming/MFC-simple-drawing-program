@@ -522,10 +522,10 @@ void RectangleShape::draw(CDC* dc)
 	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
 	CPoint rectangleCenter{ 0, 0 };
 
-	CPoint diffAr[4];
+	CPoint dxDyPlusTempDxDy[4];
 	for (int i = 0; i < 4; i++)
 	{
-		diffAr[i] = CPoint(dx_dy[i].x + dx_dy_temp[i].x, dx_dy[i].y + dx_dy_temp[i].y);
+		dxDyPlusTempDxDy[i] = CPoint(change.dxDy[i].x + change.tempDxDy[i].x, change.dxDy[i].y + change.tempDxDy[i].y);
 	}
 
 
@@ -538,46 +538,61 @@ void RectangleShape::draw(CDC* dc)
 	//	}
 	//}
 
-	points[0] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //leftbottom
-	points[1] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + diffAr[0].y + diffAr[1].y - (diffAr[2].y + diffAr[3].y)); //rightbottom
-	points[2] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + diffAr[1].x + diffAr[2].x - (diffAr[0].x + diffAr[3].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //righttop
-	points[3] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + diffAr[0].x + diffAr[3].x - (diffAr[1].x + diffAr[2].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + diffAr[2].y + diffAr[3].y - (diffAr[0].y + diffAr[1].y)); //lefttop
+	shapePoints.resize(4);
+	shapePoints[0] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
+	shapePoints[1] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
+	shapePoints[2] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
+	shapePoints[3] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
 	//CRgn* rectangleReg = new CRgn;
 
 	//create new smaller region
-	CPoint pointsReg[4];
-	pointsReg[0].x = points[0].x + 1; //bl
-	pointsReg[0].y = points[0].y - 1;
+	//CPoint pointsReg[4];
+	//pointsReg[0].x = points[0].x + 1; //bl
+	//pointsReg[0].y = points[0].y - 1;
 
-	pointsReg[1].x = points[1].x - 1; //br
-	pointsReg[1].y = points[1].y - 1;
+	//pointsReg[1].x = points[1].x - 1; //br
+	//pointsReg[1].y = points[1].y - 1;
 
-	pointsReg[2].x = points[2].x - 1; //tr
-	pointsReg[2].y = points[2].y + 1;
+	//pointsReg[2].x = points[2].x - 1; //tr
+	//pointsReg[2].y = points[2].y + 1;
 
-	pointsReg[3].x = points[3].x + 1; //tl
-	pointsReg[3].y = points[3].y + 1;
+	//pointsReg[3].x = points[3].x + 1; //tl
+	//pointsReg[3].y = points[3].y + 1;
+	fillAreaPoints.resize(4);
+	fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y - 1 };
+	fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y - 1 };
+	fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y + 1 };
+	fillAreaPoints[3] = CPoint{ shapePoints[3].x + 1, shapePoints[3].y + 1 };
+
+
 
 	// rotate shape
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < shapePoints.size(); i++)
 	{
-		int tempX = points[i].x;
+		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
+		/*int tempX = points[i].x;
 		int tempY = points[i].y;
 		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		points[i].x += centerOfShape.x + dx;
-		points[i].y += centerOfShape.y + dy;
+		points[i].y += centerOfShape.y + dy;*/
 	}
 
 	//rotate shape region points
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < fillAreaPoints.size(); i++)
 	{
-		int tempX = pointsReg[i].x;
+		rotateAndMoveCoordinate(fillAreaPoints[i], DRAW_METHOD);
+		/*int tempX = pointsReg[i].x;
 		int tempY = pointsReg[i].y;
 		pointsReg[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
 		pointsReg[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
 		pointsReg[i].x += centerOfShape.x + dx;
-		pointsReg[i].y += centerOfShape.y + dy;
+		pointsReg[i].y += centerOfShape.y + dy;*/
+	}
+
+	for (int pointNum = 0; pointNum < shapePoints.size(); pointNum++)
+	{
+		selectedAreaPoints[pointNum] = shapePoints[pointNum];
 	}
 
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
@@ -587,7 +602,7 @@ void RectangleShape::draw(CDC* dc)
 	{
 		//dc->Ellipse(0, 0, 200, 200);
 		for (int i = 0; i < 4; i++)
-			dc->Ellipse(points[i].x - sizeOfPointToMoveAndChange, points[i].y - sizeOfPointToMoveAndChange, points[i].x + sizeOfPointToMoveAndChange, points[i].y + sizeOfPointToMoveAndChange);
+			dc->Ellipse(shapePoints[i].x - sizeOfPointToMoveAndChange, shapePoints[i].y - sizeOfPointToMoveAndChange, shapePoints[i].x + sizeOfPointToMoveAndChange, shapePoints[i].y + sizeOfPointToMoveAndChange);
 	}
 	CBrush* rectangleBrush;
 	if (fillType == -1)
@@ -603,8 +618,8 @@ void RectangleShape::draw(CDC* dc)
 	
 
 	CRgn* rectangleReg = new CRgn;
-	rectangleReg->CreatePolygonRgn(pointsReg, 4, ALTERNATE);
-	dc->Polygon(&points[0], 4);
+	rectangleReg->CreatePolygonRgn(&fillAreaPoints[0], 4, ALTERNATE);
+	dc->Polygon(&shapePoints[0], 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
 	//dc->FillRgn(triangleReg, brush);
 	/*delete pen;
