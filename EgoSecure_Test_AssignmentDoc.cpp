@@ -84,13 +84,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int vectorShapeSize = shapes.size();
 		int vectorLinesSize = 0;//lines.size();
 		ar << vectorShapeSize;
-		ar << vectorLinesSize;
 		
 		for (auto s : shapes)
 		{
 			ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->isSelected;
-			ar << s->isSelectedFromDoubleSelectingTool;
 			ar << s->size;
 			ar << s->ellipseAngleRad;
 			ar << s->ID;
@@ -109,50 +107,64 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->outlineType;
 			ar << s->fillType;
 
-			//ar << s->GetRValue(outlineColor);
-
 			
 			for (int i = 0; i < 4; i++)
 			{
-				//ar << s->dx_dy[i];
 				ar << s->getChangeDxDy(i);
 			}
 
-			if (s->type == ShapeType::ellipse)
+			switch (s->type)
 			{
-				//ST = static_cast<ShapeType::ellipse>();
-				shapeType = 0;
-				ar << shapeType;
+				case ShapeType::ellipse:
+				{
+					shapeType = 0;
+					break;
+				}
+				case ShapeType::rectangle:
+				{
+					shapeType = 1;
+					break;
+				}
+				case ShapeType::triangle:
+				{
+					shapeType = 2;
+					break;
+				}
+				case ShapeType::basicLine:
+				{
+					shapeType = 3;
+					break;
+				}
+				case ShapeType::rightLine:
+				{
+					shapeType = 4;
+					break;
+				}
+				case ShapeType::leftLine:
+				{
+					shapeType = 5;
+					break;
+				}
+				case ShapeType::doubleLine:
+				{
+					shapeType = 6;
+					break;
+				}
 			}
-			else if(s->type == ShapeType::rectangle)
-			{
-				shapeType = 1;
-				ar << shapeType;
-			}
-			else //if(s->type == ShapeType::triangle)
-			{
-				shapeType = 2;
-				ar << shapeType;
-			}
-			
+			ar << shapeType;			
 		}
 	}
 	else
 	{
 		IShape* shapeTemp;
 		ShapeType shapeType;
-		//LineType lineType;
 		int ST;
-		int LT;
 		int size;
 		CPoint centerOfShape;
 		bool isSelected;
-		bool isSelectedFromDoubleSelectingTool;
 		int vectorShapeSize;
-		int vectorLinesSize;
 		int oR, oG, oB;
 		int fR, fG, fB;
-		int lR, lG, lB;
 		CString shapeName;
 		int outlineSize;
 		int outlineType;
@@ -172,15 +184,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int lineID;
 		//Lines* lineTemp;
 		ar >> vectorShapeSize;
-		ar >> vectorLinesSize;
-		CString str;
-		str.Format(_T("Shapes: %d, lines: %d"), vectorShapeSize, vectorLinesSize);
-		AfxMessageBox(str);
+
 		for (int i = 0; i < vectorShapeSize; i++)
 		{
 			ar >> centerOfShape.x >> centerOfShape.y;
 			ar >> isSelected;
-			ar >> isSelectedFromDoubleSelectingTool;
 			ar >> size;
 			ar >> ellipseAngleRad;
 			ar >> shapeID;
@@ -232,7 +240,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->ID = shapeID;
 			shapes[shapes.size() - 1]->constID = shapeConstID;
 			shapes[shapes.size() - 1]->name = shapeName;
-			shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
+			//shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
 			shapes[shapes.size() - 1]->oR = oR;
 			shapes[shapes.size() - 1]->oG = oG;
 			shapes[shapes.size() - 1]->oB = oB;
