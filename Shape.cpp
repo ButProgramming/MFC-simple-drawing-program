@@ -520,7 +520,7 @@ void RectangleShape::draw(CDC* dc)
 	dc->SelectObject(pen);
 	// synchronized moving
 	//dc->Rectangle(centerOfShape.x + dx - size, centerOfShape.y + dy - size, centerOfShape.x + dx + size, centerOfShape.y + dy + size);
-	CPoint rectangleCenter{ 0, 0 };
+	//CPoint rectangleCenter{ 0, 0 };
 
 	CPoint dxDyPlusTempDxDy[4];
 	for (int i = 0; i < 4; i++)
@@ -539,10 +539,10 @@ void RectangleShape::draw(CDC* dc)
 	//}
 
 	shapePoints.resize(4);
-	shapePoints[0] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
-	shapePoints[1] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + rectangleCenter.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
-	shapePoints[2] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
-	shapePoints[3] = CPoint(shapeMove.tempDxDy.x + rectangleCenter.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + rectangleCenter.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
+	shapePoints[0] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
+	shapePoints[1] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
+	shapePoints[2] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
+	shapePoints[3] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
 	//CRgn* rectangleReg = new CRgn;
 
 	//create new smaller region
@@ -558,12 +558,43 @@ void RectangleShape::draw(CDC* dc)
 
 	//pointsReg[3].x = points[3].x + 1; //tl
 	//pointsReg[3].y = points[3].y + 1;
+	fillAreaPoints.clear();
 	fillAreaPoints.resize(4);
-	fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y - 1 };
-	fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y - 1 };
-	fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y + 1 };
-	fillAreaPoints[3] = CPoint{ shapePoints[3].x + 1, shapePoints[3].y + 1 };
+	
+	//cout << "fillAreaPoints" << endl;
+	if ((shapePoints[3].x < shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
+	{
+		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y - 1 }; //lb
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y - 1 }; //rb
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y + 1 }; //rt
+		fillAreaPoints[3] = CPoint{ shapePoints[3].x + 1, shapePoints[3].y + 1 }; //lt
+	}
+	else if ((shapePoints[3].x > shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
+	{
+		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x - 1, shapePoints[0].y - 1 }; //lb
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y - 1 }; //rb
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y + 1 }; //rt
+		fillAreaPoints[3] = CPoint{ shapePoints[3].x - 1, shapePoints[3].y + 1 }; //lt
+	}
+	else if ((shapePoints[3].x > shapePoints[1].x) && (shapePoints[3].y > shapePoints[1].y))
+	{
+		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x - 1, shapePoints[0].y + 1 }; //lb
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y + 1 }; //rb
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y - 1 }; //rt
+		fillAreaPoints[3] = CPoint{ shapePoints[3].x - 1, shapePoints[3].y - 1 }; //lt
+	}
+	else
+	{
+		fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y + 1 }; //lb
+		fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y + 1 }; //rb
+		fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y - 1 }; //rt
+		fillAreaPoints[3] = CPoint{ shapePoints[3].x + 1, shapePoints[3].y - 1 }; //lt
 
+	}
+	
 
 
 	// rotate shape
@@ -595,6 +626,12 @@ void RectangleShape::draw(CDC* dc)
 		selectedAreaPoints[pointNum] = shapePoints[pointNum];
 	}
 
+	linkingPoints[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, selectedAreaPoints[0].y);
+	linkingPoints[1] = CPoint(selectedAreaPoints[1].x, (selectedAreaPoints[1].y + selectedAreaPoints[2].y) / 2);
+	linkingPoints[2] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[3].x) / 2 + selectedAreaPoints[3].x, selectedAreaPoints[2].y);
+	linkingPoints[3] = CPoint(selectedAreaPoints[3].x, (selectedAreaPoints[0].y + selectedAreaPoints[3].y) / 2);
+
+
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	//GetRgnBox(*rectangleReg, boxRect);
 	//dc->Rectangle(boxRect);
@@ -621,6 +658,15 @@ void RectangleShape::draw(CDC* dc)
 	rectangleReg->CreatePolygonRgn(&fillAreaPoints[0], 4, ALTERNATE);
 	dc->Polygon(&shapePoints[0], 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
+
+	if (drawPointsForLines)
+	{
+		//draw points for lines
+		for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
+		{
+			dc->Ellipse(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
+		}
+	}
 	//dc->FillRgn(triangleReg, brush);
 	/*delete pen;
 	delete rectangleBrush;
@@ -926,7 +972,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 	//bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
 
 	//bool isShapeFound = false; // if shape is found, then break loop
-	if (type == ShapeType::ellipse)
+	if (type == ShapeType::ellipse || type == ShapeType::rectangle)
 	{
 		
 		// check if is clicked on "rotate ellipse"
