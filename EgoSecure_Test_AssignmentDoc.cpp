@@ -107,6 +107,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->outlineType;
 			ar << s->fillType;
 
+			ar << s->getCoordinateForChange(0);
+			ar << s->getCoordinateForChange(1);
+
 			
 			for (int i = 0; i < 4; i++)
 			{
@@ -118,44 +121,53 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				case ShapeType::ellipse:
 				{
 					shapeType = 0;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::rectangle:
 				{
 					shapeType = 1;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::triangle:
 				{
 					shapeType = 2;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::basicLine:
 				{
 					shapeType = 3;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::rightLine:
 				{
 					shapeType = 4;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::leftLine:
 				{
 					shapeType = 5;
+					ar << shapeType;
 					break;
 				}
 				case ShapeType::doubleLine:
 				{
 					shapeType = 6;
+					ar << shapeType;
 					break;
 				}
 			}
-			ar << shapeType;			
+						
 		}
 	}
 	else
 	{
+		CPoint coordinateForChange1;
+		CPoint coordinateForChange2;
 		IShape* shapeTemp;
 		ShapeType shapeType;
 		int ST;
@@ -207,6 +219,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> outlineType;
 			ar >> fillType;
 
+			ar >> coordinateForChange1;
+			ar >> coordinateForChange2;
+
 			for (int i = 0; i < 4; i++)
 			{
 				//ar >> dx_dy[i];
@@ -214,24 +229,59 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 
 			ar >> ST;
-			if (ST == 0)
+			//ar >> ST;
+			//ar >> ST;
+			switch (ST)
 			{
-				shapeType = ShapeType::ellipse;
-				shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-				shapeTemp->isSelected = isSelected;
+				case 0:
+				{
+					shapeType = ShapeType::ellipse;
+					shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+					shapeTemp->isSelected = isSelected;
+				}
+				case 1:
+				{
+					shapeType = ShapeType::rectangle;
+					shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+					shapeTemp->isSelected = isSelected;
+				}
+				case 2:
+				{
+					shapeType = ShapeType::triangle;
+					shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+					shapeTemp->isSelected = isSelected;
+				}
+				case 3:
+				{
+					shapeType = ShapeType::basicLine;
+					shapeTemp = new Line(CPoint{ 0, 0 }, ShapeType::basicLine, RGB(0, 0, 0), 2, 1);
+					shapeTemp->isSelected = isSelected;
+				}
 			}
-			else if (ST == 1)
-			{
-				shapeType = ShapeType::rectangle;
-				shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-				shapeTemp->isSelected = isSelected;
-			}
-			else
-			{
-				shapeType = ShapeType::triangle;
-				shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-				shapeTemp->isSelected = isSelected;
-			}
+			//if (ST == 0)
+			//{
+			//	shapeType = ShapeType::ellipse;
+			//	shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+			//	shapeTemp->isSelected = isSelected;
+			//}
+			//else if (ST == 1)
+			//{
+			//	shapeType = ShapeType::rectangle;
+			//	shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+			//	shapeTemp->isSelected = isSelected;
+			//}
+			//else if (ST == 2)
+			//{
+			//	shapeType = ShapeType::triangle;
+			//	shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+			//	shapeTemp->isSelected = isSelected;
+			//}
+			//else if (ST == 3)
+			//{
+			//	shapeType = ShapeType::basicLine;
+			//	shapeTemp = new Line(CPoint{ 0, 0 }, ShapeType::basicLine, RGB(0,0,0), 2, 1);//(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
+			//	shapeTemp->isSelected = isSelected;
+			//}
 			
 			//shapes.emplace_back(shape);
 			shapes.push_back(shapeTemp);
@@ -244,6 +294,12 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->oR = oR;
 			shapes[shapes.size() - 1]->oG = oG;
 			shapes[shapes.size() - 1]->oB = oB;
+			if (shapes[shapes.size() - 1]->type == ShapeType::basicLine)
+			{
+				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
+				shapes[shapes.size() - 1]->setCoordinateForChange(1, coordinateForChange2);
+			}
+			
 
 			for (int i = 0; i < 4; i++)
 			{
