@@ -1348,6 +1348,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	pointsOfLine[0] = firstPointOfLine;
 	pointsOfLine[1] = firstPointOfLine;
+	cout << "point1: " << pointsOfLine[1].x << " " << pointsOfLine[1].y << endl;
 }
 
 void Line::draw(CDC* dc)
@@ -1371,14 +1372,18 @@ void Line::draw(CDC* dc)
 
 	if (type == ShapeType::rightLine)
 	{
-		CPoint firstPointOfArrow = NULL;
-		CPoint secondPointOfArrow = NULL;
-		getPointsOfArrow(RIGHT_LINE, firstPointOfArrow, secondPointOfArrow);
-		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
-		dc->LineTo(firstPointOfArrow);
-		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
-		dc->LineTo(secondPointOfArrow);
-		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+		//if (pointsOfLine[0] != pointsOfLine[1])
+		{
+			CPoint firstPointOfArrow = NULL;
+			CPoint secondPointOfArrow = NULL;
+			getPointsOfArrow(RIGHT_LINE, firstPointOfArrow, secondPointOfArrow);
+			dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
+			dc->LineTo(firstPointOfArrow);
+			dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
+			dc->LineTo(secondPointOfArrow);
+			cout << "fpoa " << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+		}
+		
 	}
 	else if (type == ShapeType::leftLine)
 	{
@@ -1815,6 +1820,11 @@ void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& 
 	double lengthOfPerpendicular = lengthOfArrow * tan(angleOfArrowRad);
 	double legX = cos(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
 	double legY = sin(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
+	if(isnan(legX) || isnan(legY))
+	{
+		legX = 0;
+		legY = 0;
+	}
 	if (!(centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) > 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) < 0 || centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) < 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) > 0))
 	{
 		legX = -legX;
@@ -1822,6 +1832,7 @@ void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& 
 
 	firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
 	secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
+	
 
 }
 

@@ -204,8 +204,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	//check if can be all shapes unselected
 	if (canBeUnselected)
 	{
-		if (pDoc->getToolIsUsed() != Tools::basicLine /*&& pDoc->getToolIsUsed() != Tools::rightLine 
-			&& pDoc->getToolIsUsed() != Tools::leftLine && pDoc->getToolIsUsed() != Tools::doubleLine*/)
+		if (pDoc->getToolIsUsed() != Tools::basicLine && pDoc->getToolIsUsed() != Tools::rightLine 
+			&& pDoc->getToolIsUsed() != Tools::leftLine && pDoc->getToolIsUsed() != Tools::doubleLine)
 		{
 			for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 			{
