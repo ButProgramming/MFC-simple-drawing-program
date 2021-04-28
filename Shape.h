@@ -100,7 +100,7 @@ public:
 	static set<CString> names;
  	static int dx;
 	static int dy;
-	static int sizeOfPointToMoveAndChange;
+	//static int sizeOfPointToMoveAndChange;
 	static int countOfShape;
 	CPoint firstPoint{0,0};
 
@@ -118,7 +118,7 @@ public:
 	int ID = NULL;
 	CString name = NULL;
 	
-	CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
+	//CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
 	//bool isDrawFirstTime{ false };
 	//int lastY = NULL;

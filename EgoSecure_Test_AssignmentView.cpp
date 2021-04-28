@@ -209,7 +209,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		{
 			for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 			{
-				cout << "canBeUnselected1" << endl;
 				pDoc->getShapesVector()[shapeNum]->setSelected(false);
 				pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 			}
@@ -446,7 +445,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				//selected = true;
 				if (pDoc->getShapesVector()[s]->getNumberOfPointForChange() != -1)
 				{
-					cout << "here" << endl;
 					// set change of mouse movement 
 					pDoc->getShapesVector()[s]->setChangeTempDxDy(pDoc->getShapesVector()[s]->getNumberOfPointForChange(), CPoint{ point - pDoc->getShapesVector()[s]->getChangeStartClickedCoordinate() });
 					
@@ -475,7 +473,6 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	else if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
 		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine))
 	{
-		cout << "herehere" << endl;
 		if (!pDoc->getShapesVector().empty())
 		{
 			pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setCoordinateForChange(1, point);
@@ -497,18 +494,15 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	//cout << "cx: " << lpCreateStruct->cx << "cy: " << lpCreateStruct->cy << "x: " << lpCreateStruct->x << "y: " << lpCreateStruct->y << endl;
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
 	GetClientRect(&rect);
-	//cout << point.x << " " << point.y << endl;
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
 	int x = ::GetSystemMetrics(SM_CXSCREEN);
 	int y = ::GetSystemMetrics(SM_CXSCREEN);
-	//cout << y << endl;
 	m_dc.CreateCompatibleDC(&dc);
 	m_bmt.CreateCompatibleBitmap(&dc, x, y);
 	m_dc.SelectObject(&m_bmt);
@@ -552,7 +546,6 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 	else if (m_hsb.GetScrollPos() == valueOfHorizontalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
-		//cout << "in else if" << endl;
 		valueOfHorizontalScrollBar.max += HORIZONTAL_SCROLLBAR_DX;
 		m_hsb.SetScrollRange(valueOfHorizontalScrollBar.min, valueOfHorizontalScrollBar.max);
 		m_hsb.SetScrollPos(valueOfHorizontalScrollBar.max - HORIZONTAL_SCROLLBAR_DX);
@@ -605,7 +598,6 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 	else if (m_vsb.GetScrollPos() == valueOfVerticalScrollBar.max && !(GetKeyState(VK_LBUTTON) & 0x8000))
 	{
-		//cout << "in else if" << endl;
 		valueOfVerticalScrollBar.max += VERTICAL_SCROLLBAR_DX;
 		m_vsb.SetScrollRange(valueOfVerticalScrollBar.min, valueOfVerticalScrollBar.max);
 		m_vsb.SetScrollPos(valueOfVerticalScrollBar.max - VERTICAL_SCROLLBAR_DX);
@@ -1022,7 +1014,6 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
 
 		pDoc->getToolIsUsed() = Tools::change;
-		cout << "gere" << endl;
 		
 	}
 	else if (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
@@ -1101,7 +1092,6 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				
 				for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 				{
-					cout << "next" << endl;
 					if (pDoc->getShapesVector()[shapeNum]->type != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::rightLine
 						&& pDoc->getShapesVector()[shapeNum]->type != ShapeType::leftLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::doubleLine)
 					{
@@ -1109,10 +1099,10 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
 						if (pDoc->getShapesVector()[shapeNum]->IsClickedOnPointForLines(pDoc->getShapesVector()[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0))
 						{
-							//cout << "numberOfPointForLines0==" << numberOfPointForLines0 << " " << "numberOfPointForLines1==" << numberOfPointForLines1 << endl;
+							
 							if (numberOfPointForLines0 != -1)
 							{
-								//cout << "IsClickedOnPointForLines" << endl;
+							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines0));
 								pDoc->getShapesVector()[s]->createLineConnection(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID, numberOfPointForLines0);
 								CString str = NULL;
@@ -1123,7 +1113,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 							//if (numberOfPointForLines1 != -1)
 							//{
-							//	//cout << "IsClickedOnPointForLines" << endl;
+				
 							//	pDoc->getShapesVector()[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines1));
 							//	pDoc->getShapesVector()[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID, numberOfPointForLines1);
 							//}
@@ -1131,7 +1121,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 							//{
 							//	//pDoc->getShapesVector()[s]->lineDisconnecting(SECOND_POINT_OF_LINE);
 							//}
-							////cout << "before " << numberOfPointForLines0 << endl;
+					
 
 						}
 						
@@ -1140,7 +1130,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 						{
 							if (numberOfPointForLines1 != -1)
 							{
-								//cout << "IsClickedOnPointForLines" << endl;
+							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines1));
 								pDoc->getShapesVector()[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID, numberOfPointForLines1);
 								CString str = NULL;
@@ -1148,21 +1138,20 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 								//AfxMessageBox(str);
 							}
 						}
-						cout << numberOfPointForLines0 << "  --  " << numberOfPointForLines1 << endl;
 						
 						if (numberOfPointForLines0 == -1)
 						{
-							//cout << "!IsClickedOnPointForLines: " << numberOfPointForLines0 << endl;
+				
 							pDoc->getShapesVector()[s]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID);
 						}
 						if (numberOfPointForLines1 == -1)
 						{
-							//cout << "!IsClickedOnPointForLines: " << numberOfPointForLines1 << endl;
+						
 							pDoc->getShapesVector()[s]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID);
 						}
 					
 						
-						//cout << numberOfPointForLines0 << endl;
+		
 					}
 				}
 			}
@@ -1460,36 +1449,12 @@ void CEgoSecureTestAssignmentView::OnListcontrolShapes()
 
 void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 {
-	// TODO: Add your command handler code here
 	auto pDoc = GetDocument();
-	Default_draw_properties dlg;
-	//dlg.SetDataDefaultDrawProperties(pDoc->num_cb_outline_size);
-	//dlg.
-	//dlg.m_color_outline.SetColor(pDoc->m_outline_color);
-	//dlg.m_cb_outline_size.SelectString(0, _T("123"));
-	//dlg.m_cb_outline_type.SetCurSel(2);
-	dlg.m_color_outline_COLORREF = pDoc->m_outline_color;
-	dlg.m_color_fill_COLORREF = pDoc->m_fill_color;
-	dlg.m_color_link_COLORREF = pDoc->m_color_link;
-	dlg.num_cb_outline_size = pDoc->num_cb_outline_size;
-	dlg.num_cb_outline_type = pDoc->num_cb_outline_type;
-	dlg.num_cb_fill_type = pDoc->num_cb_fill_type;
-	dlg.num_cb_line_size = pDoc->num_cb_line_size;
-	dlg.num_cb_link_type = pDoc->num_cb_link_type;
+	Default_draw_properties dlg(pDoc);
+	dlg.getParameters();
 	dlg.DoModal();
-	dlg.m_color_outline.SetColor(RGB(255, 0, 0));
-	pDoc->m_outline_color = dlg.m_color_outline_COLORREF;
-	pDoc->m_fill_color = dlg.m_color_fill_COLORREF;
-	pDoc->num_cb_outline_size = dlg.num_cb_outline_size;
-	pDoc->num_cb_outline_type = dlg.num_cb_outline_type;
-	pDoc->num_cb_fill_type = dlg.num_cb_fill_type;
-	pDoc->num_cb_link_type = dlg.num_cb_link_type;
-	pDoc->m_color_link = dlg.m_color_link_COLORREF;
-	pDoc->num_cb_line_size = dlg.num_cb_line_size;
-	//dlg.UpdateData(true);
-	//dlg.SetDataDefaultDrawProperties();
-	//dlg.m_cb_outline_size.SetCurSel(0);
-	//AfxMessageBox(_T("123"));
+	dlg.setParameters();
+	DeleteObject(pDoc);
 }
 
 

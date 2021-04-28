@@ -7,13 +7,15 @@
 #include "afxdialogex.h"
 
 
+
 // Default_draw_properties dialog
 
 IMPLEMENT_DYNAMIC(Default_draw_properties, CDialogEx)
 
-Default_draw_properties::Default_draw_properties(CWnd* pParent /*=nullptr*/)
+Default_draw_properties::Default_draw_properties(CEgoSecureTestAssignmentDoc* pDoc, CWnd* pParent)
 	: CDialogEx(IDD_DIALOG_DEFAULT_DRAW_PROPERTIES, pParent)
 {
+	this->pDoc = pDoc;
 	//SetDataDefaultDrawProperties();
 }
 
@@ -108,4 +110,33 @@ BOOL Default_draw_properties::ContinueModal()
 		firstTime = false;
 	}
 	return CDialogEx::ContinueModal();
+}
+
+
+void Default_draw_properties::getParameters()
+{
+	m_color_outline_COLORREF = pDoc->m_outline_color;
+	m_color_fill_COLORREF = pDoc->m_fill_color;
+	m_color_link_COLORREF = pDoc->m_color_link;
+	num_cb_outline_size = pDoc->num_cb_outline_size;
+	num_cb_outline_type = pDoc->num_cb_outline_type;
+	num_cb_fill_type = pDoc->num_cb_fill_type;
+	num_cb_line_size = pDoc->num_cb_line_size;
+	num_cb_link_type = pDoc->num_cb_link_type;
+	// TODO: Add your implementation code here.
+}
+
+
+void Default_draw_properties::setParameters()
+{
+	m_color_outline.SetColor(RGB(255, 0, 0));
+	pDoc->m_outline_color = m_color_outline_COLORREF;
+	pDoc->m_fill_color = m_color_fill_COLORREF;
+	pDoc->num_cb_outline_size = num_cb_outline_size;
+	pDoc->num_cb_outline_type = num_cb_outline_type;
+	pDoc->num_cb_fill_type = num_cb_fill_type;
+	pDoc->num_cb_link_type = num_cb_link_type;
+	pDoc->m_color_link = m_color_link_COLORREF;
+	pDoc->num_cb_line_size = num_cb_line_size;
+	// TODO: Add your implementation code here.
 }

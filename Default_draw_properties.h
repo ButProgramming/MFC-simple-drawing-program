@@ -1,14 +1,15 @@
 #pragma once
-
+#include "EgoSecure_Test_AssignmentDoc.h"
 
 // Default_draw_properties dialog
 
 class Default_draw_properties : public CDialogEx
 {
 	DECLARE_DYNAMIC(Default_draw_properties)
-
+private:
+	CEgoSecureTestAssignmentDoc* pDoc = nullptr;
 public:
-	Default_draw_properties(CWnd* pParent = nullptr);   // standard constructor
+	Default_draw_properties(CEgoSecureTestAssignmentDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~Default_draw_properties();
 
 // Dialog Data
@@ -21,6 +22,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	
 	CMFCColorButton m_color_outline;
 	CMFCColorButton m_color_fill;
 	CMFCColorButton m_color_link;
@@ -49,4 +51,6 @@ public:
 	//
 	bool firstTime = true;
 	COLORREF value_color;
+	void getParameters();
+	void setParameters();
 };

@@ -3,7 +3,7 @@
 
 int IShape::dx = 0;
 int IShape::dy = 0;
-int IShape::sizeOfPointToMoveAndChange = 3;
+//int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 set<CString> IShape::names;
@@ -563,10 +563,8 @@ void RectangleShape::draw(CDC* dc)
 	//fillAreaPoints.clear();
 	fillAreaPoints.resize(4);
 	
-	//cout << "fillAreaPoints" << endl;
 	if ((shapePoints[3].x < shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
 	{
-		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
 		fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y - 1 }; //lb
 		fillAreaPoints[1] = CPoint{ shapePoints[1].x - 1, shapePoints[1].y - 1 }; //rb
 		fillAreaPoints[2] = CPoint{ shapePoints[2].x - 1, shapePoints[2].y + 1 }; //rt
@@ -574,7 +572,6 @@ void RectangleShape::draw(CDC* dc)
 	}
 	else if ((shapePoints[3].x > shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
 	{
-		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
 		fillAreaPoints[0] = CPoint{ shapePoints[0].x - 1, shapePoints[0].y - 1 }; //lb
 		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y - 1 }; //rb
 		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y + 1 }; //rt
@@ -582,7 +579,6 @@ void RectangleShape::draw(CDC* dc)
 	}
 	else if ((shapePoints[3].x > shapePoints[1].x) && (shapePoints[3].y > shapePoints[1].y))
 	{
-		cout << shapePoints[3].x << " " << shapePoints[1].x << endl;
 		fillAreaPoints[0] = CPoint{ shapePoints[0].x - 1, shapePoints[0].y + 1 }; //lb
 		fillAreaPoints[1] = CPoint{ shapePoints[1].x + 1, shapePoints[1].y + 1 }; //rb
 		fillAreaPoints[2] = CPoint{ shapePoints[2].x + 1, shapePoints[2].y - 1 }; //rt
@@ -652,12 +648,12 @@ void RectangleShape::draw(CDC* dc)
 	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
 	//GetRgnBox(*rectangleReg, boxRect);
 	//dc->Rectangle(boxRect);
-	if (isSelected)
-	{
-		//dc->Ellipse(0, 0, 200, 200);
-		for (int i = 0; i < 4; i++)
-			dc->Ellipse(shapePoints[i].x - sizeOfPointToMoveAndChange, shapePoints[i].y - sizeOfPointToMoveAndChange, shapePoints[i].x + sizeOfPointToMoveAndChange, shapePoints[i].y + sizeOfPointToMoveAndChange);
-	}
+	//if (isSelected)
+	//{
+	//	//dc->Ellipse(0, 0, 200, 200);
+	//	for (int i = 0; i < 4; i++)
+	//		dc->Ellipse(shapePoints[i].x - sizeOfPointToMoveAndChange, shapePoints[i].y - sizeOfPointToMoveAndChange, shapePoints[i].x + sizeOfPointToMoveAndChange, shapePoints[i].y + sizeOfPointToMoveAndChange);
+	//}
 	CBrush* rectangleBrush;
 	if (fillType == -1)
 	{
@@ -1038,52 +1034,45 @@ void IShape::rotateShape(CPoint point)
 	circleQuarter tempEnum = first;
 	if (point.x >= centerOfShape.x && point.y <= centerOfShape.x)
 	{
-		//cout << "1" << endl;
 		tempEnum = first;
 	}
 	else if (point.x > centerOfShape.x && point.y > centerOfShape.x)
 	{
-		//cout << "2" << endl;
 		tempEnum = second;
 	}
 	else if (point.x <= centerOfShape.x && point.y >= centerOfShape.x)
 	{
-		//cout << "3" << endl;
 		tempEnum = third;
 	}
 	else
 	{
-		//cout << "4" << endl;
 		tempEnum = fourth;
 	}
 	getFirstClickedPoint().y;
 	//int temp2 = point.y - pDoc->getShapesVector()[s]->getFirstClickedPoint().y;
 	array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
 	//sides[0] = sqrt(pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
-	//cout << "firstPoint x: " << firstPoint.x << " firstPoint y:" << firstPoint.y << endl;
 	sides[0] = sqrt(pow(firstPoint.x - centerOfShape.x, 2) + pow(firstPoint.y - centerOfShape.y, 2));
-	//cout << pDoc->getShapesVector()[s]->firstPoint.x << " " << pDoc->getShapesVector()[s]->firstPoint.y << endl;
+	
 	sides[1] = sqrt(pow(firstPoint.x - point.x, 2) + pow(firstPoint.y - point.y, 2));
 	sides[2] = sqrt(pow(centerOfShape.x - point.x, 2) + pow(centerOfShape.y - point.y, 2));
 	/*sides[0] /= 100;
 	sides[1] /= 100;
 	sides[2] /= 100;*/
-	//cout << "sides[2]: " << sides[2] << endl;
+
 	double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
-	//cout << " cosOfCenterAngle " << cosOfCenterAngle << endl;
-	//cout << "cos: " << cosOfCenterAngle << endl;
+
 	double centerAngleRad = acos(cosOfCenterAngle);
-	//cout << "rad: " << centerAngleRad << endl;
+
 
 	double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
-	//cout << "deg: " << centerAngleDegree << endl;
+
 	if (tempEnum == third || tempEnum == fourth)
 	{
 		//pDoc->getShapesVector()[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
 		centerAngleDegree = 360 - centerAngleDegree;
 	}
-	//cout << "ellipseAngleRad: " << pDoc->getShapesVector()[s]->ellipseAngleRad * 180.0 / 3.14 << endl;
-	//cout << "deg: " << centerAngleDegree << endl;
+
 	//int temp = point.y - pDoc->getShapesVector()[s]->lastY;
 
 	//check if is shape reversed
@@ -1094,8 +1083,7 @@ void IShape::rotateShape(CPoint point)
 	else
 	{
 		ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
-		//cout << pDoc->getShapesVector()[s]->ellipseAngleRad << endl;
-		//cout << centerAngleDegree * 3.14 / 180.0 <<endl;
+
 	}
 }
 
@@ -1115,7 +1103,6 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 				ellipseCenter.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, ellipseCenter.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL); // create region for "rotate tool ellipse"
 			if (PtInRegion(ellipseForRotateTool, point.x, point.y))
 			{
-				cout << "here" << endl;
 				toolIsUsed = Tools::rotate;
 				canBeUnselected = false;
 				shapeIsFound = true;
@@ -1135,6 +1122,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 		//check if clicked on shape
 		if (isClickedOnShapeRgn(point))
 		{
+
 			shapeIsFound = true; // is shape is found than break the loop
 
 			// unselecting others shapes
@@ -1160,8 +1148,6 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 
 		//bool breakLoop = false; // bool variable that is need for loop control
 		// check if clicked on points that changing the size of shape
-		//cout <<"3: "<< pDoc->getShapesVector()[0]->getSelected() << endl;
-		//cout << "breakLoop " << breakLoop << endl;
 		//canBeUnselected = false;
 		if (isClickedPointForChange(point))
 		{
@@ -1185,7 +1171,6 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 			shapeIsFound = true;
 			canBeUnselected = false;
 		}
-		//cout << "4: " << pDoc->getShapesVector()[0]->getSelected() << endl;
 		
 		if (shapeIsFound) return;
 	}
@@ -1205,7 +1190,7 @@ void IShape::normalizeShape()
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				tmp[i] = recFromRgn[i];
+				tmp[i] = selectedAreaPoints[i];
 			}
 
 		}
@@ -1240,26 +1225,19 @@ void IShape::normalizeShape()
 
 void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines)
 {
-	//cout << "here" << endl;
 	if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
 	{
-		//cout << "here2" << endl;
 		connecting.isConnected.firstPointOfLine = true;
 		connecting.connectedShapeConstID.firstPointOfLine = shapeConstID;
 		connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfPointForLines;
 
-		//cout << "isConnected.firstPointOfLine: " << connecting.isConnected.firstPointOfLine << " connectedShapeConstID.firstPointOfLine: " << connecting.connectedShapeConstID.firstPointOfLine
-			//<< " numberOfShapesPointForLines.firstPointOfLine: " << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
 	}
 	else if (numberOfPointOfLine == SECOND_POINT_OF_LINE)
 	{
-		//cout << "here3" << endl;
 		connecting.isConnected.secondPointOfLine = true;
 		connecting.connectedShapeConstID.secondPointOfLine = shapeConstID;
 		connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfPointForLines;
 
-		//cout << "isConnected.firstPointOfLine: " << connecting.isConnected.secondPointOfLine << " connectedShapeConstID.firstPointOfLine: " << connecting.connectedShapeConstID.secondPointOfLine
-			//<< " numberOfShapesPointForLines.firstPointOfLine: " << connecting.numberOfShapesPointForLines.secondPointOfLine << endl;
 	}
 	/*if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
 	{
@@ -1282,8 +1260,6 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 				{
 					setCoordinateForChange(FIRST_POINT_OF_LINE, shapes[shapeNum]->getPointForLine(connecting.numberOfShapesPointForLines.firstPointOfLine));
 					
-					//cout << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).x << " " << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).y << endl;
-					//AfxMessageBox(_T("000"));
 				}
 			}
 		}
@@ -1299,8 +1275,6 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 				{
 					setCoordinateForChange(SECOND_POINT_OF_LINE, shapes[shapeNum]->getPointForLine(connecting.numberOfShapesPointForLines.secondPointOfLine));
 
-					//cout << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).x << " " << shapes[shapeNum]->getPointForLine(numberOfShapesPointForLines).y << endl;
-					//AfxMessageBox(_T("000"));
 				}
 			}
 		}
@@ -1313,14 +1287,13 @@ void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 	{
 		if (connecting.connectedShapeConstID.firstPointOfLine == shapeConstID) // disconnect not always (if id of connected Shape == shape constID to disconnect)
 		{
-			//cout << "here2" << endl;
+		
 			connecting.isConnected.firstPointOfLine = false;
 			connecting.connectedShapeConstID.firstPointOfLine = -1;
 			connecting.numberOfShapesPointForLines.firstPointOfLine = -1;
 		}
 
-		//cout << "isConnected.firstPointOfLine: " << connecting.isConnected.firstPointOfLine << " connectedShapeConstID.firstPointOfLine: " << connecting.connectedShapeConstID.firstPointOfLine
-			//<< " numberOfShapesPointForLines.firstPointOfLine: " << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
+		
 	}
 	else if (numberOfPointOfLine == SECOND_POINT_OF_LINE)
 	{
@@ -1332,8 +1305,7 @@ void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 		}
 		
 
-		//cout << "isConnected.secondPointOfLine: " << connecting.isConnected.secondPointOfLine << " connectedShapeConstID.secondPointOfLine: " << connecting.connectedShapeConstID.secondPointOfLine
-			//<< " numberOfShapesPointForLines.secondPointOfLine: " << connecting.numberOfShapesPointForLines.secondPointOfLine << endl;
+		
 	}
 }
 
@@ -1348,7 +1320,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	pointsOfLine[0] = firstPointOfLine;
 	pointsOfLine[1] = firstPointOfLine;
-	cout << "point1: " << pointsOfLine[1].x << " " << pointsOfLine[1].y << endl;
+
 }
 
 void Line::draw(CDC* dc)
@@ -1358,7 +1330,6 @@ void Line::draw(CDC* dc)
 	//dc->Polygon(&tempLineRectRgn1[0], tempLineRectRgn1.size());
 	//dc->Polygon(&tempLineRectRgn2[0], tempLineRectRgn2.size());
 
-	//cout << "dx_dy[0].x" << dx_dy[0].x << " " << "dxDy[0].x" << dxDy[0].x << endl;
 	if (isSelected)
 	{
 		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
@@ -1381,7 +1352,7 @@ void Line::draw(CDC* dc)
 			dc->LineTo(firstPointOfArrow);
 			dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
 			dc->LineTo(secondPointOfArrow);
-			cout << "fpoa " << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+
 		}
 		
 	}
@@ -1394,7 +1365,6 @@ void Line::draw(CDC* dc)
 		dc->LineTo(firstPointOfArrow);
 		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
 		dc->LineTo(secondPointOfArrow);
-		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
 	}
 	else if (type == ShapeType::doubleLine)
 	{
@@ -1414,7 +1384,7 @@ void Line::draw(CDC* dc)
 		dc->LineTo(firstPointOfArrow);
 		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
 		dc->LineTo(secondPointOfArrow);
-		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+		
 	}
 
 	//draw all lines
@@ -1718,7 +1688,6 @@ void Line::draw(CDC* dc)
 
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
-	cout << "123" << endl;
 	array <CPoint, 4> tempLineRectRgnHorizontal;
 	array <CPoint, 4> tempLineRectRgnVertical;
 	if (pointsOfLine[0].x < pointsOfLine[1].x)
@@ -1818,8 +1787,8 @@ void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& 
 
 	double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - (pointsOfLine[secondNumber].x + change.tempDxDy[secondNumber].x), 2) + pow(centerOfArrowGround.y - (pointsOfLine[secondNumber].y + change.tempDxDy[secondNumber].y), 2));
 	double lengthOfPerpendicular = lengthOfArrow * tan(angleOfArrowRad);
-	double legX = cos(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
-	double legY = sin(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
+	double legX = cos(90 * 3.14 / 180.0 - angleOfTriangleRad) * lengthOfPerpendicular;
+	double legY = sin(90 * 3.14 / 180.0 - angleOfTriangleRad) * lengthOfPerpendicular;
 	if(isnan(legX) || isnan(legY))
 	{
 		legX = 0;
