@@ -157,7 +157,12 @@ public:
 	//};
 	
 
-
+	struct connecting
+	{
+		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
+		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
+		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
+	} connecting;
 	
 protected:
 	const CPoint shapeCenterBeforRotate{ 0, 0 };
@@ -173,12 +178,7 @@ protected:
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
 	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
 
-	struct connecting
-	{
-		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
-		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
-		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
-	} connecting;
+	
 
 	struct shapeMove
 	{

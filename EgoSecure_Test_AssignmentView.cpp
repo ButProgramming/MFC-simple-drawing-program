@@ -108,16 +108,12 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		pDoc->getShapesVector()[shapeNum]->draw(&m_dc);
 	}
 
-
-
-	
-
 	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 
 
 
-
+	
 	// TODO: add draw code for native data here
 }
 

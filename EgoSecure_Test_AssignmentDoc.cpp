@@ -78,11 +78,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		int shapeType = NULL; // shape type
-		int LT; //line type
-		int size; 
+		int shapeType = NULL;
 		int vectorShapeSize = shapes.size();
-		int vectorLinesSize = 0;//lines.size();
 		ar << vectorShapeSize;
 		
 		for (auto s : shapes)
@@ -161,11 +158,25 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 					break;
 				}
 			}
+
+			ar << s->connecting.isConnected.firstPointOfLine;
+			ar << s->connecting.isConnected.secondPointOfLine;
+			ar << s->connecting.connectedShapeConstID.firstPointOfLine;
+			ar << s->connecting.connectedShapeConstID.secondPointOfLine;
+			ar << s->connecting.numberOfShapesPointForLines.firstPointOfLine;
+			ar << s->connecting.numberOfShapesPointForLines.secondPointOfLine;
 						
 		}
 	}
 	else
 	{
+		bool isConnected1;
+		bool isConnected2;
+		int connectedShapeConstID1;
+		int connectedShapeConstID2;
+		int numberOfShapesPointForLines1;
+		int numberOfShapesPointForLines2;
+
 		CPoint coordinateForChange1;
 		CPoint coordinateForChange2;
 		IShape* shapeTemp;
@@ -238,52 +249,61 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 					shapeType = ShapeType::ellipse;
 					shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 					shapeTemp->isSelected = isSelected;
+					break;
 				}
 				case 1:
 				{
 					shapeType = ShapeType::rectangle;
 					shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 					shapeTemp->isSelected = isSelected;
+					break;
 				}
 				case 2:
 				{
 					shapeType = ShapeType::triangle;
 					shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
 					shapeTemp->isSelected = isSelected;
+					break;
 				}
 				case 3:
 				{
 					shapeType = ShapeType::basicLine;
-					shapeTemp = new Line(CPoint{ 0, 0 }, ShapeType::basicLine, RGB(0, 0, 0), 2, 1);
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
 					shapeTemp->isSelected = isSelected;
+					break;
+				}
+				case 4:
+				{
+					shapeType = ShapeType::rightLine;
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp->isSelected = isSelected;
+					break;
+				}
+				case 5:
+				{
+					shapeType = ShapeType::leftLine;
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp->isSelected = isSelected;
+					break;
+				}
+				case 6:
+				{
+					shapeType = ShapeType::doubleLine;
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp->isSelected = isSelected;
+					break;
 				}
 			}
-			//if (ST == 0)
-			//{
-			//	shapeType = ShapeType::ellipse;
-			//	shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-			//	shapeTemp->isSelected = isSelected;
-			//}
-			//else if (ST == 1)
-			//{
-			//	shapeType = ShapeType::rectangle;
-			//	shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-			//	shapeTemp->isSelected = isSelected;
-			//}
-			//else if (ST == 2)
-			//{
-			//	shapeType = ShapeType::triangle;
-			//	shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-			//	shapeTemp->isSelected = isSelected;
-			//}
-			//else if (ST == 3)
-			//{
-			//	shapeType = ShapeType::basicLine;
-			//	shapeTemp = new Line(CPoint{ 0, 0 }, ShapeType::basicLine, RGB(0,0,0), 2, 1);//(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-			//	shapeTemp->isSelected = isSelected;
-			//}
-			
+
+			ar >> isConnected1;
+			ar >> isConnected2;
+			ar >> connectedShapeConstID1;
+			ar >> connectedShapeConstID2;
+			ar >> numberOfShapesPointForLines1;
+			ar >> numberOfShapesPointForLines2;
+
 			//shapes.emplace_back(shape);
+			vector<IShape*> shapes2;
 			shapes.push_back(shapeTemp);
 			shapes[shapes.size() - 1]->constID;
 			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
@@ -294,7 +314,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->oR = oR;
 			shapes[shapes.size() - 1]->oG = oG;
 			shapes[shapes.size() - 1]->oB = oB;
-			if (shapes[shapes.size() - 1]->type == ShapeType::basicLine)
+			if (shapes[shapes.size() - 1]->type != ShapeType::ellipse && shapes[shapes.size() - 1]->type != ShapeType::rectangle && shapes[shapes.size() - 1]->type != ShapeType::triangle)
 			{
 				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
 				shapes[shapes.size() - 1]->setCoordinateForChange(1, coordinateForChange2);
@@ -306,12 +326,21 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				//shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
 				shapes[shapes.size() - 1]->setChangeDxDy(i, dxDy[i]);
 			}
+			shapes[shapes.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
+			shapes[shapes.size() - 1]->connecting.isConnected.secondPointOfLine = isConnected2;
+			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.firstPointOfLine = connectedShapeConstID1;
+			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.secondPointOfLine = connectedShapeConstID2;
+			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPointForLines1;
+			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;
+
 
 			}
 		//str.Format(_T("Shapes: %d, lines: %d"), shapes.size(), lines.size());
 
 		toolIsUsed = Tools::select_tool;
+		//Invalidate();
 	}
+	
 }
 
 #ifdef SHARED_HANDLERS
