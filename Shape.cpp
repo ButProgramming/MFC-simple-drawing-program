@@ -1155,7 +1155,7 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 		if (shapeIsFound) return;
 
 	}
-	else if (type == ShapeType::basicLine || type == ShapeType::rightLine)
+	else if (type == ShapeType::basicLine || type == ShapeType::rightLine || type == ShapeType::leftLine || type == ShapeType::doubleLine)
 	{
 
 		//bool breakLoop = false; // bool variable that is need for loop control
@@ -1275,7 +1275,8 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 	{
 		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
 		{
-			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine)
+			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine 
+				&& shapes[shapeNum]->type != ShapeType::leftLine && shapes[shapeNum]->type != ShapeType::doubleLine)
 			{
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.firstPointOfLine)
 				{
@@ -1291,7 +1292,8 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 	{
 		for (int shapeNum = 0; shapeNum < shapes.size(); shapeNum++)
 		{
-			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine)
+			if (shapes[shapeNum]->type != ShapeType::basicLine && shapes[shapeNum]->type != ShapeType::rightLine
+				&& shapes[shapeNum]->type != ShapeType::leftLine && shapes[shapeNum]->type != ShapeType::doubleLine)
 			{
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.secondPointOfLine)
 				{
@@ -1369,40 +1371,43 @@ void Line::draw(CDC* dc)
 
 	if (type == ShapeType::rightLine)
 	{
-		CPoint centerOfArrowGround = CPoint(pointsOfLine[0].x + change.tempDxDy[0].x + (pointsOfLine[1].x + change.tempDxDy[1].x - (pointsOfLine[0].x + change.tempDxDy[0].x)) / 1.07, pointsOfLine[0].y + change.tempDxDy[0].y + (pointsOfLine[1].y + change.tempDxDy[1].y - (pointsOfLine[0].y + change.tempDxDy[0].y)) / 1.07);
-
-		double angleOfArrowDeg = ANGLE_OF_ARROW_DEG;
-		double angleOfArrowRad = degToRad(angleOfArrowDeg);
-		double angleOfTriangleRad = NULL;
-		//double angleOfTriangleDeg = NULL;
-
-		double lengthOfLeg = NULL;
-		double lengthOfHypotenuse = NULL;
-		CPoint secondLegPoint = CPoint(centerOfArrowGround.x, pointsOfLine[0].y + change.tempDxDy[0].y);
-		CPoint firstLegPoint = CPoint(pointsOfLine[0].x + change.tempDxDy[0].x, pointsOfLine[0].y + change.tempDxDy[0].y);
-		lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-		//CString dbug;
-
-
-		lengthOfLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
-		angleOfTriangleRad = acos(lengthOfLeg / lengthOfHypotenuse);
-		//angleOfTriangleDeg = radToDeg(angleOfTriangleRad);
-		
-		double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - (pointsOfLine[1].x + change.tempDxDy[1].x), 2) + pow(centerOfArrowGround.y - (pointsOfLine[1].y + change.tempDxDy[1].y), 2));
-		double lengthOfPerpendicular = lengthOfArrow * tan(angleOfArrowRad);
-		double legX = cos(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
-		double legY = sin(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
-		if (!(centerOfArrowGround.x - (pointsOfLine[0].x + change.tempDxDy[0].x) > 0 && centerOfArrowGround.y - (pointsOfLine[0].y + change.tempDxDy[0].y) < 0 || centerOfArrowGround.x - (pointsOfLine[0].x + change.tempDxDy[0].x) < 0 && centerOfArrowGround.y - (pointsOfLine[0].y + change.tempDxDy[0].y) > 0))
-		{
-			legX = -legX;
-		}
-		
-		CPoint firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
-		CPoint secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-		
-		dc->MoveTo(pointsOfLine[1] + change.tempDxDy[1]);
+		CPoint firstPointOfArrow = NULL;
+		CPoint secondPointOfArrow = NULL;
+		getPointsOfArrow(RIGHT_LINE, firstPointOfArrow, secondPointOfArrow);
+		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
 		dc->LineTo(firstPointOfArrow);
-		dc->MoveTo(pointsOfLine[1] + change.tempDxDy[1]);
+		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
+		dc->LineTo(secondPointOfArrow);
+		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+	}
+	else if (type == ShapeType::leftLine)
+	{
+		CPoint firstPointOfArrow = NULL;
+		CPoint secondPointOfArrow = NULL;
+		getPointsOfArrow(LEFT_LINE, firstPointOfArrow, secondPointOfArrow);
+		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
+		dc->LineTo(firstPointOfArrow);
+		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
+		dc->LineTo(secondPointOfArrow);
+		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
+	}
+	else if (type == ShapeType::doubleLine)
+	{
+		CPoint firstPointOfArrow = NULL;
+		CPoint secondPointOfArrow = NULL;
+		
+		// points for right line
+		getPointsOfArrow(RIGHT_LINE, firstPointOfArrow, secondPointOfArrow);
+		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
+		dc->LineTo(firstPointOfArrow);
+		dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
+		dc->LineTo(secondPointOfArrow);
+
+		// points for left line
+		getPointsOfArrow(LEFT_LINE, firstPointOfArrow, secondPointOfArrow);
+		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
+		dc->LineTo(firstPointOfArrow);
+		dc->MoveTo(pointsOfLine[FIRST_POINT_OF_LINE] + change.tempDxDy[FIRST_POINT_OF_LINE]);
 		dc->LineTo(secondPointOfArrow);
 		cout << firstPointOfArrow.x << " " << firstPointOfArrow.y << endl;
 	}
@@ -1773,5 +1778,50 @@ bool Line::isClickedPointForChange(CPoint point)
 
 	numberOfPoint = -1;
 	return false;
+}
+
+void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow)
+{
+	int firstNumber = NULL;
+	int secondNumber = NULL;
+	if (forLineType == RIGHT_LINE)
+	{
+		firstNumber = FIRST_POINT_OF_LINE;
+		secondNumber = SECOND_POINT_OF_LINE;
+	}
+	else if(forLineType == LEFT_LINE)
+	{
+		firstNumber = SECOND_POINT_OF_LINE;
+		secondNumber = FIRST_POINT_OF_LINE;
+	}
+	CPoint centerOfArrowGround = CPoint(pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x + (pointsOfLine[secondNumber].x + change.tempDxDy[secondNumber].x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x)) / 1.07, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y + (pointsOfLine[secondNumber].y + change.tempDxDy[secondNumber].y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y)) / 1.07);
+
+	double angleOfArrowDeg = ANGLE_OF_ARROW_DEG;
+	double angleOfArrowRad = degToRad(angleOfArrowDeg);
+	double angleOfTriangleRad = NULL;
+	double lengthOfLeg = NULL;
+	double lengthOfHypotenuse = NULL;
+	CPoint secondLegPoint = CPoint(centerOfArrowGround.x, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y);
+	CPoint firstLegPoint = CPoint(pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y);
+	lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
+	//CString dbug;
+
+
+	lengthOfLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
+	angleOfTriangleRad = acos(lengthOfLeg / lengthOfHypotenuse);
+	//angleOfTriangleDeg = radToDeg(angleOfTriangleRad);
+
+	double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - (pointsOfLine[secondNumber].x + change.tempDxDy[secondNumber].x), 2) + pow(centerOfArrowGround.y - (pointsOfLine[secondNumber].y + change.tempDxDy[secondNumber].y), 2));
+	double lengthOfPerpendicular = lengthOfArrow * tan(angleOfArrowRad);
+	double legX = cos(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
+	double legY = sin(90 * 3.14 / 180.f - angleOfTriangleRad) * lengthOfPerpendicular;
+	if (!(centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) > 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) < 0 || centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) < 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) > 0))
+	{
+		legX = -legX;
+	}
+
+	firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
+	secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
+
 }
 

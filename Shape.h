@@ -10,6 +10,8 @@
 #include "Lines.h"
 using namespace std;
 
+#define RIGHT_LINE 0
+#define LEFT_LINE 1
 #define PI 3.141592653
 #define ANGLE_OF_ARROW_DEG 10
 #define LENGTH_OF_LINE_FOR_ELLIPSE_OF_ROTATE_TOOL 40
@@ -29,7 +31,7 @@ using namespace std;
 #define DIFFERENCE_FOR_FILL_RGN 1
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
-enum class ShapeType { ellipse, rectangle, triangle, basicLine, rightLine };
+enum class ShapeType { ellipse, rectangle, triangle, basicLine, rightLine, leftLine, doubleLine };
 
 class IShape
 {
@@ -250,6 +252,8 @@ public:
 	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 2) return pointsOfLine[num]; };
 	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 2) pointsOfLine[num] = point; };
 	bool isClickedPointForChange(CPoint point);
+
+	void getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow);
 	
 };
 

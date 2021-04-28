@@ -187,7 +187,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	bool shapeIsFound = false;
 
 	// check if tool is not line to draw on shape and don't select it
-	if (pDoc->getToolIsUsed() != Tools::basicLine && pDoc->getToolIsUsed() != Tools::rightLine)
+	if (pDoc->getToolIsUsed() != Tools::basicLine && pDoc->getToolIsUsed() != Tools::rightLine 
+		&& pDoc->getToolIsUsed() != Tools::leftLine && pDoc->getToolIsUsed() != Tools::doubleLine)
 	{
 		// start from the end because we click on shapes, that are located on the surface
 		for (int shapeNum = pDoc->getShapesVector().size() - 1; shapeNum >= 0; shapeNum--)
@@ -203,7 +204,8 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	//check if can be all shapes unselected
 	if (canBeUnselected)
 	{
-		if (pDoc->getToolIsUsed() != Tools::basicLine && pDoc->getToolIsUsed() != Tools::rightLine)
+		if (pDoc->getToolIsUsed() != Tools::basicLine /*&& pDoc->getToolIsUsed() != Tools::rightLine 
+			&& pDoc->getToolIsUsed() != Tools::leftLine && pDoc->getToolIsUsed() != Tools::doubleLine*/)
 		{
 			for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 			{
@@ -247,6 +249,18 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	case Tools::rightLine:
 	{
 		IShape* line = new Line(point, ShapeType::rightLine, RGB(0, 0, 0), 1, 1);
+		pDoc->getShapesVector().push_back(line);
+		break;
+	}
+	case Tools::leftLine:
+	{
+		IShape* line = new Line(point, ShapeType::leftLine, RGB(0, 0, 0), 1, 1);
+		pDoc->getShapesVector().push_back(line);
+		break;
+	}
+	case Tools::doubleLine:
+	{
+		IShape* line = new Line(point, ShapeType::doubleLine, RGB(0, 0, 0), 1, 1);
 		pDoc->getShapesVector().push_back(line);
 		break;
 	}
@@ -377,7 +391,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
 		//pDoc->getShapesVector()[shapeNum]->type;
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine)
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine 
+			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
 		{
 			pDoc->getShapesVector()[shapeNum]->updateLineConnection(pDoc->getShapesVector());
 		}
@@ -457,7 +472,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 
 	}
-	else if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine))
+	else if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
+		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine))
 	{
 		cout << "herehere" << endl;
 		if (!pDoc->getShapesVector().empty())
@@ -546,7 +562,8 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	IShape::dx = prevCoordinate.x - 2 * m_hsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine)
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine 
+			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
 		{
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y));
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y));
@@ -598,7 +615,8 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	IShape::dy = prevCoordinate.y - 2 * m_vsb.GetScrollPos();
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine)
+		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine
+			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
 		{
 			//move y
 			//pDoc->getShapesVector()[shapeNum]->firstPointOfLine.y += IShape::dy;
@@ -1003,10 +1021,12 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
 
-		pDoc->getToolIsUsed() == Tools::change;
+		pDoc->getToolIsUsed() == Tools::select_tool;
+		cout << "gere" << endl;
 		
 	}
-	else if (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine)
+	else if (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
+		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
 
@@ -1051,7 +1071,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				{
 					numberOfAngels = 3;
 				}
-				else if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine)
+				else if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine
+					|| pDoc->getShapesVector()[s]->type == ShapeType::leftLine || pDoc->getShapesVector()[s]->type == ShapeType::doubleLine)
 				{
 					numberOfAngels = 2;
 				}
@@ -1062,7 +1083,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				selected = true;
 				for (int a = 0; a < numberOfAngels; a++)
 				{
-					if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine)
+					if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine
+						|| pDoc->getShapesVector()[s]->type == ShapeType::leftLine || pDoc->getShapesVector()[s]->type == ShapeType::doubleLine)
 					{
 						pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a) + pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
 						pDoc->getShapesVector()[s]->setCoordinateForChange(a, pDoc->getShapesVector()[s]->getCoordinateForChange(a) + pDoc->getShapesVector()[s]->getChangeDxDy(a));
@@ -1080,7 +1102,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 				{
 					cout << "next" << endl;
-					if (pDoc->getShapesVector()[shapeNum]->type != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::rightLine)
+					if (pDoc->getShapesVector()[shapeNum]->type != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::rightLine
+						&& pDoc->getShapesVector()[shapeNum]->type != ShapeType::leftLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::doubleLine)
 					{
 						int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINE
 						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
@@ -1375,27 +1398,17 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
 	auto pDoc = GetDocument();
-	bool LineExists = false;
-	if (pDoc->selectedShapesIDs.size() > 1)
+	pDoc->getToolIsUsed() = Tools::leftLine;
+
+	//unselect all others shapes and lines
+	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		for (auto l : pDoc->lines)
-		{
-			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-			{
-				LineExists = true;
-				break;
-			}
-		}
-		if (!LineExists)
-		{
-			if (pDoc->selectedShapesIDs.size() > 1)
-			{
-				Lines* line = new Lines(CPoint(0, 0), LineType::Left, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-				pDoc->lines.push_back(line);
-				Invalidate();
-			}
-		}
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
+		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(true);
 	}
+
+	// update window
+	Invalidate();
 
 }
 
@@ -1403,27 +1416,17 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
 	auto pDoc = GetDocument();
-	bool LineExists = false;
-	if (pDoc->selectedShapesIDs.size() > 1)
+	pDoc->getToolIsUsed() = Tools::doubleLine;
+
+	//unselect all others shapes and lines
+	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		for (auto l : pDoc->lines)
-		{
-			if ((l->FirstShapeConstID == pDoc->selectedShapesIDs.front() && l->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (l->FirstShapeConstID == pDoc->selectedShapesIDs.back() && l->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-			{
-				LineExists = true;
-				break;
-			}
-		}
-		if (!LineExists)
-		{
-			if (pDoc->selectedShapesIDs.size() > 1)
-			{
-				Lines* line = new Lines(CPoint(0, 0), LineType::Double, pDoc->m_color_link, pDoc->num_cb_line_size, pDoc->num_cb_link_type);
-				pDoc->lines.push_back(line);
-				Invalidate();
-			}
-		}
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
+		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(true);
 	}
+
+	// update window
+	Invalidate();
 
 }
 
