@@ -42,30 +42,59 @@ public:
 
 	//save
 	bool getSelected() { return isSelected; }// get if is shape or line selected or not
+	void setSelected(bool isSelected) { this->isSelected = isSelected; };
+
 	CPoint getCenterOfShape() { return centerOfShape; };
+	void setCenterOfShape(CPoint centerOfShape) { this->centerOfShape = centerOfShape; };
+
 	int getSize() { return size; };
+	void setSize(int size) { this->size = size; };
+
 	double getAngleRad() { return angleRad; };
+	void setAngleRad(double angleRad) { this->angleRad = angleRad; };
+
 	int getID() { return ID; };
+	void setID(int ID) { this->ID = ID; };
+
 	int getConstID() { return constID; };
+	void setConstID(int constID) { this->constID = constID; };
+
 	CString getName() { return name; };
+	void setName(CString name) { this->name = name; };
+
 	COLORREF getOutlineColor() { return outlineColor; };
+	void setOutlineColor(COLORREF outlineColor) { this->outlineColor = outlineColor; };
+
 	COLORREF getFillColor() { return fillColor; };
+	void setFillColor(COLORREF fillColor) { this->fillColor = fillColor; };
+
 	int getOutlineSize() { return outlineSize; };
+	void setOutlineSize(int outlineSize) { this->outlineSize = outlineSize; };
+
 	int getOutlineType() { return outlineType; };
+	void setOutlineType(int outlineType) { this->outlineType = outlineType; };
+
 	int getFillType() { return fillType; };
-	bool isConnected(int numberOfPoint);
+	void setFillType(int fillType) { this->fillType = fillType; };
+
+	bool getIsConnected(int numberOfPoint);
+	void setIsConnected(int numberOfPoint, bool isConnected);
+
 	int getConnectedShapeConstID(int numberOfPoint);
+	void setConnectedShapeConstID(int numberOfPoint, int constID);
+
 	int getNumberOfShapesPointForLines(int numberOfPoint);
+	void setNumberOfShapesPointForLines(int numberOfPoint, int numberOfShapesPoint);
 
 
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
 	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
-	void setSelected(bool isSelected) { this->isSelected = isSelected; };					// set if is shape or line selected or not
+					// set if is shape or line selected or not
 													
-	virtual bool isClickedOnShapeRgn(CPoint point);						// ckecked if clickpoint is in shape region
-	virtual bool isClickedPointForChange(CPoint point);					// checked if clickpoint is in a point for change region
+	virtual bool isClickedOnShapeRgn(CPoint point);											// ckecked if clickpoint is in shape region
+	virtual bool isClickedPointForChange(CPoint point);										// checked if clickpoint is in a point for change region
 	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
 	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  };		// pointer for HRGN function
 	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
@@ -107,9 +136,18 @@ public:
 	{
 		return (numberOfPoint >= 0 && numberOfPoint < 4) ? linkingPoints[numberOfPoint] : CPoint{ NULL, NULL }; //getter for pointsForLines
 	}
+
+	void setPointsForLine(int numberOfPoint, CPoint coordinatesOfPoint)
+	{
+		if (numberOfPoint >= 0 && numberOfPoint < 4) { linkingPoints[numberOfPoint] = coordinatesOfPoint; };
+	}
+
 	void createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines);
 	void updateLineConnection(const vector<IShape*>& shapes);
 	void lineDisconnecting(int numberOfPointOfLine, int shapeConstID);
+
+	void setID();
+	void setName();
 
 	virtual ~IShape();
 

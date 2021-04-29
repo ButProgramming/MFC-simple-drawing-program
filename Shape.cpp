@@ -18,70 +18,22 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
-	IDs.insert(-1);
-	constID = IShape::countOfShape;
-	bool isNotFound = false;
-	for(int i=0; i<countOfShape+10; i++)
-	{
-		for (auto it = IDs.begin(); it != IDs.end(); it++)
-		{
-			int empt = IDs.empty();
-			CString str;
-			str.Format(_T("%d"), empt);
-			
-			auto pos = IDs.find(i);
-			if (pos == IDs.end())
-			{
-				isNotFound = true;
-				ID = i;
-				IDs.insert(ID);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
-
-
-
-	//////////////////////////////////////////////////
-	CString str;
-	str.Format(_T("-1"));
-	names.insert(str);
-	isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
-	{
-		for (auto it = names.begin(); it != names.end(); it++)
-		{
-			int empt = names.empty();
-			//CString name;
-			name.Format(_T("ellipseShape%d"), i);
-
-			auto pos = names.find(name);
-			if (pos == names.end())
-			{
-				isNotFound = true;
-				name.Format(_T("ellipseShape%d"), i);
-				names.insert(name);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
-	/////////////////////////////////////////////////
-
-
-
-	//name.Format(_T("ellipseShape%d"), constID);
-	//type = ShapeType::ellipse;
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	boxRect.CenterPoint() = centerOfShape;
-	//this->isNormalized = isNormalized;
+	constID = IShape::countOfShape;
+	setID();
+	setName();
 	countOfShape++;
+
+	//boxRect.CenterPoint() = centerOfShape;
+	
 	//this->typeOfShape = typeOfShape;
+	/*for (auto it = IDs.begin(); it != IDs.end(); it++)
+	{
+		cout << *it << endl;
+	}
+	cout << "---------------------------" << endl;*/
 }
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
@@ -962,7 +914,7 @@ void TriangleShape::draw(CDC* dc)
 //	dSM.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
 //}
 
-bool IShape::isConnected(int numberOfPoint)
+bool IShape::getIsConnected(int numberOfPoint)
 {
 	if (numberOfPoint == FIRST_POINT_OF_LINE)
 	{
@@ -972,7 +924,21 @@ bool IShape::isConnected(int numberOfPoint)
 	{
 		return connecting.isConnected.secondPointOfLine;
 	}
+	return false;
 }
+
+void IShape::setIsConnected(int numberOfPoint, bool isConnected)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		connecting.isConnected.firstPointOfLine = isConnected;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		connecting.isConnected.secondPointOfLine = isConnected;
+	}
+}
+
 
 int IShape::getConnectedShapeConstID(int numberOfPoint)
 {
@@ -983,6 +949,19 @@ int IShape::getConnectedShapeConstID(int numberOfPoint)
 	else if (numberOfPoint == SECOND_POINT_OF_LINE)
 	{
 		return connecting.connectedShapeConstID.secondPointOfLine;
+	}
+	return NULL;
+}
+
+void IShape::setConnectedShapeConstID(int numberOfPoint, int constID)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		connecting.connectedShapeConstID.firstPointOfLine = constID;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		connecting.connectedShapeConstID.secondPointOfLine = constID;
 	}
 }
 
@@ -995,6 +974,19 @@ int IShape::getNumberOfShapesPointForLines(int numberOfPoint)
 	else if (numberOfPoint == SECOND_POINT_OF_LINE)
 	{
 		return connecting.numberOfShapesPointForLines.secondPointOfLine;
+	}
+	return NULL;
+}
+
+void IShape::setNumberOfShapesPointForLines(int numberOfPoint, int numberOfShapesPoint)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPoint;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPoint;
 	}
 }
 
@@ -1348,6 +1340,56 @@ void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 	}
 }
 
+void IShape::setID()
+{
+	IDs.insert(-1);
+	bool isNotFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = IDs.begin(); it != IDs.end(); it++)
+		{
+			auto pos = IDs.find(i);
+			if (pos == IDs.end())
+			{
+				isNotFound = true;
+				ID = i;
+				IDs.insert(ID);
+				break;
+			}
+		}
+		if (isNotFound)
+			break;
+	}
+}
+
+void IShape::setName()
+{
+	CString str = NULL;
+	str.Format(_T("-1"));
+	names.insert(str);
+	bool isNotFound = false;
+	for (int i = 0; i < countOfShape + 10; i++)
+	{
+		for (auto it = names.begin(); it != names.end(); it++)
+		{
+			int empt = names.empty();
+			//CString name;
+			name.Format(_T("ellipseShape%d"), i);
+
+			auto pos = names.find(name);
+			if (pos == names.end())
+			{
+				isNotFound = true;
+				name.Format(_T("ellipseShape%d"), i);
+				names.insert(name);
+				break;
+			}
+		}
+		if (isNotFound)
+			break;
+	}
+}
+
 IShape::~IShape()
 {
 	IShape::IDs.erase(ID); // erase ID because ID won't exist
@@ -1359,6 +1401,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	pointsOfLine[0] = firstPointOfLine;
 	pointsOfLine[1] = firstPointOfLine;
+
 
 }
 

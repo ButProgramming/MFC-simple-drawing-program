@@ -183,8 +183,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 
 
-			ar << s->isConnected(FIRST_POINT_OF_LINE);
-			ar << s->isConnected(SECOND_POINT_OF_LINE);
+			ar << s->getIsConnected(FIRST_POINT_OF_LINE);
+			ar << s->getIsConnected(SECOND_POINT_OF_LINE);
 
 			ar << s->getConnectedShapeConstID(FIRST_POINT_OF_LINE);
 			ar << s->getConnectedShapeConstID(SECOND_POINT_OF_LINE);
@@ -338,15 +338,26 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			//shapes.emplace_back(shape);
 			
 			shapes.push_back(shapeTemp);
-			shapes[shapes.size() - 1]->constID;
-			shapes[shapes.size() - 1]->angleRad = angleRad;
-			shapes[shapes.size() - 1]->ID = shapeID;
-			shapes[shapes.size() - 1]->constID = shapeConstID;
-			shapes[shapes.size() - 1]->name = shapeName;
+			//shapes[shapes.size() - 1]->constID;
+			shapes[shapes.size() - 1]->setAngleRad(angleRad);
+
+			shapes[shapes.size() - 1]->IDs.erase(shapes[shapes.size() - 1]->getID());
+			//cout << "getID1: " << shapes[shapes.size() - 1]->getID() << endl;
+			shapes[shapes.size() - 1]->setID(shapeID);
+			shapes[shapes.size() - 1]->IDs.insert(shapes[shapes.size() - 1]->getID());
+			/*cout << "getID2: " << shapes[shapes.size() - 1]->getID() << endl;
+			cout << "shapeID: " << shapeID << endl;*/
+
+			shapes[shapes.size() - 1]->setConstID(shapeConstID);
+			
+			shapes[shapes.size() - 1]->names.erase(shapes[shapes.size() - 1]->getName());
+			shapes[shapes.size() - 1]->setName(shapeName);
+			shapes[shapes.size() - 1]->names.insert(shapes[shapes.size() - 1]->getName());
 			//shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
-			shapes[shapes.size() - 1]->oR = oR;
+			shapes[shapes.size() - 1]->setOutlineColor(RGB(oR, oG, oB));
+			/*shapes[shapes.size() - 1]->oR = oR;
 			shapes[shapes.size() - 1]->oG = oG;
-			shapes[shapes.size() - 1]->oB = oB;
+			shapes[shapes.size() - 1]->oB = oB;*/
 			if (shapes[shapes.size() - 1]->type != ShapeType::ellipse && shapes[shapes.size() - 1]->type != ShapeType::rectangle && shapes[shapes.size() - 1]->type != ShapeType::triangle)
 			{
 				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
@@ -356,22 +367,28 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 			for (int i = 0; i < 4; i++)
 			{
-				//shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
 				shapes[shapes.size() - 1]->setChangeDxDy(i, dxDy[i]);
 			}
-			shapes[shapes.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
+
+			shapes[shapes.size() - 1]->setIsConnected(FIRST_POINT_OF_LINE, isConnected1);
+			shapes[shapes.size() - 1]->setIsConnected(SECOND_POINT_OF_LINE, isConnected2);
+			shapes[shapes.size() - 1]->setConnectedShapeConstID(FIRST_POINT_OF_LINE, connectedShapeConstID1);
+			shapes[shapes.size() - 1]->setConnectedShapeConstID(SECOND_POINT_OF_LINE, connectedShapeConstID2);
+			shapes[shapes.size() - 1]->setNumberOfShapesPointForLines(FIRST_POINT_OF_LINE, numberOfShapesPointForLines1);
+			shapes[shapes.size() - 1]->setNumberOfShapesPointForLines(SECOND_POINT_OF_LINE, numberOfShapesPointForLines2);
+			/*shapes[shapes.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
 			shapes[shapes.size() - 1]->connecting.isConnected.secondPointOfLine = isConnected2;
 			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.firstPointOfLine = connectedShapeConstID1;
 			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.secondPointOfLine = connectedShapeConstID2;
 			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPointForLines1;
-			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;
+			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;*/
 
 			for (int i = 0; i < 4; i++)
 			{
-				shapes[shapes.size() - 1]->linkingPoints[i] = linkingPoints[i];
+				shapes[shapes.size() - 1]->setPointsForLine(i, linkingPoints[i]);//linkingPoints[i] = linkingPoints[i];
 			}
 
-						
+					
 
 			}
 
