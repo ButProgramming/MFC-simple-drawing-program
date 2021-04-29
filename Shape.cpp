@@ -43,64 +43,70 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
-	IDs.insert(-1);
-	constID = IShape::countOfShape;
-	bool isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
-	{
-		for (auto it = IDs.begin(); it != IDs.end(); it++)
-		{
-			int empt = IDs.empty();
-			CString str;
-			str.Format(_T("%d"), empt);
+	this->type = type;
+	this->size = size;
+	this->centerOfShape = centerOfShape;
+	//this->isNormalized = isNormalized;
+	
 
-			auto pos = IDs.find(i);
-			if (pos == IDs.end())
-			{
-				isNotFound = true;
-				ID = i;
-				IDs.insert(ID);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
-	//////////////////////////////////////////////////
-	CString str;
-	str.Format(_T("-1"));
-	names.insert(str);
-	isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
-	{
-		for (auto it = names.begin(); it != names.end(); it++)
-		{
-			int empt = names.empty();
-			//CString name;
-			name.Format(_T("rectangleShape%d"), i);
+	setID();
+	setName();
 
-			auto pos = names.find(name);
-			if (pos == names.end())
-			{
-				isNotFound = true;
-				name.Format(_T("rectangleShape%d"), i);
-				names.insert(name);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
+	countOfShape++;
+	//IDs.insert(-1);
+	//constID = IShape::countOfShape;
+	//bool isNotFound = false;
+	//for (int i = 0; i < countOfShape + 10; i++)
+	//{
+	//	for (auto it = IDs.begin(); it != IDs.end(); it++)
+	//	{
+	//		int empt = IDs.empty();
+	//		CString str;
+	//		str.Format(_T("%d"), empt);
+
+	//		auto pos = IDs.find(i);
+	//		if (pos == IDs.end())
+	//		{
+	//			isNotFound = true;
+	//			ID = i;
+	//			IDs.insert(ID);
+	//			break;
+	//		}
+	//	}
+	//	if (isNotFound)
+	//		break;
+	//}
+	////////////////////////////////////////////////////
+	//CString str;
+	//str.Format(_T("-1"));
+	//names.insert(str);
+	//isNotFound = false;
+	//for (int i = 0; i < countOfShape + 10; i++)
+	//{
+	//	for (auto it = names.begin(); it != names.end(); it++)
+	//	{
+	//		int empt = names.empty();
+	//		//CString name;
+	//		name.Format(_T("rectangleShape%d"), i);
+
+	//		auto pos = names.find(name);
+	//		if (pos == names.end())
+	//		{
+	//			isNotFound = true;
+	//			name.Format(_T("rectangleShape%d"), i);
+	//			names.insert(name);
+	//			break;
+	//		}
+	//	}
+	//	if (isNotFound)
+	//		break;
+	//}
 	/////////////////////////////////////////////////
 
 
 	//name.Format(_T("rectangleShape%d"), constID);
 	//type = ShapeType::rectangle;
-	this->type = type;
-	this->size = size;
-	this->centerOfShape = centerOfShape;
-	//this->isNormalized = isNormalized;
-	countOfShape++;
+	
 	//this->typeOfShape = typeOfShape;
 }
 
@@ -111,61 +117,64 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->outlineSize = outlineSize;
 	this->outlineColor = outlineColor;
 	this->fillColor = fillColor;
-	IDs.insert(-1);
-	constID = IShape::countOfShape;
-	bool isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
-	{
-		for (auto it = IDs.begin(); it != IDs.end(); it++)
-		{
-			int empt = IDs.empty();
-			CString str;
-			str.Format(_T("%d"), empt);
-
-			auto pos = IDs.find(i);
-			if (pos == IDs.end())
-			{
-				isNotFound = true;
-				ID = i;
-				IDs.insert(ID);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
-	//////////////////////////////////////////////////
-	CString str;
-	str.Format(_T("-1"));
-	names.insert(str);
-	isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
-	{
-		for (auto it = names.begin(); it != names.end(); it++)
-		{
-			int empt = names.empty();
-			//CString name;
-			name.Format(_T("triangleShape%d"), i);
-
-			auto pos = names.find(name);
-			if (pos == names.end())
-			{
-				isNotFound = true;
-				name.Format(_T("triangleShape%d"), i);
-				names.insert(name);
-				break;
-			}
-		}
-		if (isNotFound)
-			break;
-	}
-	/////////////////////////////////////////////////
-	//name.Format(_T("triangleShape%d"), constID);
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	//this->isNormalized = isNormalized;
+	setID();
+	setName();
 	countOfShape++;
+	//IDs.insert(-1);
+	//constID = IShape::countOfShape;
+	//bool isNotFound = false;
+	//for (int i = 0; i < countOfShape + 10; i++)
+	//{
+	//	for (auto it = IDs.begin(); it != IDs.end(); it++)
+	//	{
+	//		int empt = IDs.empty();
+	//		CString str;
+	//		str.Format(_T("%d"), empt);
+
+	//		auto pos = IDs.find(i);
+	//		if (pos == IDs.end())
+	//		{
+	//			isNotFound = true;
+	//			ID = i;
+	//			IDs.insert(ID);
+	//			break;
+	//		}
+	//	}
+	//	if (isNotFound)
+	//		break;
+	//}
+	////////////////////////////////////////////////////
+	//CString str;
+	//str.Format(_T("-1"));
+	//names.insert(str);
+	//isNotFound = false;
+	//for (int i = 0; i < countOfShape + 10; i++)
+	//{
+	//	for (auto it = names.begin(); it != names.end(); it++)
+	//	{
+	//		int empt = names.empty();
+	//		//CString name;
+	//		name.Format(_T("triangleShape%d"), i);
+
+	//		auto pos = names.find(name);
+	//		if (pos == names.end())
+	//		{
+	//			isNotFound = true;
+	//			name.Format(_T("triangleShape%d"), i);
+	//			names.insert(name);
+	//			break;
+	//		}
+	//	}
+	//	if (isNotFound)
+	//		break;
+	//}
+	/////////////////////////////////////////////////
+	//name.Format(_T("triangleShape%d"), constID);
+	
 	//this->typeOfShape = typeOfShape;
 }
 
@@ -1362,31 +1371,87 @@ void IShape::setID()
 	}
 }
 
+
 void IShape::setName()
 {
 	CString str = NULL;
 	str.Format(_T("-1"));
 	names.insert(str);
 	bool isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
+	switch (type)
 	{
-		for (auto it = names.begin(); it != names.end(); it++)
+		case ShapeType::ellipse:
 		{
-			int empt = names.empty();
-			//CString name;
-			name.Format(_T("ellipseShape%d"), i);
-
-			auto pos = names.find(name);
-			if (pos == names.end())
+			for (int i = 0; i < countOfShape + 10; i++)
 			{
-				isNotFound = true;
-				name.Format(_T("ellipseShape%d"), i);
-				names.insert(name);
-				break;
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("ellipseShape%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("ellipseShape%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
 			}
-		}
-		if (isNotFound)
 			break;
+		}
+		case ShapeType::rectangle:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("rectangleShape%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("rectangleShape%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
+		case ShapeType::triangle:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("triangleShape%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("triangleShape%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
 	}
 }
 
