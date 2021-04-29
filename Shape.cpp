@@ -25,15 +25,6 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	setID();
 	setName();
 	countOfShape++;
-
-	//boxRect.CenterPoint() = centerOfShape;
-	
-	//this->typeOfShape = typeOfShape;
-	/*for (auto it = IDs.begin(); it != IDs.end(); it++)
-	{
-		cout << *it << endl;
-	}
-	cout << "---------------------------" << endl;*/
 }
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
@@ -46,68 +37,9 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	//this->isNormalized = isNormalized;
-	
-
 	setID();
 	setName();
-
 	countOfShape++;
-	//IDs.insert(-1);
-	//constID = IShape::countOfShape;
-	//bool isNotFound = false;
-	//for (int i = 0; i < countOfShape + 10; i++)
-	//{
-	//	for (auto it = IDs.begin(); it != IDs.end(); it++)
-	//	{
-	//		int empt = IDs.empty();
-	//		CString str;
-	//		str.Format(_T("%d"), empt);
-
-	//		auto pos = IDs.find(i);
-	//		if (pos == IDs.end())
-	//		{
-	//			isNotFound = true;
-	//			ID = i;
-	//			IDs.insert(ID);
-	//			break;
-	//		}
-	//	}
-	//	if (isNotFound)
-	//		break;
-	//}
-	////////////////////////////////////////////////////
-	//CString str;
-	//str.Format(_T("-1"));
-	//names.insert(str);
-	//isNotFound = false;
-	//for (int i = 0; i < countOfShape + 10; i++)
-	//{
-	//	for (auto it = names.begin(); it != names.end(); it++)
-	//	{
-	//		int empt = names.empty();
-	//		//CString name;
-	//		name.Format(_T("rectangleShape%d"), i);
-
-	//		auto pos = names.find(name);
-	//		if (pos == names.end())
-	//		{
-	//			isNotFound = true;
-	//			name.Format(_T("rectangleShape%d"), i);
-	//			names.insert(name);
-	//			break;
-	//		}
-	//	}
-	//	if (isNotFound)
-	//		break;
-	//}
-	/////////////////////////////////////////////////
-
-
-	//name.Format(_T("rectangleShape%d"), constID);
-	//type = ShapeType::rectangle;
-	
-	//this->typeOfShape = typeOfShape;
 }
 
 TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
@@ -120,62 +52,18 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	//this->isNormalized = isNormalized;
 	setID();
 	setName();
 	countOfShape++;
-	//IDs.insert(-1);
-	//constID = IShape::countOfShape;
-	//bool isNotFound = false;
-	//for (int i = 0; i < countOfShape + 10; i++)
-	//{
-	//	for (auto it = IDs.begin(); it != IDs.end(); it++)
-	//	{
-	//		int empt = IDs.empty();
-	//		CString str;
-	//		str.Format(_T("%d"), empt);
+}
 
-	//		auto pos = IDs.find(i);
-	//		if (pos == IDs.end())
-	//		{
-	//			isNotFound = true;
-	//			ID = i;
-	//			IDs.insert(ID);
-	//			break;
-	//		}
-	//	}
-	//	if (isNotFound)
-	//		break;
-	//}
-	////////////////////////////////////////////////////
-	//CString str;
-	//str.Format(_T("-1"));
-	//names.insert(str);
-	//isNotFound = false;
-	//for (int i = 0; i < countOfShape + 10; i++)
-	//{
-	//	for (auto it = names.begin(); it != names.end(); it++)
-	//	{
-	//		int empt = names.empty();
-	//		//CString name;
-	//		name.Format(_T("triangleShape%d"), i);
-
-	//		auto pos = names.find(name);
-	//		if (pos == names.end())
-	//		{
-	//			isNotFound = true;
-	//			name.Format(_T("triangleShape%d"), i);
-	//			names.insert(name);
-	//			break;
-	//		}
-	//	}
-	//	if (isNotFound)
-	//		break;
-	//}
-	/////////////////////////////////////////////////
-	//name.Format(_T("triangleShape%d"), constID);
-	
-	//this->typeOfShape = typeOfShape;
+Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
+{
+	this->type = type;
+	pointsOfLine[0] = firstPointOfLine;
+	pointsOfLine[1] = firstPointOfLine;
+	setID();
+	setName();
 }
 
 void EllipseShape::draw(CDC* dc)
@@ -680,10 +568,7 @@ void RectangleShape::draw(CDC* dc)
 
 }
 
-//CPoint RectangleShape::getPointForRotateTool()
-//{
-//	return CPoint();
-//}
+
 
 void TriangleShape::draw(CDC* dc)
 {
@@ -779,7 +664,7 @@ void TriangleShape::draw(CDC* dc)
 
 	CRgn* triangleRgn = new CRgn;
 	triangleRgn->CreatePolygonRgn(&points[0], 4, ALTERNATE);
-	GetRgnBox(*triangleRgn, boxRect);
+	//GetRgnBox(*triangleRgn, boxRect);
 
 	/*recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
 	recFromRgn[1] = CPoint(boxRect.BottomRight());
@@ -1452,6 +1337,102 @@ void IShape::setName()
 			}
 			break;
 		}
+		case ShapeType::basicLine:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("basicLine%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("basicLine%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
+		case ShapeType::rightLine:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("rightLine%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("rightLine%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
+		case ShapeType::leftLine:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("leftLine%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("leftLine%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
+		case ShapeType::doubleLine:
+		{
+			for (int i = 0; i < countOfShape + 10; i++)
+			{
+				for (auto it = names.begin(); it != names.end(); it++)
+				{
+
+					name.Format(_T("doubleLine%d"), i);
+
+					auto pos = names.find(name);
+					if (pos == names.end())
+					{
+						isNotFound = true;
+						name.Format(_T("doubleLine%d"), i);
+						names.insert(name);
+						break;
+					}
+
+				}
+				if (isNotFound)
+					break;
+			}
+			break;
+		}
 	}
 }
 
@@ -1461,14 +1442,6 @@ IShape::~IShape()
 	IShape::names.erase(name);
 }
 
-Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
-{
-	this->type = type;
-	pointsOfLine[0] = firstPointOfLine;
-	pointsOfLine[1] = firstPointOfLine;
-
-
-}
 
 void Line::draw(CDC* dc)
 {

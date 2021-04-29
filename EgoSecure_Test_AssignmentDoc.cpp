@@ -281,49 +281,49 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				{
 					shapeType = ShapeType::ellipse;
 					shapeTemp = new EllipseShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 1:
 				{
 					shapeType = ShapeType::rectangle;
 					shapeTemp = new RectangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 2:
 				{
 					shapeType = ShapeType::triangle;
 					shapeTemp = new TriangleShape(centerOfShape, true, size, shapeType, RGB(oR, oG, oB), RGB(fR, fG, fB), outlineSize, outlineType, fillType);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 3:
 				{
 					shapeType = ShapeType::basicLine;
 					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 4:
 				{
 					shapeType = ShapeType::rightLine;
 					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 5:
 				{
 					shapeType = ShapeType::leftLine;
 					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 6:
 				{
 					shapeType = ShapeType::doubleLine;
 					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
-					shapeTemp->isSelected = isSelected;
+					shapeTemp->setSelected(isSelected);
 					break;
 				}
 			}

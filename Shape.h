@@ -156,7 +156,7 @@ public:
  	static int dx;
 	static int dy;
 	//static int sizeOfPointToMoveAndChange;
-	static int countOfShape;
+	
 	CPoint firstPoint{0,0};
 
 	
@@ -183,16 +183,14 @@ public:
 	//vector<CPoint> ellipseSecondPart;
 	//double ellipseAngleDegree = 0;
 	//double rectEllipseDegree = 0;
-	bool isSelected = false;
-	double angleRad = NULL; //= ellipseAngleDegree * 3.14159265359 / 180.0;
 	//double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
-	CRect boxRect = NULL;
+	//CRect boxRect = NULL;
 	
 	//int numberOfAngle; //
-	CPoint dx_dy_temp[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
+	/*CPoint dx_dy_temp[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
 	CPoint dx_dy[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
 	CPoint rectangle_dx_dy_temp[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
-	CPoint rectangle_dx_dy[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
+	CPoint rectangle_dx_dy[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};*/
 	//CPoint points[4]; // the same array of points for triangle and rectangle shape
 	array <CPoint, 4> points;
 	
@@ -212,14 +210,9 @@ public:
 	//	int lastY = 0; // is used for saving of last y 
 	//};
 	
-
-	struct connecting
-	{
-		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
-		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
-		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
-	} connecting;
-	array<CPoint, 4> linkingPoints;
+	static int countOfShape;
+	
+	
 protected:
 	const CPoint shapeCenterBeforRotate{ 0, 0 };
 
@@ -233,7 +226,8 @@ protected:
 	array <CPoint, 4> temporaryDxDy;					// array for temporary difference values for dx and dy, when shape is moved. 
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
 	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
-
+	bool isSelected = false;
+	double angleRad = NULL;
 	
 
 	struct shapeMove
@@ -250,11 +244,20 @@ protected:
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
 	} change;
 
+	struct connecting
+	{
+		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
+		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
+		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
+	} connecting;
+
 	//for shape
 	array<CPoint, 4> selectedAreaPoints;
-	
+	array<CPoint, 4> linkingPoints;
 	vector<CPoint> fillAreaPoints;
 	vector<CPoint> shapePoints;
+
+	
 
 	//struct isConnected { bool firstPointOfLine = false;
 	//bool secondPointOfLine = false; } isConnected;		// when first or second point of line are connected - > true

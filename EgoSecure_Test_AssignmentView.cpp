@@ -140,7 +140,7 @@ void CEgoSecureTestAssignmentView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 	bool selectedShapeDontExcist = true;
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->isSelected)
+		if (pDoc->getShapesVector()[shapeNum]->getSelected())
 		{
 			selectedShapeDontExcist = false;
 			break;
@@ -285,7 +285,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		bool selected = false;
 		for (int i = 0; i < pDoc->getShapesVector().size(); i++)
 		{
-			if (pDoc->getShapesVector()[i]->isSelected)
+			if (pDoc->getShapesVector()[i]->getSelected())
 			{
 				pDoc->getShapesVector()[i]->setFirstClickedPoint(point);
 				//pDoc->getShapesVector()[i]->lastY = point.y;
@@ -308,7 +308,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				
 				//selected = true;
