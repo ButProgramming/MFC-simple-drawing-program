@@ -11,10 +11,10 @@
 
 IMPLEMENT_DYNAMIC(Dialog_Properties, CDialogEx)
 
-Dialog_Properties::Dialog_Properties(CWnd* pParent /*=nullptr*/)
+Dialog_Properties::Dialog_Properties(CEgoSecureTestAssignmentDoc* pDoc, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_PROPERTIES, pParent)
 {
-
+	this->pDoc = pDoc;
 }
 
 Dialog_Properties::~Dialog_Properties()
@@ -189,4 +189,70 @@ void Dialog_Properties::OnBnClickedOk()
 	//AfxMessageBox(str);
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
+}
+
+
+void Dialog_Properties::getParameters(int numberOfShape)
+{
+	value_x = pDoc->getShapesVector()[numberOfShape]->getCenterOfShape().x;
+	value_y = pDoc->getShapesVector()[numberOfShape]->getCenterOfShape().y;
+	value_outline_R = GetRValue(pDoc->getShapesVector()[numberOfShape]->getOutlineColor());
+	value_outline_G = GetGValue(pDoc->getShapesVector()[numberOfShape]->getOutlineColor());
+	value_outline_B = GetBValue(pDoc->getShapesVector()[numberOfShape]->getOutlineColor());
+	value_fill_R = GetRValue(pDoc->getShapesVector()[numberOfShape]->getFillColor());
+	value_fill_G = GetGValue(pDoc->getShapesVector()[numberOfShape]->getFillColor());
+	value_fill_B = GetBValue(pDoc->getShapesVector()[numberOfShape]->getFillColor());
+	value_degree = pDoc->getShapesVector()[numberOfShape]->radToDeg(pDoc->getShapesVector()[numberOfShape]->getAngleRad());//getAngleRad() * 180.0 / 3.14;
+	value_id = pDoc->getShapesVector()[numberOfShape]->getID();
+	value_name = pDoc->getShapesVector()[numberOfShape]->getName();
+	value_outline_size = pDoc->getShapesVector()[numberOfShape]->getOutlineSize();
+	value_outline_type = pDoc->getShapesVector()[numberOfShape]->getOutlineType();
+	value_fill_type = pDoc->getShapesVector()[numberOfShape]->getFillType();
+}
+
+
+void Dialog_Properties::setParameters(int numberOfShape)
+{
+	pDoc->getShapesVector()[numberOfShape]->setCenterOfShape(CPoint{ value_x, value_y });
+	/*	pDoc->getShapesVector()[s]->centerOfShape.y = dlg.value_y;*/
+		// outline color
+	pDoc->getShapesVector()[numberOfShape]->setOutlineColor(RGB(value_outline_R, value_outline_G, value_outline_B));
+	/*pDoc->getShapesVector()[s]->outlineColor = RGB(dlg.value_outline_R, GetGValue(pDoc->getShapesVector()[s]->outlineColor), GetBValue(pDoc->getShapesVector()[s]->outlineColor));
+	pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_G, GetBValue(pDoc->getShapesVector()[s]->outlineColor));
+	pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), GetGValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_B);*/
+	// fill color
+	pDoc->getShapesVector()[numberOfShape]->setFillColor(RGB(value_fill_R, value_fill_G, value_fill_B));
+	//pDoc->getShapesVector()[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->getShapesVector()[s]->fillColor), GetBValue(pDoc->getShapesVector()[s]->fillColor));
+	//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->getShapesVector()[s]->fillColor));
+	//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), GetGValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_B);
+	// outline size
+	pDoc->getShapesVector()[numberOfShape]->setOutlineSize(value_outline_size);
+	// outline type
+	pDoc->getShapesVector()[numberOfShape]->setOutlineType(value_outline_type);
+	// fill type
+	pDoc->getShapesVector()[numberOfShape]->setFillType(value_fill_type);
+	//pDoc->getShapesVector()[s]->fillType = ;
+	// degree
+	pDoc->getShapesVector()[numberOfShape]->setAngleRad(pDoc->getShapesVector()[numberOfShape]->degToRad(value_degree));
+	//pDoc->getShapesVector()[s]->setAngleRad( * 3.14 / 180.0);
+	// ID
+	if (value_id >= 0)
+	{
+		if (IShape::getIDs().find(value_id) == IShape::getIDs().end())
+		{
+			IShape::getIDs().erase(pDoc->getShapesVector()[numberOfShape]->getID());
+			pDoc->getShapesVector()[numberOfShape]->setID(value_id);
+			IShape::getIDs().insert(value_id);
+			//IShape::IDs.erase(dlg.value_id);
+		}
+	}
+	// name
+	if (IShape::getNames().find(value_name) == IShape::getNames().end())
+	{
+		IShape::getNames().erase(pDoc->getShapesVector()[numberOfShape]->getName());
+		pDoc->getShapesVector()[numberOfShape]->setName(value_name);
+		IShape::getNames().insert(value_name);
+
+	}
+	// TODO: Add your implementation code here.
 }

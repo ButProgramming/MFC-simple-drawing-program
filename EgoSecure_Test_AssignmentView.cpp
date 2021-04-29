@@ -402,7 +402,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	
 	if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle))
 	{
-		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->size = sqrt(pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->centerOfShape.x - point.x, 2) + pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->centerOfShape.y - point.y, 2));
+		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSize(sqrt(pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().x - point.x, 2) + pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().y - point.y, 2)));
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::move)
 	{
@@ -566,7 +566,8 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y));
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y));
 		}
-		pDoc->getShapesVector()[shapeNum]->centerOfShape.x += IShape::dx;
+		//pDoc->getShapesVector()[shapeNum]->centerOfShape.x += IShape::dx;
+		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y });
 	}
 
 	// reset dx
@@ -623,7 +624,8 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y + IShape::dy));
 
 		}
-		pDoc->getShapesVector()[shapeNum]->centerOfShape.y += IShape::dy;
+		//pDoc->getShapesVector()[shapeNum]->centerOfShape.y += IShape::dy;
+		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x, pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y + IShape::dy });
 	}
 
 	// reset dx
@@ -1038,14 +1040,15 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			CString str;
 			int size = pDoc->getShapesVector().size();
-			str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
+			//str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
 			//AfxMessageBox(str);
 			str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
 			//AfxMessageBox(str);
 			Invalidate();
-			pDoc->getShapesVector()[i]->centerOfShape.x += IShape::dx;
-			pDoc->getShapesVector()[i]->centerOfShape.y += IShape::dy;
-			str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
+			/*pDoc->getShapesVector()[i]->centerOfShape.x += IShape::dx;
+			pDoc->getShapesVector()[i]->centerOfShape.y += IShape::dy;*/
+			pDoc->getShapesVector()[i]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[i]->getCenterOfShape().x + IShape::dx,  pDoc->getShapesVector()[i]->getCenterOfShape().y + IShape::dy });
+			//str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
 			//AfxMessageBox(str);
 		}
 		IShape::dx = 0;
@@ -1442,13 +1445,12 @@ void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 
 
 
-	// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnListcontrolShapes()
 {
-	// TODO: Add your command handler code here
+
 }
 
 
@@ -1468,69 +1470,12 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 	auto pDoc = GetDocument();
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
-		/*CString str;
-		str.Format(_T("%d"), s);
-		AfxMessageBox(str);*/
 		if (pDoc->getShapesVector()[s]->getSelected())
 		{
-			Dialog_Properties dlg;
-			dlg.value_x = pDoc->getShapesVector()[s]->getCenterOfShape().x;
-			dlg.value_y = pDoc->getShapesVector()[s]->getCenterOfShape().y;
-			dlg.value_outline_R = GetRValue(pDoc->getShapesVector()[s]->getOutlineColor());
-			dlg.value_outline_G = GetGValue(pDoc->getShapesVector()[s]->getOutlineColor());
-			dlg.value_outline_B = GetBValue(pDoc->getShapesVector()[s]->getOutlineColor());
-			dlg.value_fill_R = GetRValue(pDoc->getShapesVector()[s]->getFillColor());
-			dlg.value_fill_G = GetGValue(pDoc->getShapesVector()[s]->getFillColor());
-			dlg.value_fill_B = GetBValue(pDoc->getShapesVector()[s]->getFillColor());
-			dlg.value_degree = pDoc->getShapesVector()[s]->radToDeg(pDoc->getShapesVector()[s]->getAngleRad());//getAngleRad() * 180.0 / 3.14;
-			dlg.value_id = pDoc->getShapesVector()[s]->getID();
-			dlg.value_name = pDoc->getShapesVector()[s]->getName();
-			dlg.value_outline_size = pDoc->getShapesVector()[s]->getOutlineSize();
-			dlg.value_outline_type = pDoc->getShapesVector()[s]->getOutlineType();
-			dlg.value_fill_type = pDoc->getShapesVector()[s]->getFillType();
-			//AfxMessageBox(_T("1"));
+			Dialog_Properties dlg(pDoc);
+			dlg.getParameters(s);
 			dlg.DoModal();
-			pDoc->getShapesVector()[s]->setCenterOfShape(CPoint{ dlg.value_x, dlg.value_y });
-		/*	pDoc->getShapesVector()[s]->centerOfShape.y = dlg.value_y;*/
-			// outline color
-			pDoc->getShapesVector()[s]->setOutlineColor(RGB(dlg.value_outline_R, dlg.value_outline_G, dlg.value_outline_B));
-			/*pDoc->getShapesVector()[s]->outlineColor = RGB(dlg.value_outline_R, GetGValue(pDoc->getShapesVector()[s]->outlineColor), GetBValue(pDoc->getShapesVector()[s]->outlineColor));
-			pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_G, GetBValue(pDoc->getShapesVector()[s]->outlineColor));
-			pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), GetGValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_B);*/
-			// fill color
-			pDoc->getShapesVector()[s]->setFillColor(RGB(dlg.value_fill_R, dlg.value_fill_G, dlg.value_fill_B));
-			//pDoc->getShapesVector()[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->getShapesVector()[s]->fillColor), GetBValue(pDoc->getShapesVector()[s]->fillColor));
-			//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->getShapesVector()[s]->fillColor));
-			//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), GetGValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_B);
-			// outline size
-			pDoc->getShapesVector()[s]->setOutlineSize(dlg.value_outline_size);
-			// outline type
-			pDoc->getShapesVector()[s]->setOutlineType(dlg.value_outline_type);
-			// fill type
-			pDoc->getShapesVector()[s]->setFillType(dlg.value_fill_type);
-			//pDoc->getShapesVector()[s]->fillType = ;
-			// degree
-			pDoc->getShapesVector()[s]->setAngleRad(pDoc->getShapesVector()[s]->degToRad(dlg.value_degree));
-			//pDoc->getShapesVector()[s]->setAngleRad( * 3.14 / 180.0);
-			// ID
-			if (dlg.value_id >= 0)
-			{
-				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
-				{
-					IShape::IDs.erase(pDoc->getShapesVector()[s]->getID());
-					pDoc->getShapesVector()[s]->setID(dlg.value_id);
-					IShape::IDs.insert(dlg.value_id);
-					//IShape::IDs.erase(dlg.value_id);
-				}
-			}
-			// name
-			if (IShape::names.find(dlg.value_name) == IShape::names.end())
-			{
-				IShape::names.erase(pDoc->getShapesVector()[s]->getName());
-				pDoc->getShapesVector()[s]->setName(dlg.value_name);
-				IShape::names.insert(dlg.value_name);
-
-			}
+			dlg.setParameters(s);
 			break;
 		}
 	}
@@ -1544,7 +1489,6 @@ void CEgoSecureTestAssignmentView::OnEditNormalize()
 		pDoc->getShapesVector()[s]->normalizeShape();
 	}
 	Invalidate();
-	// TODO: Add your command handler code here
 }
 
 

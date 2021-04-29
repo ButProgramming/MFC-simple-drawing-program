@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <cstdlib>
+#include "EgoSecure_Test_AssignmentDoc.h"
 using namespace std;
 
 // Dialog_Properties dialog
@@ -9,9 +10,11 @@ using namespace std;
 class Dialog_Properties : public CDialogEx
 {
 	DECLARE_DYNAMIC(Dialog_Properties)
+private:
+	CEgoSecureTestAssignmentDoc* pDoc = nullptr;
 
 public:
-	Dialog_Properties(CWnd* pParent = nullptr);   // standard constructor
+	Dialog_Properties(CEgoSecureTestAssignmentDoc* pDoc ,CWnd* pParent = nullptr);   // standard constructor
 	virtual ~Dialog_Properties();
 
 // Dialog Data
@@ -68,4 +71,6 @@ public:
 	CComboBox m_cb_fill_type;
 	int value_fill_type;
 	afx_msg void OnBnClickedOk();
+	void getParameters(int numberOfShape);
+	void setParameters(int numberOfShape);
 };

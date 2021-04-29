@@ -59,9 +59,9 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 	//lines.clear();
 	IShape::countOfShape = 0;
 	//Lines::countOfLines = 0;
-	IShape::IDs.clear();
+	IShape::getIDs().clear();
 	//Lines::IDs.clear();
-	IShape::names.clear();
+	IShape::getNames().clear();
 	//Lines::names.clear();
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
@@ -341,18 +341,18 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			//shapes[shapes.size() - 1]->constID;
 			shapes[shapes.size() - 1]->setAngleRad(angleRad);
 
-			shapes[shapes.size() - 1]->IDs.erase(shapes[shapes.size() - 1]->getID());
+			IShape::getIDs().erase(shapes[shapes.size() - 1]->getID());
 			//cout << "getID1: " << shapes[shapes.size() - 1]->getID() << endl;
 			shapes[shapes.size() - 1]->setID(shapeID);
-			shapes[shapes.size() - 1]->IDs.insert(shapes[shapes.size() - 1]->getID());
+			IShape::getIDs().insert(shapes[shapes.size() - 1]->getID());
 			/*cout << "getID2: " << shapes[shapes.size() - 1]->getID() << endl;
 			cout << "shapeID: " << shapeID << endl;*/
 
 			shapes[shapes.size() - 1]->setConstID(shapeConstID);
 			
-			shapes[shapes.size() - 1]->names.erase(shapes[shapes.size() - 1]->getName());
+			IShape::getNames().erase(shapes[shapes.size() - 1]->getName());
 			shapes[shapes.size() - 1]->setName(shapeName);
-			shapes[shapes.size() - 1]->names.insert(shapes[shapes.size() - 1]->getName());
+			IShape::getNames().insert(shapes[shapes.size() - 1]->getName());
 			//shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
 			shapes[shapes.size() - 1]->setOutlineColor(RGB(oR, oG, oB));
 			/*shapes[shapes.size() - 1]->oR = oR;

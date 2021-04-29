@@ -151,13 +151,13 @@ public:
 
 	virtual ~IShape();
 
-	static set<int> IDs;
-	static set<CString> names;
+	
+	
  	static int dx;
 	static int dy;
 	//static int sizeOfPointToMoveAndChange;
-	
-	CPoint firstPoint{0,0};
+	static int countOfShape;
+	ShapeType type;
 
 	
 	
@@ -182,15 +182,11 @@ public:
 	CPoint rectangle_dx_dy_temp[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
 	CPoint rectangle_dx_dy[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};*/
 	//CPoint points[4]; // the same array of points for triangle and rectangle shape
-	array <CPoint, 4> points;
+	//array <CPoint, 4> points;
 	
 	//static CPoint pointsOfTriangle[3];
 	
-	CPen* pen = nullptr;
-	ShapeType type;
-	int size; // length of inscribed circle in shape
-	//bool isNormalized = false;
-	CPoint centerOfShape {NULL, NULL};
+	
 	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
 
 	//struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
@@ -200,10 +196,22 @@ public:
 	//	int lastY = 0; // is used for saving of last y 
 	//};
 	
-	static int countOfShape;
 	
+	static set <int>& getIDs() { return IDs; };
+	static set <CString>& getNames() { return names; };
 	
 protected:
+	static set<int> IDs;
+	static set<CString> names;
+
+	CPen* pen = nullptr;
+	
+
+	//bool isNormalized = false;
+	CPoint centerOfShape{ NULL, NULL };
+
+	CPoint firstPoint{ 0,0 };
+	int size; // length of inscribed circle in shape
 	int fillType = NULL;
 	int outlineType = NULL;
 	int outlineSize = NULL;

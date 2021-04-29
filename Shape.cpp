@@ -662,8 +662,8 @@ void TriangleShape::draw(CDC* dc)
 	
 
 
-	CRgn* triangleRgn = new CRgn;
-	triangleRgn->CreatePolygonRgn(&points[0], 4, ALTERNATE);
+	//CRgn* triangleRgn = new CRgn;
+	//triangleRgn->CreatePolygonRgn(&points[0], 4, ALTERNATE);
 	//GetRgnBox(*triangleRgn, boxRect);
 
 	/*recFromRgn[0] = CPoint(boxRect.TopLeft().x, boxRect.BottomRight().y);
@@ -789,7 +789,7 @@ void TriangleShape::draw(CDC* dc)
 	delete triangleRgn;
 	delete pen;*/
 	pen->DeleteObject();
-	triangleRgn->DeleteObject();
+	//triangleRgn->DeleteObject();
 	triangleBrush->DeleteObject();
 	triangleNewRgn->DeleteObject();
 }
