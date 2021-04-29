@@ -37,6 +37,7 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
+	constID = IShape::countOfShape;
 	setShapeID();
 	setShapeName();
 	countOfShape++;
@@ -52,6 +53,7 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
+	constID = IShape::countOfShape;
 	setShapeID();
 	setShapeName();
 	countOfShape++;
@@ -62,6 +64,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	pointsOfLine[0] = firstPointOfLine;
 	pointsOfLine[1] = firstPointOfLine;
+	constID = IShape::countOfShape;
 	setShapeID();
 	setShapeName();
 }
