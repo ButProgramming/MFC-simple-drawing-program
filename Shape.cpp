@@ -22,8 +22,8 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	constID = IShape::countOfShape;
-	setID();
-	setName();
+	setShapeID();
+	setShapeName();
 	countOfShape++;
 }
 
@@ -37,8 +37,8 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	setID();
-	setName();
+	setShapeID();
+	setShapeName();
 	countOfShape++;
 }
 
@@ -52,8 +52,8 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->type = type;
 	this->size = size;
 	this->centerOfShape = centerOfShape;
-	setID();
-	setName();
+	setShapeID();
+	setShapeName();
 	countOfShape++;
 }
 
@@ -62,8 +62,8 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	this->type = type;
 	pointsOfLine[0] = firstPointOfLine;
 	pointsOfLine[1] = firstPointOfLine;
-	setID();
-	setName();
+	setShapeID();
+	setShapeName();
 }
 
 void EllipseShape::draw(CDC* dc)
@@ -1234,7 +1234,7 @@ void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 	}
 }
 
-void IShape::setID()
+void IShape::setShapeID()
 {
 	IDs.insert(-1);
 	bool isNotFound = false;
@@ -1257,7 +1257,7 @@ void IShape::setID()
 }
 
 
-void IShape::setName()
+void IShape::setShapeName()
 {
 	CString str = NULL;
 	str.Format(_T("-1"));

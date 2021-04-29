@@ -320,7 +320,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		
 
 			}
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 				break;
 		}
 		break;
@@ -335,7 +335,7 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 	auto pDoc = GetDocument();
 	for(int shapeNum = 0; shapeNum< pDoc->getShapesVector().size(); shapeNum++)
 	{
-		pDoc->getShapesVector()[shapeNum]->isSelected = false;
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
 	pDoc->getToolIsUsed() = Tools::ellipse;
@@ -350,7 +350,7 @@ void CEgoSecureTestAssignmentView::OnButtonRectangle()
 	auto pDoc = GetDocument();
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		pDoc->getShapesVector()[shapeNum]->isSelected = false;
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
 	/*for (auto s : pDoc->getShapesVector())
@@ -368,7 +368,7 @@ void CEgoSecureTestAssignmentView::OnButtonTriangle()
 	auto pDoc = GetDocument();
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		pDoc->getShapesVector()[shapeNum]->isSelected = false;
+		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
 	/*for (auto s : pDoc->getShapesVector())
@@ -418,7 +418,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		pDoc->second.y = point.y;*/
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				// set temp dx dy to move shape
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ point.x - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().x, point.y - pDoc->getShapesVector()[s]->getShapeMoveStartClickedCoordinate().y });
@@ -464,7 +464,7 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				pDoc->getShapesVector()[s]->rotateShape(point);
 			}
@@ -644,14 +644,14 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 	auto pDoc = GetDocument();
 	for (auto s : pDoc->getShapesVector())
 	{
-		s->isSelected = false;
+		s->setSelected(false);
 	}
 	queue<int> clear;
 	swap(clear, pDoc->selectedShapesIDs);
-	for (auto s : pDoc->getShapesVector())
+	/*for (auto s : pDoc->getShapesVector())
 	{
 		s->isSelectedFromDoubleSelectingTool = false;
-	}
+	}*/
 	pDoc->getToolIsUsed() = Tools::select_tool;
 	Invalidate();
 	// TODO: Add your command handler code here
@@ -1016,7 +1016,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	auto pDoc = GetDocument();
 	if (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle)
 	{
-		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
+		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSelected(true);
 
 		pDoc->getToolIsUsed() = Tools::change;
 		
@@ -1024,7 +1024,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	else if (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
 		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine)
 	{
-		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->isSelected = true;
+		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSelected(true);
 
 		// make basicLine unactive
 		pDoc->getToolIsUsed() = Tools::change;
@@ -1060,7 +1060,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			//
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				int numberOfAngels = 0;
 				if (pDoc->getShapesVector()[s]->type == ::ShapeType::triangle)
@@ -1109,7 +1109,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 							{
 							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines0));
-								pDoc->getShapesVector()[s]->createLineConnection(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID, numberOfPointForLines0);
+								pDoc->getShapesVector()[s]->createLineConnection(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID(), numberOfPointForLines0);
 								CString str = NULL;
 								str.Format(_T("%d"), numberOfPointForLines0);
 								//AfxMessageBox(str);
@@ -1137,7 +1137,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 							{
 							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines1));
-								pDoc->getShapesVector()[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID, numberOfPointForLines1);
+								pDoc->getShapesVector()[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID(), numberOfPointForLines1);
 								CString str = NULL;
 								str.Format(_T("%d"), numberOfPointForLines1);
 								//AfxMessageBox(str);
@@ -1147,12 +1147,12 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 						if (numberOfPointForLines0 == -1)
 						{
 				
-							pDoc->getShapesVector()[s]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID);
+							pDoc->getShapesVector()[s]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID());
 						}
 						if (numberOfPointForLines1 == -1)
 						{
 						
-							pDoc->getShapesVector()[s]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->constID);
+							pDoc->getShapesVector()[s]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID());
 						}
 					
 						
@@ -1174,7 +1174,7 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			if (pDoc->getShapesVector()[s]->isSelected)
+			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy()/*, pDoc->getToolIsUsed()*/, LBUTTON_UP));
 			}
@@ -1292,7 +1292,7 @@ void CEgoSecureTestAssignmentView::OnButtonDelete()
 	//AfxMessageBox(_T("del"));
 	for (int i = 0; i < pDoc->getShapesVector().size(); i++)
 	{
-		if (pDoc->getShapesVector()[i]->isSelected)
+		if (pDoc->getShapesVector()[i]->getSelected())
 		{
 			//IShape::IDs.erase(pDoc->getShapesVector()[i]->ID); // erase ID because ID won't exist
 			//IShape::names.erase(pDoc->getShapesVector()[i]->name);
@@ -1471,50 +1471,54 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 		/*CString str;
 		str.Format(_T("%d"), s);
 		AfxMessageBox(str);*/
-		if (pDoc->getShapesVector()[s]->isSelected)
+		if (pDoc->getShapesVector()[s]->getSelected())
 		{
 			Dialog_Properties dlg;
-			dlg.value_x = pDoc->getShapesVector()[s]->centerOfShape.x;
-			dlg.value_y = pDoc->getShapesVector()[s]->centerOfShape.y;
-			dlg.value_outline_R = pDoc->getShapesVector()[s]->oR;
-			dlg.value_outline_G = pDoc->getShapesVector()[s]->oG;
-			dlg.value_outline_B = pDoc->getShapesVector()[s]->oB;
-			dlg.value_fill_R = pDoc->getShapesVector()[s]->fR;
-			dlg.value_fill_G = pDoc->getShapesVector()[s]->fG;
-			dlg.value_fill_B = pDoc->getShapesVector()[s]->fB;
-			dlg.value_degree = pDoc->getShapesVector()[s]->angleRad * 180.f / 3.14;
-			dlg.value_id = pDoc->getShapesVector()[s]->ID;
-			dlg.value_name = pDoc->getShapesVector()[s]->name;
-			dlg.value_outline_size = pDoc->getShapesVector()[s]->outlineSize;
-			dlg.value_outline_type = pDoc->getShapesVector()[s]->outlineType;
-			dlg.value_fill_type = pDoc->getShapesVector()[s]->fillType;
+			dlg.value_x = pDoc->getShapesVector()[s]->getCenterOfShape().x;
+			dlg.value_y = pDoc->getShapesVector()[s]->getCenterOfShape().y;
+			dlg.value_outline_R = GetRValue(pDoc->getShapesVector()[s]->getOutlineColor());
+			dlg.value_outline_G = GetGValue(pDoc->getShapesVector()[s]->getOutlineColor());
+			dlg.value_outline_B = GetBValue(pDoc->getShapesVector()[s]->getOutlineColor());
+			dlg.value_fill_R = GetRValue(pDoc->getShapesVector()[s]->getFillColor());
+			dlg.value_fill_G = GetGValue(pDoc->getShapesVector()[s]->getFillColor());
+			dlg.value_fill_B = GetBValue(pDoc->getShapesVector()[s]->getFillColor());
+			dlg.value_degree = pDoc->getShapesVector()[s]->radToDeg(pDoc->getShapesVector()[s]->getAngleRad());//getAngleRad() * 180.0 / 3.14;
+			dlg.value_id = pDoc->getShapesVector()[s]->getID();
+			dlg.value_name = pDoc->getShapesVector()[s]->getName();
+			dlg.value_outline_size = pDoc->getShapesVector()[s]->getOutlineSize();
+			dlg.value_outline_type = pDoc->getShapesVector()[s]->getOutlineType();
+			dlg.value_fill_type = pDoc->getShapesVector()[s]->getFillType();
 			//AfxMessageBox(_T("1"));
 			dlg.DoModal();
-			pDoc->getShapesVector()[s]->centerOfShape.x = dlg.value_x;
-			pDoc->getShapesVector()[s]->centerOfShape.y = dlg.value_y;
+			pDoc->getShapesVector()[s]->setCenterOfShape(CPoint{ dlg.value_x, dlg.value_y });
+		/*	pDoc->getShapesVector()[s]->centerOfShape.y = dlg.value_y;*/
 			// outline color
-			pDoc->getShapesVector()[s]->outlineColor = RGB(dlg.value_outline_R, GetGValue(pDoc->getShapesVector()[s]->outlineColor), GetBValue(pDoc->getShapesVector()[s]->outlineColor));
+			pDoc->getShapesVector()[s]->setOutlineColor(RGB(dlg.value_outline_R, dlg.value_outline_G, dlg.value_outline_B));
+			/*pDoc->getShapesVector()[s]->outlineColor = RGB(dlg.value_outline_R, GetGValue(pDoc->getShapesVector()[s]->outlineColor), GetBValue(pDoc->getShapesVector()[s]->outlineColor));
 			pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_G, GetBValue(pDoc->getShapesVector()[s]->outlineColor));
-			pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), GetGValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_B);
+			pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), GetGValue(pDoc->getShapesVector()[s]->outlineColor), dlg.value_outline_B);*/
 			// fill color
-			pDoc->getShapesVector()[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->getShapesVector()[s]->fillColor), GetBValue(pDoc->getShapesVector()[s]->fillColor));
-			pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->getShapesVector()[s]->fillColor));
-			pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), GetGValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_B);
+			pDoc->getShapesVector()[s]->setFillColor(RGB(dlg.value_fill_R, dlg.value_fill_G, dlg.value_fill_B));
+			//pDoc->getShapesVector()[s]->fillColor = RGB(dlg.value_fill_R, GetGValue(pDoc->getShapesVector()[s]->fillColor), GetBValue(pDoc->getShapesVector()[s]->fillColor));
+			//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_G, GetBValue(pDoc->getShapesVector()[s]->fillColor));
+			//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), GetGValue(pDoc->getShapesVector()[s]->fillColor), dlg.value_fill_B);
 			// outline size
-			pDoc->getShapesVector()[s]->outlineSize = dlg.value_outline_size;
+			pDoc->getShapesVector()[s]->setOutlineSize(dlg.value_outline_size);
 			// outline type
-			pDoc->getShapesVector()[s]->outlineType = dlg.value_outline_type;
+			pDoc->getShapesVector()[s]->setOutlineType(dlg.value_outline_type);
 			// fill type
-			pDoc->getShapesVector()[s]->fillType = dlg.value_fill_type;
+			pDoc->getShapesVector()[s]->setFillType(dlg.value_fill_type);
+			//pDoc->getShapesVector()[s]->fillType = ;
 			// degree
-			pDoc->getShapesVector()[s]->angleRad = dlg.value_degree * 3.14 / 180.f;
+			pDoc->getShapesVector()[s]->setAngleRad(pDoc->getShapesVector()[s]->degToRad(dlg.value_degree));
+			//pDoc->getShapesVector()[s]->setAngleRad( * 3.14 / 180.0);
 			// ID
 			if (dlg.value_id >= 0)
 			{
 				if (IShape::IDs.find(dlg.value_id) == IShape::IDs.end())
 				{
-					IShape::IDs.erase(pDoc->getShapesVector()[s]->ID);
-					pDoc->getShapesVector()[s]->ID = dlg.value_id;
+					IShape::IDs.erase(pDoc->getShapesVector()[s]->getID());
+					pDoc->getShapesVector()[s]->setID(dlg.value_id);
 					IShape::IDs.insert(dlg.value_id);
 					//IShape::IDs.erase(dlg.value_id);
 				}
@@ -1522,127 +1526,13 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			// name
 			if (IShape::names.find(dlg.value_name) == IShape::names.end())
 			{
-				IShape::names.erase(pDoc->getShapesVector()[s]->name);
-				pDoc->getShapesVector()[s]->name = dlg.value_name;
+				IShape::names.erase(pDoc->getShapesVector()[s]->getName());
+				pDoc->getShapesVector()[s]->setName(dlg.value_name);
 				IShape::names.insert(dlg.value_name);
 
 			}
 			break;
 		}
-	}
-	if (pDoc->selectedShapesIDs.size() > 1) // check if min 2 selected shapes exist
-	{
-		//	for (int l = 0; l < pDoc->lines.size(); l++)
-		//	{
-		//		if ((pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.front() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.back()) || (pDoc->lines[l]->FirstShapeConstID == pDoc->selectedShapesIDs.back() && pDoc->lines[l]->SecondShapeConstID == pDoc->selectedShapesIDs.front()))
-		//		{
-		//			int foundedFirstID;
-		//			int foundedSecondID;
-		//			Dialog_Link_Properties dlg;
-		//			dlg.value_link_color_R = GetRValue(pDoc->lines[l]->lineColor);
-		//			dlg.value_link_color_G = pDoc->lines[l]->lG;
-		//			dlg.value_link_color_B = pDoc->lines[l]->lB;
-		//			for (auto s : pDoc->getShapesVector())
-		//			{
-		//				if (s->constID == pDoc->lines[l]->FirstShapeConstID)
-		//				{
-		//					foundedFirstID = s->ID;
-		//				}
-		//				else if (s->constID == pDoc->lines[l]->SecondShapeConstID)
-		//				{
-		//					foundedSecondID = s->ID;
-		//				}
-
-		//			}
-		//			dlg.value_link_shape_first_id = foundedFirstID;
-		//			dlg.value_link_shape_second_id = foundedSecondID;
-		//			dlg.value_link_size = pDoc->lines[l]->lineSize;
-		//			dlg.value_link_type = pDoc->lines[l]->lineType;
-		//			if (pDoc->lines[l]->type == LineType::Basic)
-		//			{
-		//				dlg.value_link_type_link = 0;
-		//			}
-		//			else if (pDoc->lines[l]->type == LineType::Right)
-		//			{
-		//				dlg.value_link_type_link = 1;
-		//			}
-		//			else if (pDoc->lines[l]->type == LineType::Left)
-		//			{
-		//				dlg.value_link_type_link = 2;
-		//			}
-		//			else if (pDoc->lines[l]->type == LineType::Double)
-		//			{
-		//				dlg.value_link_type_link = 3;
-		//			}
-		//			dlg.value_link_id = pDoc->lines[l]->ID;
-		//			dlg.name = pDoc->lines[l]->name;
-
-
-		//			CString str;
-		//			str.Format(_T("R: %d, G: %d, B: %d"), pDoc->lines[l]->lR, pDoc->lines[l]->lG, pDoc->lines[l]->lB);
-		//			dlg.DoModal();
-		//			pDoc->lines[l]->lineColor = RGB(dlg.value_link_color_R, dlg.value_link_color_G, dlg.value_link_color_B);
-		//			if ((dlg.value_link_shape_first_id != dlg.value_link_shape_second_id)) // can be swaped
-		//			{
-		//				set<int> tempConstIDs;
-		//				for (auto s : pDoc->getShapesVector())
-		//				{
-		//					tempConstIDs.insert(s->constID);
-		//				}
-		//				if (tempConstIDs.find(dlg.value_link_shape_first_id) != tempConstIDs.end() && tempConstIDs.find(dlg.value_link_shape_second_id) != tempConstIDs.end())
-		//				{
-		//					pDoc->lines[l]->FirstShapeConstID = dlg.value_link_shape_first_id;
-		//					pDoc->lines[l]->SecondShapeConstID = dlg.value_link_shape_second_id;
-		//				}
-
-		//			}
-		//			pDoc->lines[l]->lineSize = dlg.value_link_size;
-		//			pDoc->lines[l]->lineType = dlg.value_link_type;
-		//			switch (dlg.value_link_type_link)
-		//			{
-		//			case 0:
-		//			{
-		//				pDoc->lines[l]->type = LineType::Basic;
-		//				break;
-		//			}
-		//			case 1:
-		//			{
-		//				pDoc->lines[l]->type = LineType::Right;
-		//				break;
-		//			}
-		//			case 2:
-		//			{
-		//				pDoc->lines[l]->type = LineType::Left;
-		//				break;
-		//			}
-		//			case 3:
-		//			{
-		//				pDoc->lines[l]->type = LineType::Double;
-		//				break;
-		//			}
-		//			}
-		//			if (dlg.value_link_id >= 0)
-		//			{
-		//				if (Lines::IDs.find(dlg.value_link_id) == Lines::IDs.end())
-		//				{
-		//					Lines::IDs.erase(pDoc->lines[l]->ID);
-		//					pDoc->lines[l]->ID = dlg.value_link_id;
-		//					Lines::IDs.insert(dlg.value_link_id);
-		//					//IShape::IDs.erase(dlg.value_id);
-		//				}
-		//			}
-
-		//			// name
-		//			if (Lines::names.find(dlg.name) == Lines::names.end())
-		//			{
-		//				Lines::names.erase(pDoc->lines[l]->name);
-		//				pDoc->lines[l]->name = dlg.name;
-		//				Lines::names.insert(dlg.name);
-		//			}
-
-		//		}
-
-		//	}
 	}
 }
 

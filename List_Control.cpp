@@ -60,7 +60,7 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	CString str;
 	for (auto s : shapes)
 	{
-		str.Format(_T("%d"), s->ID);
+		str.Format(_T("%d"), s->getID());
 		nItem = m_listControl_shapes.InsertItem(0, str);
 		if (s->type == ShapeType::ellipse)
 		{
@@ -75,17 +75,20 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 			m_listControl_shapes.SetItemText(nItem, 1, _T("Triangle"));
 		}
 
-		m_listControl_shapes.SetItemText(nItem, 2, s->name);
+		m_listControl_shapes.SetItemText(nItem, 2, s->getName());
 		str.Format(_T("x: %d, y: %d"), s->centerOfShape.x, s->centerOfShape.y);
 		m_listControl_shapes.SetItemText(nItem, 3, str);
-		str.Format(_T("%g degree"), s->angleRad * 180.f / 3.14);
+		str.Format(_T("%g degree"), s->getAngleRad() * 180.f / 3.14);
 		m_listControl_shapes.SetItemText(nItem, 4, str);
-		str.Format(_T("R: %d, G: %d, B: %d"), s->oR, s->oG, s->oB);
+		int oR = GetRValue(s->getOutlineColor());
+		int oG = GetGValue(s->getOutlineColor());
+		int oB = GetBValue(s->getOutlineColor());
+		str.Format(_T("R: %d, G: %d, B: %d"), oR, oG, oB);
 		m_listControl_shapes.SetItemText(nItem, 5, str);
-		str.Format(_T("%d"), s->outlineSize);
+		str.Format(_T("%d"), s->getOutlineSize());
 		m_listControl_shapes.SetItemText(nItem, 6, str);
 		// outlineType
-		switch (s->outlineType)
+		switch (s->getOutlineType())
 		{
 			case 0:
 			{
@@ -114,10 +117,13 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 			}
 		}
 		m_listControl_shapes.SetItemText(nItem, 7, str);
-		str.Format(_T("R: %d, G: %d, B: %d"), s->fR, s->fG, s->fB);
+		int fR = GetRValue(s->getFillColor());
+		int fG = GetGValue(s->getFillColor());
+		int fB = GetBValue(s->getFillColor());
+		str.Format(_T("R: %d, G: %d, B: %d"), fR, fG, fB);
 		m_listControl_shapes.SetItemText(nItem, 8, str);
 		//Normal;Horizontal hatch;Vertical hatch;Upward hatch;Downward hatch;Horizontal and vertical crosshatch;Crosshatch at 45 degrees;
-		switch (s->fillType)
+		switch (s->getFillType())
 		{
 			case -1:
 			{

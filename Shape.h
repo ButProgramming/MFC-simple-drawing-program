@@ -146,8 +146,8 @@ public:
 	void updateLineConnection(const vector<IShape*>& shapes);
 	void lineDisconnecting(int numberOfPointOfLine, int shapeConstID);
 
-	void setID();
-	void setName();
+	void setShapeID();
+	void setShapeName();
 
 	virtual ~IShape();
 
@@ -161,17 +161,7 @@ public:
 
 	
 	
-	int fillType = NULL;
-	int outlineType = NULL;
-	int outlineSize = NULL;
-	COLORREF fillColor = NULL;
-	int fR = NULL; int fG = NULL; int fB = NULL; // for safe convinience
-	COLORREF outlineColor = NULL;
-	int oR = NULL; int oG = NULL; int oB = NULL; // for safe convinience
-	bool isSelectedFromDoubleSelectingTool = false;
-	int constID = NULL;
-	int ID = NULL;
-	CString name = NULL;
+	
 	
 	//CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
 	//CPoint nextCenterTriangle{ -1,-1 };
@@ -214,6 +204,18 @@ public:
 	
 	
 protected:
+	int fillType = NULL;
+	int outlineType = NULL;
+	int outlineSize = NULL;
+	COLORREF fillColor = NULL;
+	int fR = NULL; int fG = NULL; int fB = NULL; // for safe convinience
+	COLORREF outlineColor = NULL;
+	int oR = NULL; int oG = NULL; int oB = NULL; // for safe convinience
+	bool isSelectedFromDoubleSelectingTool = false;
+	int constID = NULL;
+	int ID = NULL;
+	CString name = NULL;
+
 	const CPoint shapeCenterBeforRotate{ 0, 0 };
 
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
