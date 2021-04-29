@@ -229,6 +229,7 @@ void Dialog_Properties::setParameters(int numberOfShape)
 	pDoc->getShapesVector()[numberOfShape]->setOutlineSize(nOutlineSize);
 	// outline type
 	pDoc->getShapesVector()[numberOfShape]->setOutlineType(nOutlineType);
+	cout << pDoc->getShapesVector()[numberOfShape]->getOutlineType() << endl;
 	// fill type
 	pDoc->getShapesVector()[numberOfShape]->setFillType(nFillType);
 	//pDoc->getShapesVector()[s]->fillType = ;

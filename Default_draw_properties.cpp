@@ -136,6 +136,7 @@ void Default_draw_properties::setParameters()
 	pDoc->setOutlineType(nOutlineType);
 	pDoc->setFillType(nFillType);
 	pDoc->setLinkType(nLinkType);
+	//cout << pDoc->getLinkType() << endl;
 	pDoc->setColorLink(colorLink);
 	pDoc->setLineSize(nLineSize);
 	// TODO: Add your implementation code here.

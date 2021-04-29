@@ -342,11 +342,8 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->setAngleRad(angleRad);
 
 			IShape::getIDs().erase(shapes[shapes.size() - 1]->getID());
-			//cout << "getID1: " << shapes[shapes.size() - 1]->getID() << endl;
 			shapes[shapes.size() - 1]->setID(shapeID);
 			IShape::getIDs().insert(shapes[shapes.size() - 1]->getID());
-			/*cout << "getID2: " << shapes[shapes.size() - 1]->getID() << endl;
-			cout << "shapeID: " << shapeID << endl;*/
 
 			shapes[shapes.size() - 1]->setConstID(shapeConstID);
 			

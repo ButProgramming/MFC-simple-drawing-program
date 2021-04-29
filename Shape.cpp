@@ -62,11 +62,15 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
 {
 	this->type = type;
-	pointsOfLine[0] = firstPointOfLine;
-	pointsOfLine[1] = firstPointOfLine;
+	outlineColor = lineColor;
+	outlineSize = lineSize;
+	outlineType = lineType;
+	pointsOfLine[FIRST_POINT_OF_LINE] = firstPointOfLine;
+	pointsOfLine[SECOND_POINT_OF_LINE] = firstPointOfLine;
 	constID = IShape::countOfShape;
 	setShapeID();
 	setShapeName();
+	countOfShape++;
 }
 
 void EllipseShape::draw(CDC* dc)
@@ -83,9 +87,9 @@ void EllipseShape::draw(CDC* dc)
 
 	// create pen
 	if (isSelected)
-		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
+		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
-		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 
 	// setect pen
 	dc->SelectObject(pen);
@@ -292,16 +296,26 @@ void EllipseShape::draw(CDC* dc)
 	// draw ellipse for change and rotate if shape is selected
 	if (isSelected)
 	{
-		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
-		dc->SelectObject(tempPen);
+		// create CPen for drawing of ellipses for rotate and change tools and select it
+		CPen* ellipsesForRotateAndChangeTools = new CPen(0, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		dc->SelectObject(ellipsesForRotateAndChangeTools);
+
+		// draw line for ellipse of rotate tool
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
 
+		// draw ellipse for rotate tool
 		dc->Ellipse(centerPoint23Top.x - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y - SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.x + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL, centerPoint23Top.y + SIZE_OF_ELLIPSE_FOR_ROTATE_TOOL);
-		for (int i = 0; i < 4; i++)
-			dc->Ellipse(selectedAreaPoints[i].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y + SIZE_OF_POINT_FOR_CHANGE);
 		
+		// draw ellipses for change tool
+		for (int i = 0; i < 4; i++)
+		{
+			dc->Ellipse(selectedAreaPoints[i].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[i].y + SIZE_OF_POINT_FOR_CHANGE);
+		}
+			
 		// draw rectangle that demonstrates selecting shape
+		CPen* selectedAreaRectangleRgn = new CPen(1, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		dc->SelectObject(selectedAreaRectangleRgn);
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
@@ -312,11 +326,11 @@ void EllipseShape::draw(CDC* dc)
 			}
 			dc->MoveTo(selectedAreaPoints[pointNum]);
 			dc->LineTo(selectedAreaPoints[pointNum + 1]);
-
 		}
 
-		// delete pen
-		tempPen->DeleteObject();
+		// delete rectangle and ellipses pens
+		selectedAreaRectangleRgn->DeleteObject();
+		ellipsesForRotateAndChangeTools->DeleteObject();
 	}
 
 	// draw points for lines if is true
@@ -1448,10 +1462,27 @@ IShape::~IShape()
 
 void Line::draw(CDC* dc)
 {
+	cout << "outlineType: " << outlineType << "| outlineSize: " << outlineSize << endl;
+	//get outline colors
+	oR = GetRValue(outlineColor);
+	oG = GetGValue(outlineColor);
+	oB = GetBValue(outlineColor);
 
-	//updateLineConnection(getShapesVector());
-	//dc->Polygon(&tempLineRectRgn1[0], tempLineRectRgn1.size());
-	//dc->Polygon(&tempLineRectRgn2[0], tempLineRectRgn2.size());
+	//get fill colors
+	fR = GetRValue(fillColor);
+	fG = GetGValue(fillColor);
+	fB = GetBValue(fillColor);
+
+	// create pen
+	if (isSelected)
+		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+	else
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
+
+	//
+
+	// setect pen
+	dc->SelectObject(pen);
 
 	if (isSelected)
 	{
@@ -1510,303 +1541,8 @@ void Line::draw(CDC* dc)
 		
 	}
 
-	//draw all lines
-	//for (int i=0; i<pDoc->lines.size(); i++)
-	//{
-	//	CPen* linePen;
-	//	pDoc->lines[i]->lR = GetRValue(pDoc->lines[i]->lineColor);
-	//	pDoc->lines[i]->lG = GetGValue(pDoc->lines[i]->lineColor);
-	//	pDoc->lines[i]->lB = GetBValue(pDoc->lines[i]->lineColor);
-	//	linePen = new CPen(pDoc->lines[i]->lineType, pDoc->lines[i]->lineSize, RGB(pDoc->lines[i]->lR, pDoc->lines[i]->lG, pDoc->lines[i]->lB));
-	//	CPoint firstPoint;
-	//	CPoint secondPoint;
-	//	int firstID = pDoc->lines[i]->FirstShapeConstID;
-	//	int secondID = pDoc->lines[i]->SecondShapeConstID;
-	//	bool found = false;
-	//	for (auto s : pDoc->getShapesVector())
-	//	{
-	//		CString d;
-	//		d.Format(_T("%d"), s->constID);
-	//		//AfxMessageBox(d);
-	//		if (s->constID == firstID)
-	//		{
-	//			found = true;
-	//			firstPoint = s->centerOfShape;
-	//			int temp_dSM_x = s->dSM.x;
-	//			int temp_dSM_y = s->dSM.y;
-	//			int temp2_dSM_x = temp_dSM_x;
-	//			int temp2_dSM_y = temp_dSM_y;
-	//			temp_dSM_x = round(temp2_dSM_x * cos((s->angleRad)) - temp2_dSM_y * sin((s->angleRad)));
-	//			temp_dSM_y = round(temp2_dSM_x * sin((s->angleRad)) + temp2_dSM_y * cos((s->angleRad)));
-
-	//			firstPoint.x += temp_dSM_x + IShape::dx;
-	//			firstPoint.y += temp_dSM_y + IShape::dy;
-	//			//Invalidate();
-	//			break;
-	//		}
-	//	}
-	//	if (!found)
-	//	{
-	//		pDoc->lines[i]->first_ID_not_excist = true;
-	//	}
-	//	found = false;
-	//	for (auto s : pDoc->getShapesVector())
-	//	{
-	//		if (s->constID == secondID)
-	//		{
-	//			secondPoint = s->centerOfShape;
-	//			found = true;
-	//			int temp_dSM_x = s->dSM.x;
-	//			int temp_dSM_y = s->dSM.y;
-	//			int temp2_dSM_x = temp_dSM_x;
-	//			int temp2_dSM_y = temp_dSM_y;
-	//			temp_dSM_x = round(temp2_dSM_x * cos((s->angleRad)) - temp2_dSM_y * sin((s->angleRad)));
-	//			temp_dSM_y = round(temp2_dSM_x * sin((s->angleRad)) + temp2_dSM_y * cos((s->angleRad)));
-	//			secondPoint.x += temp_dSM_x + IShape::dx;
-	//			secondPoint.y += temp_dSM_y + IShape::dy;
-	//			break;
-	//		}
-	//	}
-	//	if (!found)
-	//	{
-	//		pDoc->lines[i]->second_ID_not_exceist = true;
-	//	}
-	//	bool deleteThisLine = pDoc->lines[i]->first_ID_not_excist || pDoc->lines[i]->second_ID_not_exceist;
-	//	if (deleteThisLine)
-	//	{
-	//		
-	//		
-	//		delete pDoc->lines[i];
-	//		pDoc->lines.erase(pDoc->lines.begin() + i);
-	//		CString str;
-	//		int size = pDoc->lines.size();
-	//		str.Format(_T("Size of lines vector: %d"), size);
-	//		//AfxMessageBox(str);
-	//		break;
-	//	}
-	//	m_dc.SelectObject(linePen);
-	//	m_dc.MoveTo(firstPoint);
-	//	m_dc.LineTo(secondPoint);
-	//	
-	//	if (pDoc->lines[i]->type == LineType::Right) // draw right line
-	//	{
-	//		CPoint centerOfArrowGround = CPoint(firstPoint.x + (secondPoint.x - firstPoint.x) / 1.07, firstPoint.y + (secondPoint.y - firstPoint.y) / 1.07);
-	//		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-	//		double angleOfTriangleDeg = 12;
-	//		double angleOfTriangleRad = angleOfTriangleDeg * 3.14 / 180.f;
-	//		double angleBigTriangleRad;
-	//		double angleBigTriangleDeg;
-
-	//		double lengthOFLeg;
-	//		double lengthOfHypotenuse;
-	//		CPoint secondLegPoint = CPoint(centerOfArrowGround.x, firstPoint.y);
-	//		CPoint firstLegPoint = CPoint(firstPoint.x, firstPoint.y);
-	//		lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-	//		CString dbug;
-
-
-	//		lengthOFLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
-	//		angleBigTriangleRad = acos(lengthOFLeg / lengthOfHypotenuse);
-	//		angleBigTriangleDeg = angleBigTriangleRad * 180.0f / 3.14;
-	//		//dbug.Format(_T("Length of hyp: %g, leg: %g, deg: %g"), lengthOfHypotenuse, lengthOFLeg, angleBigTriangleDeg);
-
-	//		double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - secondPoint.x, 2) + pow(centerOfArrowGround.y - secondPoint.y, 2));
-	//		double lengthOfPerpendicular = lengthOfArrow * tan(angleOfTriangleRad);
-	//		double legX = cos(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//		double legY = sin(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//		if (centerOfArrowGround.x - firstPoint.x > 0 && centerOfArrowGround.y - firstPoint.y < 0 || centerOfArrowGround.x - firstPoint.x < 0 && centerOfArrowGround.y - firstPoint.y > 0)
-	//		{
-	//			//continue;
-	//			//AfxMessageBox(_T("True"));
-	//		}
-	//		else
-	//		{
-	//			legX = -legX;
-	//			//continue;
-	//		}
-
-	//		CPoint firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
-	//		CPoint secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-	//		dbug.Format(_T("legX: %g, legY: %g"), legX, legY);
-
-	//		if (lengthOFLeg > 80 && lengthOFLeg < 120)
-	//		{
-	//			//AfxMessageBox(dbug);
-	//		}
-
-	//		//m_dc.Ellipse(firstLegPoint.x - 5, firstLegPoint.y - 5, firstLegPoint.x + 5, firstLegPoint.y + 5);
-	//		//m_dc.Ellipse(firstPointOfArrow.x - 5, firstPointOfArrow.y - 5, firstPointOfArrow.x + 5, firstPointOfArrow.y + 5);
-	//		//m_dc.Ellipse(secondPointOfArrow.x - 5, secondPointOfArrow.y - 5, secondPointOfArrow.x + 5, secondPointOfArrow.y + 5);
-	//		//m_dc.Ellipse(secondLegPoint.x - 5, secondLegPoint.y - 5, secondLegPoint.x + 5, secondLegPoint.y + 5);
-	//		m_dc.MoveTo(secondPoint);
-	//		m_dc.LineTo(firstPointOfArrow);
-	//		m_dc.MoveTo(secondPoint);
-	//		m_dc.LineTo(secondPointOfArrow);
-
-	//		//lenghtOfHypotenuse = 
-	//		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-	//		/*int angleDegree = 45;
-	//		double angleRadian = (double)angleDegree * 3.14 / 180.0f;
-	//		double tempX = (centerOfArrowGround.x - secondPoint.x) * tan(angleRadian);
-	//		double tempY = (centerOfArrowGround.y - secondPoint.y) * tan(angleRadian);
-	//		CPoint leftPointOfArrowGround = CPoint(centerOfArrowGround.x, centerOfArrowGround.y + 20);
-	//		m_dc.Ellipse(leftPointOfArrowGround.x - 5, leftPointOfArrowGround.y - 5, leftPointOfArrowGround.x + 5, leftPointOfArrowGround.y + 5);*/
-	//		
-	//	}
-
-	//	// draw left line
-	//	else if (pDoc->lines[i]->type == LineType::Left)
-	//	{
-	//		CPoint centerOfArrowGround = CPoint(secondPoint.x - (secondPoint.x - firstPoint.x) / 1.07, secondPoint.y - (secondPoint.y - firstPoint.y) / 1.07);
-	//		//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-	//		double angleOfTriangleDeg = 12;
-	//		double angleOfTriangleRad = angleOfTriangleDeg * 3.14 / 180.f;
-	//		double angleBigTriangleRad;
-	//		double angleBigTriangleDeg;
-
-	//		double lengthOFLeg;
-	//		double lengthOfHypotenuse;
-	//		CPoint firstLegPoint = CPoint(firstPoint.x, firstPoint.y);
-	//		CPoint secondLegPoint = CPoint(centerOfArrowGround.x, firstPoint.y);
-	//		lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-	//		CString dbug;
-
-
-	//		lengthOFLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
-	//		angleBigTriangleRad = acos(lengthOFLeg / lengthOfHypotenuse);
-	//		angleBigTriangleDeg = angleBigTriangleRad * 180.0f / 3.14;
-	//		dbug.Format(_T("Length of hyp: %g, leg: %g, deg: %g"), lengthOfHypotenuse, lengthOFLeg, angleBigTriangleDeg);
-	//		//AfxMessageBox(dbug);
-
-	//		double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - firstPoint.x, 2) + pow(centerOfArrowGround.y - firstPoint.y, 2));
-	//		double lengthOfPerpendicular = lengthOfArrow * tan(angleOfTriangleRad);
-	//		double legX = cos(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//		double legY = sin(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//		if (centerOfArrowGround.x - firstPoint.x > 0 && centerOfArrowGround.y - firstPoint.y < 0 || centerOfArrowGround.x - firstPoint.x < 0 && centerOfArrowGround.y - firstPoint.y > 0)
-	//		{
-	//			//continue;
-	//			//AfxMessageBox(_T("True"));
-	//		}
-	//		else
-	//		{
-	//			legX = -legX;
-	//			//continue;
-	//		}
-
-	//		CPoint firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
-	//		CPoint secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-
-	//		m_dc.MoveTo(firstPoint);
-	//		m_dc.LineTo(firstPointOfArrow);
-	//		m_dc.MoveTo(firstPoint);
-	//		m_dc.LineTo(secondPointOfArrow);
-
-
-	//	}
-	//	else if (pDoc->lines[i]->type == LineType::Double) // draw double line
-	//	{
-
-	//	//drawing first arrow
-	//	CPoint centerOfArrowGround = CPoint(firstPoint.x + (secondPoint.x - firstPoint.x) / 1.07, firstPoint.y + (secondPoint.y - firstPoint.y) / 1.07);
-	//	//m_dc.Ellipse(centerOfArrowGround.x - 5, centerOfArrowGround.y - 5, centerOfArrowGround.x + 5, centerOfArrowGround.y + 5);
-	//	double angleOfTriangleDeg = 12;
-	//	double angleOfTriangleRad = angleOfTriangleDeg * 3.14 / 180.f;
-	//	double angleBigTriangleRad;
-	//	double angleBigTriangleDeg;
-
-	//	double lengthOFLeg;
-	//	double lengthOfHypotenuse;
-	//	CPoint secondLegPoint = CPoint(centerOfArrowGround.x, firstPoint.y);
-	//	CPoint firstLegPoint = CPoint(firstPoint.x, firstPoint.y);
-	//	lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-	//	CString dbug;
-
-
-	//	lengthOFLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
-	//	angleBigTriangleRad = acos(lengthOFLeg / lengthOfHypotenuse);
-	//	angleBigTriangleDeg = angleBigTriangleRad * 180.0f / 3.14;
-	//	//dbug.Format(_T("Length of hyp: %g, leg: %g, deg: %g"), lengthOfHypotenuse, lengthOFLeg, angleBigTriangleDeg);
-
-	//	double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - secondPoint.x, 2) + pow(centerOfArrowGround.y - secondPoint.y, 2));
-	//	double lengthOfPerpendicular = lengthOfArrow * tan(angleOfTriangleRad);
-	//	double legX = cos(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//	double legY = sin(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//	if (centerOfArrowGround.x - firstPoint.x > 0 && centerOfArrowGround.y - firstPoint.y < 0 || centerOfArrowGround.x - firstPoint.x < 0 && centerOfArrowGround.y - firstPoint.y > 0)
-	//	{
-	//		//continue;
-	//		//AfxMessageBox(_T("True"));
-	//	}
-	//	else
-	//	{
-	//		legX = -legX;
-	//		//continue;
-	//	}
-
-	//	CPoint firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
-	//	CPoint secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-	//	dbug.Format(_T("legX: %g, legY: %g"), legX, legY);
-
-	//	if (lengthOFLeg > 80 && lengthOFLeg < 120)
-	//	{
-	//		//AfxMessageBox(dbug);
-	//	}
-
-
-	//	m_dc.MoveTo(secondPoint);
-	//	m_dc.LineTo(firstPointOfArrow);
-	//	m_dc.MoveTo(secondPoint);
-	//	m_dc.LineTo(secondPointOfArrow);
-
-	//
-
-
-
-
-	//	//drawing second arrow
-	//	centerOfArrowGround = CPoint(secondPoint.x - (secondPoint.x - firstPoint.x) / 1.07, secondPoint.y - (secondPoint.y - firstPoint.y) / 1.07);
-
-	//	angleOfTriangleDeg = 12;
-	//	angleOfTriangleRad = angleOfTriangleDeg * 3.14 / 180.f;
-
-	//	firstLegPoint = CPoint(firstPoint.x, firstPoint.y);
-	//	secondLegPoint = CPoint(centerOfArrowGround.x, firstPoint.y);
-	//	lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-
-
-	//	lengthOFLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
-	//	angleBigTriangleRad = acos(lengthOFLeg / lengthOfHypotenuse);
-	//	angleBigTriangleDeg = angleBigTriangleRad * 180.0f / 3.14;
-	//	dbug.Format(_T("Length of hyp: %g, leg: %g, deg: %g"), lengthOfHypotenuse, lengthOFLeg, angleBigTriangleDeg);
-
-
-	//	lengthOfArrow = sqrt(pow(centerOfArrowGround.x - firstPoint.x, 2) + pow(centerOfArrowGround.y - firstPoint.y, 2));
-	//	lengthOfPerpendicular = lengthOfArrow * tan(angleOfTriangleRad);
-	//	legX = cos(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//	legY = sin(90 * 3.14 / 180.f - angleBigTriangleRad) * lengthOfPerpendicular;
-	//	if (centerOfArrowGround.x - firstPoint.x > 0 && centerOfArrowGround.y - firstPoint.y < 0 || centerOfArrowGround.x - firstPoint.x < 0 && centerOfArrowGround.y - firstPoint.y > 0)
-	//	{
-	//		//continue;
-	//		//AfxMessageBox(_T("True"));
-	//	}
-	//	else
-	//	{
-	//		legX = -legX;
-	//		//continue;
-	//	}
-
-	//	firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
-	//	secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
-
-	//	m_dc.MoveTo(firstPoint);
-	//	m_dc.LineTo(firstPointOfArrow);
-	//	m_dc.MoveTo(firstPoint);
-	//	m_dc.LineTo(secondPointOfArrow);
-
-
-	//	linePen->DeleteObject();
- //}
-	//}
-
+	// delete graphical objects
+	pen->DeleteObject();
 }
 
 bool Line::isClickedOnShapeRgn(CPoint point)
