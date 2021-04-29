@@ -1259,8 +1259,8 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.firstPointOfLine)
 				{
 					setCoordinateForChange(FIRST_POINT_OF_LINE, shapes[shapeNum]->getPointForLine(connecting.numberOfShapesPointForLines.firstPointOfLine));
-					cout << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
-					cout << getCoordinateForChange(0).x << " " << getCoordinateForChange(0).y << endl;
+					//cout << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
+					//cout << getCoordinateForChange(0).x << " " << getCoordinateForChange(0).y << endl;
 					
 				}
 			}

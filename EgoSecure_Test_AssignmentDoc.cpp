@@ -76,7 +76,6 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 
 void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 {
-	vector<IShape*> shapes2;
 	if (ar.IsStoring())
 	{
 		int shapeType = NULL;
@@ -315,61 +314,43 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 			//shapes.emplace_back(shape);
 			
-			shapes2.push_back(shapeTemp);
-			shapes2[shapes2.size() - 1]->constID;
-			shapes2[shapes2.size() - 1]->ellipseAngleRad = ellipseAngleRad;
-			shapes2[shapes2.size() - 1]->ID = shapeID;
-			shapes2[shapes2.size() - 1]->constID = shapeConstID;
-			shapes2[shapes2.size() - 1]->name = shapeName;
+			shapes.push_back(shapeTemp);
+			shapes[shapes.size() - 1]->constID;
+			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
+			shapes[shapes.size() - 1]->ID = shapeID;
+			shapes[shapes.size() - 1]->constID = shapeConstID;
+			shapes[shapes.size() - 1]->name = shapeName;
 			//shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
-			shapes2[shapes2.size() - 1]->oR = oR;
-			shapes2[shapes2.size() - 1]->oG = oG;
-			shapes2[shapes2.size() - 1]->oB = oB;
-			if (shapes2[shapes2.size() - 1]->type != ShapeType::ellipse && shapes2[shapes2.size() - 1]->type != ShapeType::rectangle && shapes2[shapes2.size() - 1]->type != ShapeType::triangle)
+			shapes[shapes.size() - 1]->oR = oR;
+			shapes[shapes.size() - 1]->oG = oG;
+			shapes[shapes.size() - 1]->oB = oB;
+			if (shapes[shapes.size() - 1]->type != ShapeType::ellipse && shapes[shapes.size() - 1]->type != ShapeType::rectangle && shapes[shapes.size() - 1]->type != ShapeType::triangle)
 			{
-				shapes2[shapes2.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
-				shapes2[shapes2.size() - 1]->setCoordinateForChange(1, coordinateForChange2);
+				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
+				shapes[shapes.size() - 1]->setCoordinateForChange(1, coordinateForChange2);
 			}
 			
 
 			for (int i = 0; i < 4; i++)
 			{
 				//shapes[shapes.size() - 1]->dx_dy[i] = dx_dy[i];
-				shapes2[shapes2.size() - 1]->setChangeDxDy(i, dxDy[i]);
+				shapes[shapes.size() - 1]->setChangeDxDy(i, dxDy[i]);
 			}
-			shapes2[shapes2.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
-			shapes2[shapes2.size() - 1]->connecting.isConnected.secondPointOfLine = isConnected2;
-			shapes2[shapes2.size() - 1]->connecting.connectedShapeConstID.firstPointOfLine = connectedShapeConstID1;
-			shapes2[shapes2.size() - 1]->connecting.connectedShapeConstID.secondPointOfLine = connectedShapeConstID2;
-			shapes2[shapes2.size() - 1]->connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPointForLines1;
-			shapes2[shapes2.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;
+			shapes[shapes.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
+			shapes[shapes.size() - 1]->connecting.isConnected.secondPointOfLine = isConnected2;
+			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.firstPointOfLine = connectedShapeConstID1;
+			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.secondPointOfLine = connectedShapeConstID2;
+			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPointForLines1;
+			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;
 
 			for (int i = 0; i < 4; i++)
 			{
-				shapes2[shapes2.size() - 1]->linkingPoints[i] = linkingPoints[i];
+				shapes[shapes.size() - 1]->linkingPoints[i] = linkingPoints[i];
 			}
 
-			
-			/*if (shapes2[shapes2.size() - 1]->type == ShapeType::basicLine || shapes2[shapes2.size() - 1]->type == ShapeType::rightLine
-				|| shapes2[shapes2.size() - 1]->type == ShapeType::leftLine || shapes2[shapes2.size() - 1]->type == ShapeType::doubleLine)
-			{*/
-			//shapes2[shapes2.size() - 1]->updateLineConnection(shapes2);
-			
-			//}
-			
+						
 
 			}
-		shapes.swap(shapes2);
-		
-		for (int shapeNum = 0; shapeNum < getShapesVector().size(); shapeNum++)
-		{
-			
-			if (getShapesVector()[shapeNum]->type == ShapeType::basicLine)
-			{
-				cout << getShapesVector()[shapeNum]->getCoordinateForChange(0).x << " " << getShapesVector()[shapeNum]->getCoordinateForChange(0).y << endl;
-				cout << getShapesVector()[shapeNum]->getCoordinateForChange(1).x << " " << getShapesVector()[shapeNum]->getCoordinateForChange(1).y << endl;
-			}
-		}
 
 		toolIsUsed = Tools::select_tool;
 		//Invalidate();
