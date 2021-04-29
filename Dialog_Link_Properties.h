@@ -22,7 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	// control continueModal
-	bool callFirstTime = true;
+	bool callcallFirstTime = true;
 	virtual BOOL ContinueModal();
 	afx_msg void OnBnClickedOk();
 private:

@@ -50,7 +50,7 @@ END_MESSAGE_MAP()
 void Default_draw_properties::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	//m_cb_outline_size.SetCurSel(1);
+	//bOutlineSize.SetCurSel(1);
 	colorOutline = bColorOutline.GetColor();
 	colorFill = bColorFill.GetColor();
 	colorLink = bColorLink.GetColor();
@@ -76,8 +76,8 @@ void Default_draw_properties::OnBnClickedOk()
 
 //void Default_draw_properties::SetDataDefaultDrawProperties()
 //{
-//	m_cb_outline_size.SelectString(0, _T("123"));
-//	//m_cb_outline_size.SetCurSel(size);
+//	bOutlineSize.SelectString(0, _T("123"));
+//	//bOutlineSize.SetCurSel(size);
 //	// TODO: Add your implementation code here.
 //}
 
@@ -85,7 +85,7 @@ void Default_draw_properties::OnBnClickedOk()
 BOOL Default_draw_properties::ContinueModal()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if (callFirstTime)
+	if (callcallFirstTime)
 	{
 		//color
 		bColorOutline.SetColor(colorOutline);
@@ -107,7 +107,7 @@ BOOL Default_draw_properties::ContinueModal()
 		//link type
 		bLinkType.SetCurSel(nLinkType);
 
-		callFirstTime = false;
+		callcallFirstTime = false;
 	}
 	return CDialogEx::ContinueModal();
 }

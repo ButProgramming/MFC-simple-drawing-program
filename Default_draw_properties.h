@@ -44,5 +44,5 @@ private:
 	int nLinkType = 0;
 	CComboBox bLineSize;
 	int nLineSize = 1;
-	bool callFirstTime = true;
+	bool callcallFirstTime = true;
 };

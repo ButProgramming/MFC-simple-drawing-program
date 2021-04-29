@@ -50,9 +50,9 @@ END_MESSAGE_MAP()
 BOOL Dialog_Link_Properties::ContinueModal()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if (callFirstTime)
+	if (callcallFirstTime)
 	{
-		callFirstTime = false;
+		callcallFirstTime = false;
 		CString str;
 		// set R color
 		str.Format(_T("%d"), nLinkColorR);
