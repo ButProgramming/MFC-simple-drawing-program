@@ -38,7 +38,6 @@ public:
 
 public:
 	virtual void draw(CDC* dc) = 0;
-	//void rotationOfAxes(int numberOfShapeInVector);
 
 	//save
 	bool getSelected() { return isSelected; }// get if is shape or line selected or not
@@ -150,51 +149,6 @@ public:
 	void setShapeName();
 
 	virtual ~IShape();
-
-	
-	
- 	
-	//static int sizeOfPointToMoveAndChange;
-	
-	
-
-	
-	
-	
-	
-	//CPoint recFromRgn[4]  = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };;
-	//CPoint nextCenterTriangle{ -1,-1 };
-	//bool isDrawFirstTime{ false };
-	//int lastY = NULL;
-	//vector<CPoint> eFP;
-	//vector<CPoint> eSP;
-	//vector<CPoint> ellipseFirstPart;
-	//vector<CPoint> ellipseSecondPart;
-	//double ellipseAngleDegree = 0;
-	//double rectEllipseDegree = 0;
-	//double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
-	//CRect boxRect = NULL;
-	
-	//int numberOfAngle; //
-	/*CPoint dx_dy_temp[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
-	CPoint dx_dy[4] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}, CPoint{0,0} };
-	CPoint rectangle_dx_dy_temp[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};
-	CPoint rectangle_dx_dy[3] = { CPoint{0,0}, CPoint{0,0}, CPoint{0,0}};*/
-	//CPoint points[4]; // the same array of points for triangle and rectangle shape
-	//array <CPoint, 4> points;
-	
-	//static CPoint pointsOfTriangle[3];
-	
-	
-	//IShape(int size, CPoint centerOfShape, ShapeType typeOfShape, bool isNormalized = true);
-
-	//struct diffShapeMove { int x = 0; int y = 0; } dSM; //is used for moving selected shapes
-
-	//struct rotate
-	//{
-	//	int lastY = 0; // is used for saving of last y 
-	//};
-	
 	
 	static set <int>& getIDs() { return IDs; };
 	static set <CString>& getNames() { return names; };
@@ -217,8 +171,6 @@ protected:
 
 	CPen* pen = nullptr;
 	
-
-	//bool isNormalized = false;
 	CPoint centerOfShape{ NULL, NULL };
 
 	CPoint firstPoint{ 0,0 };
@@ -255,7 +207,6 @@ protected:
 	{
 		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
-		//CPoint currentCoordinate{ NULL, NULL }; // current coordinate of cursor
 	} shapeMove;
 
 	struct change
@@ -277,32 +228,13 @@ protected:
 	array<CPoint, 4> linkingPoints;
 	vector<CPoint> fillAreaPoints;
 	vector<CPoint> shapePoints;
-
-	
-
-	//struct isConnected { bool firstPointOfLine = false;
-	//bool secondPointOfLine = false; } isConnected;		// when first or second point of line are connected - > true
-
-	//int connectedShapeConstID = -1;	//const id of shape, with which is line connected
-	//int numberOfShapesPointForLines = -1; // number of point of pointOfLine array. Need for linking 
 };
 
 class EllipseShape :public IShape
 {
 public:
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
-	void draw(CDC* dc);
-	//bool isClickedOnShapeRgn(CPoint point);
-	//CPoint* getConstPointerForRgn(bool firstSemicircle)  { return (firstSemicircle) ? &eFP[0] : &eSP[0]; };
-	//int getSizeOfShapeArray(bool isFirstSemicircle)		 { return (isFirstSemicircle) ? eFP.size() : eSP.size(); };
-	//bool isReversed() { return isReversedVar; }
-	//CPoint getCoordinateForChange(int num) {  };
-	//void setCoordinateForChange(int num, CPoint point) {  };
-	//bool isClickedPointForChange(CPoint point);
-	//CPoint getPointForRotateTool() {  };
-	/*void setFirstClickedPoint(CPoint point)  {  };
-	CPoint getFirstClickedPoint() {  };*/
-	
+	void draw(CDC* dc);	
 };
 
 class RectangleShape :public IShape
@@ -310,7 +242,6 @@ class RectangleShape :public IShape
 public:
 	RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	//CPoint getPointForRotateTool();
 };
 
 class TriangleShape : public IShape
@@ -318,7 +249,6 @@ class TriangleShape : public IShape
 public:
 	TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
-	//CPoint getPointForRotateTool();
 };
 
 class Line :public IShape
@@ -331,9 +261,7 @@ public:
 	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 2) return pointsOfLine[num]; };
 	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 2) pointsOfLine[num] = point; };
 	bool isClickedPointForChange(CPoint point);
-
 	void getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow);
-	
 };
 
 

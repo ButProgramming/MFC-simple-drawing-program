@@ -26,16 +26,16 @@ Default_draw_properties::~Default_draw_properties()
 void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_MFCCOLORBUTTON_OUTLINE, m_color_outline);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON_OUTLINE, bColorOutline);
 	//  DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_fill_color);
-	DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_color_fill);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, bColorFill);
 	//  DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, m_combobox_outline);
-	DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, m_cb_outline_size);
-	DDX_Control(pDX, IDC_COMBO_OUTLINE_TYPE, m_cb_outline_type);
-	DDX_Control(pDX, IDC_COMBO_FILL_TYPE, m_cb_fill_type);
-	DDX_Control(pDX, IDC_MFCCOLORBUTTON3, m_color_link);
-	DDX_Control(pDX, IDC_COMBO5, m_cb_link_type);
-	DDX_Control(pDX, IDC_COMBO_LINE_SIZE, m_cb_line_size);
+	DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, bOutlineSize);
+	DDX_Control(pDX, IDC_COMBO_OUTLINE_TYPE, bOutlineType);
+	DDX_Control(pDX, IDC_COMBO_FILL_TYPE, bFillType);
+	DDX_Control(pDX, IDC_MFCCOLORBUTTON3, bColorLink);
+	DDX_Control(pDX, IDC_COMBO5, bLinkType);
+	DDX_Control(pDX, IDC_COMBO_LINE_SIZE, bLineSize);
 }
 
 
@@ -51,24 +51,24 @@ void Default_draw_properties::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	//m_cb_outline_size.SetCurSel(1);
-	m_color_outline_COLORREF = m_color_outline.GetColor();
-	m_color_fill_COLORREF = m_color_fill.GetColor();
-	m_color_link_COLORREF = m_color_link.GetColor();
-	num_cb_outline_size = m_cb_outline_size.GetCurSel();
-	num_cb_outline_type = m_cb_outline_type.GetCurSel();
-	num_cb_fill_type = m_cb_fill_type.GetCurSel() - 1; // because #DEFINE beginn with 0
-	num_cb_link_type = m_cb_link_type.GetCurSel();
-	num_cb_line_size = m_cb_line_size.GetCurSel();
-	if (num_cb_outline_size == -1)
-		num_cb_outline_size = 2;
-	if (num_cb_outline_type == -1)
-		num_cb_outline_type = 0;
-	if (num_cb_fill_type == -2)
-		num_cb_fill_type = -1;
-	if (num_cb_link_type == -1)
-		num_cb_link_type = 0;
-	if (num_cb_line_size == -1)
-		num_cb_line_size = 1;
+	colorOutline = bColorOutline.GetColor();
+	colorFill = bColorFill.GetColor();
+	colorLink = bColorLink.GetColor();
+	nOutlineSize = bOutlineSize.GetCurSel();
+	nOutlineType = bOutlineType.GetCurSel();
+	nFillType = bFillType.GetCurSel() - 1; // because #DEFINE beginn with 0
+	nLinkType = bLinkType.GetCurSel();
+	nLineSize = bLineSize.GetCurSel();
+	if (nOutlineSize == -1)
+		nOutlineSize = 2;
+	if (nOutlineType == -1)
+		nOutlineType = 0;
+	if (nFillType == -2)
+		nFillType = -1;
+	if (nLinkType == -1)
+		nLinkType = 0;
+	if (nLineSize == -1)
+		nLineSize = 1;
 
 	CDialogEx::OnOK();
 }
@@ -85,29 +85,29 @@ void Default_draw_properties::OnBnClickedOk()
 BOOL Default_draw_properties::ContinueModal()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if (firstTime)
+	if (callFirstTime)
 	{
 		//color
-		m_color_outline.SetColor(m_color_outline_COLORREF);
-		m_color_fill.SetColor(m_color_fill_COLORREF);
-		m_color_link.SetColor(m_color_link_COLORREF);
+		bColorOutline.SetColor(colorOutline);
+		bColorFill.SetColor(colorFill);
+		bColorLink.SetColor(colorLink);
 
 		//outline size
-		m_cb_outline_size.SetCurSel(num_cb_outline_size);
+		bOutlineSize.SetCurSel(nOutlineSize);
 
 		//outline type
-		m_cb_outline_type.SetCurSel(num_cb_outline_type);
+		bOutlineType.SetCurSel(nOutlineType);
 
 		//fill type
-		m_cb_fill_type.SetCurSel(num_cb_fill_type + 1);
+		bFillType.SetCurSel(nFillType + 1);
 
 		//link size
-		m_cb_line_size.SetCurSel(num_cb_line_size);
+		bLineSize.SetCurSel(nLineSize);
 
 		//link type
-		m_cb_link_type.SetCurSel(num_cb_link_type);
+		bLinkType.SetCurSel(nLinkType);
 
-		firstTime = false;
+		callFirstTime = false;
 	}
 	return CDialogEx::ContinueModal();
 }
@@ -115,28 +115,28 @@ BOOL Default_draw_properties::ContinueModal()
 
 void Default_draw_properties::getParameters()
 {
-	m_color_outline_COLORREF = pDoc->m_outline_color;
-	m_color_fill_COLORREF = pDoc->m_fill_color;
-	m_color_link_COLORREF = pDoc->m_color_link;
-	num_cb_outline_size = pDoc->num_cb_outline_size;
-	num_cb_outline_type = pDoc->num_cb_outline_type;
-	num_cb_fill_type = pDoc->num_cb_fill_type;
-	num_cb_line_size = pDoc->num_cb_line_size;
-	num_cb_link_type = pDoc->num_cb_link_type;
+	colorOutline = pDoc->getOutlineColor();
+	colorFill = pDoc->getFillColor();
+	colorLink = pDoc->getColorLink();
+	nOutlineSize = pDoc->getOutlineSize();
+	nOutlineType = pDoc->getOutlineType();
+	nFillType = pDoc->getFillType();
+	nLineSize = pDoc->getLineSize();
+	nLinkType = pDoc->getLinkType();
 	// TODO: Add your implementation code here.
 }
 
 
 void Default_draw_properties::setParameters()
 {
-	m_color_outline.SetColor(RGB(255, 0, 0));
-	pDoc->m_outline_color = m_color_outline_COLORREF;
-	pDoc->m_fill_color = m_color_fill_COLORREF;
-	pDoc->num_cb_outline_size = num_cb_outline_size;
-	pDoc->num_cb_outline_type = num_cb_outline_type;
-	pDoc->num_cb_fill_type = num_cb_fill_type;
-	pDoc->num_cb_link_type = num_cb_link_type;
-	pDoc->m_color_link = m_color_link_COLORREF;
-	pDoc->num_cb_line_size = num_cb_line_size;
+	bColorOutline.SetColor(RGB(255, 0, 0));
+	pDoc->setOutlineColor(colorOutline);
+	pDoc->setFillColor(colorFill);
+	pDoc->setOutlineSize(nOutlineSize);
+	pDoc->setOutlineType(nOutlineType);
+	pDoc->setFillType(nFillType);
+	pDoc->setLinkType(nLinkType);
+	pDoc->setColorLink(colorLink);
+	pDoc->setLineSize(nLineSize);
 	// TODO: Add your implementation code here.
 }

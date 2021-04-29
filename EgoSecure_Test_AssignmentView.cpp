@@ -225,19 +225,19 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 	case Tools::ellipse:
 	{
-		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
+		IShape* shape = new EllipseShape(point, true, 0, ShapeType::ellipse, pDoc->getOutlineColor(), pDoc->getFillColor(), pDoc->getOutlineSize(), pDoc->getOutlineType(), pDoc->getFillType());
 		pDoc->getShapesVector().push_back(shape);
 		break;
 	}
 	case Tools::rectangle:
 	{
-		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
+		IShape* shape = new RectangleShape(point, true, 0, ShapeType::rectangle, pDoc->getOutlineColor(), pDoc->getFillColor(), pDoc->getOutlineSize(), pDoc->getOutlineType(), pDoc->getFillType());
 		pDoc->getShapesVector().push_back(shape);
 		break;
 	}
 	case Tools::triangle:
 	{
-		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->m_outline_color, pDoc->m_fill_color, pDoc->num_cb_outline_size, pDoc->num_cb_outline_type, pDoc->num_cb_fill_type);
+		IShape* shape = new TriangleShape(point, true, 0, ShapeType::triangle, pDoc->getOutlineColor(), pDoc->getFillColor(), pDoc->getOutlineSize(), pDoc->getOutlineType(), pDoc->getFillType());
 		pDoc->getShapesVector().push_back(shape);
 		break;
 	}
@@ -266,8 +266,7 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		break;
 	}
 	case Tools::move:
-		pDoc->first.x = point.x;
-		pDoc->first.y = point.y;
+		pDoc->setFirstClickedPoint(point);
 		break;
 	case Tools::shapeMove:
 		/*pDoc->first.x = point.x;
@@ -406,10 +405,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::move)
 	{
-		pDoc->second.x = point.x;
-		pDoc->second.y = point.y;
-		IShape::setDx(pDoc->second.x - pDoc->first.x);
-		IShape::setDy(pDoc->second.y - pDoc->first.y);
+		IShape::setDx(point.x - pDoc->getFirstClickedPoint().x);
+		IShape::setDy(point.y - pDoc->getFirstClickedPoint().y);
 
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::shapeMove)
@@ -648,8 +645,8 @@ void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 	{
 		s->setSelected(false);
 	}
-	queue<int> clear;
-	swap(clear, pDoc->selectedShapesIDs);
+	/*queue<int> clear;
+	swap(clear, pDoc->selectedShapesIDs);*/
 	/*for (auto s : pDoc->getShapesVector())
 	{
 		s->isSelectedFromDoubleSelectingTool = false;
@@ -1007,7 +1004,7 @@ void CEgoSecureTestAssignmentView::OnButtonMove()
 	auto pDoc = GetDocument();
 	pDoc->getToolIsUsed() = Tools::move;
 	CString str;
-	str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
+	//str.Format(_T("x: %d, y: %d"), pDoc->dx, pDoc->dy);
 
 }
 

@@ -1,8 +1,4 @@
 
-// EgoSecure_Test_AssignmentDoc.h : interface of the CEgoSecureTestAssignmentDoc class
-//
-
-
 #pragma once
 #include "Shape.h"
 
@@ -12,38 +8,51 @@ protected: // create from serialization only
 	CEgoSecureTestAssignmentDoc() noexcept;
 	DECLARE_DYNCREATE(CEgoSecureTestAssignmentDoc)
 
-// Attributes
 
-public: //methods
+public:
 	vector<IShape*>& getShapesVector() { return shapes; };
 	Tools& getToolIsUsed() { return toolIsUsed; };
-public:
 
-	
-	//vector<Lines*> lines;
-	Tools toolIsUsed;
-	queue<int> selectedShapesIDs;
-	//screen move dx and dy
-	struct first { int x; int y; } first; //point for first point of move feature
-	struct second { int x; int y; } second;//point for second point of move feature
-	
+	COLORREF getOutlineColor() { return outlineColor; };
+	void setOutlineColor(COLORREF outlineColor) { this->outlineColor = outlineColor; };
 
-	int dx = 0;
-	int dy = 0;
-	COLORREF m_outline_color = RGB(0, 0, 0);
-	COLORREF m_fill_color = RGB(255, 255, 255);
-	COLORREF m_color_link = RGB(0, 0, 0);
-	int num_cb_outline_size = 2;
-	int num_cb_outline_type = 0;
-	int num_cb_fill_type = -1;
-	int num_cb_link_type = 0;
-	int num_cb_line_size = 1;
+	COLORREF getFillColor() { return fillColor; };
+	void setFillColor(COLORREF fillColor) { this->fillColor = fillColor; };
+
+	COLORREF getColorLink() { return colorLink; };
+	void setColorLink(COLORREF colorLink) { this->colorLink = colorLink; };
+
+	int getOutlineSize() { return outlineSize; };
+	void setOutlineSize(int outlineSize) { this->outlineSize = outlineSize; };
+
+	int getOutlineType() { return outlineType; };
+	void setOutlineType(int outlineType) { this->outlineType = outlineType; };
+
+	int getFillType() { return fillType; };
+	void setFillType(int fillType) { this->fillType = fillType; };
+
+	int getLinkType() { return linkType; };
+	void setLinkType(int linkType) { this->linkType = linkType; };
+
+	int getLineSize() { return lineSize; };
+	void setLineSize(int lineSize) { this->lineSize = lineSize; };
+
+	CPoint getFirstClickedPoint() { return firstClickedPoint; };
+	void setFirstClickedPoint(CPoint firstClickedPoint) { this->firstClickedPoint = firstClickedPoint; };
 
 private:
+	CPoint firstClickedPoint{ NULL, NULL }; //point for first point of move feature
+	Tools toolIsUsed;
 	vector<IShape*> shapes;
+	COLORREF outlineColor = RGB(0, 0, 0);
+	COLORREF fillColor = RGB(255, 255, 255);
+	COLORREF colorLink = RGB(0, 0, 0);
+	int outlineSize = 2;
+	int outlineType = 0;
+	int fillType = -1;
+	int linkType = 0;
+	int lineSize = 1;
 
-// Operations
-public:
 
 // Overrides
 public:
@@ -62,7 +71,6 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
 
 // Generated message map functions
 protected:
