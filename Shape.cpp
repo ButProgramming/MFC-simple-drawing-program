@@ -605,8 +605,8 @@ void RectangleShape::draw(CDC* dc)
 		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
 		/*int tempX = points[i].x;
 		int tempY = points[i].y;
-		points[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		points[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		points[i].x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
+		points[i].y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
 		points[i].x += centerOfShape.x + dx;
 		points[i].y += centerOfShape.y + dy;*/
 	}
@@ -617,8 +617,8 @@ void RectangleShape::draw(CDC* dc)
 		rotateAndMoveCoordinate(fillAreaPoints[i], DRAW_METHOD);
 		/*int tempX = pointsReg[i].x;
 		int tempY = pointsReg[i].y;
-		pointsReg[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		pointsReg[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		pointsReg[i].x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
+		pointsReg[i].y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
 		pointsReg[i].x += centerOfShape.x + dx;
 		pointsReg[i].y += centerOfShape.y + dy;*/
 	}
@@ -835,8 +835,8 @@ void TriangleShape::draw(CDC* dc)
 
 		/*tempX = recFromRgn[i].x;
 		tempY = recFromRgn[i].y;
-		recFromRgn[i].x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-		recFromRgn[i].y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+		recFromRgn[i].x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
+		recFromRgn[i].y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
 		recFromRgn[i].x += centerOfShape.x + dx;
 		recFromRgn[i].y += centerOfShape.y + dy;*/
 	}
@@ -958,8 +958,8 @@ void TriangleShape::draw(CDC* dc)
 //{
 //	int tempX = dSM.x;
 //	int tempY = dSM.y;
-//	dSM.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
-//	dSM.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
+//	dSM.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
+//	dSM.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
 //}
 
 bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
@@ -990,8 +990,8 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int
 		{
 			int tempX = point.x;
 			int tempY = point.y;
-			point.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
-			point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
+			point.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
+			point.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
 			return point;
 		}
 		else if (from == LBUTTON_UP)
@@ -999,8 +999,8 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int
 			int tempX = point.x;
 			int tempY = point.y;
 
-			point.x = round(tempX * cos((ellipseAngleRad)) - tempY * sin((ellipseAngleRad)));
-			point.y = round(tempX * sin((ellipseAngleRad)) + tempY * cos((ellipseAngleRad)));
+			point.x = round(tempX * cos((angleRad)) - tempY * sin((angleRad)));
+			point.y = round(tempX * sin((angleRad)) + tempY * cos((angleRad)));
 			centerOfShape.x += point.x;
 			centerOfShape.y += point.y;
 			return point;
@@ -1009,8 +1009,8 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int
 		{
 			int tempX = point.x;
 			int tempY = point.y;
-			point.x = round(tempX * cos(ellipseAngleRad) - tempY * sin(ellipseAngleRad));
-			point.y = round(tempX * sin(ellipseAngleRad) + tempY * cos(ellipseAngleRad));
+			point.x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
+			point.y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
 			point.x += centerOfShape.x + dx;
 			point.y += centerOfShape.y + dy;
 		}
@@ -1021,8 +1021,8 @@ CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int
 		{
 			int tempX = point.x;
 			int tempY = point.y;
-			point.x = round(tempX * cos(-(ellipseAngleRad)) - tempY * sin(-(ellipseAngleRad)));
-			point.y = round(tempX * sin(-(ellipseAngleRad)) + tempY * cos(-(ellipseAngleRad)));
+			point.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
+			point.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
 			return point;
 		}
 	}*/
@@ -1069,7 +1069,7 @@ void IShape::rotateShape(CPoint point)
 
 	if (tempEnum == third || tempEnum == fourth)
 	{
-		//pDoc->getShapesVector()[s]->ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
+		//pDoc->getShapesVector()[s]->angleRad = -centerAngleDegree * 3.14 / 180.0;
 		centerAngleDegree = 360 - centerAngleDegree;
 	}
 
@@ -1078,11 +1078,11 @@ void IShape::rotateShape(CPoint point)
 	//check if is shape reversed
 	if (isReversed())
 	{
-		ellipseAngleRad = -centerAngleDegree * 3.14 / 180.0;
+		angleRad = -centerAngleDegree * 3.14 / 180.0;
 	}
 	else
 	{
-		ellipseAngleRad = centerAngleDegree * 3.14 / 180.0;
+		angleRad = centerAngleDegree * 3.14 / 180.0;
 
 	}
 }
@@ -1184,7 +1184,7 @@ void IShape::normalizeShape()
 
 
 		//pDoc->getShapesVector()[s]->isNormalized = true;
-		ellipseAngleRad = 0;
+		angleRad = 0;
 		CPoint tmp[4];
 		if (type == ShapeType::triangle)
 		{
@@ -1415,8 +1415,8 @@ void Line::draw(CDC* dc)
 	//			int temp_dSM_y = s->dSM.y;
 	//			int temp2_dSM_x = temp_dSM_x;
 	//			int temp2_dSM_y = temp_dSM_y;
-	//			temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
-	//			temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
+	//			temp_dSM_x = round(temp2_dSM_x * cos((s->angleRad)) - temp2_dSM_y * sin((s->angleRad)));
+	//			temp_dSM_y = round(temp2_dSM_x * sin((s->angleRad)) + temp2_dSM_y * cos((s->angleRad)));
 
 	//			firstPoint.x += temp_dSM_x + IShape::dx;
 	//			firstPoint.y += temp_dSM_y + IShape::dy;
@@ -1439,8 +1439,8 @@ void Line::draw(CDC* dc)
 	//			int temp_dSM_y = s->dSM.y;
 	//			int temp2_dSM_x = temp_dSM_x;
 	//			int temp2_dSM_y = temp_dSM_y;
-	//			temp_dSM_x = round(temp2_dSM_x * cos((s->ellipseAngleRad)) - temp2_dSM_y * sin((s->ellipseAngleRad)));
-	//			temp_dSM_y = round(temp2_dSM_x * sin((s->ellipseAngleRad)) + temp2_dSM_y * cos((s->ellipseAngleRad)));
+	//			temp_dSM_x = round(temp2_dSM_x * cos((s->angleRad)) - temp2_dSM_y * sin((s->angleRad)));
+	//			temp_dSM_y = round(temp2_dSM_x * sin((s->angleRad)) + temp2_dSM_y * cos((s->angleRad)));
 	//			secondPoint.x += temp_dSM_x + IShape::dx;
 	//			secondPoint.y += temp_dSM_y + IShape::dy;
 	//			break;

@@ -78,7 +78,7 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 		m_listControl_shapes.SetItemText(nItem, 2, s->name);
 		str.Format(_T("x: %d, y: %d"), s->centerOfShape.x, s->centerOfShape.y);
 		m_listControl_shapes.SetItemText(nItem, 3, str);
-		str.Format(_T("%g degree"), s->ellipseAngleRad * 180.f / 3.14);
+		str.Format(_T("%g degree"), s->angleRad * 180.f / 3.14);
 		m_listControl_shapes.SetItemText(nItem, 4, str);
 		str.Format(_T("R: %d, G: %d, B: %d"), s->oR, s->oG, s->oB);
 		m_listControl_shapes.SetItemText(nItem, 5, str);

@@ -84,33 +84,52 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		
 		for (auto s : shapes)
 		{
-			ar << s->centerOfShape.x << s->centerOfShape.y;
-			ar << s->isSelected;
-			ar << s->size;
-			ar << s->ellipseAngleRad;
-			ar << s->ID;
-			ar << s->constID;
-			ar << s->name;
+			//ar << s->centerOfShape.x << s->centerOfShape.y;
+			ar << s->getCenterOfShape();
+			ar << s->getSelected();
+			ar << s->getSize();
+			ar << s->getAngleRad();
+			ar << s->getID();
+			ar << s->getConstID();
+			ar << s->getName();
 			
-			ar << s->oR;
-			ar << s->oG;
-			ar << s->oB;
+			
 
-			ar << s->fR;
-			ar << s->fG;
-			ar << s->fB;
+			int oR = GetRValue(s->getOutlineColor());
+			int oG = GetGValue(s->getOutlineColor());
+			int oB = GetBValue(s->getOutlineColor());
 
-			ar << s->outlineSize;
-			ar << s->outlineType;
-			ar << s->fillType;
+			int fR = GetRValue(s->getFillColor());
+			int fG = GetGValue(s->getFillColor());
+			int fB = GetBValue(s->getFillColor());
+
+			ar << oR;
+			ar << oG;
+			ar << oB;
+
+			ar << fR;
+			ar << fG;
+			ar << fB;
+
+			/*ar << GetRValue(s->getOutlineColor());
+			ar << GetGValue(s->getOutlineColor());
+			ar << GetBValue(s->getOutlineColor());
+			
+			ar << GetRValue(s->getFillColor());
+			ar << GetGValue(s->getFillColor());
+			ar << GetBValue(s->getFillColor());*/
+
+			ar << s->getOutlineSize();
+			ar << s->getOutlineType();
+			ar << s->getFillType();
 
 			ar << s->getCoordinateForChange(0);
 			ar << s->getCoordinateForChange(1);
 
-			ar << s->linkingPoints[0];
-			ar << s->linkingPoints[1];
-			ar << s->linkingPoints[2];
-			ar << s->linkingPoints[3];
+			ar << s->getPointForLine(0);
+			ar << s->getPointForLine(1);
+			ar << s->getPointForLine(2);
+			ar << s->getPointForLine(3);
 			
 			for (int i = 0; i < 4; i++)
 			{
@@ -201,7 +220,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int line_Size;
 		int line_Type;
 
-		double ellipseAngleRad;
+		double angleRad;
 		CPoint dx_dy[4];
 		array <CPoint, 4> dxDy;
 		int FirstShapeConstID;
@@ -215,10 +234,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 		for (int i = 0; i < vectorShapeSize; i++)
 		{
-			ar >> centerOfShape.x >> centerOfShape.y;
+			//ar >> centerOfShape.x >> centerOfShape.y;
+			ar >> centerOfShape;
 			ar >> isSelected;
 			ar >> size;
-			ar >> ellipseAngleRad;
+			ar >> angleRad;
 			ar >> shapeID;
 			ar >> shapeConstID;
 			ar >> shapeName;
@@ -316,7 +336,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			
 			shapes.push_back(shapeTemp);
 			shapes[shapes.size() - 1]->constID;
-			shapes[shapes.size() - 1]->ellipseAngleRad = ellipseAngleRad;
+			shapes[shapes.size() - 1]->angleRad = angleRad;
 			shapes[shapes.size() - 1]->ID = shapeID;
 			shapes[shapes.size() - 1]->constID = shapeConstID;
 			shapes[shapes.size() - 1]->name = shapeName;

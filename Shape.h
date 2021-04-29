@@ -35,17 +35,43 @@ enum class ShapeType { ellipse, rectangle, triangle, basicLine, rightLine, leftL
 class IShape
 {
 public:
-	
+
 public:
 	virtual void draw(CDC* dc) = 0;
 	//void rotationOfAxes(int numberOfShapeInVector);
+
+	//save
+	bool getSelected() { return isSelected; }// get if is shape or line selected or not
+	CPoint getCenterOfShape() { return centerOfShape; };
+	int getSize() { return size; };
+	double getAngleRad() { return angleRad; };
+	int getID() { return ID; };
+	int getConstID() { return constID; };
+	CString getName() { return name; };
+	COLORREF getOutlineColor() { return outlineColor; };
+	COLORREF getFillColor() { return fillColor; };
+	int getOutlineSize() { return outlineSize; };
+	int getOutlineType() { return outlineType; };
+	int getFillType() { return fillType; };
+	bool isConnected(int numberOfPoint)
+	{
+		if (numberOfPoint == FIRST_POINT_OF_LINE)
+		{
+			return connecting.isConnected.firstPointOfLine;
+		}
+		else if (numberOfPoint == SECOND_POINT_OF_LINE)
+		{
+			return connecting.isConnected.secondPointOfLine;
+		}
+	}
+
 
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
 	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };					// set if is shape or line selected or not
-	bool getSelected() { return isSelected; }												// get if is shape or line selected or not
+													
 	virtual bool isClickedOnShapeRgn(CPoint point);						// ckecked if clickpoint is in shape region
 	virtual bool isClickedPointForChange(CPoint point);					// checked if clickpoint is in a point for change region
 	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
@@ -125,10 +151,10 @@ public:
 	//vector<CPoint> eSP;
 	//vector<CPoint> ellipseFirstPart;
 	//vector<CPoint> ellipseSecondPart;
-	double ellipseAngleDegree = 0;
+	//double ellipseAngleDegree = 0;
 	//double rectEllipseDegree = 0;
 	bool isSelected = false;
-	double ellipseAngleRad = ellipseAngleDegree * 3.14159265359 / 180.0;
+	double angleRad = NULL; //= ellipseAngleDegree * 3.14159265359 / 180.0;
 	//double rectEllipseRad = rectEllipseDegree * 3.14159265359 / 180.0;
 	CRect boxRect = NULL;
 	

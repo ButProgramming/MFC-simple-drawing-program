@@ -1220,7 +1220,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 
 
 	//		//pDoc->getShapesVector()[s]->isNormalized = true;
-	//		pDoc->getShapesVector()[s]->ellipseAngleRad = 0;
+	//		pDoc->getShapesVector()[s]->angleRad = 0;
 	//		CPoint tmp[4];
 	//		if (pDoc->getShapesVector()[s]->type == ShapeType::triangle)
 	//		{
@@ -1482,7 +1482,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			dlg.value_fill_R = pDoc->getShapesVector()[s]->fR;
 			dlg.value_fill_G = pDoc->getShapesVector()[s]->fG;
 			dlg.value_fill_B = pDoc->getShapesVector()[s]->fB;
-			dlg.value_degree = pDoc->getShapesVector()[s]->ellipseAngleRad * 180.f / 3.14;
+			dlg.value_degree = pDoc->getShapesVector()[s]->angleRad * 180.f / 3.14;
 			dlg.value_id = pDoc->getShapesVector()[s]->ID;
 			dlg.value_name = pDoc->getShapesVector()[s]->name;
 			dlg.value_outline_size = pDoc->getShapesVector()[s]->outlineSize;
@@ -1507,7 +1507,7 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 			// fill type
 			pDoc->getShapesVector()[s]->fillType = dlg.value_fill_type;
 			// degree
-			pDoc->getShapesVector()[s]->ellipseAngleRad = dlg.value_degree * 3.14 / 180.f;
+			pDoc->getShapesVector()[s]->angleRad = dlg.value_degree * 3.14 / 180.f;
 			// ID
 			if (dlg.value_id >= 0)
 			{
