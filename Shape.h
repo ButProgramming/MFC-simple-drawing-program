@@ -53,17 +53,9 @@ public:
 	int getOutlineSize() { return outlineSize; };
 	int getOutlineType() { return outlineType; };
 	int getFillType() { return fillType; };
-	bool isConnected(int numberOfPoint)
-	{
-		if (numberOfPoint == FIRST_POINT_OF_LINE)
-		{
-			return connecting.isConnected.firstPointOfLine;
-		}
-		else if (numberOfPoint == SECOND_POINT_OF_LINE)
-		{
-			return connecting.isConnected.secondPointOfLine;
-		}
-	}
+	bool isConnected(int numberOfPoint);
+	int getConnectedShapeConstID(int numberOfPoint);
+	int getNumberOfShapesPointForLines(int numberOfPoint);
 
 
 	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool

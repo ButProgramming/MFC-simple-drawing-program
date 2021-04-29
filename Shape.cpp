@@ -962,6 +962,43 @@ void TriangleShape::draw(CDC* dc)
 //	dSM.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
 //}
 
+bool IShape::isConnected(int numberOfPoint)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		return connecting.isConnected.firstPointOfLine;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		return connecting.isConnected.secondPointOfLine;
+	}
+}
+
+int IShape::getConnectedShapeConstID(int numberOfPoint)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		return connecting.connectedShapeConstID.firstPointOfLine;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		return connecting.connectedShapeConstID.secondPointOfLine;
+	}
+}
+
+int IShape::getNumberOfShapesPointForLines(int numberOfPoint)
+{
+	if (numberOfPoint == FIRST_POINT_OF_LINE)
+	{
+		return connecting.numberOfShapesPointForLines.firstPointOfLine;
+	}
+	else if (numberOfPoint == SECOND_POINT_OF_LINE)
+	{
+		return connecting.numberOfShapesPointForLines.secondPointOfLine;
+	}
+}
+
+
 bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 {
 	

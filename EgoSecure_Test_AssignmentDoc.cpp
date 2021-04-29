@@ -182,12 +182,15 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				}
 			}
 
-			ar << s->connecting.isConnected.firstPointOfLine;
-			ar << s->connecting.isConnected.secondPointOfLine;
-			ar << s->connecting.connectedShapeConstID.firstPointOfLine;
-			ar << s->connecting.connectedShapeConstID.secondPointOfLine;
-			ar << s->connecting.numberOfShapesPointForLines.firstPointOfLine;
-			ar << s->connecting.numberOfShapesPointForLines.secondPointOfLine;
+
+			ar << s->isConnected(FIRST_POINT_OF_LINE);
+			ar << s->isConnected(SECOND_POINT_OF_LINE);
+
+			ar << s->getConnectedShapeConstID(FIRST_POINT_OF_LINE);
+			ar << s->getConnectedShapeConstID(SECOND_POINT_OF_LINE);
+
+			ar << s->getNumberOfShapesPointForLines(FIRST_POINT_OF_LINE);
+			ar << s->getNumberOfShapesPointForLines(SECOND_POINT_OF_LINE);
 						
 		}
 	}
