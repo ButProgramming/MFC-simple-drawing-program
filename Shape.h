@@ -153,11 +153,10 @@ public:
 
 	
 	
- 	static int dx;
-	static int dy;
+ 	
 	//static int sizeOfPointToMoveAndChange;
-	static int countOfShape;
-	ShapeType type;
+	
+	
 
 	
 	
@@ -199,10 +198,22 @@ public:
 	
 	static set <int>& getIDs() { return IDs; };
 	static set <CString>& getNames() { return names; };
-	
+	static void setCountOfShape(int number) { countOfShape = number; };
+
+	static int getDx() { return dx; };
+	static void setDx(int dxSet) { dx = dxSet; };
+
+	static int getDy() { return dy; };
+	static void setDy(int dySet) { dy = dySet; };
+	ShapeType getShapeType() { return type; };
+
 protected:
+	ShapeType type;
+	static int dx;
+	static int dy;
 	static set<int> IDs;
 	static set<CString> names;
+	static int countOfShape;
 
 	CPen* pen = nullptr;
 	

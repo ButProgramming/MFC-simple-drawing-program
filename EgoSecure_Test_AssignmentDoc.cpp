@@ -57,7 +57,7 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 		delete l;
 	}*/
 	//lines.clear();
-	IShape::countOfShape = 0;
+	IShape::setCountOfShape(0);
 	//Lines::countOfLines = 0;
 	IShape::getIDs().clear();
 	//Lines::IDs.clear();
@@ -136,7 +136,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				ar << s->getChangeDxDy(i);
 			}
 
-			switch (s->type)
+			switch (s->getShapeType())
 			{
 				case ShapeType::ellipse:
 				{
@@ -358,7 +358,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			/*shapes[shapes.size() - 1]->oR = oR;
 			shapes[shapes.size() - 1]->oG = oG;
 			shapes[shapes.size() - 1]->oB = oB;*/
-			if (shapes[shapes.size() - 1]->type != ShapeType::ellipse && shapes[shapes.size() - 1]->type != ShapeType::rectangle && shapes[shapes.size() - 1]->type != ShapeType::triangle)
+			if (shapes[shapes.size() - 1]->getShapeType() != ShapeType::ellipse && shapes[shapes.size() - 1]->getShapeType() != ShapeType::rectangle && shapes[shapes.size() - 1]->getShapeType() != ShapeType::triangle)
 			{
 				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
 				shapes[shapes.size() - 1]->setCoordinateForChange(1, coordinateForChange2);

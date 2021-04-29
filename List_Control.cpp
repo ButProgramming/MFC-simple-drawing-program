@@ -62,11 +62,11 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	{
 		str.Format(_T("%d"), s->getID());
 		nItem = m_listControl_shapes.InsertItem(0, str);
-		if (s->type == ShapeType::ellipse)
+		if (s->getShapeType() == ShapeType::ellipse)
 		{
 			m_listControl_shapes.SetItemText(nItem, 1, _T("Ellipse"));
 		}
-		else if (s->type == ShapeType::rectangle)
+		else if (s->getShapeType() == ShapeType::rectangle)
 		{
 			m_listControl_shapes.SetItemText(nItem, 1, _T("Rectangle"));
 		}

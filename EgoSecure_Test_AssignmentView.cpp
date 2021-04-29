@@ -107,7 +107,7 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 	for (int shapeNum = 0; shapeNum<pDoc->getShapesVector().size(); shapeNum++)
 	{
 		pDoc->getShapesVector()[shapeNum]->draw(&m_dc);
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine)
+		if (pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::basicLine)
 		{
 			cout << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x << " " << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y << endl;
 			cout << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x << " " << pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y << endl;
@@ -393,8 +393,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
 		//pDoc->getShapesVector()[shapeNum]->type;
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine 
-			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
+		if (pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::rightLine
+			|| pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::doubleLine)
 		{
 			pDoc->getShapesVector()[shapeNum]->updateLineConnection(pDoc->getShapesVector());
 		}
@@ -408,8 +408,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		pDoc->second.x = point.x;
 		pDoc->second.y = point.y;
-		IShape::dx = pDoc->second.x - pDoc->first.x;
-		IShape::dy = pDoc->second.y - pDoc->first.y;
+		IShape::setDx(pDoc->second.x - pDoc->first.x);
+		IShape::setDy(pDoc->second.y - pDoc->first.y);
 
 	}
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::shapeMove)
@@ -557,21 +557,21 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 
 	// move the shapes
-	IShape::dx = prevCoordinate.x - 2 * m_hsb.GetScrollPos();
+	IShape::setDx(prevCoordinate.x - 2 * m_hsb.GetScrollPos());
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine 
-			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
+		if (pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::rightLine
+			|| pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::doubleLine)
 		{
-			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y));
-			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y));
+			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x + IShape::getDx(), pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y));
+			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x + IShape::getDx(), pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y));
 		}
 		//pDoc->getShapesVector()[shapeNum]->centerOfShape.x += IShape::dx;
-		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x + IShape::dx, pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y });
+		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x + IShape::getDx(), pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y });
 	}
 
 	// reset dx
-	IShape::dx = 0;
+	IShape::setDx(NULL);
 
 	// update draw
 	Invalidate();
@@ -610,26 +610,26 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	}
 
 	// move the shapes
-	IShape::dy = prevCoordinate.y - 2 * m_vsb.GetScrollPos();
+	IShape::setDy(prevCoordinate.y - 2 * m_vsb.GetScrollPos());
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
-		if (pDoc->getShapesVector()[shapeNum]->type == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::rightLine
-			|| pDoc->getShapesVector()[shapeNum]->type == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->type == ShapeType::doubleLine)
+		if (pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::rightLine
+			|| pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[shapeNum]->getShapeType() == ShapeType::doubleLine)
 		{
 			//move y
 			//pDoc->getShapesVector()[shapeNum]->firstPointOfLine.y += IShape::dy;
 			//pDoc->getShapesVector()[shapeNum]->secondPointOfLine.y += IShape::dy;
 
-			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y + IShape::dy));
-			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y + IShape::dy));
+			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(0, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).x, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(0).y + IShape::getDy()));
+			pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(1, CPoint(pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).x, pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(1).y + IShape::getDy()));
 
 		}
 		//pDoc->getShapesVector()[shapeNum]->centerOfShape.y += IShape::dy;
-		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x, pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y + IShape::dy });
+		pDoc->getShapesVector()[shapeNum]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[shapeNum]->getCenterOfShape().x, pDoc->getShapesVector()[shapeNum]->getCenterOfShape().y + IShape::getDy() });
 	}
 
 	// reset dx
-	IShape::dy = 0;
+	IShape::setDy(NULL);
 
 	// update draw
 	Invalidate();
@@ -1042,17 +1042,17 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			int size = pDoc->getShapesVector().size();
 			//str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
 			//AfxMessageBox(str);
-			str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
+			//str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
 			//AfxMessageBox(str);
 			Invalidate();
 			/*pDoc->getShapesVector()[i]->centerOfShape.x += IShape::dx;
 			pDoc->getShapesVector()[i]->centerOfShape.y += IShape::dy;*/
-			pDoc->getShapesVector()[i]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[i]->getCenterOfShape().x + IShape::dx,  pDoc->getShapesVector()[i]->getCenterOfShape().y + IShape::dy });
+			pDoc->getShapesVector()[i]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[i]->getCenterOfShape().x + IShape::getDx(),  pDoc->getShapesVector()[i]->getCenterOfShape().y + IShape::getDy() });
 			//str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
 			//AfxMessageBox(str);
 		}
-		IShape::dx = 0;
-		IShape::dy = 0;
+		IShape::setDx(NULL);
+		IShape::setDy(NULL);
 
 
 
@@ -1066,12 +1066,12 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
 				int numberOfAngels = 0;
-				if (pDoc->getShapesVector()[s]->type == ::ShapeType::triangle)
+				if (pDoc->getShapesVector()[s]->getShapeType() == ::ShapeType::triangle)
 				{
 					numberOfAngels = 3;
 				}
-				else if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine
-					|| pDoc->getShapesVector()[s]->type == ShapeType::leftLine || pDoc->getShapesVector()[s]->type == ShapeType::doubleLine)
+				else if (pDoc->getShapesVector()[s]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::rightLine
+					|| pDoc->getShapesVector()[s]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::doubleLine)
 				{
 					numberOfAngels = 2;
 				}
@@ -1082,8 +1082,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				selected = true;
 				for (int a = 0; a < numberOfAngels; a++)
 				{
-					if (pDoc->getShapesVector()[s]->type == ShapeType::basicLine || pDoc->getShapesVector()[s]->type == ShapeType::rightLine
-						|| pDoc->getShapesVector()[s]->type == ShapeType::leftLine || pDoc->getShapesVector()[s]->type == ShapeType::doubleLine)
+					if (pDoc->getShapesVector()[s]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::rightLine
+						|| pDoc->getShapesVector()[s]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::doubleLine)
 					{
 						pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a) + pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
 						pDoc->getShapesVector()[s]->setCoordinateForChange(a, pDoc->getShapesVector()[s]->getCoordinateForChange(a) + pDoc->getShapesVector()[s]->getChangeDxDy(a));
@@ -1100,8 +1100,8 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 				
 				for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 				{
-					if (pDoc->getShapesVector()[shapeNum]->type != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::rightLine
-						&& pDoc->getShapesVector()[shapeNum]->type != ShapeType::leftLine && pDoc->getShapesVector()[shapeNum]->type != ShapeType::doubleLine)
+					if (pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::rightLine
+						&& pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::leftLine && pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::doubleLine)
 					{
 						int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINE
 						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
