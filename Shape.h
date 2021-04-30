@@ -38,71 +38,87 @@ enum class ShapeType { ellipse, rectangle, triangle, basicLine, rightLine, leftL
 class IShape
 {
 public:
-
-public:
 	virtual void draw(CDC* dc) = 0;
+	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
+	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	virtual bool isClickedOnShapeRgn(CPoint point);											// ckecked if clickpoint is in shape region
+	virtual bool isClickedPointForChange(CPoint point);										// checked if clickpoint is in a point for change region
+	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr; };		// pointer for HRGN function
+	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
+	virtual bool isReversed() { return isReversedVar; };									// is needed for rotate shape. Angle for rotate will be -, when return is true
+	virtual CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };		// get coordinate of points that is used for change of shapes properites. Num -> number of point
+	virtual void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };	// set coordinate of points that is used for change of shapes properites. Num -> number of point
 
-	//save
+	//getters and setters for safe document
+	// isSelected get and set
 	bool getSelected() { return isSelected; }// get if is shape or line selected or not
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };
 
+	// centerOfShape get and set
 	CPoint getCenterOfShape() { return centerOfShape; };
 	void setCenterOfShape(CPoint centerOfShape) { this->centerOfShape = centerOfShape; };
 
+	// size get and set
 	int getSize() { return size; };
 	void setSize(int size) { this->size = size; };
 
+	// angleRad get and set
 	double getAngleRad() { return angleRad; };
 	void setAngleRad(double angleRad) { this->angleRad = angleRad; };
 
+	// ID get and set
 	int getID() { return ID; };
 	void setID(int ID) { this->ID = ID; };
 
+	// constID get and set
 	int getConstID() { return constID; };
 	void setConstID(int constID) { this->constID = constID; };
 
+	// name get and set
 	CString getName() { return name; };
 	void setName(CString name) { this->name = name; };
 
+	// outlineColor get and set
 	COLORREF getOutlineColor() { return outlineColor; };
 	void setOutlineColor(COLORREF outlineColor) { this->outlineColor = outlineColor; };
 
+	// fillColor get and set
 	COLORREF getFillColor() { return fillColor; };
 	void setFillColor(COLORREF fillColor) { this->fillColor = fillColor; };
 
+	// outlineSize get and set
 	int getOutlineSize() { return outlineSize; };
 	void setOutlineSize(int outlineSize) { this->outlineSize = outlineSize; };
 
+	// outlineType get and set
 	int getOutlineType() { return outlineType; };
 	void setOutlineType(int outlineType) { this->outlineType = outlineType; };
 
+	// fillType get and set
 	int getFillType() { return fillType; };
 	void setFillType(int fillType) { this->fillType = fillType; };
 
+	// isConnected get and set
 	bool getIsConnected(int numberOfPoint);
 	void setIsConnected(int numberOfPoint, bool isConnected);
 
+	// connectedShapeConstID get and set
 	int getConnectedShapeConstID(int numberOfPoint);
 	void setConnectedShapeConstID(int numberOfPoint, int constID);
 
+	// numberOfShapesPointForLines get and set
 	int getNumberOfShapesPointForLines(int numberOfPoint);
 	void setNumberOfShapesPointForLines(int numberOfPoint, int numberOfShapesPoint);
 
 
-	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
-	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	
 	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
 					// set if is shape or line selected or not
 													
-	virtual bool isClickedOnShapeRgn(CPoint point);											// ckecked if clickpoint is in shape region
-	virtual bool isClickedPointForChange(CPoint point);										// checked if clickpoint is in a point for change region
+	
 	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
-	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr;  };		// pointer for HRGN function
-	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
-	virtual bool isReversed() { return isReversedVar; };									// is needed for rotate shape. Angle for rotate will be -, when return is true
-	virtual CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };		// get coordinate of points that is used for change of shapes properites. Num -> number of point
-	virtual void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };							// set coordinate of points that is used for change of shapes properites. Num -> number of point
+	
 	CPoint getTemporaryDxDy(int num) { return (num < temporaryDxDy.size()) ? 
 		temporaryDxDy[num] : CPoint{ NULL, NULL }; };										// getter for temporaryDxDy
 	void setTemporaryDxDy(int num, CPoint point) { temporaryDxDy[num] = point; };			// setter for temporaryDxDy
@@ -151,7 +167,7 @@ public:
 	void setShapeID();
 	void setShapeName();
 
-	virtual ~IShape();
+	
 	
 	static set <int>& getIDs() { return IDs; };
 	static set <CString>& getNames() { return names; };
@@ -163,6 +179,8 @@ public:
 	static int getDy() { return dy; };
 	static void setDy(int dySet) { dy = dySet; };
 	ShapeType getShapeType() { return type; };
+
+	virtual ~IShape();
 
 protected:
 	ShapeType type;
