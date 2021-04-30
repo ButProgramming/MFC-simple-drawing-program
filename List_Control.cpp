@@ -42,24 +42,10 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 	m_listControl_shapes.InsertColumn(12, _T("First linked shape ID"), LVCFMT_CENTER, 150);
 	m_listControl_shapes.InsertColumn(13, _T("Second linked shape ID"), LVCFMT_CENTER, 150);
 
-	//m_listControl_shapes.InsertColumn(5, _T("Is selected"), LVCFMT_CENTER, 70);
-
-	// InsertColumnt for lines
-	/*DDX_Control(pDX, IDC_LISTCONTROL_LINES, m_listControl_lines);
-	m_listControl_lines.InsertColumn(0, _T("ID"), LVCFMT_CENTER, 50);
-	m_listControl_lines.InsertColumn(1, _T("Type"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(2, _T("Name"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(3, _T("First shape id"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(4, _T("First shape type"), LVCFMT_CENTER, 150);
-	m_listControl_lines.InsertColumn(5, _T("Second shape id"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(6, _T("Second shape type"), LVCFMT_CENTER, 150);
-	m_listControl_lines.InsertColumn(7, _T("Line RGB"), LVCFMT_CENTER, 150);
-	m_listControl_lines.InsertColumn(8, _T("Line size"), LVCFMT_CENTER, 100);
-	m_listControl_lines.InsertColumn(9, _T("Line type"), LVCFMT_CENTER, 100);*/
 
 	// filling shapes listview
-	int nItem;
-	CString str;
+	int nItem = NULL;
+	CString str = NULL;
 	for (auto s : shapes)
 	{
 		str.Format(_T("%d"), s->getID());
@@ -223,134 +209,12 @@ void List_Control::DoDataExchange(CDataExchange* pDX)
 			str.Format(_T("-"), s->getCenterOfShape().x, s->getCenterOfShape().y);
 			m_listControl_shapes.SetItemText(nItem, 10, str);
 			m_listControl_shapes.SetItemText(nItem, 11, str);
+			m_listControl_shapes.SetItemText(nItem, 12, str);
+			m_listControl_shapes.SetItemText(nItem, 13, str);
 		}
 		
 		
-	}
-
-	// filling line listview
-	//for (auto l : lines)
-	//{
-	//	str.Format(_T("%d"), l->ID);
-	//	nItem = m_listControl_lines.InsertItem(0, str);
-	//	if (l->type == LineType::Basic)
-	//	{
-	//		m_listControl_lines.SetItemText(nItem, 1, _T("Basic line"));
-	//	}
-	//	else if (l->type == LineType::Right)
-	//	{
-	//		m_listControl_lines.SetItemText(nItem, 1, _T("Right line"));
-	//	}
-	//	else if (l->type == LineType::Left)
-	//	{
-	//		m_listControl_lines.SetItemText(nItem, 1, _T("Left line"));
-	//	}
-	//	else
-	//	{
-	//		m_listControl_lines.SetItemText(nItem, 1, _T("Double line"));
-	//	}
-	//	m_listControl_lines.SetItemText(nItem, 2, l->name);
-	//	// find ID from constID
-	//	int tempFoundedID1;
-	//	int tempFoundedID2;
-	//	CString type1; // type of shapes that will be founded
-	//	CString type2; // ---
-	//	for (auto s : shapes)
-	//	{
-	//		if (s->constID == l->FirstShapeConstID)
-	//		{
-	//			tempFoundedID1 = s->ID;
-	//			switch (s->type)
-	//			{
-	//				case ShapeType::ellipse:
-	//				{
-	//					type1 = _T("Ellipse");
-	//					break;
-	//				}
-	//				case ShapeType::rectangle:
-	//				{
-	//					type1 = _T("Rectangle");
-	//					break;
-	//				}
-	//				case ShapeType::triangle:
-	//				{
-	//					type1 = _T("Triangle");
-	//					break;
-	//				}
-	//				
-	//			}
-	//			//break; don't need because constID's are unique
-	//			
-	//		}
-	//		else if (s->constID == l->SecondShapeConstID)
-	//		{
-	//			tempFoundedID2 = s->ID;
-	//			switch (s->type)
-	//			{
-	//			case ShapeType::ellipse:
-	//			{
-	//				type2 = _T("Ellipse");
-	//				break;
-	//			}
-	//			case ShapeType::rectangle:
-	//			{
-	//				type2 = _T("Rectangle");
-	//				break;
-	//			}
-	//			case ShapeType::triangle:
-	//			{
-	//				type2 = _T("Triangle");
-	//				break;
-	//			}
-	//			}
-	//			//break; don't need because constID's are unique
-	//		}
-	//	}
-
-	//	str.Format(_T("%d"), tempFoundedID1);
-	//	m_listControl_lines.SetItemText(nItem, 3, str);
-	//	m_listControl_lines.SetItemText(nItem, 4, type1);
-	//	str.Format(_T("%d"), tempFoundedID2);
-	//	m_listControl_lines.SetItemText(nItem, 5, str);
-	//	m_listControl_lines.SetItemText(nItem, 6, type2);
-	//	str.Format(_T("R: %d, G: %d, B: %d"), l->lR, l->lG, l->lB);
-	//	m_listControl_lines.SetItemText(nItem, 7, str);
-	//	str.Format(_T("%d"), l->lineSize);
-	//	m_listControl_lines.SetItemText(nItem, 8, str);
-	//	// ____ ;_ _ _;.....;_._;_.._;
-	//	switch (l->lineType)
-	//	{
-	//		case 0:
-	//		{
-	//			str.Format(_T("____"));
-	//			break;
-	//		}
-	//		case 1:
-	//		{
-	//			str.Format(_T("_ _ _"));
-	//			break;
-	//		}
-	//		case 2:
-	//		{
-	//			str.Format(_T("....."));
-	//			break;
-	//		}
-	//		case 3:
-	//		{
-	//			str.Format(_T("_._"));
-	//			break;
-	//		}
-	//		case 4:
-	//		{
-	//			str.Format(_T("_.._"));
-	//			break;
-	//		}
-	//	}
-	//	//str.Format(_T("%d"), l->lineSize);
-	//	m_listControl_lines.SetItemText(nItem, 9, str);
-	//}
-
-	
+	}	
 }
 
 

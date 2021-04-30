@@ -24,15 +24,10 @@ Dialog_Properties::~Dialog_Properties()
 void Dialog_Properties::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	//  DDX_Control(pDX, IDC_EDIT1, test);
-	//  DDX_Control(pDX, IDC_BUTTON_GET_DATA, m_getdate);
-	//  DDX_Control(pDX, IDC_BUTTON_GET_DATA, m_get_data);
+
 	DDX_Control(pDX, IDC_EDIT_X, editX);
 	DDX_Control(pDX, IDC_EDITY, editY);
-	//  DDX_Control(pDX, IDC_EDIT4, m_R);
-	//  DDX_Control(pDX, IDC_EDIT_R, m_R);
-	//  DDX_Control(pDX, IDC_EDIT_G, m_G);
-	//  DDX_Control(pDX, IDC_EDIT_B, m_B);
+
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_R, outlineR);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_G, outlineG);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_B, outlineB);
@@ -43,7 +38,7 @@ void Dialog_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_G2, editFillG);
 	DDX_Control(pDX, IDC_EDIT_OUTLINE_B2, editFillB);
 	DDX_Control(pDX, IDC_COMBO1, bOutlineSize);
-	//  DDX_Control(pDX, IDC_COMBO2, m_outline_type);
+
 	DDX_Control(pDX, IDC_COMBO2, bOutlineType);
 	DDX_Control(pDX, IDC_COMBO3, bFillType);
 }
@@ -66,21 +61,6 @@ void Dialog_Properties::OnBnClickedButtonGetData()
 }
 
 
-//INT_PTR Dialog_Properties::DoModal()
-//{
-//	// TODO: Add your specialized code here and/or call the base class
-//	//OnBnClickedButtonGetData();
-//	//text.Format(_T("111"));
-//	return CDialogEx::DoModal();
-//}
-
-
-//BOOL Dialog_Properties::ContinueModal()
-//{
-//	// TODO: Add your specialized code here and/or call the base class
-	//test.SetWindowTextW(text);
-	//return CDialogEx::ContinueModal();
-//}
 
 
 BOOL Dialog_Properties::ContinueModal()
@@ -122,12 +102,7 @@ BOOL Dialog_Properties::ContinueModal()
 
 void Dialog_Properties::OnEnChangeEdit6()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
-	// TODO:  Add your control notification handler code here
+	
 }
 
 
@@ -186,8 +161,7 @@ void Dialog_Properties::OnBnClickedOk()
 	// name
 	editName.GetWindowTextW(nName);
 
-	//AfxMessageBox(str);
-	// TODO: Add your control notification handler code here
+
 	CDialogEx::OnOK();
 }
 
@@ -214,17 +188,11 @@ void Dialog_Properties::getParameters(int numberOfShape)
 void Dialog_Properties::setParameters(int numberOfShape)
 {
 	pDoc->getShapesVector()[numberOfShape]->setCenterOfShape(CPoint{ nX, nY });
-	/*	pDoc->getShapesVector()[s]->centerOfShape.y = dlg.nY;*/
 		// outline color
 	pDoc->getShapesVector()[numberOfShape]->setOutlineColor(RGB(nOutlineR, nOutlineG, nOutlineB));
-	/*pDoc->getShapesVector()[s]->outlineColor = RGB(dlg.nOutlineR, GetGValue(pDoc->getShapesVector()[s]->outlineColor), GetBValue(pDoc->getShapesVector()[s]->outlineColor));
-	pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), dlg.nOutlineG, GetBValue(pDoc->getShapesVector()[s]->outlineColor));
-	pDoc->getShapesVector()[s]->outlineColor = RGB(GetRValue(pDoc->getShapesVector()[s]->outlineColor), GetGValue(pDoc->getShapesVector()[s]->outlineColor), dlg.nOutlineB);*/
+
 	// fill color
 	pDoc->getShapesVector()[numberOfShape]->setFillColor(RGB(nFillR, nFillG, nFillB));
-	//pDoc->getShapesVector()[s]->fillColor = RGB(dlg.nFillR, GetGValue(pDoc->getShapesVector()[s]->fillColor), GetBValue(pDoc->getShapesVector()[s]->fillColor));
-	//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), dlg.nFillG, GetBValue(pDoc->getShapesVector()[s]->fillColor));
-	//pDoc->getShapesVector()[s]->fillColor = RGB(GetRValue(pDoc->getShapesVector()[s]->fillColor), GetGValue(pDoc->getShapesVector()[s]->fillColor), dlg.nFillB);
 	// outline size
 	pDoc->getShapesVector()[numberOfShape]->setOutlineSize(nOutlineSize);
 	// outline type
@@ -232,10 +200,8 @@ void Dialog_Properties::setParameters(int numberOfShape)
 	cout << pDoc->getShapesVector()[numberOfShape]->getOutlineType() << endl;
 	// fill type
 	pDoc->getShapesVector()[numberOfShape]->setFillType(nFillType);
-	//pDoc->getShapesVector()[s]->fillType = ;
 	// degree
 	pDoc->getShapesVector()[numberOfShape]->setAngleRad(pDoc->getShapesVector()[numberOfShape]->degToRad(nDegree));
-	//pDoc->getShapesVector()[s]->setAngleRad( * 3.14 / 180.0);
 	// ID
 	if (nID >= 0)
 	{
@@ -244,7 +210,7 @@ void Dialog_Properties::setParameters(int numberOfShape)
 			IShape::getIDs().erase(pDoc->getShapesVector()[numberOfShape]->getID());
 			pDoc->getShapesVector()[numberOfShape]->setID(nID);
 			IShape::getIDs().insert(nID);
-			//IShape::IDs.erase(dlg.nID);
+		
 		}
 	}
 	// name
@@ -255,5 +221,5 @@ void Dialog_Properties::setParameters(int numberOfShape)
 		IShape::getNames().insert(nName);
 
 	}
-	// TODO: Add your implementation code here.
+
 }
