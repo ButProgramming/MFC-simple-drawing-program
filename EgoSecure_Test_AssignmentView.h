@@ -1,8 +1,5 @@
-
-// EgoSecure_Test_AssignmentView.h : interface of the CEgoSecureTestAssignmentView class
-//
-
 #pragma once
+//defines for horizontal and vertical scrolls
 #define START_HORIZONTAL_SCROLL_RANGE_MIN -500
 #define START_HORIZONTAL_SCROLL_RANGE_MAX 500
 #define HORIZONTAL_SCROLLBAR_DX 300
@@ -21,52 +18,23 @@
 #define MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_600_Y 0.82
 #define MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR 0.96
 
-constexpr UINT IDC_BUTTON1{ 101 };
 constexpr UINT IDC_SB_HOR{ 102 };
 constexpr UINT IDC_SB_VERT{ 103 };
 
 class CEgoSecureTestAssignmentView : public CView
 {
-
-// Attributes
 public:
 	CEgoSecureTestAssignmentDoc* GetDocument() const;
-	CDC m_dc;
-	CBitmap m_bmt;
-	
-
-
-
-protected: // create from serialization only
-	CEgoSecureTestAssignmentView() noexcept;
-	DECLARE_DYNCREATE(CEgoSecureTestAssignmentView)
-
-// Operations
-public:
-
-// Overrides
-public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-protected:
-
-// Implementation
-public:
+	// Implementation
 	virtual ~CEgoSecureTestAssignmentView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-
-protected:
-
-// Generated message map functions
-protected:
-	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	DECLARE_MESSAGE_MAP()
-public:
+	// Overrides
+	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	// Generated message map functions
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnButtonEllipse();
 	afx_msg void OnButtonRectangle();
@@ -94,25 +62,35 @@ public:
 	afx_msg void OnButtonProperties();
 	afx_msg void OnEditNormalize();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	void createHorizontalAndVecticalSB(int x, int y);
 
+protected:
+	afx_msg void OnFilePrintPreview();
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	DECLARE_MESSAGE_MAP()
+	// create from serialization only
+	CEgoSecureTestAssignmentView() noexcept;
+	DECLARE_DYNCREATE(CEgoSecureTestAssignmentView)
 
 private:
+	// remove flickering
+	CDC m_dc;
+	CBitmap m_bmt;
+
 	// horizontal and vertical scrollbar common variables
 	CPoint prevCoordinate{ 0, 0 }; // previous coordinate, that is needed to calculate a difference between currently position of horizontal scrollbar
 								   // and previous. This CPoint is used for movement all shapes
-
 	// horizontal scrollbar
-	CScrollBar m_hsb; // horizontal scrollbar
-	int horizontalScrollBarValue = 0; 
+	CScrollBar m_hsb; 
+	int horizontalScrollBarValue = 0; // start value of horizontal scroll bar
 	struct valueOfHorizontalScrollBar { int min = START_HORIZONTAL_SCROLL_RANGE_MIN; int max = START_HORIZONTAL_SCROLL_RANGE_MAX; } valueOfHorizontalScrollBar; // currently min and max coordinates of horizontal scrollbar
 
 	//vertical scrollbar
 	CScrollBar m_vsb; // vertical scrollbar
-	int verticalScrollBarValue = 0; 
+	int verticalScrollBarValue = 0; // start value of vertical scroll bar
 	struct valueOfVerticalScrollBar { int min = START_VERTICAL_SCROLL_RANGE_MIN; int max = START_VERTICAL_SCROLL_RANGE_MAX; } valueOfVerticalScrollBar; // currently min and max coordinates of vertical scrollbar
-public:
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
 
 #ifndef _DEBUG  // debug version in EgoSecure_Test_AssignmentView.cpp
