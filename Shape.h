@@ -201,23 +201,22 @@ protected:
 
 
 	
-	CPoint centerOfShape{ NULL, NULL };
+	CPoint centerOfShape{ NULL, NULL }; // center of shape (without lines)
 
-	CPoint firstPoint{ 0,0 };
-	int size; // length of inscribed circle in shape
-	int fillType = NULL;
-	int outlineType = NULL;
-	int outlineSize = NULL;
-	COLORREF fillColor = NULL;
+	CPoint firstPoint{ NULL, NULL }; // is used to rotate shape (calculate cos)
+	int size = NULL; // length of inscribed circle in shape
+	int fillType = NULL; // fill of shape
+	int outlineType = NULL; // type of shapes outline or link line
+	int outlineSize = NULL; // size of shapes outline or link line
+	COLORREF fillColor = NULL; // color of shape fill 
 	int fR = NULL; int fG = NULL; int fB = NULL; // for safe convinience
-	COLORREF outlineColor = NULL;
+	COLORREF outlineColor = NULL; // color of shape outline (or link line)
 	int oR = NULL; int oG = NULL; int oB = NULL; // for safe convinience
-	bool isSelectedFromDoubleSelectingTool = false;
-	int constID = NULL;
-	int ID = NULL;
-	CString name = NULL;
+	int constID = NULL; // store constID of shape and line. Is used to get and set ID
+	int ID = NULL; // ID of shape, which can be modified
+	CString name = NULL; // name of shape or line
 
-	const CPoint shapeCenterBeforRotate{ 0, 0 };
+	const CPoint shapeCenterBeforRotate{ NULL, NULL }; // is used for calculating selectedAreaPoints 
 
 	CPoint centerPoint23Bottom{ NULL, NULL };			// center of rectangle topside. Needed to select shape
 	CPoint centerPoint23Top{ NULL, NULL };				// point that lies higher of centerPoint23Bottom. Point is using for drawing ellipse for rotate tool
@@ -229,40 +228,43 @@ protected:
 	array <CPoint, 4> temporaryDxDy;					// array for temporary difference values for dx and dy, when shape is moved. 
 	array <CPoint, 4> dxDy;								// array that contains dx and dy to change points coordinate (it contains also temporaryDxDy values)
 	bool drawPointsForLines = false;					// var that set if is points for lines drawn or not
-	bool isSelected = false;
-	double angleRad = NULL;
-	
-
+	bool isSelected = false;							// selected shape or not
+	double angleRad = NULL;								// angle of rotation of shape
+		
+	// it is used to store variables for tool shapeMove
 	struct shapeMove
 	{
 		CPoint tempDxDy{ NULL, NULL }; //temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
 	} shapeMove;
 
+	// it is used to store variables for tool change
 	struct change
 	{
-		array <CPoint, 4> dxDy;
-		array <CPoint, 4> tempDxDy;
+		array <CPoint, 4> dxDy;		// stored tempDxDy. It used for calculating of selectedAreaPoints
+		array <CPoint, 4> tempDxDy;//temporary coordinate that us used for displaying the movement of shapes, when lbutton is down
 		CPoint startClickedCoordinate{ NULL, NULL }; // coordinate that saved when LButtonDown is clicked
 	} change;
 
+	// it is used to store variables for connecting lines and shapes
 	struct connecting
 	{
-		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected;
-		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID;
-		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines;
+		struct isConnected { bool firstPointOfLine = false; bool secondPointOfLine = false; }isConnected; // connected line or not
+		struct connectedShapeConstID { int firstPointOfLine = -1; int secondPointOfLine = -1; }connectedShapeConstID; // connected with shape
+		struct numberOfShapesPointForLines { int firstPointOfLine = -1; int secondPointOfLine = -1; }numberOfShapesPointForLines; // connected with point of shape
 	} connecting;
 
 	//for shape
-	array<CPoint, 4> selectedAreaPoints;
-	array<CPoint, 4> linkingPoints;
-	vector<CPoint> fillAreaPoints;
-	vector<CPoint> shapePoints;
+	array<CPoint, 4> selectedAreaPoints; // points for rectangle to show is shape selected or not. It used for calculation linkingPoints, fillAreaPoints, shapePoints.
+	array<CPoint, 4> linkingPoints; // points for linking of lines and shapes
+	vector<CPoint> fillAreaPoints; // points for shape filling (is smaller than shapePoints)
+	vector<CPoint> shapePoints; // points to draw shapes
 };
 
 class EllipseShape :public IShape
 {
 public:
+	// constructor and draw method
 	EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);	
 };
@@ -270,6 +272,7 @@ public:
 class RectangleShape :public IShape
 {
 public:
+	// constructor and draw method
 	RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
 };
@@ -277,6 +280,7 @@ public:
 class TriangleShape : public IShape
 {
 public:
+	// constructor and draw method
 	TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType);
 	void draw(CDC* dc);
 };
@@ -284,14 +288,16 @@ public:
 class Line :public IShape
 {
 public:
+	// constructor and draw method
 	Line(CPoint firstPointOfShape, ShapeType type, COLORREF lineColor, int lineSize, int lineType);
 	void draw(CDC* dc);
-	bool isClickedOnShapeRgn(CPoint point);
-	//CPoint getLineCoordinate();
-	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 2) return pointsOfLine[num]; };
-	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 2) pointsOfLine[num] = point; };
-	bool isClickedPointForChange(CPoint point);
-	void getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow);
+
+	// redefinition of virtual functions
+	bool isClickedOnShapeRgn(CPoint point); // true if is clicked on line rgn
+	CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 2) return pointsOfLine[num]; }; // get point of line (frist or second)
+	void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 2) pointsOfLine[num] = point; }; // get point of line (frist or second)
+	bool isClickedPointForChange(CPoint point); // true if is clicked on point for change coordinate of line
+	void getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow); // get 2 point to draw arrow
 };
 
 

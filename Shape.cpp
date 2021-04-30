@@ -1,18 +1,16 @@
 ﻿#include "pch.h"
 #include "Shape.h"
 
+// initilize of static members
 int IShape::dx = 0;
 int IShape::dy = 0;
-//int IShape::sizeOfPointToMoveAndChange = 3;
 int IShape::countOfShape = 0;
 set<int> IShape::IDs;
 set<CString> IShape::names;
-//CPoint IShape::firstPoint{ 0, 0 };
-
-
 
 EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	//set parameters
 	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
@@ -22,13 +20,14 @@ EllipseShape::EllipseShape(CPoint centerOfShape, bool isNormalized, int size, Sh
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	constID = IShape::countOfShape;
-	setShapeID();
-	setShapeName();
+	setShapeID(); //unique ID
+	setShapeName(); // unique name
 	countOfShape++;
 }
 
 RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	//set parameters
 	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
@@ -38,13 +37,14 @@ RectangleShape::RectangleShape(CPoint centerOfShape, bool isNormalized, int size
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	constID = IShape::countOfShape;
-	setShapeID();
-	setShapeName();
+	setShapeID();//unique ID
+	setShapeName();// unique name
 	countOfShape++;
 }
 
 TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, ShapeType type, COLORREF outlineColor, COLORREF fillColor, int outlineSize, int outlineType, int fillType)
 {
+	//set parameters
 	this->fillType = fillType;
 	this->outlineType = outlineType;
 	this->outlineSize = outlineSize;
@@ -54,13 +54,14 @@ TriangleShape::TriangleShape(CPoint centerOfShape, bool isNormalized, int size, 
 	this->size = size;
 	this->centerOfShape = centerOfShape;
 	constID = IShape::countOfShape;
-	setShapeID();
-	setShapeName();
+	setShapeID();//unique ID
+	setShapeName();// unique name
 	countOfShape++;
 }
 
 Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int lineSize, int lineType)
 {
+	//set parameters
 	this->type = type;
 	outlineColor = lineColor;
 	outlineSize = lineSize;
@@ -68,8 +69,8 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 	pointsOfLine[FIRST_POINT_OF_LINE] = firstPointOfLine;
 	pointsOfLine[SECOND_POINT_OF_LINE] = firstPointOfLine;
 	constID = IShape::countOfShape;
-	setShapeID();
-	setShapeName();
+	setShapeID();//unique ID
+	setShapeName();// unique name
 	countOfShape++;
 }
 
@@ -85,11 +86,11 @@ void EllipseShape::draw(CDC* dc)
 	fR = GetRValue(fillColor);
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
-
-	CPen* pen = nullptr;
+	
 	// create pen
+	CPen* pen = nullptr;
 	if (isSelected)
-		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		pen = new CPen(PS_SOLID, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 
@@ -196,17 +197,6 @@ void EllipseShape::draw(CDC* dc)
 		ellipseBrush = new CBrush(fillType, RGB(fR, fG, fB));
 	}
 
-	
-	/*for (int i = 0; i < eFP.size(); i++)
-	{
-		rotateAndMoveCoordinate(eFP[i], DRAW_METHOD);
-	}
-	for (int i = 0; i < eSP.size(); i++)
-	{
-		rotateAndMoveCoordinate(eSP[i], DRAW_METHOD);
-	}*/
-	// rotate and move points of: shape, selected area, points for rotate ellipse, 
-	// of points, that used for calculate cos of angle, linging points
 	for (int i = 0; i < shapePoints.size(); i++)
 	{
 		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
@@ -224,8 +214,6 @@ void EllipseShape::draw(CDC* dc)
 
 	int tempXFP = firstPoint.x;
 	int tempYFP = firstPoint.y;
-	//firstPoint.x = round(tempXFP * 1 - tempYFP * 0);
-	//firstPoint.y = round(tempXFP * 0 + tempYFP * 1);
 	firstPoint.x += centerOfShape.x + dx;
 	firstPoint.y += centerOfShape.y + dy;
 
@@ -259,7 +247,6 @@ void EllipseShape::draw(CDC* dc)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
-		//dc->LineTo(circleCenter.x + x, circleCenter.y + y);
 		CPoint temp2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		smallerRgn2.push_back(temp2);
 		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
@@ -267,7 +254,6 @@ void EllipseShape::draw(CDC* dc)
 	CPoint temp2_2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	smallerRgn2.push_back(temp2);
 
-	//dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
 
 	// delete old CPoints in fillAreaPoints and push CPoints form frist and second smallerRgns in fillAreaPoints
 	fillAreaPoints.clear();
@@ -353,7 +339,10 @@ void EllipseShape::draw(CDC* dc)
 
 bool IShape::isClickedOnShapeRgn(CPoint point)
 {
+	// create rgn to use PtInRegion
 	HRGN ellipseRgn = CreatePolygonRgn(&shapePoints[0], shapePoints.size(), ALTERNATE);
+
+	// check if is point in rgn
 	if (PtInRegion(ellipseRgn, point.x, point.y))
 	{
 		DeleteObject(ellipseRgn);
@@ -367,8 +356,11 @@ bool IShape::isClickedPointForChange(CPoint point)
 {
 	for (int pointNum = 0; pointNum < selectedAreaPoints.size(); pointNum++)
 	{
+		// create rgn to use PtInRegion
 		HRGN pointRgn = CreateEllipticRgn(selectedAreaPoints[pointNum].x - SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y - SIZE_OF_POINT_FOR_CHANGE,
 			selectedAreaPoints[pointNum].x + SIZE_OF_POINT_FOR_CHANGE, selectedAreaPoints[pointNum].y + SIZE_OF_POINT_FOR_CHANGE);
+		
+		// check if is point in rgn
 		if (PtInRegion(pointRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
@@ -378,6 +370,7 @@ bool IShape::isClickedPointForChange(CPoint point)
 		DeleteObject(pointRgn);
 	}
 
+	// if doesn't found
 	numberOfPoint = -1;
 	return false;
 }
@@ -387,34 +380,40 @@ bool IShape::isClickedPointForChange(CPoint point)
 
 void RectangleShape::draw(CDC* dc)
 {
+	//get outline colors
 	oR = GetRValue(outlineColor);
 	oG = GetGValue(outlineColor);
 	oB = GetBValue(outlineColor);
 
+	//get fill colors
 	fR = GetRValue(fillColor);
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
+	// create pen
 	CPen* pen = nullptr;
 	if (isSelected)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 	else
 		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
+
 	dc->SelectObject(pen);
 
-	CPoint dxDyPlusTempDxDy[4];
+	// array for convenience
+	array <CPoint, 4> dxDyPlusTempDxDy;
 	for (int i = 0; i < 4; i++)
 	{
 		dxDyPlusTempDxDy[i] = CPoint(change.dxDy[i].x + change.tempDxDy[i].x, change.dxDy[i].y + change.tempDxDy[i].y);
 	}
 
+	// set points of shape
 	shapePoints.resize(4);
 	shapePoints[0] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //leftbottom
 	shapePoints[1] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + size + dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y - (dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y)); //rightbottom
 	shapePoints[2] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x + size + dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x - (dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //righttop
 	shapePoints[3] = CPoint(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - size + dxDyPlusTempDxDy[0].x + dxDyPlusTempDxDy[3].x - (dxDyPlusTempDxDy[1].x + dxDyPlusTempDxDy[2].x), shapeMove.tempDxDy.y + shapeCenterBeforRotate.y - size + dxDyPlusTempDxDy[2].y + dxDyPlusTempDxDy[3].y - (dxDyPlusTempDxDy[0].y + dxDyPlusTempDxDy[1].y)); //lefttop
 	
-
+	// points that needed for drawing rotate tool
 	centerPoint23Bottom = CPoint((shapePoints[2].x - shapePoints[3].x) / 2 + shapePoints[3].x, shapePoints[2].y);
 	if (shapePoints[0].y >= shapePoints[3].y)
 	{
@@ -429,9 +428,10 @@ void RectangleShape::draw(CDC* dc)
 	firstPoint = centerPoint23Top;
 
 
-	//fillAreaPoints.clear();
+	// points for filling shape
 	fillAreaPoints.resize(4);
-	
+	// lb - leftbotton, rb - rightbotton, rt - righttop, lt - lefttop
+	// when shape is modificated
 	if ((shapePoints[3].x < shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
 	{
 		fillAreaPoints[0] = CPoint{ shapePoints[0].x + 1, shapePoints[0].y - 1 }; //lb
@@ -462,34 +462,22 @@ void RectangleShape::draw(CDC* dc)
 
 	}
 	
+	// points for linking lines and shapes
 	linkingPoints[0] = CPoint((shapePoints[1].x - shapePoints[0].x) / 2 + shapePoints[0].x, shapePoints[0].y);
 	linkingPoints[1] = CPoint(shapePoints[1].x, (shapePoints[1].y + shapePoints[2].y) / 2);
 	linkingPoints[2] = CPoint((shapePoints[2].x - shapePoints[3].x) / 2 + shapePoints[3].x, shapePoints[2].y);
 	linkingPoints[3] = CPoint(shapePoints[3].x, (shapePoints[0].y + shapePoints[3].y) / 2);
 
-
 	// rotate shape
 	for (int i = 0; i < shapePoints.size(); i++)
 	{
 		rotateAndMoveCoordinate(shapePoints[i], DRAW_METHOD);
-		/*int tempX = points[i].x;
-		int tempY = points[i].y;
-		points[i].x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
-		points[i].y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
-		points[i].x += centerOfShape.x + dx;
-		points[i].y += centerOfShape.y + dy;*/
 	}
 
 	//rotate shape region points
 	for (int i = 0; i < fillAreaPoints.size(); i++)
 	{
 		rotateAndMoveCoordinate(fillAreaPoints[i], DRAW_METHOD);
-		/*int tempX = pointsReg[i].x;
-		int tempY = pointsReg[i].y;
-		pointsReg[i].x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
-		pointsReg[i].y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
-		pointsReg[i].x += centerOfShape.x + dx;
-		pointsReg[i].y += centerOfShape.y + dy;*/
 	}
 	rotateAndMoveCoordinate(centerPoint23Bottom, DRAW_METHOD);
 	rotateAndMoveCoordinate(centerPoint23Top, DRAW_METHOD);
