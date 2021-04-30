@@ -90,7 +90,7 @@ void EllipseShape::draw(CDC* dc)
 	// create pen
 	CPen* pen = nullptr;
 	if (isSelected)
-		pen = new CPen(PS_SOLID, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		pen = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 
@@ -285,7 +285,7 @@ void EllipseShape::draw(CDC* dc)
 	if (isSelected)
 	{
 		// create CPen for drawing of ellipses for rotate and change tools and select it
-		CPen* ellipsesForRotateAndChangeTools = new CPen(0, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		CPen* ellipsesForRotateAndChangeTools = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		dc->SelectObject(ellipsesForRotateAndChangeTools);
 
 		// draw line for ellipse of rotate tool
@@ -302,7 +302,7 @@ void EllipseShape::draw(CDC* dc)
 		}
 			
 		// draw rectangle that demonstrates selecting shape
-		CPen* selectedAreaRectangleRgn = new CPen(1, 1, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		dc->SelectObject(selectedAreaRectangleRgn);
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
@@ -392,10 +392,12 @@ void RectangleShape::draw(CDC* dc)
 
 	// create pen
 	CPen* pen = nullptr;
+	
+		
 	if (isSelected)
-		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
+		pen = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
-		pen = new CPen(PS_SOLID, 4, RGB(100, 100, 100));
+		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 
 	dc->SelectObject(pen);
 
@@ -489,8 +491,6 @@ void RectangleShape::draw(CDC* dc)
 	}
 	int tempXFP = firstPoint.x;
 	int tempYFP = firstPoint.y;
-	firstPoint.x = round(tempXFP * 1 - tempYFP * 0);
-	firstPoint.y = round(tempXFP * 0 + tempYFP * 1);
 	firstPoint.x += centerOfShape.x + dx;
 	firstPoint.y += centerOfShape.y + dy;
 
@@ -499,19 +499,8 @@ void RectangleShape::draw(CDC* dc)
 		selectedAreaPoints[pointNum] = shapePoints[pointNum];
 	}
 
-
-
-
-	//rectangleReg->CreatePolygonRgn(points, 4, ALTERNATE);
-	//GetRgnBox(*rectangleReg, boxRect);
-	//dc->Rectangle(boxRect);
-	//if (isSelected)
-	//{
-	//	//dc->Ellipse(0, 0, 200, 200);
-	//	for (int i = 0; i < 4; i++)
-	//		dc->Ellipse(shapePoints[i].x - sizeOfPointToMoveAndChange, shapePoints[i].y - sizeOfPointToMoveAndChange, shapePoints[i].x + sizeOfPointToMoveAndChange, shapePoints[i].y + sizeOfPointToMoveAndChange);
-	//}
-	CBrush* rectangleBrush;
+	// create brush for filling rectangle
+	CBrush* rectangleBrush = nullptr;
 	if (fillType == -1)
 	{
 		rectangleBrush = new CBrush;
@@ -522,17 +511,17 @@ void RectangleShape::draw(CDC* dc)
 		rectangleBrush = new CBrush(fillType, RGB(fR, fG, fB));
 	}
 	
-	
-
+	// create rectangle region to fill it
 	CRgn* rectangleReg = new CRgn;
 	rectangleReg->CreatePolygonRgn(&fillAreaPoints[0], 4, ALTERNATE);
 	dc->Polygon(&shapePoints[0], 4);
 	dc->FillRgn(rectangleReg, rectangleBrush);
 
+	// when shape is selected then draw selected area rectangle and points for change tool
 	if (isSelected)
 	{
-		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
-		dc->SelectObject(tempPen);
+		CPen* ellipsesForRotateAndChangeTools = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		dc->SelectObject(ellipsesForRotateAndChangeTools);
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
 
@@ -542,6 +531,7 @@ void RectangleShape::draw(CDC* dc)
 
 
 		// draw rectangle that demonstrates selecting shape
+		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
@@ -554,22 +544,19 @@ void RectangleShape::draw(CDC* dc)
 			dc->LineTo(selectedAreaPoints[pointNum + 1]);
 
 		}
-
-		tempPen->DeleteObject();
+		selectedAreaRectangleRgn->DeleteObject();
+		ellipsesForRotateAndChangeTools->DeleteObject();
 	}
 
+	//draw points for lines
 	if (drawPointsForLines)
 	{
-		//draw points for lines
 		for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
 		{
 			dc->Ellipse(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
 		}
 	}
-	//dc->FillRgn(triangleReg, brush);
-	/*delete pen;
-	delete rectangleBrush;
-	//delete rectangleReg;*/
+
 	pen->DeleteObject();
 	rectangleBrush->DeleteObject();
 	rectangleReg->DeleteObject();
@@ -580,11 +567,12 @@ void RectangleShape::draw(CDC* dc)
 
 void TriangleShape::draw(CDC* dc)
 {
-	//auto pDoc = GetDocument();
+	//get outline colors
 	oR = GetRValue(outlineColor);
 	oG = GetGValue(outlineColor);
 	oB = GetBValue(outlineColor);
 
+	//get outline colors
 	fR = GetRValue(fillColor);
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
