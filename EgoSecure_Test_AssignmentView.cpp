@@ -428,16 +428,17 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSize(sqrt(pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().x - point.x, 2) + pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().y - point.y, 2)));
 	}
 
+	// set static dx and static dy for move tool
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::move)
 	{
 		IShape::setDx(point.x - pDoc->getFirstClickedPoint().x);
 		IShape::setDy(point.y - pDoc->getFirstClickedPoint().y);
 
 	}
+
+	// move selected shape
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
-		/*pDoc->second.x = point.x;
-		pDoc->second.y = point.y;*/
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			if (pDoc->getShapesVector()[s]->getSelected())
@@ -449,24 +450,25 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 				pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(pDoc->getShapesVector()[s]->rotateAndMoveCoordinate(pDoc->getShapesVector()[s]->getShapeMoveTempDxDy()/*, pDoc->getToolIsUsed()*/, MOUSE_MOVE));
 			}
 		}
+
+		// update commection of shapes
 		for (int lineNum = 0; lineNum < pDoc->getShapesVector().size(); lineNum++)
 		{
 			pDoc->getShapesVector()[lineNum]->updateLineConnection(pDoc->getShapesVector());
 		}
-
-
 	}
+
+	// change coordinates of shape (line)
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::change)
 	{
-		bool selected = false; // control of the next loop
-	
+		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			//
+			// if is shape selected
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
-				
 				//selected = true;
+				// check if is clicked on point for change
 				if (pDoc->getShapesVector()[s]->getNumberOfPointForChange() != -1)
 				{
 					// set change of mouse movement 
@@ -478,10 +480,13 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 					
 				}
 			}
+			// if shape found -> break loop
 			if (pDoc->getShapesVector()[s]->getSelected())
 				break;
 		}
 	}
+
+	// rotate shape
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::rotate) // rotate shape
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
@@ -494,6 +499,8 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 
 	}
+
+	// draw line first time (get the second coordinate of line)
 	else if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
 		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine))
 	{
@@ -502,15 +509,20 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 			pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setCoordinateForChange(1, point);
 		}
 	}
+
+	// update drawing
 	Invalidate();
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
 	CView::OnMouseMove(nFlags, point);
 }
 
 
 BOOL CEgoSecureTestAssignmentView::OnEraseBkgnd(CDC* pDC)
 {
-	// TODO: Add your message handler code here and/or call default
-
+	// remove flickering
 	return true;
 }
 
@@ -518,7 +530,9 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	auto pDoc = GetDocument();
+
+	// get pointer on document, position of cursor and client rect
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 	CPoint point;
 	CRect rect;
 	GetCursorPos(&point);
@@ -526,24 +540,21 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	point.x -= rect.left;
 	point.y -= rect.top;
 	CClientDC dc(this);
+
+	// get x and y of screen (screen resolution)
 	int x = ::GetSystemMetrics(SM_CXSCREEN);
-	int y = ::GetSystemMetrics(SM_CXSCREEN);
+	int y = ::GetSystemMetrics(SM_CYSCREEN);
+
+	// create DC and bitmap (for disable flickering) + select it + fill it
 	m_dc.CreateCompatibleDC(&dc);
 	m_bmt.CreateCompatibleBitmap(&dc, x, y);
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
-
-	// create horizontal scroll bar and set range
-	m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
-		CRect(0, y / DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
-	m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
-
-	// create vertical scroll bar and set range
-	m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
-		CRect(0, 0, 0, y / DIVISOR_DOWN_POS_HORIZONTAL_SCROLL_BAR), this, IDC_SB_VERT);
-	m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
-
 	
+	createHorizontalAndVecticalSB(x, y);
+
+	// delete object(s)
+	DeleteObject(pDoc);
 
 	return 0;
 }
@@ -602,6 +613,220 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	prevCoordinate.x = 2 * m_hsb.GetScrollPos();
 
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CEgoSecureTestAssignmentView::createHorizontalAndVecticalSB(int x, int y)
+{
+	switch (y)
+	{
+	case 1080:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1080_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1080_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 1050:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1050_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1050_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 900:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_900_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_900_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 768:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_768_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_768_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 1024:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1024_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1024_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 960:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_960_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_960_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 800:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_800_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_800_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 720:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_720_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_720_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 864:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_864_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_864_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	case 600:
+	{
+		// create horizontal scroll bar and set range
+		m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_600_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+		m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+		// create vertical scroll bar and set range
+		m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+			CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_600_Y), this, IDC_SB_VERT);
+		m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		break;
+	}
+	default:
+	{
+		if (y >= 1000 && y <= 1080)
+		{
+
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1080_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_1080_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+
+		}
+		else if (y >= 950 && y < 1000)
+		{
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_960_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_960_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		}
+		else if (y >= 900 && y < 950)
+		{
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_900_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_900_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		}
+		else if (y >= 850 && y < 900)
+		{
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_864_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_864_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		}
+		else if (y >= 700 & y < 850)
+		{
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_768_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_768_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		}
+		else
+		{
+			// create horizontal scroll bar and set range
+			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_600_Y, x * MULTIPLIER_RIGHT_POS_HORIZONTAL_SCROLL_BAR, 300), this, IDC_SB_HOR);
+			m_hsb.SetScrollRange(START_HORIZONTAL_SCROLL_RANGE_MIN, START_HORIZONTAL_SCROLL_RANGE_MAX);
+
+			// create vertical scroll bar and set range
+			m_vsb.Create(SBS_VERT | SBS_LEFTALIGN | SBS_BOTTOMALIGN | WS_CHILD | WS_VISIBLE,
+				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_600_Y), this, IDC_SB_VERT);
+			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
+		}
+	}
+	}
 }
 
 void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
