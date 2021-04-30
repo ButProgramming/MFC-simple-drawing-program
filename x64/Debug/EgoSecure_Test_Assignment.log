@@ -1,2 +1,3 @@
-﻿EgoSecure_Test_AssignmentView.obj : warning LNK4258: directive '/entry:WinMainCRTStartup' not compatible with switch '/ENTRY:wWinMainCRTStartup'; ignored
+﻿  Dialog_Link_Properties.cpp
+EgoSecure_Test_AssignmentView.obj : warning LNK4258: directive '/entry:WinMainCRTStartup' not compatible with switch '/ENTRY:wWinMainCRTStartup'; ignored
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\x64\Debug\EgoSecure_Test_Assignment.exe

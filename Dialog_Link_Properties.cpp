@@ -11,10 +11,10 @@
 
 IMPLEMENT_DYNAMIC(Dialog_Link_Properties, CDialogEx)
 
-Dialog_Link_Properties::Dialog_Link_Properties(CWnd* pParent /*=nullptr*/)
+Dialog_Link_Properties::Dialog_Link_Properties(CEgoSecureTestAssignmentDoc* pDoc, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_PROPERTIES_LINK, pParent)
 {
-
+	this->pDoc = pDoc;
 }
 
 Dialog_Link_Properties::~Dialog_Link_Properties()
@@ -64,11 +64,27 @@ BOOL Dialog_Link_Properties::ContinueModal()
 		str.Format(_T("%d"), nLinkColorB);
 		eLinkColorB.SetWindowTextW(str);
 		// set first shape id
-		str.Format(_T("%d"), nLinkShapeFirstID);
-		eLinkShapeFirstID.SetWindowTextW(str);
+		if (nLinkShapeFirstID != -1)
+		{
+			str.Format(_T("%d"), nLinkShapeFirstID);
+			eLinkShapeFirstID.SetWindowTextW(str);
+		}
+		else
+		{
+			str.Format(_T("Is not connected"));
+			eLinkShapeFirstID.SetWindowTextW(str);
+		}
 		// set second shape id
-		str.Format(_T("%d"), nLinkShapeSecondID);
-		eLinkShapeSecondID.SetWindowTextW(str);
+		if (nLinkShapeSecondID != -1)
+		{
+			str.Format(_T("%d"), nLinkShapeSecondID);
+			eLinkShapeSecondID.SetWindowTextW(str);
+		}
+		else
+		{
+			str.Format(_T("Is not connected"));
+			eLinkShapeSecondID.SetWindowTextW(str);
+		}
 		// set link size
 		bLinkSize.SetCurSel(nLinkSize);
 		// set link type (__, ..., _.._, ...)
@@ -133,4 +149,65 @@ void Dialog_Link_Properties::OnBnClickedOk()
 	eLinkName.GetWindowTextW(name);
 
 	CDialogEx::OnOK();
+}
+
+
+void Dialog_Link_Properties::getParameters(int shapeNum)
+{
+	nLinkColorR = GetRValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
+	nLinkColorG = GetGValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
+	nLinkColorB = GetBValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
+	
+	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
+	{
+		if (pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(FIRST_POINT_OF_LINE) == pDoc->getShapesVector()[shapeNumber]->getConstID())
+		{
+			nLinkShapeFirstID = pDoc->getShapesVector()[shapeNumber]->getID();
+			break;
+		}
+	}
+	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
+	{
+		if (pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(SECOND_POINT_OF_LINE) == pDoc->getShapesVector()[shapeNumber]->getConstID())
+		{
+			nLinkShapeSecondID = pDoc->getShapesVector()[shapeNumber]->getID();
+			break;
+		}
+	}
+
+
+	nLinkSize = pDoc->getShapesVector()[shapeNum]->getOutlineSize();
+	nLinkType = pDoc->getShapesVector()[shapeNum]->getOutlineType();
+	switch (pDoc->getShapesVector()[shapeNum]->getShapeType())
+	{
+		case ShapeType::basicLine:
+		{
+			nLinkTypeLink = 0;
+			break;
+		}
+		case ShapeType::rightLine:
+		{
+			nLinkTypeLink = 1;
+			break;
+		}
+		case ShapeType::leftLine:
+		{
+			nLinkTypeLink = 2;
+			break;
+		}
+		case ShapeType::doubleLine:
+		{
+			nLinkTypeLink = 3;
+			break;
+		}
+	}
+	nLinkID = pDoc->getShapesVector()[shapeNum]->getID();
+	name = pDoc->getShapesVector()[shapeNum]->getName();
+
+}
+
+
+void Dialog_Link_Properties::setParameters(int shapeNum)
+{
+	// TODO: Add your implementation code here.
 }

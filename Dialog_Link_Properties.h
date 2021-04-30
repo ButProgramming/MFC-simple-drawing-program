@@ -1,5 +1,5 @@
 #pragma once
-
+#include "EgoSecure_Test_AssignmentDoc.h"
 
 // Dialog_Link_Properties dialog
 
@@ -8,7 +8,7 @@ class Dialog_Link_Properties : public CDialogEx
 	DECLARE_DYNAMIC(Dialog_Link_Properties)
 
 public:
-	Dialog_Link_Properties(CWnd* pParent = nullptr);   // standard constructor
+	Dialog_Link_Properties(CEgoSecureTestAssignmentDoc* pDoc,CWnd* pParent = nullptr);   // standard constructor
 	virtual ~Dialog_Link_Properties();
 
 // Dialog Data
@@ -26,7 +26,7 @@ public:
 	virtual BOOL ContinueModal();
 	afx_msg void OnBnClickedOk();
 private:
-
+	CEgoSecureTestAssignmentDoc* pDoc;
 	CEdit eLinkColorR;
 	CEdit eLinkColorG;
 	CEdit eLinkColorB;
@@ -50,4 +50,7 @@ private:
 	int nLinkID = NULL;
 	CString name;
 	
+public:
+	void getParameters(int shapeNum);
+	void setParameters(int shapeNum);
 };

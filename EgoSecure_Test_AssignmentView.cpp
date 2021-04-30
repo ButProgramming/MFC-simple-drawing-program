@@ -805,7 +805,7 @@ void CEgoSecureTestAssignmentView::createHorizontalAndVecticalSB(int x, int y)
 				CRect(0, 0, 0, y * MULTIPLIER_DOWN_POS_HORIZONTAL_SCROLL_BAR_864_Y), this, IDC_SB_VERT);
 			m_vsb.SetScrollRange(START_VERTICAL_SCROLL_RANGE_MIN, START_VERTICAL_SCROLL_RANGE_MAX);
 		}
-		else if (y >= 700 & y < 850)
+		else if (y >= 700 && y < 850)
 		{
 			// create horizontal scroll bar and set range
 			m_hsb.Create(SBS_HORZ | SBS_TOPALIGN | WS_CHILD | WS_VISIBLE,
@@ -1320,18 +1320,38 @@ void CEgoSecureTestAssignmentView::OnButtonProperties()
 	{
 		if (pDoc->getShapesVector()[s]->getSelected())
 		{
-			// create object
-			Dialog_Properties dlg(pDoc);
+			if (pDoc->getShapesVector()[s]->getShapeType() == ShapeType::ellipse || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::rectangle
+				|| pDoc->getShapesVector()[s]->getShapeType() == ShapeType::triangle)
+			{
+				// create object
+				Dialog_Properties dlg(pDoc);
 
-			// get parameters from pDoc
-			dlg.getParameters(s);
+				// get parameters from pDoc
+				dlg.getParameters(s);
 
-			// open dialog
-			dlg.DoModal();
+				// open dialog
+				dlg.DoModal();
 
-			// set parameters in pDoc
-			dlg.setParameters(s);
-			break;
+				// set parameters in pDoc
+				dlg.setParameters(s);
+				break;
+			}
+			else
+			{
+				// create object
+				Dialog_Link_Properties dlg(pDoc);
+
+				// get parameters from pDoc
+				dlg.getParameters(s);
+
+				// open dialog
+				dlg.DoModal();
+
+				// set parameters in pDoc
+				dlg.setParameters(s);
+				break;
+			}
+			
 		}
 	}
 
