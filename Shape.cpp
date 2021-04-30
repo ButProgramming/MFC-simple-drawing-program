@@ -169,9 +169,6 @@ void EllipseShape::draw(CDC* dc)
 	CPoint temp2{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + b };
 	eSP.push_back(temp2);
 
-
-	//dc->MoveTo(shapeCenterBeforRotate.x, shapeCenterBeforRotate.y + b);
-
 	// clear vector befor writting of new CPoints
 	shapePoints.clear();
 
@@ -230,7 +227,6 @@ void EllipseShape::draw(CDC* dc)
 	{
 		double temp = sqrt((1 - (double)y / (double)b) * (1 + (double)y / (double)b));
 		int x = a * temp;
-		//dc->LineTo(circleCenter.x - x, circleCenter.y + y);
 		CPoint temp1{ shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x,shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y };
 		smallerRgn1.push_back(temp1);
 		dc->MoveTo(shapeMove.tempDxDy.x + shapeCenterBeforRotate.x - x, shapeMove.tempDxDy.y + shapeCenterBeforRotate.y + y);
@@ -432,6 +428,7 @@ void RectangleShape::draw(CDC* dc)
 
 	// points for filling shape
 	fillAreaPoints.resize(4);
+
 	// lb - leftbotton, rb - rightbotton, rt - righttop, lt - lefttop
 	// when shape is modificated
 	if ((shapePoints[3].x < shapePoints[1].x) && (shapePoints[3].y < shapePoints[1].y))
@@ -682,10 +679,12 @@ void TriangleShape::draw(CDC* dc)
 	firstPoint.x += centerOfShape.x + dx;
 	firstPoint.y += centerOfShape.y + dy;
 
-	
-	CRgn* triangleNewRgn = new CRgn;
-	triangleNewRgn->CreatePolygonRgn(&fillAreaPoints[0], 3, ALTERNATE);
-	CBrush* triangleBrush;
+	// create rgn of triange for fill it
+	CRgn* triangleRgn = new CRgn;
+	triangleRgn->CreatePolygonRgn(&fillAreaPoints[0], 3, ALTERNATE);
+
+	// create brush to fill the region depending in fill type
+	CBrush* triangleBrush = nullptr;
 	if (fillType == -1)
 	{
 		triangleBrush = new CBrush;
@@ -695,13 +694,14 @@ void TriangleShape::draw(CDC* dc)
 	{
 		triangleBrush = new CBrush(fillType, RGB(fR, fG, fB));
 	}
-
 	dc->Polygon(&shapePoints[0], 3);
-	dc->FillRgn(triangleNewRgn, triangleBrush);
+	dc->FillRgn(triangleRgn, triangleBrush);
+
+	// when shape is selected then draw selected area rectangle and points for change tool
 	if (isSelected)
 	{
-		CPen* tempPen = new CPen(1, 1, RGB(100, 100, 100));
-		dc->SelectObject(tempPen);
+		CPen* ellipsesForRotateAndChangeTools = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		dc->SelectObject(ellipsesForRotateAndChangeTools);
 		dc->MoveTo(centerPoint23Bottom);
 		dc->LineTo(centerPoint23Top);
 
@@ -711,6 +711,7 @@ void TriangleShape::draw(CDC* dc)
 
 
 		// draw rectangle that demonstrates selecting shape
+		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
@@ -721,46 +722,26 @@ void TriangleShape::draw(CDC* dc)
 			}
 			dc->MoveTo(selectedAreaPoints[pointNum]);
 			dc->LineTo(selectedAreaPoints[pointNum + 1]);
-
 		}
 
-		tempPen->DeleteObject();
+		ellipsesForRotateAndChangeTools->DeleteObject();
+		selectedAreaRectangleRgn->DeleteObject();
 	}
 	
+	//draw points for lines
 	if (drawPointsForLines)
 	{
-		//draw points for lines
 		for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
 		{
 			dc->Ellipse(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES);
 		}
 	}
 
-	//dc->Polygon(points, 4);
-	
-	/*delete triangleNewRgn;
-	delete triangleBrush;
-	delete triangleRgn;
-	delete pen;*/
 	pen->DeleteObject();
-	//triangleRgn->DeleteObject();
 	triangleBrush->DeleteObject();
-	triangleNewRgn->DeleteObject();
+	triangleRgn->DeleteObject();
 }
-//
-//CPoint TriangleShape::getPointForRotateTool()
-//{
-//	return CPoint();
-//}
 
-
-//void IShape::rotationOfAxes(int numberOfShapeInVector)
-//{
-//	int tempX = dSM.x;
-//	int tempY = dSM.y;
-//	dSM.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
-//	dSM.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
-//}
 
 bool IShape::getIsConnected(int numberOfPoint)
 {
@@ -844,8 +825,10 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 	
 	for (int pointNum = 0; pointNum < linkingPoints.size(); pointNum++)
 	{
-		
+		// create rgn to use PtInRegion
 		HRGN pointForLinesRgn = CreateEllipticRgn(linkingPoints[pointNum].x - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].y - SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].x + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN, linkingPoints[pointNum].y + SIZE_OF_ELLIPSE_FOR_LINES * MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN);
+		
+		// check if is point in region
 		if(PtInRegion(pointForLinesRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
@@ -854,59 +837,44 @@ bool IShape::IsClickedOnPointForLines(CPoint point, int& numberOfPoint)
 		}
 		DeleteObject(pointForLinesRgn);
 	}
-	//delete pointForLinesRgn;
 	return false;
 }
 
-CPoint IShape::rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int from)
+CPoint IShape::rotateAndMoveCoordinate(CPoint &point, int from) // rotate shape depending on "from" parent
 {
-	//if (toolIsUsed == Tools::shapeMove)
+	if (from == MOUSE_MOVE)
 	{
-		
-		if (from == MOUSE_MOVE)
-		{
-			int tempX = point.x;
-			int tempY = point.y;
-			point.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
-			point.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
-			return point;
-		}
-		else if (from == LBUTTON_UP)
-		{
-			int tempX = point.x;
-			int tempY = point.y;
-
-			point.x = round(tempX * cos((angleRad)) - tempY * sin((angleRad)));
-			point.y = round(tempX * sin((angleRad)) + tempY * cos((angleRad)));
-			centerOfShape.x += point.x;
-			centerOfShape.y += point.y;
-			return point;
-		}
-		else if (from == DRAW_METHOD)
-		{
-			int tempX = point.x;
-			int tempY = point.y;
-			point.x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
-			point.y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
-			point.x += centerOfShape.x + dx;
-			point.y += centerOfShape.y + dy;
-		}
+		int tempX = point.x;
+		int tempY = point.y;
+		point.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
+		point.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
+		return point;
 	}
-	//else if (toolIsUsed == Tools::change)
-	/*{
-		if (from == MOUSE_MOVE)
-		{
-			int tempX = point.x;
-			int tempY = point.y;
-			point.x = round(tempX * cos(-(angleRad)) - tempY * sin(-(angleRad)));
-			point.y = round(tempX * sin(-(angleRad)) + tempY * cos(-(angleRad)));
-			return point;
-		}
-	}*/
+	else if (from == LBUTTON_UP)
+	{
+		int tempX = point.x;
+		int tempY = point.y;
+
+		point.x = round(tempX * cos((angleRad)) - tempY * sin((angleRad)));
+		point.y = round(tempX * sin((angleRad)) + tempY * cos((angleRad)));
+		centerOfShape.x += point.x;
+		centerOfShape.y += point.y;
+		return point;
+	}
+	else if (from == DRAW_METHOD)
+	{
+		int tempX = point.x;
+		int tempY = point.y;
+		point.x = round(tempX * cos(angleRad) - tempY * sin(angleRad));
+		point.y = round(tempX * sin(angleRad) + tempY * cos(angleRad));
+		point.x += centerOfShape.x + dx;
+		point.y += centerOfShape.y + dy;
+	}
 }
 
 void IShape::rotateShape(CPoint point)
 {
+	// calculate circle quarter
 	enum circleQuarter { first, second, third, fourth };
 	circleQuarter tempEnum = first;
 	if (point.x >= centerOfShape.x && point.y <= centerOfShape.x)
@@ -926,52 +894,37 @@ void IShape::rotateShape(CPoint point)
 		tempEnum = fourth;
 	}
 	getFirstClickedPoint().y;
-	//int temp2 = point.y - pDoc->getShapesVector()[s]->getFirstClickedPoint().y;
+
+	// create triangle to calculate cos of angle to use it for rotate
 	array<double, 3> sides; // 0 - side from centerOfShape to firstClickedPoint; 1 - side form firstClickedPoint to point; 2 - the remaining side
-	//sides[0] = sqrt(pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().x - pDoc->getShapesVector()[s]->centerOfShape.x, 2) + pow(pDoc->getShapesVector()[s]->getFirstClickedPoint().y - pDoc->getShapesVector()[s]->centerOfShape.y, 2));
 	sides[0] = sqrt(pow(firstPoint.x - centerOfShape.x, 2) + pow(firstPoint.y - centerOfShape.y, 2));
-	
 	sides[1] = sqrt(pow(firstPoint.x - point.x, 2) + pow(firstPoint.y - point.y, 2));
 	sides[2] = sqrt(pow(centerOfShape.x - point.x, 2) + pow(centerOfShape.y - point.y, 2));
-	/*sides[0] /= 100;
-	sides[1] /= 100;
-	sides[2] /= 100;*/
-
 	double cosOfCenterAngle = (pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) / ((2 * sides[0] * sides[2]));//using law of cosines
-
 	double centerAngleRad = acos(cosOfCenterAngle);
-
-
-	double centerAngleDegree = centerAngleRad * 180.0 / 3.14;
+	double centerAngleDegree = radToDeg(centerAngleRad);
 
 	if (tempEnum == third || tempEnum == fourth)
 	{
-		//pDoc->getShapesVector()[s]->angleRad = -centerAngleDegree * 3.14 / 180.0;
-		centerAngleDegree = 360 - centerAngleDegree;
+		centerAngleDegree = MAX_ANGLE - centerAngleDegree;
 	}
-
-	//int temp = point.y - pDoc->getShapesVector()[s]->lastY;
 
 	//check if is shape reversed
 	if (isReversed())
 	{
-		angleRad = -centerAngleDegree * 3.14 / 180.0;
+		angleRad = -degToRad(centerAngleDegree);
 	}
 	else
 	{
-		angleRad = centerAngleDegree * 3.14 / 180.0;
-
+		angleRad = degToRad(centerAngleDegree);
 	}
 }
 
 void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool& canBeUnselected, bool& shapeIsFound)
 {
-	//bool canBeUnselected = true; // is used for unselecting all shapes, when clicked on space place
-	
-	//bool isShapeFound = false; // if shape is found, then break loop
+	// set Tool or unselecting all shapes (return canBeUnselected)
 	if (type == ShapeType::ellipse || type == ShapeType::rectangle || type == ShapeType::triangle)
 	{
-		
 		// check if is clicked on "rotate ellipse"
 		if (getSelected() == true)
 		{
@@ -993,13 +946,11 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 				canBeUnselected = false;
 				toolIsUsed = Tools::change;
 			}
-
 		}
 
 		//check if clicked on shape
 		if (isClickedOnShapeRgn(point))
 		{
-
 			shapeIsFound = true; // is shape is found than break the loop
 
 			// unselecting others shapes
@@ -1016,21 +967,15 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 			//using shape move tool
 			toolIsUsed = Tools::shapeMove;
 		}
-
 		if (shapeIsFound) return;
-
 	}
+	// for lines
 	else if (type == ShapeType::basicLine || type == ShapeType::rightLine || type == ShapeType::leftLine || type == ShapeType::doubleLine)
 	{
-
-		//bool breakLoop = false; // bool variable that is need for loop control
-		// check if clicked on points that changing the size of shape
-		//canBeUnselected = false;
 		if (isClickedPointForChange(point))
 		{
 			shapeIsFound = true;
 			toolIsUsed = Tools::change;
-			//canBeUnselected = true;
 		}
 
 		//check if clicked in line region
@@ -1051,52 +996,32 @@ void IShape::moveChangeRotate(vector <IShape*>& shapes, Tools& toolIsUsed, CPoin
 		
 		if (shapeIsFound) return;
 	}
-	//return true;
 }
 
 void IShape::normalizeShape()
 {
 	if (isSelected)
 	{
-
-
-		//pDoc->getShapesVector()[s]->isNormalized = true;
+		// null angle
 		angleRad = 0;
-		CPoint tmp[4];
-		if (type == ShapeType::triangle)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				tmp[i] = selectedAreaPoints[i];
-			}
+		
+		// calculate min side of rectangle which is uset for selecting 
+		CPoint centerSidesPoints[2]{ NULL, NULL };
+		centerSidesPoints[0] = CPoint((selectedAreaPoints[1].x - selectedAreaPoints[0].x) / 2 + selectedAreaPoints[0].x, (selectedAreaPoints[1].y - selectedAreaPoints[0].y) / 2 + selectedAreaPoints[0].y);
+		centerSidesPoints[1] = CPoint((selectedAreaPoints[2].x - selectedAreaPoints[1].x) / 2 + selectedAreaPoints[1].x, (selectedAreaPoints[2].y - selectedAreaPoints[1].y) / 2 + selectedAreaPoints[1].y);
+		int length1 = (int)sqrt(pow(centerSidesPoints[0].x - centerOfShape.x, 2) + pow(centerSidesPoints[0].y - centerOfShape.y, 2));
+		int length2 = (int)sqrt(pow(centerSidesPoints[1].x - centerOfShape.x, 2) + pow(centerSidesPoints[1].y - centerOfShape.y, 2));
+		int min = (length1 < length2) ? length1 : length2;
 
-		}
-		else
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				tmp[i] = selectedAreaPoints[i];
-			}
-
-		}
-
-		CPoint centerSidesPoints[2];
-		centerSidesPoints[0] = CPoint((tmp[1].x - tmp[0].x) / 2 + tmp[0].x, (tmp[1].y - tmp[0].y) / 2 + tmp[0].y);
-		centerSidesPoints[1] = CPoint((tmp[2].x - tmp[1].x) / 2 + tmp[1].x, (tmp[2].y - tmp[1].y) / 2 + tmp[1].y);
-		int l1 = (int)sqrt(pow(centerSidesPoints[0].x - centerOfShape.x, 2) + pow(centerSidesPoints[0].y - centerOfShape.y, 2));
-		int l2 = (int)sqrt(pow(centerSidesPoints[1].x - centerOfShape.x, 2) + pow(centerSidesPoints[1].y - centerOfShape.y, 2));
-		int min;
-		min = (l1 < l2) ? l1 : l2;
-		//CString dbug;
-		//dbug.Format(_T("%d, %d"), l1, l2);
-		////AfxMessageBox(dbug);
+		// null coordinate for differense
 		for (int i = 0; i < 4; i++)
 		{
 			change.dxDy[i] = CPoint{ 0, 0 };
 			change.tempDxDy[i] = CPoint{ 0, 0 };
 		}
+
+		// length of inscribed circle in shape = min
 		size = min;
-		
 	}
 }
 
@@ -1116,12 +1041,6 @@ void IShape::createLineConnection(int numberOfPointOfLine, int shapeConstID, int
 		connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfPointForLines;
 
 	}
-	/*if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
-	{
-		isConnected.firstPointOfLine = true;
-		connectedShapeConstID = shapeConstID;
-		numberOfShapesPointForLines = numberOfPointForLines;
-	}*/
 }
 
 void IShape::updateLineConnection(const vector<IShape*>& shapes)
@@ -1136,9 +1055,6 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 				if (shapes[shapeNum]->constID == connecting.connectedShapeConstID.firstPointOfLine)
 				{
 					setCoordinateForChange(FIRST_POINT_OF_LINE, shapes[shapeNum]->getPointForLine(connecting.numberOfShapesPointForLines.firstPointOfLine));
-					//cout << connecting.numberOfShapesPointForLines.firstPointOfLine << endl;
-					//cout << getCoordinateForChange(0).x << " " << getCoordinateForChange(0).y << endl;
-					
 				}
 			}
 		}
@@ -1162,17 +1078,15 @@ void IShape::updateLineConnection(const vector<IShape*>& shapes)
 
 void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 {
+	//reset 
 	if (numberOfPointOfLine == FIRST_POINT_OF_LINE)
 	{
 		if (connecting.connectedShapeConstID.firstPointOfLine == shapeConstID) // disconnect not always (if id of connected Shape == shape constID to disconnect)
 		{
-		
 			connecting.isConnected.firstPointOfLine = false;
 			connecting.connectedShapeConstID.firstPointOfLine = -1;
 			connecting.numberOfShapesPointForLines.firstPointOfLine = -1;
 		}
-
-		
 	}
 	else if (numberOfPointOfLine == SECOND_POINT_OF_LINE)
 	{
@@ -1182,25 +1096,24 @@ void IShape::lineDisconnecting(int numberOfPointOfLine, int shapeConstID)
 			connecting.connectedShapeConstID.secondPointOfLine = -1;
 			connecting.numberOfShapesPointForLines.secondPointOfLine = -1;
 		}
-		
-
-		
 	}
 }
 
 void IShape::setShapeID()
 {
+	// if ID not found - > set ID
 	IDs.insert(-1);
 	bool isNotFound = false;
-	for (int i = 0; i < countOfShape + 10; i++)
+	for (int shapeNum = 0; shapeNum <= countOfShape; shapeNum++)
 	{
 		for (auto it = IDs.begin(); it != IDs.end(); it++)
 		{
-			auto pos = IDs.find(i);
+			auto pos = IDs.find(shapeNum);
+			
 			if (pos == IDs.end())
 			{
 				isNotFound = true;
-				ID = i;
+				ID = shapeNum;
 				IDs.insert(ID);
 				break;
 			}
@@ -1213,15 +1126,18 @@ void IShape::setShapeID()
 
 void IShape::setShapeName()
 {
+	// if name is not found -> set name
 	CString str = NULL;
 	str.Format(_T("-1"));
 	names.insert(str);
 	bool isNotFound = false;
+	
+	// for everyone shape, because names are difference
 	switch (type)
 	{
 		case ShapeType::ellipse:
 		{
-			for (int i = 0; i < countOfShape + 10; i++)
+			for (int i = 0; i <= countOfShape; i++)
 			{
 				for (auto it = names.begin(); it != names.end(); it++)
 				{
@@ -1393,7 +1309,7 @@ void IShape::setShapeName()
 IShape::~IShape()
 {
 	IShape::IDs.erase(ID); // erase ID because ID won't exist
-	IShape::names.erase(name);
+	IShape::names.erase(name); // erase name because ID won't exist
 }
 
 
@@ -1410,17 +1326,17 @@ void Line::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
+	// create pen depending on isSelected
 	CPen* pen = nullptr;
 	if (isSelected)
-		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		pen = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
-
-	//
 
 	// setect pen
 	dc->SelectObject(pen);
 
+	// if isSelected -> draw ellipse for change tool
 	if (isSelected)
 	{
 		for (int pointNum = 0; pointNum < pointsOfLine.size(); pointNum++)
@@ -1429,12 +1345,14 @@ void Line::draw(CDC* dc)
 				pointsOfLine[pointNum].x + change.tempDxDy[pointNum].x + SIZE_OF_POINT_FOR_CHANGE + change.dxDy[pointNum].x, pointsOfLine[pointNum].y + change.tempDxDy[pointNum].y + SIZE_OF_POINT_FOR_CHANGE+ change.dxDy[pointNum].y);
 		}
 	}
+
+	//draw line
 	dc->MoveTo(CPoint(pointsOfLine[0].x + change.tempDxDy[0].x + change.dxDy[0].x, pointsOfLine[0].y + change.tempDxDy[0].y+ change.dxDy[0].y));
 	dc->LineTo(CPoint(pointsOfLine[1].x + change.tempDxDy[1].x + change.dxDy[1].x, pointsOfLine[1].y + change.tempDxDy[1].y+ change.dxDy[1].y));
 
+	// draw arrows
 	if (type == ShapeType::rightLine)
 	{
-		//if (pointsOfLine[0] != pointsOfLine[1])
 		{
 			CPoint firstPointOfArrow = NULL;
 			CPoint secondPointOfArrow = NULL;
@@ -1443,7 +1361,6 @@ void Line::draw(CDC* dc)
 			dc->LineTo(firstPointOfArrow);
 			dc->MoveTo(pointsOfLine[SECOND_POINT_OF_LINE] + change.tempDxDy[SECOND_POINT_OF_LINE]);
 			dc->LineTo(secondPointOfArrow);
-
 		}
 		
 	}
@@ -1484,6 +1401,7 @@ void Line::draw(CDC* dc)
 
 bool Line::isClickedOnShapeRgn(CPoint point)
 {
+	// arrays used for drawing regions - vertical and horizontal
 	array <CPoint, 4> tempLineRectRgnHorizontal;
 	array <CPoint, 4> tempLineRectRgnVertical;
 	if (pointsOfLine[0].x < pointsOfLine[1].x)
@@ -1515,8 +1433,7 @@ bool Line::isClickedOnShapeRgn(CPoint point)
 		tempLineRectRgnVertical[3] = CPoint(pointsOfLine[1].x - SIZE_OF_LINE_RGN, pointsOfLine[1].y - SIZE_OF_LINE_RGN); // lefttop
 	}
 	
-
-	
+	// check if can be selected
 	HRGN lineRgnHor = CreatePolygonRgn(&tempLineRectRgnHorizontal[0], 4, ALTERNATE);
 	HRGN lineRgnVert = CreatePolygonRgn(&tempLineRectRgnVertical[0], 4, ALTERNATE);
 	if (PtInRegion(lineRgnHor, point.x, point.y) || PtInRegion(lineRgnVert, point.x, point.y))
@@ -1526,7 +1443,7 @@ bool Line::isClickedOnShapeRgn(CPoint point)
 		return true;
 	}
 	
-	::DeleteObject(lineRgnHor);
+	DeleteObject(lineRgnHor);
 	DeleteObject(lineRgnVert);
 	return false;
 }
@@ -1535,8 +1452,10 @@ bool Line::isClickedPointForChange(CPoint point)
 {
 	for (int pointNum = 0; pointNum<pointsOfLine.size(); pointNum++)
 	{
+		// create rgn to use PtInRegion
 		HRGN pointRgn = CreateEllipticRgn(pointsOfLine[pointNum].x - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y - SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE,
 			pointsOfLine[pointNum].x + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE, pointsOfLine[pointNum].y + SIZE_OF_POINT_FOR_CHANGE * RATE_VALUE_FOR_POINT_FOR_CHANGE);
+		// check if is point in line rgn
 		if (PtInRegion(pointRgn, point.x, point.y))
 		{
 			numberOfPoint = pointNum;
@@ -1546,12 +1465,14 @@ bool Line::isClickedPointForChange(CPoint point)
 		DeleteObject(pointRgn);
 	}
 
+	// if is not in region
 	numberOfPoint = -1;
 	return false;
 }
 
 void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& secondPointOfArrow)
 {
+	//variables that changes type of returned points
 	int firstNumber = NULL;
 	int secondNumber = NULL;
 	if (forLineType == RIGHT_LINE)
@@ -1564,8 +1485,11 @@ void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& 
 		firstNumber = SECOND_POINT_OF_LINE;
 		secondNumber = FIRST_POINT_OF_LINE;
 	}
+
+	// calculate ground of arrow
 	CPoint centerOfArrowGround = CPoint(pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x + (pointsOfLine[secondNumber].x + change.tempDxDy[secondNumber].x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x)) / 1.07, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y + (pointsOfLine[secondNumber].y + change.tempDxDy[secondNumber].y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y)) / 1.07);
 
+	// calculate coordinate of 2 points of arrow
 	double angleOfArrowDeg = ANGLE_OF_ARROW_DEG;
 	double angleOfArrowRad = degToRad(angleOfArrowDeg);
 	double angleOfTriangleRad = NULL;
@@ -1574,27 +1498,27 @@ void Line::getPointsOfArrow(int forLineType, CPoint& firstPointOfArrow, CPoint& 
 	CPoint secondLegPoint = CPoint(centerOfArrowGround.x, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y);
 	CPoint firstLegPoint = CPoint(pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x, pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y);
 	lengthOfHypotenuse = sqrt(pow(centerOfArrowGround.x - firstLegPoint.x, 2) + pow(centerOfArrowGround.y - firstLegPoint.y, 2));
-	//CString dbug;
-
-
 	lengthOfLeg = sqrt(pow(secondLegPoint.x - firstLegPoint.x, 2) + pow(secondLegPoint.y - firstLegPoint.y, 2));
 	angleOfTriangleRad = acos(lengthOfLeg / lengthOfHypotenuse);
-	//angleOfTriangleDeg = radToDeg(angleOfTriangleRad);
-
 	double lengthOfArrow = sqrt(pow(centerOfArrowGround.x - (pointsOfLine[secondNumber].x + change.tempDxDy[secondNumber].x), 2) + pow(centerOfArrowGround.y - (pointsOfLine[secondNumber].y + change.tempDxDy[secondNumber].y), 2));
 	double lengthOfPerpendicular = lengthOfArrow * tan(angleOfArrowRad);
 	double legX = cos(90 * 3.14 / 180.0 - angleOfTriangleRad) * lengthOfPerpendicular;
 	double legY = sin(90 * 3.14 / 180.0 - angleOfTriangleRad) * lengthOfPerpendicular;
+
+	// if legX or legY == NaN
 	if(isnan(legX) || isnan(legY))
 	{
-		legX = 0;
-		legY = 0;
+		legX = NULL;
+		legY = NULL;
 	}
+	
+	// if arrow is in 2 or 4 circle quarter
 	if (!(centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) > 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) < 0 || centerOfArrowGround.x - (pointsOfLine[firstNumber].x + change.tempDxDy[firstNumber].x) < 0 && centerOfArrowGround.y - (pointsOfLine[firstNumber].y + change.tempDxDy[firstNumber].y) > 0))
 	{
 		legX = -legX;
 	}
 
+	// set values
 	firstPointOfArrow = CPoint(centerOfArrowGround.x - legX, centerOfArrowGround.y - legY);
 	secondPointOfArrow = CPoint(centerOfArrowGround.x + legX, centerOfArrowGround.y + legY);
 	

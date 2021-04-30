@@ -29,10 +29,8 @@ void Dialog_Link_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_LINK_COLOR_B, eLinkColorB);
 	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_FIRST_ID, eLinkFirstPoint);
 	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_SECOND_ID, eLinkSecondPoint);
-	//  DDX_Control(pDX, IDC_COMBO_LINK_SIZE, m_link_size);
 	DDX_Control(pDX, IDC_COMBO_LINK_SIZE, bLinkSize);
 	DDX_Control(pDX, IDC_COMBO_LINK_TYPE, bLinkType);
-	//  DDX_Control(pDX, IDC_COMBO_LINK_TYPE_LINK, m_link_type_link);
 	DDX_Control(pDX, IDC_COMBO_LINK_TYPE_LINK, bLinkTypeLink);
 	DDX_Control(pDX, IDC_EDIT_LINK_ID, eLinkID);
 	DDX_Control(pDX, IDC_EDIT_LINK_NAME, eLinkName);
@@ -63,28 +61,12 @@ BOOL Dialog_Link_Properties::ContinueModal()
 		// set B color
 		str.Format(_T("%d"), nLinkColorB);
 		eLinkColorB.SetWindowTextW(str);
-	
+		// set first coordinates
 		str.Format(_T("%d, %d"), nLinkFirstPoint.x, nLinkFirstPoint.y);
 		eLinkFirstPoint.SetWindowTextW(str);
-		
+		// set second coordinates
 		str.Format(_T("%d, %d"), nLinkSecondPoint.x, nLinkSecondPoint.y);
 		eLinkSecondPoint.SetWindowTextW(str);
-		//else
-		//{
-		//	str.Format(_T("Is not connected"));
-		//	eLinkShapeFirstID.SetWindowTextW(str);
-		//}
-		//// set second shape id
-		////if (nLinkSecondPoint != -1)
-		//{
-		//	str.Format(_T("%d"), nLinkShapeSecondID);
-		//	eLinkShapeSecondID.SetWindowTextW(str);
-		//}
-		//else
-		//{
-		//	str.Format(_T("Is not connected"));
-		//	eLinkShapeSecondID.SetWindowTextW(str);
-		//}
 		// set link size
 		bLinkSize.SetCurSel(nLinkSize);
 		// set link type (__, ..., _.._, ...)
@@ -124,20 +106,15 @@ void Dialog_Link_Properties::OnBnClickedOk()
 	if (nLinkColorB > 255)
 		nLinkColorB = 0;
 
-	// get first shape
+	// get first point coordinate
 	eLinkFirstPoint.GetWindowTextW(str);
-
 	nLinkFirstPoint.x = _ttoi(str.Mid(0, str.Find(',')));
-	//cout << nLinkFirstPoint.x << endl;
 	nLinkFirstPoint.y = _ttoi(str.Mid(str.Find(',')+1));
-	//cout << nLinkFirstPoint.y << endl;
 
-	// get second shape
+	// get second point coordinate
 	eLinkSecondPoint.GetWindowTextW(str);
 	nLinkSecondPoint.x = _ttoi(str.Mid(0, str.Find(',')));
-	//cout << nLinkSecondPoint.x << endl;
 	nLinkSecondPoint.y = _ttoi(str.Mid(str.Find(',') + 1));
-	//cout << nLinkSecondPoint.y << endl;
 
 	// get link size
 	nLinkSize = bLinkSize.GetCurSel();
@@ -164,23 +141,6 @@ void Dialog_Link_Properties::getParameters(int shapeNum)
 	nLinkColorR = GetRValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
 	nLinkColorG = GetGValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
 	nLinkColorB = GetBValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
-	
-	/*for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
-	{
-		if (pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(FIRST_POINT_OF_LINE) == pDoc->getShapesVector()[shapeNumber]->getConstID())
-		{
-			nLinkShapeFirstID = pDoc->getShapesVector()[shapeNumber]->getID();
-			break;
-		}
-	}
-	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
-	{
-		if (pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(SECOND_POINT_OF_LINE) == pDoc->getShapesVector()[shapeNumber]->getConstID())
-		{
-			nLinkShapeSecondID = pDoc->getShapesVector()[shapeNumber]->getID();
-			break;
-		}
-	}*/
 	nLinkFirstPoint = pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(FIRST_POINT_OF_LINE);
 	nLinkSecondPoint = pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(SECOND_POINT_OF_LINE);
 	nLinkFirstPointStart = nLinkFirstPoint;
@@ -219,6 +179,7 @@ void Dialog_Link_Properties::getParameters(int shapeNum)
 
 void Dialog_Link_Properties::setParameters(int shapeNum)
 {
+	// outline color
 	pDoc->getShapesVector()[shapeNum]->setOutlineColor(RGB(nLinkColorR, nLinkColorG, nLinkColorB));
 	pDoc->getShapesVector()[shapeNum]->setOutlineSize(nLinkSize);
 	pDoc->getShapesVector()[shapeNum]->setOutlineType(nLinkType);
@@ -227,7 +188,6 @@ void Dialog_Link_Properties::setParameters(int shapeNum)
 	{
 		if (nLinkFirstPoint != nLinkFirstPointStart)
 		{
-			//AfxMessageBox(_T("Line must be disconnected from shape to move it"));
 			pDoc->getShapesVector()[shapeNum]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(FIRST_POINT_OF_LINE));
 		}
 	}
@@ -240,21 +200,6 @@ void Dialog_Link_Properties::setParameters(int shapeNum)
 	}
 	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(FIRST_POINT_OF_LINE, nLinkFirstPoint);
 	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(SECOND_POINT_OF_LINE, nLinkSecondPoint);
-	/*int constIDFromID = -1;
-	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
-	{
-		if (nLinkID == pDoc->getShapesVector()[shapeNumber]->getID())
-		{
-			constIDFromID = pDoc->getShapesVector()[shapeNumber]->getConstID();
-			break;
-		}
-	}
-	if (constIDFromID != -1)
-	{
-		pDoc->getShapesVector()[shapeNum]->setConnectedShapeConstID(FIRST_POINT_OF_LINE, constIDFromID);
-		pDoc->getShapesVector()[shapeNum]->setNumberOfShapesPointForLines(FIRST_POINT_OF_LINE, 1);
-	}*/
-	
 	// ID
 	if (nLinkID >= 0)
 	{
