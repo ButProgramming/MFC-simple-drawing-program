@@ -39,18 +39,11 @@ class IShape
 {
 public:
 	virtual void draw(CDC* dc) = 0;
-	virtual CPoint getPointForRotateTool() { return centerPoint23Top; };					// return point for rotate tool
-	virtual void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
-	virtual CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 	virtual bool isClickedOnShapeRgn(CPoint point);											// ckecked if clickpoint is in shape region
 	virtual bool isClickedPointForChange(CPoint point);										// checked if clickpoint is in a point for change region
-	virtual CPoint* getConstPointerForRgn(bool isFirstSemicircle) { return nullptr; };		// pointer for HRGN function
-	virtual int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
-	virtual bool isReversed() { return isReversedVar; };									// is needed for rotate shape. Angle for rotate will be -, when return is true
 	virtual CPoint getCoordinateForChange(int num) { if (num >= 0 && num < 4) return selectedAreaPoints[num]; };		// get coordinate of points that is used for change of shapes properites. Num -> number of point
 	virtual void setCoordinateForChange(int num, CPoint point) { if (num >= 0 && num < 4) selectedAreaPoints[num] = point; };	// set coordinate of points that is used for change of shapes properites. Num -> number of point
-
-	//getters and setters for safe document
+																																//getters and setters for safe document
 	// isSelected get and set
 	bool getSelected() { return isSelected; }// get if is shape or line selected or not
 	void setSelected(bool isSelected) { this->isSelected = isSelected; };
@@ -111,86 +104,102 @@ public:
 	int getNumberOfShapesPointForLines(int numberOfPoint);
 	void setNumberOfShapesPointForLines(int numberOfPoint, int numberOfShapesPoint);
 
-
-	
-	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 
-					// set if is shape or line selected or not
-													
-	
-	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
-	
-	CPoint getTemporaryDxDy(int num) { return (num < temporaryDxDy.size()) ? 
-		temporaryDxDy[num] : CPoint{ NULL, NULL }; };										// getter for temporaryDxDy
+	// others getters and setters
+	// temporaryDxDy get and set
+	CPoint getTemporaryDxDy(int num) {
+		return (num < temporaryDxDy.size()) ?
+			temporaryDxDy[num] : CPoint{ NULL, NULL };
+	};										// getter for temporaryDxDy
 	void setTemporaryDxDy(int num, CPoint point) { temporaryDxDy[num] = point; };			// setter for temporaryDxDy
-	CPoint getDxDy(int num) { return (num < dxDy.size()) ?
-			dxDy[num] : CPoint{ NULL, NULL }; };											// getter for dxDy
+
+	// dxDy get and set
+	CPoint getDxDy(int num) {
+		return (num < dxDy.size()) ?
+			dxDy[num] : CPoint{ NULL, NULL };
+	};											// getter for dxDy
 	void setDxDy(int num, CPoint point) { dxDy[num] = point; }								// setter for dxDy
+
+	// drawPointsForLines get and set
 	void setCanDrawPointsForLines(bool active) { drawPointsForLines = active; };			// setter for drawPointsForLines
 	bool getCanDrawPointsForLines() { return drawPointsForLines; };							// getter for drawPointsForLines
 
+	// tempDxDy get and set
 	void setShapeMoveTempDxDy(CPoint point) { shapeMove.tempDxDy.x = point.x; shapeMove.tempDxDy.y = point.y; };
 	CPoint getShapeMoveTempDxDy() { return shapeMove.tempDxDy; };
+
+	// startClickedCoordinate get and set
 	void setShapeMoveStartClickedCoordinate(CPoint point) { shapeMove.startClickedCoordinate = point; };
 	CPoint getShapeMoveStartClickedCoordinate() { return shapeMove.startClickedCoordinate; };
 
-	CPoint rotateAndMoveCoordinate(CPoint &point/*, Tools& toolIsUsed*/, int from);
-	void rotateShape(CPoint point);
-	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound);
-
+	// startClickedCoordinate get and set
 	void setChangeStartClickedCoordinate(CPoint point) { change.startClickedCoordinate = point; };
 	CPoint getChangeStartClickedCoordinate() { return change.startClickedCoordinate; };
+
+	// tempDxDy get and set
 	void setChangeTempDxDy(int num, CPoint point) { change.tempDxDy[num] = point; };
 	CPoint getChangeTempDxDy(int num) { return change.tempDxDy[num]; };
+
+	// dxDy get and set
 	void setChangeDxDy(int num, CPoint point) { change.dxDy[num] = point; };
 	CPoint getChangeDxDy(int num) { return change.dxDy[num]; };
-	void normalizeShape();
-	double degToRad(double degree) { return degree * PI / 180.0; };
-	double radToDeg(double radian) { return radian * 180.0 / PI; };
-	
-	//void setTempDxDy()
 
-	//pointsForLines
+	// linkingPoints get and set
+	void setPointsForLine(int numberOfPoint, CPoint coordinatesOfPoint)
+	{
+		if (numberOfPoint >= 0 && numberOfPoint < 4) { linkingPoints[numberOfPoint] = coordinatesOfPoint; };
+	}
 	CPoint getPointForLine(int numberOfPoint)
 	{
 		return (numberOfPoint >= 0 && numberOfPoint < 4) ? linkingPoints[numberOfPoint] : CPoint{ NULL, NULL }; //getter for pointsForLines
 	}
 
-	void setPointsForLine(int numberOfPoint, CPoint coordinatesOfPoint)
-	{
-		if (numberOfPoint >= 0 && numberOfPoint < 4) { linkingPoints[numberOfPoint] = coordinatesOfPoint; };
-	}
+	// firstClickedPoint get and set
+	void setFirstClickedPoint(CPoint point) { firstClickedPoint = point; };			// set first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
+	CPoint getFirstClickedPoint() { return firstClickedPoint; };					// get first clicked points x, y before mouse get OnMouseMove and LButton is pressed down
 
-	void createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines);
-	void updateLineConnection(const vector<IShape*>& shapes);
-	void lineDisconnecting(int numberOfPointOfLine, int shapeConstID);
 
-	void setShapeID();
-	void setShapeName();
-
+	bool IsClickedOnPointForLines(CPoint point, int& numberOfPoint);						// check if is click point in one of the 4 points for lines 									
+	int getNumberOfPointForChange() { return numberOfPoint; }								// get number of clicked point from method isClickedPointForChange
+	CPoint rotateAndMoveCoordinate(CPoint &point, int from);								// is used for rotate coordinates of shape and move it
+	void rotateShape(CPoint point);															// is used for rotating of shape 
+	void moveChangeRotate(vector<IShape*>& shapes, Tools& toolIsUsed, CPoint point, bool &canBeUnselected, bool &shapeIsFound); // called after lButtonDown to get Tool
+	void normalizeShape();																	// get normalized shape
+	double degToRad(double degree) { return degree * PI / 180.0; };							// convert degree to radian
+	double radToDeg(double radian) { return radian * 180.0 / PI; };							// convert radian to degree
+	void createLineConnection(int numberOfPointOfLine, int shapeConstID, int numberOfPointForLines); // create connection for line
+	void updateLineConnection(const vector<IShape*>& shapes);										// update connection for line
+	void lineDisconnecting(int numberOfPointOfLine, int shapeConstID);								// disconnect line
+	void setShapeID();														//set shape ID in constructor
+	void setShapeName();													// set shape name in constructor
+	CPoint getPointForRotateTool() { return centerPoint23Top; };			// return point for rotate tool
+	int getSizeOfShapeArray(bool isFirstSemicircle) { return NULL; };				// size of array, that includes all points of shape
+	bool isReversed() { return isReversedVar; };									// is needed for rotate shape. Angle for rotate will be -, when return is true
+	ShapeType getShapeType() { return type; };								// get shape type
 	
-	
-	static set <int>& getIDs() { return IDs; };
-	static set <CString>& getNames() { return names; };
-	static void setCountOfShape(int number) { countOfShape = number; };
+	static set <int>& getIDs() { return IDs; };								// getter for static IDs
+	static set <CString>& getNames() { return names; };						// getter for static names
+	static void setCountOfShape(int number) { countOfShape = number; };		// setter for static countOfShape
 
+	// dx set and get
+	static void setDx(int dxSet) { dx = dxSet; };							
 	static int getDx() { return dx; };
-	static void setDx(int dxSet) { dx = dxSet; };
 
+	// dy set and get
 	static int getDy() { return dy; };
 	static void setDy(int dySet) { dy = dySet; };
-	ShapeType getShapeType() { return type; };
-
+	
+	//destructor
 	virtual ~IShape();
 
 protected:
-	ShapeType type;
-	static int dx;
-	static int dy;
-	static set<int> IDs;
-	static set<CString> names;
-	static int countOfShape;
+	ShapeType type; //store types of all shapes
+	static int dx; // is used to move all shapes (move tool and scrollbars) in the x direction
+	static int dy; // is used to move all shapes (move tool and scrollbars) in the y direction
+	static set<int> IDs; // is used to store all IDs of all shapes to check new IDs -> unique or not
+	static set<CString> names; // is used to store all names of all shapes to check new names -> unique or not
+	static int countOfShape; // store count of all shapes
 
-	CPen* pen = nullptr;
+
 	
 	CPoint centerOfShape{ NULL, NULL };
 

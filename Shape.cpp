@@ -75,6 +75,7 @@ Line::Line(CPoint firstPointOfLine, ShapeType type, COLORREF lineColor, int line
 
 void EllipseShape::draw(CDC* dc)
 {
+
 	//get outline colors
 	oR = GetRValue(outlineColor);
 	oG = GetGValue(outlineColor);
@@ -85,6 +86,7 @@ void EllipseShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
+	CPen* pen = nullptr;
 	// create pen
 	if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
@@ -393,6 +395,7 @@ void RectangleShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
+	CPen* pen = nullptr;
 	if (isSelected)
 		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));
 	else
@@ -598,8 +601,7 @@ void TriangleShape::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
-	/*if (!isSelected && !isSelectedFromDoubleSelectingTool)
-		pen = new CPen(outlineType, outlineSize, RGB(oR, oG, oB));*/
+	CPen* pen = nullptr;
 	if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(0, 0, 0));
 	else
@@ -1473,7 +1475,7 @@ void Line::draw(CDC* dc)
 	fG = GetGValue(fillColor);
 	fB = GetBValue(fillColor);
 
-	// create pen
+	CPen* pen = nullptr;
 	if (isSelected)
 		pen = new CPen(PS_SOLID, 4, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 	else
