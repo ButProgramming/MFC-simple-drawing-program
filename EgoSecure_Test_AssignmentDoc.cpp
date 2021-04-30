@@ -1,7 +1,3 @@
-
-// EgoSecure_Test_AssignmentDoc.cpp : implementation of the CEgoSecureTestAssignmentDoc class
-//
-
 #include "pch.h"
 #include "framework.h"
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
@@ -21,8 +17,6 @@
 #include <cmath>
 using namespace std;
 
-// CEgoSecureTestAssignmentDoc
-
 IMPLEMENT_DYNCREATE(CEgoSecureTestAssignmentDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CEgoSecureTestAssignmentDoc, CDocument)
@@ -34,7 +28,7 @@ END_MESSAGE_MAP()
 CEgoSecureTestAssignmentDoc::CEgoSecureTestAssignmentDoc() noexcept
 {
 
-	// TODO: add one-time construction code here
+	
 
 }
 
@@ -46,25 +40,14 @@ BOOL CEgoSecureTestAssignmentDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-	//shapes.clear();
 	for (auto s : shapes)
 	{
 		delete s;
 	}
 	shapes.clear();
-	/*for (auto l : lines)
-	{
-		delete l;
-	}*/
-	//lines.clear();
 	IShape::setCountOfShape(0);
-	//Lines::countOfLines = 0;
 	IShape::getIDs().clear();
-	//Lines::IDs.clear();
 	IShape::getNames().clear();
-	//Lines::names.clear();
-	// TODO: add reinitialization code here
-	// (SDI documents will reuse this document)
 
 	return TRUE;
 }
@@ -84,7 +67,6 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		
 		for (auto s : shapes)
 		{
-			//ar << s->centerOfShape.x << s->centerOfShape.y;
 			ar << s->getCenterOfShape();
 			ar << s->getSelected();
 			ar << s->getSize();
@@ -93,8 +75,6 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->getConstID();
 			ar << s->getName();
 			
-			
-
 			int oR = GetRValue(s->getOutlineColor());
 			int oG = GetGValue(s->getOutlineColor());
 			int oB = GetBValue(s->getOutlineColor());
@@ -110,14 +90,6 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << fR;
 			ar << fG;
 			ar << fB;
-
-			/*ar << GetRValue(s->getOutlineColor());
-			ar << GetGValue(s->getOutlineColor());
-			ar << GetBValue(s->getOutlineColor());
-			
-			ar << GetRValue(s->getFillColor());
-			ar << GetGValue(s->getFillColor());
-			ar << GetBValue(s->getFillColor());*/
 
 			ar << s->getOutlineSize();
 			ar << s->getOutlineType();
@@ -181,7 +153,6 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 					break;
 				}
 			}
-
 
 			ar << s->getIsConnected(FIRST_POINT_OF_LINE);
 			ar << s->getIsConnected(SECOND_POINT_OF_LINE);
@@ -268,13 +239,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 			for (int i = 0; i < 4; i++)
 			{
-				//ar >> dx_dy[i];
 				ar >> dxDy[i];
 			}
 
 			ar >> ST;
-			//ar >> ST;
-			//ar >> ST;
+
 			switch (ST)
 			{
 				case 0:
@@ -301,28 +270,28 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				case 3:
 				{
 					shapeType = ShapeType::basicLine;
-					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(oR, oG, oB), outlineSize, outlineType);
 					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 4:
 				{
 					shapeType = ShapeType::rightLine;
-					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(oR, oG, oB), outlineSize, outlineType);
 					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 5:
 				{
 					shapeType = ShapeType::leftLine;
-					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(oR, oG, oB), outlineSize, outlineType);
 					shapeTemp->setSelected(isSelected);
 					break;
 				}
 				case 6:
 				{
 					shapeType = ShapeType::doubleLine;
-					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(0, 0, 0), 2, 1);
+					shapeTemp = new Line(CPoint{ 0, 0 }, shapeType, RGB(oR, oG, oB), outlineSize, outlineType);
 					shapeTemp->setSelected(isSelected);
 					break;
 				}
@@ -335,10 +304,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> numberOfShapesPointForLines1;
 			ar >> numberOfShapesPointForLines2;
 
-			//shapes.emplace_back(shape);
 			
 			shapes.push_back(shapeTemp);
-			//shapes[shapes.size() - 1]->constID;
+
 			shapes[shapes.size() - 1]->setAngleRad(angleRad);
 
 			IShape::getIDs().erase(shapes[shapes.size() - 1]->getID());
@@ -350,11 +318,9 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			IShape::getNames().erase(shapes[shapes.size() - 1]->getName());
 			shapes[shapes.size() - 1]->setName(shapeName);
 			IShape::getNames().insert(shapes[shapes.size() - 1]->getName());
-			//shapes[shapes.size() - 1]->isSelectedFromDoubleSelectingTool = isSelectedFromDoubleSelectingTool;
+
 			shapes[shapes.size() - 1]->setOutlineColor(RGB(oR, oG, oB));
-			/*shapes[shapes.size() - 1]->oR = oR;
-			shapes[shapes.size() - 1]->oG = oG;
-			shapes[shapes.size() - 1]->oB = oB;*/
+
 			if (shapes[shapes.size() - 1]->getShapeType() != ShapeType::ellipse && shapes[shapes.size() - 1]->getShapeType() != ShapeType::rectangle && shapes[shapes.size() - 1]->getShapeType() != ShapeType::triangle)
 			{
 				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
@@ -373,16 +339,11 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			shapes[shapes.size() - 1]->setConnectedShapeConstID(SECOND_POINT_OF_LINE, connectedShapeConstID2);
 			shapes[shapes.size() - 1]->setNumberOfShapesPointForLines(FIRST_POINT_OF_LINE, numberOfShapesPointForLines1);
 			shapes[shapes.size() - 1]->setNumberOfShapesPointForLines(SECOND_POINT_OF_LINE, numberOfShapesPointForLines2);
-			/*shapes[shapes.size() - 1]->connecting.isConnected.firstPointOfLine = isConnected1;
-			shapes[shapes.size() - 1]->connecting.isConnected.secondPointOfLine = isConnected2;
-			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.firstPointOfLine = connectedShapeConstID1;
-			shapes[shapes.size() - 1]->connecting.connectedShapeConstID.secondPointOfLine = connectedShapeConstID2;
-			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.firstPointOfLine = numberOfShapesPointForLines1;
-			shapes[shapes.size() - 1]->connecting.numberOfShapesPointForLines.secondPointOfLine = numberOfShapesPointForLines2;*/
+
 
 			for (int i = 0; i < 4; i++)
 			{
-				shapes[shapes.size() - 1]->setPointsForLine(i, linkingPoints[i]);//linkingPoints[i] = linkingPoints[i];
+				shapes[shapes.size() - 1]->setPointsForLine(i, linkingPoints[i]);
 			}
 
 					
@@ -390,7 +351,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			}
 
 		toolIsUsed = Tools::select_tool;
-		//Invalidate();
+
 	}
 	
 }

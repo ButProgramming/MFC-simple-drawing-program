@@ -181,9 +181,14 @@ void Dialog_Link_Properties::setParameters(int shapeNum)
 {
 	// outline color
 	pDoc->getShapesVector()[shapeNum]->setOutlineColor(RGB(nLinkColorR, nLinkColorG, nLinkColorB));
+
+	// outline size
 	pDoc->getShapesVector()[shapeNum]->setOutlineSize(nLinkSize);
+
+	// outline type
 	pDoc->getShapesVector()[shapeNum]->setOutlineType(nLinkType);
 
+	// disconnect
 	if (pDoc->getShapesVector()[shapeNum]->getIsConnected(FIRST_POINT_OF_LINE))
 	{
 		if (nLinkFirstPoint != nLinkFirstPointStart)
@@ -198,8 +203,13 @@ void Dialog_Link_Properties::setParameters(int shapeNum)
 			pDoc->getShapesVector()[shapeNum]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(SECOND_POINT_OF_LINE));
 		}
 	}
+
+	// first point coordinate
 	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(FIRST_POINT_OF_LINE, nLinkFirstPoint);
+
+	// second point coordinate
 	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(SECOND_POINT_OF_LINE, nLinkSecondPoint);
+
 	// ID
 	if (nLinkID >= 0)
 	{
@@ -208,9 +218,9 @@ void Dialog_Link_Properties::setParameters(int shapeNum)
 			IShape::getIDs().erase(pDoc->getShapesVector()[shapeNum]->getID());
 			pDoc->getShapesVector()[shapeNum]->setID(nLinkID);
 			IShape::getIDs().insert(nLinkID);
-			//IShape::IDs.erase(dlg.nID);
 		}
 	}
+
 	// name
 	if (IShape::getNames().find(name) == IShape::getNames().end())
 	{

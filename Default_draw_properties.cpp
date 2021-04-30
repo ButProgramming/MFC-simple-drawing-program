@@ -16,7 +16,6 @@ Default_draw_properties::Default_draw_properties(CEgoSecureTestAssignmentDoc* pD
 	: CDialogEx(IDD_DIALOG_DEFAULT_DRAW_PROPERTIES, pParent)
 {
 	this->pDoc = pDoc;
-	//SetDataDefaultDrawProperties();
 }
 
 Default_draw_properties::~Default_draw_properties()
@@ -27,9 +26,7 @@ void Default_draw_properties::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MFCCOLORBUTTON_OUTLINE, bColorOutline);
-	//  DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, m_fill_color);
 	DDX_Control(pDX, IDC_MFCCOLORBUTTON_FILL, bColorFill);
-	//  DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, m_combobox_outline);
 	DDX_Control(pDX, IDC_COMBO_OUTLINE_SIZE, bOutlineSize);
 	DDX_Control(pDX, IDC_COMBO_OUTLINE_TYPE, bOutlineType);
 	DDX_Control(pDX, IDC_COMBO_FILL_TYPE, bFillType);
@@ -49,8 +46,6 @@ END_MESSAGE_MAP()
 
 void Default_draw_properties::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
-	//bOutlineSize.SetCurSel(1);
 	colorOutline = bColorOutline.GetColor();
 	colorFill = bColorFill.GetColor();
 	colorLink = bColorLink.GetColor();
@@ -74,17 +69,8 @@ void Default_draw_properties::OnBnClickedOk()
 }
 
 
-//void Default_draw_properties::SetDataDefaultDrawProperties()
-//{
-//	bOutlineSize.SelectString(0, _T("123"));
-//	//bOutlineSize.SetCurSel(size);
-//	// TODO: Add your implementation code here.
-//}
-
-
 BOOL Default_draw_properties::ContinueModal()
 {
-	// TODO: Add your specialized code here and/or call the base class
 	if (callcallFirstTime)
 	{
 		//color
@@ -123,7 +109,6 @@ void Default_draw_properties::getParameters()
 	nFillType = pDoc->getFillType();
 	nLineSize = pDoc->getLineSize();
 	nLinkType = pDoc->getLinkType();
-	// TODO: Add your implementation code here.
 }
 
 
@@ -136,8 +121,6 @@ void Default_draw_properties::setParameters()
 	pDoc->setOutlineType(nOutlineType);
 	pDoc->setFillType(nFillType);
 	pDoc->setLinkType(nLinkType);
-	//cout << pDoc->getLinkType() << endl;
 	pDoc->setColorLink(colorLink);
 	pDoc->setLineSize(nLineSize);
-	// TODO: Add your implementation code here.
 }
