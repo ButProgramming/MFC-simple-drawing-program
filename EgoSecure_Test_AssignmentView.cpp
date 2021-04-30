@@ -551,6 +551,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_dc.SelectObject(&m_bmt);
 	m_dc.FillSolidRect(rect, RGB(255, 255, 255));
 	
+	// create horizontal or vertical scroll bar depending on screen resolution
 	createHorizontalAndVecticalSB(x, y);
 
 	// delete object(s)
@@ -565,7 +566,7 @@ int CEgoSecureTestAssignmentView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// get document to have an access to shapes vector
-	auto pDoc = GetDocument();
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 
 	// set position of scroll in horizontal scrollbar
 	switch (nSBCode)
@@ -606,11 +607,14 @@ void CEgoSecureTestAssignmentView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	// reset dx
 	IShape::setDx(NULL);
 
-	// update draw
-	Invalidate();
-
 	// safe currently coordinate in previous coordinate to calculate dx for moving shapes in the next time
 	prevCoordinate.x = 2 * m_hsb.GetScrollPos();
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
+	// update drawing
+	Invalidate();
 
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
@@ -832,7 +836,7 @@ void CEgoSecureTestAssignmentView::createHorizontalAndVecticalSB(int x, int y)
 void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// get document to have an access to shapes vector
-	auto pDoc = GetDocument();
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 
 	// set position of scroll in horizontal scrollbar
 	switch (nSBCode)
@@ -878,11 +882,14 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 	// reset dx
 	IShape::setDy(NULL);
 
-	// update draw
-	Invalidate();
-
 	// safe currently coordinate in previous coordinate to calculate dx for moving shapes in the next time
 	prevCoordinate.y = 2 * m_vsb.GetScrollPos();
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
+	// update drawing
+	Invalidate();
 
 	CView::OnVScroll(nSBCode, nPos, pScrollBar);
 }
@@ -890,19 +897,19 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 {
-	auto pDoc = GetDocument();
-	for (auto s : pDoc->getShapesVector())
-	{
-		s->setSelected(false);
-	}
-	/*queue<int> clear;
-	swap(clear, pDoc->selectedShapesIDs);*/
-	/*for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelectedFromDoubleSelectingTool = false;
-	}*/
-	pDoc->getToolIsUsed() = Tools::select_tool;
-	Invalidate();
+	//CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+	//for (auto s : pDoc->getShapesVector())
+	//{
+	//	s->setSelected(false);
+	//}
+	///*queue<int> clear;
+	//swap(clear, pDoc->selectedShapesIDs);*/
+	///*for (auto s : pDoc->getShapesVector())
+	//{
+	//	s->isSelectedFromDoubleSelectingTool = false;
+	//}*/
+	//pDoc->getToolIsUsed() = Tools::select_tool;
+	//Invalidate();
 	// TODO: Add your command handler code here
 }
 
@@ -915,22 +922,33 @@ void CEgoSecureTestAssignmentView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void CEgoSecureTestAssignmentView::OnButtonMove()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// select tool move
 	pDoc->getToolIsUsed() = Tools::move;
+
+	// delete object(s)
+	DeleteObject(pDoc);
 }
 
 
 void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// select the last drawn shape automaticly
 	if (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle)
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSelected(true);
 
+		// get change tool
 		pDoc->getToolIsUsed() = Tools::change;
 		
 	}
+
+	// select the last drawn shape automaticly (line)
 	else if (pDoc->getToolIsUsed() == Tools::basicLine || pDoc->getToolIsUsed() == Tools::rightLine 
 		|| pDoc->getToolIsUsed() == Tools::leftLine || pDoc->getToolIsUsed() == Tools::doubleLine)
 	{
@@ -938,57 +956,54 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// make basicLine unactive
 		pDoc->getToolIsUsed() = Tools::change;
-
 	}
 
+	// move all shapes
 	if (pDoc->getToolIsUsed() == Tools::move)
 	{
-		// move all shapes
 		for (int i = 0; i < pDoc->getShapesVector().size(); i++)
 		{
-			CString str;
-			int size = pDoc->getShapesVector().size();
-			//str.Format(_T("1 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
-			//AfxMessageBox(str);
-			//str.Format(_T("dx: %d, dy: %d"), IShape::dx, IShape::dy);
-			//AfxMessageBox(str);
-			Invalidate();
-			/*pDoc->getShapesVector()[i]->centerOfShape.x += IShape::dx;
-			pDoc->getShapesVector()[i]->centerOfShape.y += IShape::dy;*/
+			// set new centerOfShape
 			pDoc->getShapesVector()[i]->setCenterOfShape(CPoint{ pDoc->getShapesVector()[i]->getCenterOfShape().x + IShape::getDx(),  pDoc->getShapesVector()[i]->getCenterOfShape().y + IShape::getDy() });
-			//str.Format(_T("2 time: %d shape. X: %d, y: %d"), i, pDoc->getShapesVector()[i]->centerOfShape.x, pDoc->getShapesVector()[i]->centerOfShape.y);
-			//AfxMessageBox(str);
 		}
+
+		// NULL static dx and dy
 		IShape::setDx(NULL);
 		IShape::setDy(NULL);
 
+		// set change tool
+		pDoc->getToolIsUsed() = Tools::change;
 
-
+		// update drawing
+		Invalidate();
 	}
+	
+	// change tool
 	else if (pDoc->getToolIsUsed() == Tools::change)
 	{
-		bool selected = false; // control of the next loop
+		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
-			//
+			// calculate count of points for change of shape
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
-				int numberOfAngels = 0;
+				int numberOfPointsForChange = 0; // basic
 				if (pDoc->getShapesVector()[s]->getShapeType() == ::ShapeType::triangle)
 				{
-					numberOfAngels = 3;
+					numberOfPointsForChange = 3; //triange
 				}
 				else if (pDoc->getShapesVector()[s]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::rightLine
 					|| pDoc->getShapesVector()[s]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::doubleLine)
 				{
-					numberOfAngels = 2;
+					numberOfPointsForChange = 2; // all lines
 				}
 				else// if (pDoc->getShapesVector()[s]->type == ::ShapeType::rectangle)
 				{
-					numberOfAngels = 4;
+					numberOfPointsForChange = 4; // rectangle and ellipse
 				}
-				selected = true;
-				for (int a = 0; a < numberOfAngels; a++)
+				//selected = true;
+				//move coordinate
+				for (int a = 0; a < numberOfPointsForChange; a++)
 				{
 					if (pDoc->getShapesVector()[s]->getShapeType() == ShapeType::basicLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::rightLine
 						|| pDoc->getShapesVector()[s]->getShapeType() == ShapeType::leftLine || pDoc->getShapesVector()[s]->getShapeType() == ShapeType::doubleLine)
@@ -1002,71 +1017,63 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 						pDoc->getShapesVector()[s]->setChangeDxDy(a, pDoc->getShapesVector()[s]->getChangeDxDy(a) + pDoc->getShapesVector()[s]->getChangeTempDxDy(a));
 					}
 					
-					
+					// null tempDxDy
 					pDoc->getShapesVector()[s]->setChangeTempDxDy(a, CPoint{ NULL, NULL });
 				}
 				
+				// create line connection
 				for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 				{
 					if (pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::basicLine && pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::rightLine
 						&& pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::leftLine && pDoc->getShapesVector()[shapeNum]->getShapeType() != ShapeType::doubleLine)
 					{
-						int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINE
-						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE
+						int numberOfPointForLines0 = -1; // for FIRST_POINT_OF_LINE. If point for change is not clicked -> ==-1
+						int numberOfPointForLines1 = -1; // for SECOND_POINT_OF_LINE. If point for change is not clicked -> ==-1
+
+						// for FIRST_POINT_OF_LINE
 						if (pDoc->getShapesVector()[shapeNum]->IsClickedOnPointForLines(pDoc->getShapesVector()[s]->getCoordinateForChange(FIRST_POINT_OF_LINE), numberOfPointForLines0))
 						{
-							
+							// if clicked on point for change
 							if (numberOfPointForLines0 != -1)
 							{
-							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines0));
 								pDoc->getShapesVector()[s]->createLineConnection(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID(), numberOfPointForLines0);
-								CString str = NULL;
-								str.Format(_T("%d"), numberOfPointForLines0);
-								//AfxMessageBox(str);
 							}
-
 						}
 						
-
+						// for SECOND_POINT_OF_LINE
 						if (pDoc->getShapesVector()[shapeNum]->IsClickedOnPointForLines(pDoc->getShapesVector()[s]->getCoordinateForChange(SECOND_POINT_OF_LINE), numberOfPointForLines1))
 						{
+							// if clicked on point for change
 							if (numberOfPointForLines1 != -1)
 							{
-							
 								pDoc->getShapesVector()[s]->setCoordinateForChange(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getPointForLine(numberOfPointForLines1));
 								pDoc->getShapesVector()[s]->createLineConnection(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID(), numberOfPointForLines1);
-								CString str = NULL;
-								str.Format(_T("%d"), numberOfPointForLines1);
-								//AfxMessageBox(str);
 							}
 						}
 						
+						// if isn't clicked on point for change -> disconnecting
 						if (numberOfPointForLines0 == -1)
 						{
-				
 							pDoc->getShapesVector()[s]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID());
 						}
 						if (numberOfPointForLines1 == -1)
 						{
-						
 							pDoc->getShapesVector()[s]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConstID());
 						}
-					
-						
-		
 					}
 				}
 			}
 		}
 	}
-	if (pDoc->getToolIsUsed() == Tools::move)
-	{
-		//Format(_T("centerOfShape: x: %d, y: %d"), pDoc->getShapesVector()[0]->centerOfShape.x, pDoc->getShapesVector()[0]->centerOfShape.y);
-		//AfxMessageBox(str);
-		//str.Format(_T("boxRect: x: %d, y: %d"), pDoc->getShapesVector()[0]->boxRect.CenterPoint().x, pDoc->getShapesVector()[0]->boxRect.CenterPoint().y);
-		//AfxMessageBox(str);
-	}
+	//if (pDoc->getToolIsUsed() == Tools::move)
+	//{
+	//	//Format(_T("centerOfShape: x: %d, y: %d"), pDoc->getShapesVector()[0]->centerOfShape.x, pDoc->getShapesVector()[0]->centerOfShape.y);
+	//	//AfxMessageBox(str);
+	//	//str.Format(_T("boxRect: x: %d, y: %d"), pDoc->getShapesVector()[0]->boxRect.CenterPoint().x, pDoc->getShapesVector()[0]->boxRect.CenterPoint().y);
+	//	//AfxMessageBox(str);
+	//}
+	//move selected shape
 	if (pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
@@ -1079,29 +1086,33 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 	}
 
+	//delete object(s)
+	DeleteObject(pDoc);
+
 	// shape is drawed then screen update
 	Invalidate();
+
 	CView::OnLButtonUp(nFlags, point);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonChange()
 {
-	//AfxMessageBox(_T("Change"));
-	auto pDoc = GetDocument();
-	pDoc->getToolIsUsed() = Tools::change;
-	// TODO: Add your command handler code here
+	////AfxMessageBox(_T("Change"));
+	//auto pDoc = GetDocument();
+	//pDoc->getToolIsUsed() = Tools::change;
+	//// TODO: Add your command handler code here
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonRotate()
 {
-	auto pDoc = GetDocument();
-	pDoc->getToolIsUsed() = Tools::rotate;
+	//auto pDoc = GetDocument();
+	//pDoc->getToolIsUsed() = Tools::rotate;
 
-	//AfxMessageBox(_T("123"));
-	//SetWorldTransform()
-	// TODO: Add your command handler code here
+	////AfxMessageBox(_T("123"));
+	////SetWorldTransform()
+	//// TODO: Add your command handler code here
 }
 
 
@@ -1113,50 +1124,44 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 
 void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 {
-	auto pDoc = GetDocument();
-	pDoc->getToolIsUsed() = Tools::shapeMove;
+	//auto pDoc = GetDocument();
+	//pDoc->getToolIsUsed() = Tools::shapeMove;
 
-	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
-	{
-		pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
-		/*pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
-		pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;*/
-	}
-	//pDoc->getShapesVector()[s]->diffShapeMove.x = 0;
-	//IShape::diffShapeMove.y = 0;
-	Invalidate();
-	//AfxMessageBox(_T("ckeck"));
-	// TODO: Add your command handler code here
+	//for (int s = 0; s < pDoc->getShapesVector().size(); s++)
+	//{
+	//	pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
+	//	/*pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
+	//	pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;*/
+	//}
+	////pDoc->getShapesVector()[s]->diffShapeMove.x = 0;
+	////IShape::diffShapeMove.y = 0;
+	//Invalidate();
+	////AfxMessageBox(_T("ckeck"));
+	//// TODO: Add your command handler code here
 }
 
 
 
 void CEgoSecureTestAssignmentView::OnButtonDelete()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 
-	//AfxMessageBox(_T("del"));
+	// memory clear + erase shape from vector shapes
 	for (int i = 0; i < pDoc->getShapesVector().size(); i++)
 	{
 		if (pDoc->getShapesVector()[i]->getSelected())
 		{
-			//IShape::IDs.erase(pDoc->getShapesVector()[i]->ID); // erase ID because ID won't exist
-			//IShape::names.erase(pDoc->getShapesVector()[i]->name);
-			/*IShape* shape;
-			pDoc->getShapesVector().push_back(shape);
-			iter_swap(pDoc->getShapesVector().begin() + i, pDoc->getShapesVector().end() - 1);*/
 			delete pDoc->getShapesVector()[i]; // memory clear
 			pDoc->getShapesVector().erase(pDoc->getShapesVector().begin() + i); //erase from vector
-			Invalidate();
 		}
 	}
 
-	if (pDoc->getToolIsUsed() == Tools::doubleSelectTool)
-	{
-
-	}
+	// update drawing
 	Invalidate();
-	// TODO: Add your command handler code here
+
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
@@ -1168,7 +1173,10 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleSelect()
 
 void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// set Tool==basicLine
 	pDoc->getToolIsUsed() = Tools::basicLine;
 
 	//unselect all others shapes and lines
@@ -1180,12 +1188,18 @@ void CEgoSecureTestAssignmentView::OnButtonBasicLine()
 
 	// update window
 	Invalidate();
+
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonRightLine()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// set Tool==rightLine
 	pDoc->getToolIsUsed() = Tools::rightLine;
 
 	//unselect all others shapes and lines
@@ -1197,13 +1211,18 @@ void CEgoSecureTestAssignmentView::OnButtonRightLine()
 
 	// update window
 	Invalidate();
-	
+
+	//delete object(s)
+	DeleteObject(pDoc);	
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// set Tool==leftLine
 	pDoc->getToolIsUsed() = Tools::leftLine;
 
 	//unselect all others shapes and lines
@@ -1216,12 +1235,17 @@ void CEgoSecureTestAssignmentView::OnButtonLeftLine()
 	// update window
 	Invalidate();
 
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// set Tool==doubleLine
 	pDoc->getToolIsUsed() = Tools::doubleLine;
 
 	//unselect all others shapes and lines
@@ -1234,26 +1258,28 @@ void CEgoSecureTestAssignmentView::OnButtonDoubleLine()
 	// update window
 	Invalidate();
 
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
 void CEgoSecureTestAssignmentView::OnPropertiesAllshapesandlines()
 {
-	//AfxMessageBox(_T("12345"));
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// create object
 	List_Control dlg;
+
 	for (auto s : pDoc->getShapesVector())
 	{
 		dlg.shapes.push_back(s);
 	}
-	/*for (auto l : pDoc->lines)
-	{
-		dlg.lines.push_back(l);
-	}*/
+
 	dlg.DoModal();
 
-
-
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
@@ -1265,39 +1291,69 @@ void CEgoSecureTestAssignmentView::OnListcontrolShapes()
 
 void CEgoSecureTestAssignmentView::OnPropertiesDefaultdrawproperties()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// create object
 	Default_draw_properties dlg(pDoc);
+
+	// get parameters from pDoc
 	dlg.getParameters();
+
+	// open dialog
 	dlg.DoModal();
+
+	// set parameters in pDoc
 	dlg.setParameters();
+
+	//delete object(s)
 	DeleteObject(pDoc);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonProperties()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
 		if (pDoc->getShapesVector()[s]->getSelected())
 		{
+			// create object
 			Dialog_Properties dlg(pDoc);
+
+			// get parameters from pDoc
 			dlg.getParameters(s);
+
+			// open dialog
 			dlg.DoModal();
+
+			// set parameters in pDoc
 			dlg.setParameters(s);
 			break;
 		}
 	}
+
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 void CEgoSecureTestAssignmentView::OnEditNormalize()
 {
-	auto pDoc = GetDocument();
+	// create document pointer
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
 	for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 	{
 		pDoc->getShapesVector()[s]->normalizeShape();
 	}
+
+	// update drawing
 	Invalidate();
+
+	//delete object(s)
+	DeleteObject(pDoc);
 }
 
 
