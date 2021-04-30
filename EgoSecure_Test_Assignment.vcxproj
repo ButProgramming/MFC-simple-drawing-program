@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -225,6 +225,7 @@
     <Image Include="..\..\..\..\..\Downloads\Material Icons_e418(0)_64.bmp" />
     <Image Include="res\256.ico" />
     <Image Include="res\64.bmp" />
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\EgoSecure_Test_Assignment.ico" />
     <Image Include="res\EgoSecure_Test_AssignmentDoc.ico" />
     <Image Include="res\icon1.ico" />

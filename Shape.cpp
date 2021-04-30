@@ -861,7 +861,7 @@ int IShape::getConnectedShapeConstID(int numberOfPoint)
 	{
 		return connecting.connectedShapeConstID.secondPointOfLine;
 	}
-	return NULL;
+	return -1;
 }
 
 void IShape::setConnectedShapeConstID(int numberOfPoint, int constID)
@@ -886,7 +886,7 @@ int IShape::getNumberOfShapesPointForLines(int numberOfPoint)
 	{
 		return connecting.numberOfShapesPointForLines.secondPointOfLine;
 	}
-	return NULL;
+	return -1;
 }
 
 void IShape::setNumberOfShapesPointForLines(int numberOfPoint, int numberOfShapesPoint)

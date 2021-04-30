@@ -34,6 +34,8 @@
 #define IDD_DIALOG_PROPERTIES           326
 #define IDD_DIALOG_PROPERTIES_LINK      329
 #define IDR_MENU1                       364
+#define IDB_BITMAP1                     367
+#define IDI_ICON2                       368
 #define IDC_LISTCONTROL_SHAPES          1002
 #define IDC_LISTCONTROL_LINES           1005
 #define IDC_MFCCOLORBUTTON_OUTLINE      1007
@@ -66,6 +68,7 @@
 #define IDC_EDIT_LINK_SHAPE_FIRST_ID    1037
 #define IDC_EDIT_LINK_SHAPE_SECOND_ID   1038
 #define IDC_COMBO_LINK_TYPE             1041
+#define IDC_SCROLLBAR1                  1041
 #define IDC_COMBO_LINK_TYPE_LINK        1042
 #define IDC_EDIT_LINK_ID                1046
 #define IDC_EDIT_LINK_NAME              1047
@@ -98,9 +101,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        365
+#define _APS_NEXT_RESOURCE_VALUE        369
 #define _APS_NEXT_COMMAND_VALUE         32809
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
