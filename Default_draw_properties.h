@@ -11,6 +11,10 @@ private:
 public:
 	Default_draw_properties(CEgoSecureTestAssignmentDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~Default_draw_properties();
+	afx_msg void OnBnClickedOk();
+	virtual BOOL ContinueModal();
+	void getParameters();
+	void setParameters();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -21,11 +25,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedOk();
-	virtual BOOL ContinueModal();
-	void getParameters();
-	void setParameters();
 
 private:
 	CMFCColorButton bColorOutline;
