@@ -32,6 +32,8 @@ using namespace std;
 #define G_SELECTED_SHAPE 100
 #define B_SELECTED_SHAPE 100
 #define LINE_SIZE_SELECTED_SHAPE 1
+#define MAKE_EQUILATERAL_TRIANGLE 3
+#define DIFFERENCE_FOR_FILL_RGN 1
 
 enum class Tools { select_tool, ellipse, rectangle, triangle, move, change, rotate, shapeNormalize, shapeMove, doubleSelectTool, basicLine, leftLine, rightLine, doubleLine };
 enum class ShapeType { ellipse, rectangle, triangle, basicLine, rightLine, leftLine, doubleLine };
