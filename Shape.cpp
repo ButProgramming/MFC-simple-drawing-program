@@ -1462,7 +1462,7 @@ IShape::~IShape()
 
 void Line::draw(CDC* dc)
 {
-	cout << "outlineType: " << outlineType << "| outlineSize: " << outlineSize << endl;
+	//cout << "outlineType: " << outlineType << "| outlineSize: " << outlineSize << endl;
 	//get outline colors
 	oR = GetRValue(outlineColor);
 	oG = GetGValue(outlineColor);

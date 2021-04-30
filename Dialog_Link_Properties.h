@@ -35,10 +35,13 @@ private:
 	int nLinkColorB = NULL;
 
 	
-	CEdit eLinkShapeFirstID;
-	CEdit eLinkShapeSecondID;
-	int nLinkShapeFirstID = -1;
-	int nLinkShapeSecondID = -1;
+	CEdit eLinkFirstPoint;
+	CEdit eLinkSecondPoint;
+	CPoint nLinkFirstPointStart{ NULL, NULL };
+	CPoint nLinkSecondPointStart{ NULL, NULL };
+	CPoint nLinkFirstPoint { NULL, NULL };
+	CPoint nLinkSecondPoint{ NULL, NULL };
+
 	CComboBox bLinkSize;
 	CComboBox bLinkType;
 	int nLinkSize = 1;
@@ -53,4 +56,5 @@ private:
 public:
 	void getParameters(int shapeNum);
 	void setParameters(int shapeNum);
+	CEdit e;
 };

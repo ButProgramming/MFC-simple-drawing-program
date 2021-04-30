@@ -27,8 +27,8 @@ void Dialog_Link_Properties::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_LINK_COLOR_R, eLinkColorR);
 	DDX_Control(pDX, IDC_EDIT_LINK_COLOR_G, eLinkColorG);
 	DDX_Control(pDX, IDC_EDIT_LINK_COLOR_B, eLinkColorB);
-	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_FIRST_ID, eLinkShapeFirstID);
-	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_SECOND_ID, eLinkShapeSecondID);
+	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_FIRST_ID, eLinkFirstPoint);
+	DDX_Control(pDX, IDC_EDIT_LINK_SHAPE_SECOND_ID, eLinkSecondPoint);
 	//  DDX_Control(pDX, IDC_COMBO_LINK_SIZE, m_link_size);
 	DDX_Control(pDX, IDC_COMBO_LINK_SIZE, bLinkSize);
 	DDX_Control(pDX, IDC_COMBO_LINK_TYPE, bLinkType);
@@ -63,28 +63,28 @@ BOOL Dialog_Link_Properties::ContinueModal()
 		// set B color
 		str.Format(_T("%d"), nLinkColorB);
 		eLinkColorB.SetWindowTextW(str);
-		// set first shape id
-		if (nLinkShapeFirstID != -1)
-		{
-			str.Format(_T("%d"), nLinkShapeFirstID);
-			eLinkShapeFirstID.SetWindowTextW(str);
-		}
-		else
-		{
-			str.Format(_T("Is not connected"));
-			eLinkShapeFirstID.SetWindowTextW(str);
-		}
-		// set second shape id
-		if (nLinkShapeSecondID != -1)
-		{
-			str.Format(_T("%d"), nLinkShapeSecondID);
-			eLinkShapeSecondID.SetWindowTextW(str);
-		}
-		else
-		{
-			str.Format(_T("Is not connected"));
-			eLinkShapeSecondID.SetWindowTextW(str);
-		}
+	
+		str.Format(_T("%d, %d"), nLinkFirstPoint.x, nLinkFirstPoint.y);
+		eLinkFirstPoint.SetWindowTextW(str);
+		
+		str.Format(_T("%d, %d"), nLinkSecondPoint.x, nLinkSecondPoint.y);
+		eLinkSecondPoint.SetWindowTextW(str);
+		//else
+		//{
+		//	str.Format(_T("Is not connected"));
+		//	eLinkShapeFirstID.SetWindowTextW(str);
+		//}
+		//// set second shape id
+		////if (nLinkSecondPoint != -1)
+		//{
+		//	str.Format(_T("%d"), nLinkShapeSecondID);
+		//	eLinkShapeSecondID.SetWindowTextW(str);
+		//}
+		//else
+		//{
+		//	str.Format(_T("Is not connected"));
+		//	eLinkShapeSecondID.SetWindowTextW(str);
+		//}
 		// set link size
 		bLinkSize.SetCurSel(nLinkSize);
 		// set link type (__, ..., _.._, ...)
@@ -125,12 +125,19 @@ void Dialog_Link_Properties::OnBnClickedOk()
 		nLinkColorB = 0;
 
 	// get first shape
-	eLinkShapeFirstID.GetWindowTextW(str);
-	nLinkShapeFirstID = _ttoi(str);
+	eLinkFirstPoint.GetWindowTextW(str);
+
+	nLinkFirstPoint.x = _ttoi(str.Mid(0, str.Find(',')));
+	//cout << nLinkFirstPoint.x << endl;
+	nLinkFirstPoint.y = _ttoi(str.Mid(str.Find(',')+1));
+	//cout << nLinkFirstPoint.y << endl;
 
 	// get second shape
-	eLinkShapeSecondID.GetWindowTextW(str);
-	nLinkShapeSecondID = _ttoi(str);
+	eLinkSecondPoint.GetWindowTextW(str);
+	nLinkSecondPoint.x = _ttoi(str.Mid(0, str.Find(',')));
+	//cout << nLinkSecondPoint.x << endl;
+	nLinkSecondPoint.y = _ttoi(str.Mid(str.Find(',') + 1));
+	//cout << nLinkSecondPoint.y << endl;
 
 	// get link size
 	nLinkSize = bLinkSize.GetCurSel();
@@ -158,7 +165,7 @@ void Dialog_Link_Properties::getParameters(int shapeNum)
 	nLinkColorG = GetGValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
 	nLinkColorB = GetBValue(pDoc->getShapesVector()[shapeNum]->getOutlineColor());
 	
-	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
+	/*for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
 	{
 		if (pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(FIRST_POINT_OF_LINE) == pDoc->getShapesVector()[shapeNumber]->getConstID())
 		{
@@ -173,8 +180,11 @@ void Dialog_Link_Properties::getParameters(int shapeNum)
 			nLinkShapeSecondID = pDoc->getShapesVector()[shapeNumber]->getID();
 			break;
 		}
-	}
-
+	}*/
+	nLinkFirstPoint = pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(FIRST_POINT_OF_LINE);
+	nLinkSecondPoint = pDoc->getShapesVector()[shapeNum]->getCoordinateForChange(SECOND_POINT_OF_LINE);
+	nLinkFirstPointStart = nLinkFirstPoint;
+	nLinkSecondPointStart = nLinkSecondPoint;
 
 	nLinkSize = pDoc->getShapesVector()[shapeNum]->getOutlineSize();
 	nLinkType = pDoc->getShapesVector()[shapeNum]->getOutlineType();
@@ -209,5 +219,59 @@ void Dialog_Link_Properties::getParameters(int shapeNum)
 
 void Dialog_Link_Properties::setParameters(int shapeNum)
 {
-	// TODO: Add your implementation code here.
+	pDoc->getShapesVector()[shapeNum]->setOutlineColor(RGB(nLinkColorR, nLinkColorG, nLinkColorB));
+	pDoc->getShapesVector()[shapeNum]->setOutlineSize(nLinkSize);
+	pDoc->getShapesVector()[shapeNum]->setOutlineType(nLinkType);
+
+	if (pDoc->getShapesVector()[shapeNum]->getIsConnected(FIRST_POINT_OF_LINE))
+	{
+		if (nLinkFirstPoint != nLinkFirstPointStart)
+		{
+			//AfxMessageBox(_T("Line must be disconnected from shape to move it"));
+			pDoc->getShapesVector()[shapeNum]->lineDisconnecting(FIRST_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(FIRST_POINT_OF_LINE));
+		}
+	}
+	if (pDoc->getShapesVector()[shapeNum]->getIsConnected(SECOND_POINT_OF_LINE))
+	{
+		if (nLinkSecondPoint != nLinkSecondPointStart)
+		{
+			pDoc->getShapesVector()[shapeNum]->lineDisconnecting(SECOND_POINT_OF_LINE, pDoc->getShapesVector()[shapeNum]->getConnectedShapeConstID(SECOND_POINT_OF_LINE));
+		}
+	}
+	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(FIRST_POINT_OF_LINE, nLinkFirstPoint);
+	pDoc->getShapesVector()[shapeNum]->setCoordinateForChange(SECOND_POINT_OF_LINE, nLinkSecondPoint);
+	/*int constIDFromID = -1;
+	for (int shapeNumber = 0; shapeNumber < pDoc->getShapesVector().size(); shapeNumber++)
+	{
+		if (nLinkID == pDoc->getShapesVector()[shapeNumber]->getID())
+		{
+			constIDFromID = pDoc->getShapesVector()[shapeNumber]->getConstID();
+			break;
+		}
+	}
+	if (constIDFromID != -1)
+	{
+		pDoc->getShapesVector()[shapeNum]->setConnectedShapeConstID(FIRST_POINT_OF_LINE, constIDFromID);
+		pDoc->getShapesVector()[shapeNum]->setNumberOfShapesPointForLines(FIRST_POINT_OF_LINE, 1);
+	}*/
+	
+	// ID
+	if (nLinkID >= 0)
+	{
+		if (IShape::getIDs().find(nLinkID) == IShape::getIDs().end())
+		{
+			IShape::getIDs().erase(pDoc->getShapesVector()[shapeNum]->getID());
+			pDoc->getShapesVector()[shapeNum]->setID(nLinkID);
+			IShape::getIDs().insert(nLinkID);
+			//IShape::IDs.erase(dlg.nID);
+		}
+	}
+	// name
+	if (IShape::getNames().find(name) == IShape::getNames().end())
+	{
+		IShape::getNames().erase(pDoc->getShapesVector()[shapeNum]->getName());
+		pDoc->getShapesVector()[shapeNum]->setName(name);
+		IShape::getNames().insert(name);
+
+	}
 }
