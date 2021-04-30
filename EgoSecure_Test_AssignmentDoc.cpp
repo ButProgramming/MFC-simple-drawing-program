@@ -28,7 +28,7 @@ END_MESSAGE_MAP()
 CEgoSecureTestAssignmentDoc::CEgoSecureTestAssignmentDoc() noexcept
 {
 
-	
+
 
 }
 
@@ -64,7 +64,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 		int shapeType = NULL;
 		int vectorShapeSize = shapes.size();
 		ar << vectorShapeSize;
-		
+
 		for (auto s : shapes)
 		{
 			ar << s->getCenterOfShape();
@@ -74,7 +74,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->getID();
 			ar << s->getConstID();
 			ar << s->getName();
-			
+
 			int oR = GetRValue(s->getOutlineColor());
 			int oG = GetGValue(s->getOutlineColor());
 			int oB = GetBValue(s->getOutlineColor());
@@ -102,7 +102,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar << s->getPointForLine(1);
 			ar << s->getPointForLine(2);
 			ar << s->getPointForLine(3);
-			
+
 			for (int i = 0; i < 4; i++)
 			{
 				ar << s->getChangeDxDy(i);
@@ -110,48 +110,48 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 			switch (s->getShapeType())
 			{
-				case ShapeType::ellipse:
-				{
-					shapeType = 0;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::rectangle:
-				{
-					shapeType = 1;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::triangle:
-				{
-					shapeType = 2;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::basicLine:
-				{
-					shapeType = 3;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::rightLine:
-				{
-					shapeType = 4;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::leftLine:
-				{
-					shapeType = 5;
-					ar << shapeType;
-					break;
-				}
-				case ShapeType::doubleLine:
-				{
-					shapeType = 6;
-					ar << shapeType;
-					break;
-				}
+			case ShapeType::ellipse:
+			{
+				shapeType = 0;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::rectangle:
+			{
+				shapeType = 1;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::triangle:
+			{
+				shapeType = 2;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::basicLine:
+			{
+				shapeType = 3;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::rightLine:
+			{
+				shapeType = 4;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::leftLine:
+			{
+				shapeType = 5;
+				ar << shapeType;
+				break;
+			}
+			case ShapeType::doubleLine:
+			{
+				shapeType = 6;
+				ar << shapeType;
+				break;
+			}
 			}
 
 			ar << s->getIsConnected(FIRST_POINT_OF_LINE);
@@ -162,48 +162,44 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 
 			ar << s->getNumberOfShapesPointForLines(FIRST_POINT_OF_LINE);
 			ar << s->getNumberOfShapesPointForLines(SECOND_POINT_OF_LINE);
-						
+
 		}
 	}
 	else
 	{
 		array <CPoint, 4> linkingPoints;
-		bool isConnected1;
-		bool isConnected2;
-		int connectedShapeConstID1;
-		int connectedShapeConstID2;
-		int numberOfShapesPointForLines1;
-		int numberOfShapesPointForLines2;
+		bool isConnected1 = false;
+		bool isConnected2 = false;
+		int connectedShapeConstID1 = NULL;
+		int connectedShapeConstID2 = NULL;
+		int numberOfShapesPointForLines1 = NULL;
+		int numberOfShapesPointForLines2 = NULL;
 
-		CPoint coordinateForChange1;
-		CPoint coordinateForChange2;
-		IShape* shapeTemp;
+		CPoint coordinateForChange1{ NULL,NULL };
+		CPoint coordinateForChange2{ NULL, NULL };
+		IShape* shapeTemp = nullptr;
 		ShapeType shapeType;
-		int ST;
-		int size;
-		CPoint centerOfShape;
-		bool isSelected;
-		int vectorShapeSize;
-		int oR, oG, oB;
-		int fR, fG, fB;
-		CString shapeName;
-		int outlineSize;
-		int outlineType;
-		int fillType;
-
-		int line_Size;
-		int line_Type;
-
-		double angleRad;
-		CPoint dx_dy[4];
+		int ST = NULL; //shapetype
+		int size = NULL;
+		CPoint centerOfShape{ NULL, NULL };
+		bool isSelected = false;
+		int vectorShapeSize = NULL;
+		int oR = NULL, oG = NULL, oB = NULL;
+		int fR = NULL, fG = NULL, fB = NULL;
+		CString shapeName = NULL;
+		int outlineSize = NULL;
+		int outlineType = NULL;
+		int fillType = NULL;
+		double angleRad = NULL;
 		array <CPoint, 4> dxDy;
-		int FirstShapeConstID;
-		int SecondShapeConstID;
-		int shapeConstID;
-		int shapeID;
-		int lineConstID;
-		int lineID;
-		//Lines* lineTemp;
+		int FirstShapeConstID = NULL;
+		int SecondShapeConstID = NULL;
+		int shapeConstID = NULL;
+		int shapeID = NULL;
+		int lineConstID = NULL;
+		int lineID = NULL;
+
+
 		ar >> vectorShapeSize;
 
 		for (int i = 0; i < vectorShapeSize; i++)
@@ -220,7 +216,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> oR;
 			ar >> oG;
 			ar >> oB;
-			
+
 			ar >> fR;
 			ar >> fG;
 			ar >> fB;
@@ -304,7 +300,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			ar >> numberOfShapesPointForLines1;
 			ar >> numberOfShapesPointForLines2;
 
-			
+
 			shapes.push_back(shapeTemp);
 
 			shapes[shapes.size() - 1]->setAngleRad(angleRad);
@@ -314,7 +310,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			IShape::getIDs().insert(shapes[shapes.size() - 1]->getID());
 
 			shapes[shapes.size() - 1]->setConstID(shapeConstID);
-			
+
 			IShape::getNames().erase(shapes[shapes.size() - 1]->getName());
 			shapes[shapes.size() - 1]->setName(shapeName);
 			IShape::getNames().insert(shapes[shapes.size() - 1]->getName());
@@ -326,7 +322,7 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 				shapes[shapes.size() - 1]->setCoordinateForChange(0, coordinateForChange1);
 				shapes[shapes.size() - 1]->setCoordinateForChange(1, coordinateForChange2);
 			}
-			
+
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -345,15 +341,12 @@ void CEgoSecureTestAssignmentDoc::Serialize(CArchive& ar)
 			{
 				shapes[shapes.size() - 1]->setPointsForLine(i, linkingPoints[i]);
 			}
-
-					
-
-			}
+		}
 
 		toolIsUsed = Tools::select_tool;
 
 	}
-	
+
 }
 
 #ifdef SHARED_HANDLERS
@@ -367,7 +360,7 @@ void CEgoSecureTestAssignmentDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -398,7 +391,7 @@ void CEgoSecureTestAssignmentDoc::SetSearchContent(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = nullptr;
+		CMFCFilterChunkValueImpl* pChunk = nullptr;
 		ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
 		if (pChunk != nullptr)
 		{

@@ -1,7 +1,4 @@
 
-// EgoSecure_Test_AssignmentView.cpp : implementation of the CEgoSecureTestAssignmentView class
-//
-
 #include "pch.h"
 #include "framework.h"
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
@@ -461,13 +458,12 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 	// change coordinates of shape (line)
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::change)
 	{
-		//bool selected = false; // control of the next loop
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			// if is shape selected
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
-				//selected = true;
+
 				// check if is clicked on point for change
 				if (pDoc->getShapesVector()[s]->getNumberOfPointForChange() != -1)
 				{
@@ -897,20 +893,7 @@ void CEgoSecureTestAssignmentView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar
 
 void CEgoSecureTestAssignmentView::OnButtonSelectTool()
 {
-	//CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
-	//for (auto s : pDoc->getShapesVector())
-	//{
-	//	s->setSelected(false);
-	//}
-	///*queue<int> clear;
-	//swap(clear, pDoc->selectedShapesIDs);*/
-	///*for (auto s : pDoc->getShapesVector())
-	//{
-	//	s->isSelectedFromDoubleSelectingTool = false;
-	//}*/
-	//pDoc->getToolIsUsed() = Tools::select_tool;
-	//Invalidate();
-	// TODO: Add your command handler code here
+
 }
 
 
@@ -1066,13 +1049,6 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 			}
 		}
 	}
-	//if (pDoc->getToolIsUsed() == Tools::move)
-	//{
-	//	//Format(_T("centerOfShape: x: %d, y: %d"), pDoc->getShapesVector()[0]->centerOfShape.x, pDoc->getShapesVector()[0]->centerOfShape.y);
-	//	//AfxMessageBox(str);
-	//	//str.Format(_T("boxRect: x: %d, y: %d"), pDoc->getShapesVector()[0]->boxRect.CenterPoint().x, pDoc->getShapesVector()[0]->boxRect.CenterPoint().y);
-	//	//AfxMessageBox(str);
-	//}
 	//move selected shape
 	if (pDoc->getToolIsUsed() == Tools::shapeMove)
 	{
@@ -1098,21 +1074,13 @@ void CEgoSecureTestAssignmentView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CEgoSecureTestAssignmentView::OnButtonChange()
 {
-	////AfxMessageBox(_T("Change"));
-	//auto pDoc = GetDocument();
-	//pDoc->getToolIsUsed() = Tools::change;
-	//// TODO: Add your command handler code here
+
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonRotate()
 {
-	//auto pDoc = GetDocument();
-	//pDoc->getToolIsUsed() = Tools::rotate;
 
-	////AfxMessageBox(_T("123"));
-	////SetWorldTransform()
-	//// TODO: Add your command handler code here
 }
 
 
@@ -1124,20 +1092,7 @@ void CEgoSecureTestAssignmentView::OnButtonShapeNormalize()
 
 void CEgoSecureTestAssignmentView::OnButtonShapeMove()
 {
-	//auto pDoc = GetDocument();
-	//pDoc->getToolIsUsed() = Tools::shapeMove;
 
-	//for (int s = 0; s < pDoc->getShapesVector().size(); s++)
-	//{
-	//	pDoc->getShapesVector()[s]->setShapeMoveTempDxDy(CPoint{ 0,0 });
-	//	/*pDoc->getShapesVector()[s]->shapeMove.tempDxDy.x = 0;
-	//	pDoc->getShapesVector()[s]->shapeMove.tempDxDy.y = 0;*/
-	//}
-	////pDoc->getShapesVector()[s]->diffShapeMove.x = 0;
-	////IShape::diffShapeMove.y = 0;
-	//Invalidate();
-	////AfxMessageBox(_T("ckeck"));
-	//// TODO: Add your command handler code here
 }
 
 

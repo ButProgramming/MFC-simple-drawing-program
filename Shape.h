@@ -20,8 +20,10 @@ using namespace std;
 #define SIZE_OF_LINE_RGN 7
 #define RATE_VALUE_FOR_POINT_FOR_CHANGE 1.5
 #define MULTIPLIKATOR_FOR_LINES_ELLIPSE_RGN 4 // make easer connecting lines with shapes (rgn size * multiplikator)
+// define for lines
 #define FIRST_POINT_OF_LINE 0
 #define SECOND_POINT_OF_LINE 1
+// laws for rotate and move
 #define MOUSE_MOVE 0
 #define LBUTTON_UP 1
 #define DRAW_METHOD 2
