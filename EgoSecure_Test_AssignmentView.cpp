@@ -88,7 +88,9 @@ BOOL CEgoSecureTestAssignmentView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 {
+	// create pointer on document
 	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -109,13 +111,12 @@ void CEgoSecureTestAssignmentView::OnDraw(CDC* pDC)
 		pDoc->getShapesVector()[shapeNum]->draw(&m_dc);
 	}
 
-	//pen->DeleteObject();
 	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dc, 0, 0, SRCCOPY);
 
 
 
-	
-	// TODO: add draw code for native data here
+	// delete pointer on document
+	DeleteObject(pDoc);
 }
 
 void CEgoSecureTestAssignmentView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -126,13 +127,18 @@ void CEgoSecureTestAssignmentView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 
 void CEgoSecureTestAssignmentView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
-	auto pDoc = GetDocument();
+	// create pointer on document
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// create menu
 	CMenu menu;
 	menu.LoadMenu(IDR_POPUP_EDIT);
 	CMenu* pMenu = menu.GetSubMenu(0);
 
-	//PopulateBookmarkMenu(pMenu);
+	// variable is true if selected shape don't exist. If false -> break next loop
 	bool selectedShapeDontExcist = true;
+
+	// search selected shape
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
 		if (pDoc->getShapesVector()[shapeNum]->getSelected())
@@ -141,12 +147,20 @@ void CEgoSecureTestAssignmentView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 			break;
 		}
 	}
+
+	// disabling "Normalize"
 	if (selectedShapeDontExcist)
 	{
 		pMenu->EnableMenuItem(ID_EDIT_NORMALIZE, MF_DISABLED | MF_GRAYED);
 	}
 
 	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this, NULL);
+
+	// delete objects
+	DeleteObject(pDoc);
+	DeleteObject(pMenu);
+	DeleteObject(menu);
+
 #ifndef SHARED_HANDLERS
 	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
@@ -179,7 +193,10 @@ CEgoSecureTestAssignmentDoc* CEgoSecureTestAssignmentView::GetDocument() const /
 
 void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	auto pDoc = GetDocument();
+	// create pointer on document
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// two bool for control next loops to break serach loop or unselect all shapes
 	bool canBeUnselected = true;
 	bool shapeIsFound = false;
 
@@ -264,8 +281,6 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		pDoc->setFirstClickedPoint(point);
 		break;
 	case Tools::shapeMove:
-		/*pDoc->first.x = point.x;
-		pDoc->first.y = point.y;*/
 		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 		{
 			if (pDoc->getShapesVector()[shapeNum]->getSelected())
@@ -276,63 +291,70 @@ void CEgoSecureTestAssignmentView::OnLButtonDown(UINT nFlags, CPoint point)
 		break;
 	case Tools::rotate:
 	{
-		bool selected = false;
+		//bool selected = false;
 		for (int i = 0; i < pDoc->getShapesVector().size(); i++)
 		{
 			if (pDoc->getShapesVector()[i]->getSelected())
 			{
+				// safe first clicked lButton point
 				pDoc->getShapesVector()[i]->setFirstClickedPoint(point);
 				//pDoc->getShapesVector()[i]->lastY = point.y;
-				selected = true;
+				//selected = true;
 			}
-			if (selected) break;
+			if (pDoc->getShapesVector()[i]->getSelected()) break;
 		}
 		break;
 	}
 	case Tools::change:
 		
-		//new
 		for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 		{
 			if (pDoc->getShapesVector()[shapeNum]->getSelected())
 			{
+				// safe first clicked lButton point
 				pDoc->getShapesVector()[shapeNum]->setChangeStartClickedCoordinate(point);
 			}
 		}
-		//bool selected = false; // control of the next loop
+		
 		for (int s = 0; s < pDoc->getShapesVector().size(); s++)
 		{
 			if (pDoc->getShapesVector()[s]->getSelected())
 			{
-				
-				//selected = true;
-				//pDoc->getShapesVector()[s]->numberOfAngle = -1;
-
-				pDoc->getShapesVector()[s]->isClickedPointForChange(point); // this method set also number of clicked point for variable numberOfPoint
-				
-
-		
-
+				// this method set also number of clicked point for variable numberOfPoint
+				pDoc->getShapesVector()[s]->isClickedPointForChange(point); 
 			}
 			if (pDoc->getShapesVector()[s]->getSelected())
 				break;
 		}
 		break;
 	}
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonEllipse()
 {
-	// TODO: Add your command handler code here
-	auto pDoc = GetDocument();
+	// create pointer on document
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// disable selecting all shapes
 	for(int shapeNum = 0; shapeNum< pDoc->getShapesVector().size(); shapeNum++)
 	{
 		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
+
+	// use ellipse tool
 	pDoc->getToolIsUsed() = Tools::ellipse;
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
+	// update drawing
 	Invalidate();
 
 }
@@ -340,46 +362,52 @@ void CEgoSecureTestAssignmentView::OnButtonEllipse()
 
 void CEgoSecureTestAssignmentView::OnButtonRectangle()
 {
-	// TODO: Add your command handler code here}
-	auto pDoc = GetDocument();
+	// create pointer on document
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// disable selecting all shapes
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
 		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
-	/*for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelected = false;
-	}*/
+	
+	// use rectangle tool
 	pDoc->getToolIsUsed() = Tools::rectangle;
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
+	// update drawing
 	Invalidate();
 }
 
 
 void CEgoSecureTestAssignmentView::OnButtonTriangle()
 {
-	// TODO: Add your command handler code here
-	auto pDoc = GetDocument();
+	// create pointer on document
+	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
+
+	// disable selecting all shapes
 	for (int shapeNum = 0; shapeNum < pDoc->getShapesVector().size(); shapeNum++)
 	{
 		pDoc->getShapesVector()[shapeNum]->setSelected(false);
 		pDoc->getShapesVector()[shapeNum]->setCanDrawPointsForLines(false);
 	}
-	/*for (auto s : pDoc->getShapesVector())
-	{
-		s->isSelected = false;
-	}*/
+	
+	// use triangle tool
 	pDoc->getToolIsUsed() = Tools::triangle;
+
+	// delete object(s)
+	DeleteObject(pDoc);
+
+	// update drawing
 	Invalidate();
 }
 
 
 void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	
-	/*int dx = 0;
-	int dy = 0;*/
-
 	// change size of shape
 	CEgoSecureTestAssignmentDoc* pDoc = GetDocument();
 
@@ -394,10 +422,12 @@ void CEgoSecureTestAssignmentView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 	
+	// set size of shapes when is drawn the first time
 	if (nFlags == MK_LBUTTON && (pDoc->getToolIsUsed() == Tools::ellipse || pDoc->getToolIsUsed() == Tools::rectangle || pDoc->getToolIsUsed() == Tools::triangle))
 	{
 		pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1]->setSize(sqrt(pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().x - point.x, 2) + pow((pDoc->getShapesVector()[pDoc->getShapesVector().size() - 1])->getCenterOfShape().y - point.y, 2)));
 	}
+
 	else if (nFlags == MK_LBUTTON && pDoc->getToolIsUsed() == Tools::move)
 	{
 		IShape::setDx(point.x - pDoc->getFirstClickedPoint().x);
