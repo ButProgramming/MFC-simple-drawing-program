@@ -1,65 +1,170 @@
-﻿  EgoSecure_Test_AssignmentView.cpp
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(8,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
+﻿  pch.cpp
+  Default_draw_properties.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+  Dialog_Link_Properties.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+  Dialog_Properties.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Dialog_Properties.cpp(179,60): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  EgoSecure_Test_Assignment.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+  EgoSecure_Test_AssignmentDoc.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+  EgoSecure_Test_AssignmentView.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(7,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(109,17): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(134,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(135,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(158,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(159,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(188,107): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(188,53): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(223,90): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(223,60): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(224,91): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(224,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(255,109): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(255,54): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(291,90): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(291,60): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(292,91): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(292,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(305,106): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(305,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(340,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(340,59): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(341,90): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(341,60): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(361,101): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(361,46): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(392,82): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(392,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(393,83): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(393,53): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(579,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(595,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(683,53): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(697,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(706,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(707,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(715,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(728,75): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(729,75): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(743,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(967,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1042,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1111,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1180,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1252,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1275,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1312,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1318,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1319,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1360,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1417,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1436,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1455,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1682,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1698,64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1748,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(106,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(139,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(221,36): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(281,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(292,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(307,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(316,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(342,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(366,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(389,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(412,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(425,76): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(439,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(452,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(461,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(488,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(591,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(626,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(626,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(631,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(639,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(639,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(644,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(652,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(652,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(657,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(665,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(665,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(670,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(678,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(678,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(683,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(691,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(691,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(696,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(704,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(704,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(709,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(717,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(717,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(722,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(730,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(730,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(735,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(743,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(743,15): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(748,21): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(759,70): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(759,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(764,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(772,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(772,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(777,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(784,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(784,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(789,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(796,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(796,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(801,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(808,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(808,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(813,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(820,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(820,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(825,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(861,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(947,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(968,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1008,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1055,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1106,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1138,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1161,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1184,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1207,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1274,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\EgoSecure_Test_AssignmentView.cpp(1322,20): warning C4018: '<': signed/unsigned mismatch
+  List_Control.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.h(7,29): warning C4584: 'List_Control': base-class 'CObject' is already a base-class of 'CDialogEx'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afx.h(541): message : see declaration of 'CObject'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\atlmfc\include\afxdialogex.h(27): message : see declaration of 'CDialogEx'
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.cpp(121,36): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\List_Control.cpp(129,36): warning C4018: '<': signed/unsigned mismatch
+  MainFrm.cpp
+  Shape.cpp
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(114,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(121,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(148,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(164,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(176,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(180,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(197,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(205,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(229,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(245,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(256,58): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(260,60): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(266,42): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(324,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(353,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(471,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(477,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(485,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(494,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(551,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(587,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(593,202): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(594,202): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(595,202): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(596,202): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(652,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(658,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(664,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(671,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(734,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(826,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(849,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(850,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(858,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(859,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(868,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(869,18): warning C4244: '=': conversion from 'double' to 'LONG', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(985,74): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1050,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1064,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1342,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1453,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1457,116): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1457,29): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1456,149): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1456,62): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1490,300): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1490,99): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1522,81): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1522,51): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1523,82): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(1523,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Generating code
-  477 of 1314 functions (36.3%) were compiled, the rest were copied from previous compilation.
-    277 functions were new in current compilation
-    42 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.cpp(873): warning C4715: 'IShape::rotateAndMoveCoordinate': not all control paths return a value
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(301): warning C4715: 'Line::getCoordinateForChange': not all control paths return a value
+C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\EgoSecure_Test_Assignment\Shape.h(48): warning C4715: 'IShape::getCoordinateForChange': not all control paths return a value
+  All 1295 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   EgoSecure_Test_Assignment.vcxproj -> C:\Users\Admin\source\repos\TestES\EgoSecure_Test_Assignment\Release\EgoSecure_Test_Assignment.exe

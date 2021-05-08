@@ -298,7 +298,7 @@ void EllipseShape::draw(CDC* dc)
 		}
 			
 		// draw rectangle that demonstrates selecting shape
-		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		CPen* selectedAreaRectangleRgn = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		dc->SelectObject(selectedAreaRectangleRgn);
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
@@ -528,7 +528,7 @@ void RectangleShape::draw(CDC* dc)
 
 
 		// draw rectangle that demonstrates selecting shape
-		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		CPen* selectedAreaRectangleRgn = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
@@ -711,7 +711,7 @@ void TriangleShape::draw(CDC* dc)
 
 
 		// draw rectangle that demonstrates selecting shape
-		CPen* selectedAreaRectangleRgn = new CPen(PS_DASH, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
+		CPen* selectedAreaRectangleRgn = new CPen(PS_SOLID, LINE_SIZE_SELECTED_SHAPE, RGB(R_SELECTED_SHAPE, G_SELECTED_SHAPE, B_SELECTED_SHAPE));
 		for (int pointNum = 0; pointNum < 4; pointNum++)
 		{
 			if (pointNum == 3)
